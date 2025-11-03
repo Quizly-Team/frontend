@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Primary Colors */
+  --color-primary: #30a10e;
+  --color-secondary: #e8f5e3;
+
+  /* Gray Scale */
+  --color-white: #ffffff;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #eeeeee;
+  --color-gray-300: #e0e0e0;
+  --color-gray-400: #bdbdbd;
+  --color-gray-500: #9e9e9e;
+  --color-gray-600: #757575;
+  --color-gray-700: #616161;
+  --color-gray-800: #424242;
+  --color-black: #000000;
+
+  /* Blue Scale */
+  --color-blue-400: #42a5f5;
+  --color-blue-500: #2196f3;
+  --color-blue-600: #1e88e5;
+  --color-blue-700: #1976d2;
+
+  /* Red Scale */
+  --color-red-500: #f44336;
+
+  /* Semantic Colors */
+  --color-success: #30a10e;
+  --color-warning: #ff9800;
+  --color-error: #f44336;
+  --color-info: #2196f3;
+
+  /* Background Colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #eeeeee;
+
+  /* Font Family */
+  --font-sans: 'Pretendard', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Font Size - Headers */
+  --font-size-header1-bold: 32px;
+  --font-size-header1-semibold: 32px;
+  --font-size-header1-medium: 32px;
+  --font-size-header2-bold: 28px;
+  --font-size-header2-semibold: 28px;
+  --font-size-header2-medium: 28px;
+  --font-size-header3-bold: 24px;
+  --font-size-header3-semibold: 24px;
+  --font-size-header3-medium: 24px;
+
+  /* Font Size - Body */
+  --font-size-body1-medium: 20px;
+  --font-size-body1-regular: 20px;
+  --font-size-body2-medium: 18px;
+  --font-size-body2-regular: 18px;
+  --font-size-body3-medium: 16px;
+  --font-size-body3-regular: 16px;
+
+  /* Font Size - Text */
+  --font-size-text-regular: 14px;
+  --font-size-text-light: 14px;
+
+  /* Spacing */
+  --spacing-0: 0px;
+  --spacing-xxs: 2px;
+  --spacing-xs: 4px;
+  --spacing-s: 8px;
+  --spacing-m: 12px;
+  --spacing-l: 16px;
+  --spacing-xl: 20px;
+  --spacing-xxl: 24px;
+  --spacing-3xl: 32px;
+  --spacing-4xl: 40px;
+
+  /* Breakpoints */
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
