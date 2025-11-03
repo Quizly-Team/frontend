@@ -1,39 +1,40 @@
 export const colors = {
-  // Primary Colors (Green)
-  primary: '#30A10E',
+  // Primary Colors (Green) - From Figma
+  primary: '#30a10e',
 
-  // Secondary Colors (Light Green)
-  secondary: '#E8F5E3',
+  // Secondary Colors (Light Green) - From Figma
+  secondary: '#f6fbf4',
 
-  // Gray Scale
+  // Gray Scale - From Figma Color Guide
   white: '#FFFFFF',
-  'gray-100': '#F5F5F5',
-  'gray-200': '#EEEEEE',
-  'gray-300': '#E0E0E0',
-  'gray-400': '#BDBDBD',
-  'gray-500': '#9E9E9E',
-  'gray-600': '#757575',
-  'gray-700': '#616161',
-  'gray-800': '#424242',
+  'gray-100': '#fcfcfc',
+  'gray-200': '#efefef',
+  'gray-300': '#dfdfdf',
+  'gray-400': '#b7b7b7',
+  'gray-500': '#9e9e9e',
+  'gray-600': '#777777',
+  'gray-700': '#555555',
+  'gray-800': '#333333',
+  'gray-900': '#222222',
   black: '#000000',
 
-  // Blue Scale
-  'blue-400': '#42A5F5',
-  'blue-500': '#2196F3',
-  'blue-600': '#1E88E5',
-  'blue-700': '#1976D2',
+  // Blue Scale - From Figma Color Guide
+  'blue-400': '#4f8fff',
+  'blue-500': '#2473fc',
+  'blue-600': '#0053e2',
+  'blue-700': '#0048c5',
 
-  // Red Scale
-  'red-500': '#F44336',
+  // Red Scale - From Figma Color Guide
+  'red-500': '#ff243e',
 
   // Semantic Colors
-  success: '#30A10E',
+  success: '#30a10e',
   warning: '#FF9800',
-  error: '#F44336',
-  info: '#2196F3',
+  error: '#ff243e',
+  info: '#2473fc',
 
   // Background Colors
   'bg-primary': '#FFFFFF',
-  'bg-secondary': '#F5F5F5',
-  'bg-tertiary': '#EEEEEE',
+  'bg-secondary': '#fcfcfc',
+  'bg-tertiary': '#efefef',
 } as const;
