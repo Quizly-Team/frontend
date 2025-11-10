@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   /* Primary Colors */
@@ -36,10 +36,12 @@
   --color-bg-primary: #ffffff;
   --color-bg-secondary: #f5f5f5;
   --color-bg-tertiary: #eeeeee;
+  --color-bg-footer: #f2f2f2;
+  --color-bg-home: #f8f9fa;
 
   /* Font Family */
-  --font-sans: 'Pretendard', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: "Pretendard", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
   /* Font Size - Headers */
   --font-size-header1-bold: 32px;
@@ -92,5 +94,131 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Header Styles */
+  .text-header1-bold {
+    font-size: var(--font-size-header1-bold);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .text-header1-semibold {
+    font-size: var(--font-size-header1-semibold);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .text-header1-medium {
+    font-size: var(--font-size-header1-medium);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .text-header2-bold {
+    font-size: var(--font-size-header2-bold);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .text-header2-semibold {
+    font-size: var(--font-size-header2-semibold);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .text-header2-medium {
+    font-size: var(--font-size-header2-medium);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .text-header3-bold {
+    font-size: var(--font-size-header3-bold);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  .text-header3-semibold {
+    font-size: var(--font-size-header3-semibold);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .text-header3-medium {
+    font-size: var(--font-size-header3-medium);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  /* Body Styles */
+  .text-body1-medium {
+    font-size: var(--font-size-body1-medium);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .text-body1-regular {
+    font-size: var(--font-size-body1-regular);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .text-body2-medium {
+    font-size: var(--font-size-body2-medium);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .text-body2-regular {
+    font-size: var(--font-size-body2-regular);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .text-body3-medium {
+    font-size: var(--font-size-body3-medium);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .text-body3-regular {
+    font-size: var(--font-size-body3-regular);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  /* Tint Styles */
+  .text-tint-regular {
+    font-size: var(--font-size-text-regular);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .text-tint-light {
+    font-size: var(--font-size-text-light);
+    line-height: 1.4;
+    font-weight: 300;
+  }
+
+  .text-tint-small {
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  /* Footer Text - Responsive */
+  .text-footer {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  @media (max-width: 1023px) {
+    .text-footer {
+      font-size: 14px;
+    }
   }
 }
