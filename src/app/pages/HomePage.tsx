@@ -3,6 +3,8 @@ import type { ChangeEvent, KeyboardEvent } from 'react';
 import { Header, Footer, Icon, LoginModal, QuizCreateModal } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { useCreateQuiz } from '@/hooks/useCreateQuiz';
+import QuizSolvePage from './QuizSolvePage';
+import type { QuizDetail, UserAnswer } from '@/types/quiz';
 
 type QuizType = 'multiple' | 'ox';
 
@@ -12,6 +14,7 @@ const HomePage = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
+  const [quizData, setQuizData] = useState<QuizDetail[] | null>(null);
 
   const { mutate: createQuiz, isPending } = useCreateQuiz();
 
@@ -69,10 +72,14 @@ const HomePage = () => {
         {
           onSuccess: (response) => {
             console.log('문제 생성 성공:', response);
-            alert(`문제 ${response.quizDetailList.length}개가 생성되었습니다!`);
-            setIsQuizCreateModalOpen(false);
-            setSearchText('');
-            setFile(null);
+            if (response.success && response.quizDetailList.length > 0) {
+              setQuizData(response.quizDetailList);
+              setIsQuizCreateModalOpen(false);
+              setSearchText('');
+              setFile(null);
+            } else {
+              alert('문제 생성에 실패했습니다. 다시 시도해주세요.');
+            }
           },
           onError: (error) => {
             console.error('문제 생성 오류:', error);
@@ -112,6 +119,27 @@ const HomePage = () => {
       clearInterval(interval);
     };
   }, []);
+
+  const handleQuizComplete = useCallback((answers: UserAnswer[]) => {
+    console.log('퀴즈 완료! 답변:', answers);
+    // TODO: 채점 API 호출
+    setQuizData(null); // 홈으로 돌아가기
+  }, []);
+
+  const handleQuizExit = useCallback(() => {
+    setQuizData(null); // 홈으로 돌아가기
+  }, []);
+
+  // 문제 풀이 페이지 표시
+  if (quizData) {
+    return (
+      <QuizSolvePage
+        quizDetailList={quizData}
+        onComplete={handleQuizComplete}
+        onExit={handleQuizExit}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
