@@ -11,11 +11,6 @@ export const spacing = {
   'xxl': '32px',   // Spacing-xxl
   'xxxl': '40px',  // Spacing-xxxl
 
-  // Grid System Margins
-  'margin-web': '24px',      // Web 양옆 마진
-  'margin-tablet': '60px',   // Tablet 양옆 마진
-  'margin-mobile': '20px',   // Mobile 양옆 마진
-
   // Numeric aliases for Tailwind
   0.5: '2px',
   1: '4px',

@@ -1,31 +1,57 @@
+import { useCallback } from 'react';
+import { Button } from '@/components';
+
 type HeaderProps = {
   logoUrl?: string;
 };
 
 const Header = ({ logoUrl = '/logo.svg' }: HeaderProps) => {
-  return (
-    <header className="w-full bg-white">
-      {/* Desktop/Tablet Header */}
-      <div className="container flex items-center justify-between h-[80px] max-md:hidden">
-        <div className="flex items-center">
-          <img src={logoUrl} alt="Quizly Logo" className="h-[22px] w-[84px]" />
-        </div>
+  const handleLoginClick = useCallback(() => {
+    window.location.href = '/login';
+  }, []);
 
-        <nav className="flex items-center gap-xl">
-          <a href="/create" className="text-body3-medium text-gray-900">
-            문제 만들기
-          </a>
-          <a href="/my-quizzes" className="text-body3-medium text-gray-900">
-            내 문제
-          </a>
-          <a href="/login" className="text-body3-medium text-gray-900">
-            로그인
-          </a>
-        </nav>
+  return (
+    <header className="w-full bg-bg-home">
+      {/* Desktop/Tablet Header */}
+      <div className="h-[90px] max-lg:h-[72px] max-md:hidden">
+        <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-xl max-lg:px-15">
+          <div className="flex items-center">
+            <img
+              src={logoUrl}
+              alt="Quizly Logo"
+              className="h-[32px] w-[120px]"
+            />
+          </div>
+
+          <nav className="flex items-center gap-xxl">
+            <a href="/create" className="text-body3-medium text-gray-900">
+              문제 만들기
+            </a>
+            <a href="/mock-exam" className="text-body3-medium text-gray-900">
+              실전 모의고사
+            </a>
+            <a href="/my-quizzes" className="text-body3-medium text-gray-900">
+              문제 모아보기
+            </a>
+            <a
+              href="/wrong-quizzes"
+              className="text-body3-medium text-gray-900"
+            >
+              틀린문제 풀어보기
+            </a>
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={handleLoginClick}
+            >
+              로그인
+            </Button>
+          </nav>
+        </div>
       </div>
 
       {/* Mobile Header */}
-      <div className="hidden max-md:flex items-center justify-between h-[46px] px-margin-mobile py-s">
+      <div className="hidden max-md:flex items-center justify-between h-[50px] px-5 py-s">
         <div className="flex items-center">
           <img src={logoUrl} alt="Quizly Logo" className="h-[22px] w-[84px]" />
         </div>
@@ -43,5 +69,7 @@ const Header = ({ logoUrl = '/logo.svg' }: HeaderProps) => {
     </header>
   );
 };
+
+Header.displayName = 'Header';
 
 export default Header;
