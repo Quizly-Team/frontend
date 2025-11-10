@@ -1,9 +1,10 @@
 import { Modal as MuiModal } from '@mui/material';
+import type { ReactNode } from 'react';
 
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 const Modal = ({ isOpen, onClose, children }: ModalProps) => {
@@ -19,6 +20,8 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
     </MuiModal>
   );
 };
+
+Modal.displayName = 'Modal';
 
 type QuizResultModalProps = {
   isOpen: boolean;
@@ -79,10 +82,10 @@ export const QuizResultModal = ({
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="50" cy="50" r="40" fill="#30a10e" opacity="0.1" />
+              <circle cx="50" cy="50" r="40" className="fill-primary opacity-10" />
               <path
                 d="M35 50L45 60L65 40"
-                stroke="#30a10e"
+                className="stroke-primary"
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -107,13 +110,13 @@ export const QuizResultModal = ({
           <div className="flex gap-4 mt-6">
             <button
               onClick={onViewAll}
-              className="bg-secondary text-primary text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px]"
+              className="bg-secondary text-primary text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-secondary/80 transition-colors"
             >
               문제 모아보기
             </button>
             <button
               onClick={onCreateMore}
-              className="bg-primary text-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px]"
+              className="bg-primary text-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary/90 transition-colors"
             >
               문제 더 만들기
             </button>
@@ -123,5 +126,7 @@ export const QuizResultModal = ({
     </MuiModal>
   );
 };
+
+QuizResultModal.displayName = 'QuizResultModal';
 
 export default Modal;

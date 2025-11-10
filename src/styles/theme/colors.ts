@@ -37,4 +37,5 @@ export const colors = {
   'bg-primary': '#FFFFFF',
   'bg-secondary': '#fcfcfc',
   'bg-tertiary': '#efefef',
+  'bg-footer': '#f2f2f2',
 } as const;

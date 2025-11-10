@@ -1,10 +1,11 @@
 import { forwardRef } from 'react';
+import type { ChangeEvent } from 'react';
 
 type InputProps = {
   label?: string;
   placeholder?: string;
   value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   disabled?: boolean;
   type?: 'text' | 'email' | 'password' | 'number';
@@ -25,6 +26,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    const inputStyles = error
+      ? 'w-full h-12 px-4 py-3 border rounded-[4px] text-body3-regular border-red-500 text-gray-900 placeholder:text-gray-500 outline-none transition-colors'
+      : disabled
+        ? 'w-full h-12 px-4 py-3 border rounded-[4px] text-body3-regular border-gray-300 bg-gray-100 text-gray-500 placeholder:text-gray-500 outline-none transition-colors'
+        : 'w-full h-12 px-4 py-3 border rounded-[4px] text-body3-regular border-gray-300 text-gray-900 focus:border-blue-500 placeholder:text-gray-500 outline-none transition-colors';
+
     return (
       <div className={`flex flex-col gap-xs w-full ${className}`}>
         {label && (
@@ -38,21 +45,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={`
-            w-full h-12 px-4 py-3
-            border rounded-[4px]
-            text-body3-regular
-            ${
-              error
-                ? 'border-red-500 text-gray-900'
-                : disabled
-                  ? 'border-gray-300 bg-gray-100 text-gray-500'
-                  : 'border-gray-300 text-gray-900 focus:border-blue-500'
-            }
-            placeholder:text-gray-500
-            outline-none
-            transition-colors
-          `}
+          className={inputStyles}
         />
 
         {error && (

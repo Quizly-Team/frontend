@@ -1,50 +1,40 @@
+import type { ReactElement } from 'react';
+
+type IconName =
+  | 'search'
+  | 'light'
+  | 'write'
+  | 'book'
+  | 'close'
+  | 'calendar'
+  | 'check'
+  | 'delete'
+  | 'upload'
+  | 'note'
+  | 'checkbox'
+  | 'memo'
+  | 'menu'
+  | 'arrow'
+  | 'correct'
+  | 'error';
+
 type IconProps = {
-  name:
-    | 'search'
-    | 'light'
-    | 'write'
-    | 'book'
-    | 'close'
-    | 'calendar'
-    | 'check'
-    | 'delete'
-    | 'upload'
-    | 'note'
-    | 'checkbox'
-    | 'memo'
-    | 'menu'
-    | 'arrow'
-    | 'correct'
-    | 'error';
+  name: IconName;
   size?: number;
   className?: string;
   onClick?: () => void;
 };
 
 const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
-  const iconMap: Record<string, JSX.Element> = {
+  const getIconMap = (): Record<IconName, ReactElement> => ({
     search: (
-      <svg
+      <img
+        src="./public/icon/search.svg"
+        alt="search"
         width={size}
         height={size}
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle
-          cx="14"
-          cy="14"
-          r="9"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <path
-          d="M20.5 20.5L27 27"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
+        className={className}
+      />
     ),
     light: (
       <svg
@@ -64,48 +54,22 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
       </svg>
     ),
     write: (
-      <svg
+      <img
+        src="./public/icon/write.svg"
+        alt="search"
         width={size}
         height={size}
-        viewBox="0 0 28 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4 20V24H8L20 12L16 8L4 20Z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 8L20 12"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
+        className={className}
+      />
     ),
     book: (
-      <svg
+      <img
+        src="./public/icon/book.svg"
+        alt="search"
         width={size}
         height={size}
-        viewBox="0 0 28 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect
-          x="4"
-          y="2"
-          width="20"
-          height="22"
-          rx="2"
-          fill="#2eb05b"
-          stroke="#2eb05b"
-          strokeWidth="2"
-        />
-        <rect x="10" y="8" width="8" height="8" fill="white" rx="1" />
-      </svg>
+        className={className}
+      />
     ),
     close: (
       <svg
@@ -162,7 +126,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="14" cy="14" r="13" fill="#30a10e" />
+        <circle cx="14" cy="14" r="13" className="fill-primary" />
         <path
           d="M8 14L12 18L20 10"
           stroke="white"
@@ -173,61 +137,22 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
       </svg>
     ),
     delete: (
-      <svg
+      <img
+        src="./public/icon/delete.svg"
+        alt="search"
         width={size}
         height={size}
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M8 10V26C8 27.1046 8.89543 28 10 28H22C23.1046 28 24 27.1046 24 26V10"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M4 10H28"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 4H20"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 16V22M20 16V22"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
+        className={className}
+      />
     ),
     upload: (
-      <svg
+      <img
+        src="./public/icon/upload.svg"
+        alt="search"
         width={size}
         height={size}
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M16 22V7M16 7L10 13M16 7L22 13"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M6 26H26"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
+        className={className}
+      />
     ),
     note: (
       <svg
@@ -243,12 +168,11 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
           width="18"
           height="22"
           rx="2"
-          fill="#dcb89d"
-          stroke="#dcb89d"
+          className="fill-[#dcb89d] stroke-[#dcb89d]"
         />
         <path
           d="M8 9H18M8 13H18M8 17H18M8 21H18"
-          stroke="#4a4848"
+          className="stroke-[#4a4848]"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
@@ -294,8 +218,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
           width="16"
           height="18"
           rx="2"
-          fill="#f4b940"
-          stroke="#f4b940"
+          className="fill-[#f4b940] stroke-[#f4b940]"
         />
         <rect
           x="4"
@@ -303,10 +226,9 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
           width="16"
           height="18"
           rx="2"
-          fill="#ffe9bd"
-          stroke="#ffe9bd"
+          className="fill-[#ffe9bd] stroke-[#ffe9bd]"
         />
-        <circle cx="10" cy="12" r="2" fill="#ff243e" />
+        <circle cx="10" cy="12" r="2" className="fill-error" />
       </svg>
     ),
     menu: (
@@ -347,11 +269,11 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="20" cy="20" r="19" fill="#30a10e" opacity="0.1" />
-        <circle cx="20" cy="20" r="19" stroke="#30a10e" strokeWidth="2" />
+        <circle cx="20" cy="20" r="19" className="fill-primary opacity-10" />
+        <circle cx="20" cy="20" r="19" className="stroke-primary" strokeWidth="2" />
         <path
           d="M12 20L18 26L28 14"
-          stroke="#30a10e"
+          className="stroke-primary"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -366,23 +288,27 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="20" cy="20" r="19" fill="#ff243e" opacity="0.1" />
-        <circle cx="20" cy="20" r="19" stroke="#ff243e" strokeWidth="2" />
+        <circle cx="20" cy="20" r="19" className="fill-error opacity-10" />
+        <circle cx="20" cy="20" r="19" className="stroke-error" strokeWidth="2" />
         <path
           d="M26 14L14 26M14 14L26 26"
-          stroke="#ff243e"
+          className="stroke-error"
           strokeWidth="3"
           strokeLinecap="round"
         />
       </svg>
     ),
-  };
+  });
+
+  const iconMap = getIconMap();
+
+  const containerStyles = onClick
+    ? `inline-flex items-center justify-center cursor-pointer ${className}`
+    : `inline-flex items-center justify-center ${className}`;
 
   return (
     <div
-      className={`inline-flex items-center justify-center ${className} ${
-        onClick ? 'cursor-pointer' : ''
-      }`}
+      className={containerStyles}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
@@ -391,5 +317,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
     </div>
   );
 };
+
+Icon.displayName = 'Icon';
 
 export default Icon;
