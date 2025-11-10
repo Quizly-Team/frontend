@@ -1,0 +1,522 @@
+import { useState, useCallback } from 'react';
+import { Header, Footer, Icon } from '@/components';
+import ProgressBar from '@/components/common/ProgressBar';
+import type { QuizDetail, UserAnswer } from '@/types/quiz';
+
+type QuizSolvePageProps = {
+  quizDetailList: QuizDetail[];
+  onComplete?: (answers: UserAnswer[]) => void;
+  onExit?: () => void;
+};
+
+const QuizSolvePage = ({
+  quizDetailList,
+  onComplete,
+  onExit,
+}: QuizSolvePageProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<string>('');
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  const [showResult, setShowResult] = useState(false);
+
+  const currentQuiz = quizDetailList[currentIndex];
+  const isLastQuestion = currentIndex === quizDetailList.length - 1;
+  const questionNumber = currentIndex + 1;
+
+  // 정답 여부 확인 (TRUE/FALSE를 O/X로 변환하여 비교)
+  const normalizeAnswer = (answer: string) => {
+    if (answer === 'TRUE') return 'O';
+    if (answer === 'FALSE') return 'X';
+    return answer;
+  };
+
+  const isCorrect =
+    normalizeAnswer(selectedAnswer) === normalizeAnswer(currentQuiz.answer);
+
+  const handleSelectAnswer = useCallback(
+    (answer: string) => {
+      if (!showResult) {
+        setSelectedAnswer(answer);
+      }
+    },
+    [showResult]
+  );
+
+  const handleNextQuestion = useCallback(() => {
+    if (!selectedAnswer) return;
+
+    // 아직 채점 결과를 보여주지 않았다면 결과 표시
+    if (!showResult) {
+      setShowResult(true);
+      return;
+    }
+
+    // 현재 답안 저장
+    const newAnswer: UserAnswer = {
+      quizId: currentQuiz.quizId,
+      selectedAnswer,
+    };
+    const updatedAnswers = [...userAnswers, newAnswer];
+    setUserAnswers(updatedAnswers);
+
+    if (isLastQuestion) {
+      onComplete?.(updatedAnswers);
+    } else {
+      setCurrentIndex((prev) => prev + 1);
+      setSelectedAnswer('');
+      setShowResult(false);
+    }
+  }, [
+    selectedAnswer,
+    currentQuiz,
+    userAnswers,
+    isLastQuestion,
+    onComplete,
+    showResult,
+  ]);
+
+  if (!currentQuiz) {
+    return <div>로딩 중...</div>;
+  }
+
+  return (
+    <div className="min-h-screen bg-bg-home flex flex-col">
+      {/* Header - Web/Tablet Only */}
+      <div className="max-md:hidden">
+        <Header logoUrl="/logo.svg" />
+      </div>
+
+      {/* Main Content - Web/Tablet */}
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-6 max-md:hidden">
+        <div className="w-full max-w-[1024px] max-lg:max-w-[904px]">
+          {/* Title */}
+          <div className="flex items-center gap-3 mb-[38px]">
+            <h1 className="text-header1-bold text-gray-900 text-center">
+              지금부터 본격 <span className="text-primary">문제 타임!</span>{' '}
+              집중해서 풀어봐요
+            </h1>
+            <Icon name="write" size={40} className="text-gray-900" />
+          </div>
+
+          {/* Progress Bar */}
+          <div className="mb-[60px]">
+            <ProgressBar
+              current={questionNumber}
+              total={quizDetailList.length}
+            />
+          </div>
+
+          {/* Quiz Container */}
+          <div
+            className={`bg-white border rounded-[16px] p-10 mb-[30px] ${
+              showResult
+                ? isCorrect
+                  ? 'border-[#2473fc]'
+                  : 'border-error'
+                : 'border-gray-300'
+            }`}
+          >
+            {/* Question */}
+            <h2
+              className={`text-body1-medium mb-8 ${
+                showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
+              }`}
+            >
+              <span
+                className={
+                  showResult
+                    ? isCorrect
+                      ? 'text-[#2473fc]'
+                      : 'text-error'
+                    : 'text-primary'
+                }
+              >
+                Q{questionNumber}.{' '}
+              </span>
+              <span
+                className={
+                  showResult
+                    ? isCorrect
+                      ? 'text-[#2473fc]'
+                      : 'text-error'
+                    : 'text-gray-900'
+                }
+              >
+                {currentQuiz.text}
+              </span>
+            </h2>
+
+            {/* Options */}
+            <div className="space-y-4">
+              {currentQuiz.type === 'TRUE_FALSE' ? (
+                // OX 문제
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => handleSelectAnswer('O')}
+                    className={`
+                      h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
+                      ${
+                        showResult
+                          ? selectedAnswer === 'O'
+                            ? normalizeAnswer(currentQuiz.answer) === 'O'
+                              ? 'bg-white border-[#2473fc]'
+                              : 'bg-white border-error'
+                            : 'bg-white border-gray-300'
+                          : selectedAnswer === 'O'
+                          ? 'bg-primary/10 border-primary'
+                          : 'border-gray-300'
+                      }
+                    `}
+                  >
+                    <Icon
+                      name={
+                        showResult && selectedAnswer === 'O'
+                          ? normalizeAnswer(currentQuiz.answer) === 'O'
+                            ? 'correct_blue'
+                            : 'correct_red'
+                          : 'correct_black'
+                      }
+                      size={40}
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleSelectAnswer('X')}
+                    className={`
+                      h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
+                      ${
+                        showResult
+                          ? selectedAnswer === 'X'
+                            ? normalizeAnswer(currentQuiz.answer) === 'X'
+                              ? 'bg-white border-[#2473fc]'
+                              : 'bg-white border-error'
+                            : 'bg-white border-gray-300'
+                          : selectedAnswer === 'X'
+                          ? 'bg-primary/10 border-primary'
+                          : 'border-gray-300'
+                      }
+                    `}
+                  >
+                    <Icon
+                      name={
+                        showResult && selectedAnswer === 'X'
+                          ? normalizeAnswer(currentQuiz.answer) === 'X'
+                            ? 'error_blue'
+                            : 'error_red'
+                          : 'error_black'
+                      }
+                      size={40}
+                    />
+                  </button>
+                </div>
+              ) : (
+                // 객관식 문제
+                currentQuiz.options.map((option, index) => {
+                  const isSelected = selectedAnswer === option;
+                  const isCorrectAnswer = option === currentQuiz.answer;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleSelectAnswer(option)}
+                      className={`
+                        w-full flex items-center gap-3 px-3 py-4 rounded-[12px] border text-left transition-colors
+                        ${
+                          showResult
+                            ? isSelected
+                              ? isCorrectAnswer
+                                ? 'bg-white border-[#2473fc]'
+                                : 'bg-white border-error'
+                              : 'bg-white border-gray-300'
+                            : isSelected
+                            ? 'bg-primary/10 border-primary'
+                            : 'bg-gray-50 border-gray-300'
+                        }
+                      `}
+                    >
+                      <Icon
+                        name={
+                          showResult && isSelected
+                            ? isCorrectAnswer
+                              ? 'check_blue'
+                              : 'check_red'
+                            : isSelected
+                            ? 'check_black'
+                            : 'check_black'
+                        }
+                        size={24}
+                      />
+                      <span className="text-body3-regular text-gray-900">
+                        {option}
+                      </span>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* Next Button */}
+          <div className="flex justify-end">
+            <button
+              onClick={handleNextQuestion}
+              disabled={!selectedAnswer}
+              className={`
+                px-4 py-3 rounded-[6px] text-body3-regular text-white transition-colors
+                ${
+                  selectedAnswer
+                    ? 'bg-primary hover:bg-primary/90'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }
+              `}
+            >
+              {showResult
+                ? isLastQuestion
+                  ? '결과보기'
+                  : '다음 문제'
+                : '제출'}
+            </button>
+          </div>
+
+          {/* 해설 영역 - 웹/태블릿 */}
+          {showResult && (
+            <div className="bg-white border border-gray-300 rounded-[16px] p-10 mt-8">
+              <h3 className="text-body1-medium text-primary mb-6">해설 요약</h3>
+              <div className="text-body2-medium text-gray-900">
+                <p className="mb-0">{currentQuiz.explanation}</p>
+                <p className="text-gray-600 mt-2">
+                  정답 :{' '}
+                  {currentQuiz.type === 'TRUE_FALSE'
+                    ? currentQuiz.answer === 'TRUE'
+                      ? 'O'
+                      : currentQuiz.answer === 'FALSE'
+                      ? 'X'
+                      : currentQuiz.answer
+                    : currentQuiz.answer}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Main Content - Mobile */}
+      <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[140px]">
+        <div className="w-full px-l">
+          {/* Progress Bar */}
+          <div className="mb-[47px]">
+            <ProgressBar
+              current={questionNumber}
+              total={quizDetailList.length}
+            />
+          </div>
+
+          {/* Quiz Container */}
+          <div
+            className={`bg-white border rounded-[16px] p-l mb-6 ${
+              showResult
+                ? isCorrect
+                  ? 'border-[#2473fc]'
+                  : 'border-error'
+                : 'border-gray-300'
+            }`}
+          >
+            {/* Question */}
+            <h2
+              className={`text-body3-medium mb-l ${
+                showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
+              }`}
+            >
+              <span
+                className={
+                  showResult
+                    ? isCorrect
+                      ? 'text-[#2473fc]'
+                      : 'text-error'
+                    : 'text-primary'
+                }
+              >
+                Q{questionNumber}.{' '}
+              </span>
+              <span
+                className={
+                  showResult
+                    ? isCorrect
+                      ? 'text-[#2473fc]'
+                      : 'text-error'
+                    : 'text-gray-900'
+                }
+              >
+                {currentQuiz.text}
+              </span>
+            </h2>
+
+            {/* Options */}
+            <div className="space-y-3">
+              {currentQuiz.type === 'TRUE_FALSE' ? (
+                // OX 문제
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => handleSelectAnswer('O')}
+                    className={`
+                      h-[60px] rounded-[8px] border flex items-center justify-center transition-colors
+                      ${
+                        showResult
+                          ? selectedAnswer === 'O'
+                            ? normalizeAnswer(currentQuiz.answer) === 'O'
+                              ? 'bg-white border-[#2473fc]'
+                              : 'bg-white border-error'
+                            : 'bg-white border-gray-300'
+                          : selectedAnswer === 'O'
+                          ? 'bg-primary/10 border-primary'
+                          : 'bg-white hover:bg-gray-50 border-gray-300'
+                      }
+                    `}
+                  >
+                    <Icon
+                      name={
+                        showResult && selectedAnswer === 'O'
+                          ? normalizeAnswer(currentQuiz.answer) === 'O'
+                            ? 'correct_blue'
+                            : 'correct_red'
+                          : 'correct_black'
+                      }
+                      size={24}
+                    />
+                  </button>
+                  <button
+                    onClick={() => handleSelectAnswer('X')}
+                    className={`
+                      h-[60px] rounded-[8px] border flex items-center justify-center transition-colors
+                      ${
+                        showResult
+                          ? selectedAnswer === 'X'
+                            ? normalizeAnswer(currentQuiz.answer) === 'X'
+                              ? 'bg-white border-[#2473fc]'
+                              : 'bg-white border-error'
+                            : 'bg-white border-gray-300'
+                          : selectedAnswer === 'X'
+                          ? 'bg-primary/10 border-primary'
+                          : 'bg-white hover:bg-gray-50 border-gray-300'
+                      }
+                    `}
+                  >
+                    <Icon
+                      name={
+                        showResult && selectedAnswer === 'X'
+                          ? normalizeAnswer(currentQuiz.answer) === 'X'
+                            ? 'error_blue'
+                            : 'error_red'
+                          : 'error_black'
+                      }
+                      size={24}
+                    />
+                  </button>
+                </div>
+              ) : (
+                // 객관식 문제
+                currentQuiz.options.map((option, index) => {
+                  const isSelected = selectedAnswer === option;
+                  const isCorrectAnswer = option === currentQuiz.answer;
+
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleSelectAnswer(option)}
+                      className={`
+                        w-full flex items-center gap-2 px-3 py-3 rounded-[8px] border text-left transition-colors
+                        ${
+                          showResult
+                            ? isSelected
+                              ? isCorrectAnswer
+                                ? 'bg-white border-[#2473fc]'
+                                : 'bg-white border-error'
+                              : 'bg-white border-gray-300'
+                            : isSelected
+                            ? 'bg-primary/10 border-primary'
+                            : 'bg-white hover:bg-gray-50 border-gray-300'
+                        }
+                      `}
+                    >
+                      <Icon
+                        name={
+                          showResult && isSelected
+                            ? isCorrectAnswer
+                              ? 'check_blue'
+                              : 'check_red'
+                            : isSelected
+                            ? 'check_black'
+                            : 'check_black'
+                        }
+                        size={16}
+                      />
+                      <span className="text-tint-regular text-gray-900">
+                        {option}
+                      </span>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+
+          {/* 해설 영역 - 모바일 */}
+          {showResult && (
+            <div className="bg-white border border-gray-300 rounded-[16px] p-l">
+              <h3 className="text-body3-medium text-primary mb-l">해설 요약</h3>
+              <div className="text-body3-medium text-gray-900">
+                <p className="mb-0">{currentQuiz.explanation}</p>
+                <p className="text-gray-600 mt-2">
+                  정답 :{' '}
+                  {currentQuiz.type === 'TRUE_FALSE'
+                    ? currentQuiz.answer === 'TRUE'
+                      ? 'O'
+                      : currentQuiz.answer === 'FALSE'
+                      ? 'X'
+                      : currentQuiz.answer
+                    : currentQuiz.answer}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Fixed Bottom Buttons - Mobile Only */}
+      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white pt-4 pb-10 px-l z-50">
+        <div className="flex gap-3">
+          <button
+            onClick={onExit}
+            className="bg-white border border-gray-300 px-l py-[14px] rounded-[6px] text-body2-regular text-gray-600 whitespace-nowrap"
+          >
+            나가기
+          </button>
+          <button
+            onClick={handleNextQuestion}
+            disabled={!selectedAnswer}
+            className={`
+              flex-1 px-l py-[14px] rounded-[6px] text-body2-regular text-white transition-colors
+              ${
+                selectedAnswer
+                  ? 'bg-primary hover:bg-primary/90'
+                  : 'bg-gray-400 cursor-not-allowed'
+              }
+            `}
+          >
+            {showResult ? (isLastQuestion ? '결과보기' : '다음 문제') : '제출'}
+          </button>
+        </div>
+        {/* Home Indicator */}
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
+      </div>
+
+      {/* Footer - Web/Tablet Only */}
+      <div className="max-md:hidden">
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+QuizSolvePage.displayName = 'QuizSolvePage';
+
+export default QuizSolvePage;
