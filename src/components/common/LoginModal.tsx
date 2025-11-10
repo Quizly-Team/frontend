@@ -1,5 +1,6 @@
 import { Modal as MuiModal } from "@mui/material";
 import { useCallback } from "react";
+import { oauthLogin } from "@/lib/oauth";
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -7,9 +8,12 @@ type LoginModalProps = {
 };
 
 const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
-  const handleSignup = useCallback(() => {
-    // TODO: 소셜 로그인 회원가입 구현
-    console.log("회원가입 클릭");
+  const handleNaverLogin = useCallback(() => {
+    oauthLogin("naver");
+  }, []);
+
+  const handleKakaoLogin = useCallback(() => {
+    oauthLogin("kakao");
   }, []);
 
   return (
@@ -55,15 +59,15 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
               {"로그인하고 나만의 문제를\n더 많이 만들어보세요!"}
             </p>
 
-            {/* SignIn Button */}
+            {/* SignIn Buttons */}
             <button
-              onClick={handleSignup}
+              onClick={handleNaverLogin}
               className="w-[350px] bg-secondary text-primary text-body3-regular px-[16px] py-[12px] rounded-[6px] hover:bg-secondary/80 transition-colors mb-4"
             >
               네이버로 시작하기
             </button>
             <button
-              onClick={handleSignup}
+              onClick={handleKakaoLogin}
               className="w-[350px] bg-secondary text-primary text-body3-regular px-[16px] py-[12px] rounded-[6px] hover:bg-secondary/80 transition-colors"
             >
               카카오로 시작하기
