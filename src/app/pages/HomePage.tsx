@@ -1,11 +1,16 @@
-import { useState, useCallback } from 'react';
-import type { ChangeEvent } from 'react';
-import { Header, Footer, Icon, LoginModal } from '@/components';
+import { useState, useCallback, useEffect } from 'react';
+import type { ChangeEvent, KeyboardEvent } from 'react';
+import { Header, Footer, Icon, LoginModal, QuizCreateModal } from '@/components';
+import { authUtils } from '@/lib/auth';
+
+type QuizType = 'multiple' | 'ox';
 
 const HomePage = () => {
   const [searchText, setSearchText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
 
   const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
@@ -26,6 +31,48 @@ const HomePage = () => {
 
   const handleCloseLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
+  }, []);
+
+  const handleOpenQuizCreateModal = useCallback(() => {
+    if (!searchText && !file) return; // 입력이 없으면 모달 열지 않음
+    setIsQuizCreateModalOpen(true);
+  }, [searchText, file]);
+
+  const handleCloseQuizCreateModal = useCallback(() => {
+    setIsQuizCreateModalOpen(false);
+  }, []);
+
+  const handleSelectQuizType = useCallback((type: QuizType) => {
+    // TODO: 선택한 퀴즈 타입으로 문제 생성 API 호출
+    console.log('Selected quiz type:', type);
+    console.log('Content:', searchText || file?.name);
+  }, [searchText, file]);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && (searchText || file)) {
+      handleOpenQuizCreateModal();
+    }
+  }, [searchText, file, handleOpenQuizCreateModal]);
+
+  // 로그인 상태 체크 (컴포넌트 마운트 시 및 storage 이벤트 감지)
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      setIsLoggedIn(authUtils.isAuthenticated());
+    };
+
+    // 초기 체크
+    checkAuthStatus();
+
+    // storage 이벤트 리스너 (다른 탭에서 로그인/로그아웃 시)
+    window.addEventListener('storage', checkAuthStatus);
+
+    // 주기적 체크 (같은 탭에서의 변경 감지)
+    const interval = setInterval(checkAuthStatus, 1000);
+
+    return () => {
+      window.removeEventListener('storage', checkAuthStatus);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -72,7 +119,11 @@ const HomePage = () => {
 
           {/* Search Bar - Web/Tablet */}
           <div className="w-full mb-8">
-            <div className="bg-white border border-gray-300 rounded-[100px] px-8 py-l shadow-sm">
+            <div
+              className="bg-white border border-gray-300 rounded-[100px] px-8 py-l shadow-sm"
+              onKeyDown={handleKeyDown}
+              tabIndex={0}
+            >
               <div className="flex items-center gap-3">
                 <Icon name="search" size={32} className="text-gray-600" />
 
@@ -80,6 +131,7 @@ const HomePage = () => {
                   type="text"
                   value={file ? file.name : searchText}
                   onChange={(e) => setSearchText(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
                   disabled={!!file}
                   className="flex-1 text-body2-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed"
@@ -182,8 +234,13 @@ const HomePage = () => {
       </main>
 
       {/* Fixed Bottom Input - Mobile Only */}
+<<<<<<< Updated upstream
       <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] h-[140px] z-50">
         <div className="pt-6 px-5 flex items-center justify-between">
+=======
+      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] pt-6 pb-10 px-l z-50">
+        <div className="flex items-center justify-between gap-3">
+>>>>>>> Stashed changes
           <input
             type="text"
             value={file ? file.name : searchText}
@@ -193,6 +250,7 @@ const HomePage = () => {
             className="flex-1 text-body3-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed"
           />
 
+<<<<<<< Updated upstream
           {searchText || file ? (
             <button
               onClick={handleClearSearch}
@@ -212,6 +270,38 @@ const HomePage = () => {
               <Icon name="upload" size={24} className="text-gray-600" />
             </label>
           )}
+=======
+          <div className="flex items-center gap-3">
+            {searchText || file ? (
+              <>
+                <button
+                  onClick={handleClearSearch}
+                  className="flex items-center justify-center"
+                  aria-label="입력 내용 지우기"
+                >
+                  <Icon name="delete" size={24} className="text-gray-600" />
+                </button>
+                <button
+                  onClick={handleOpenQuizCreateModal}
+                  className="bg-primary text-white text-tint-regular px-4 py-2 rounded-[6px] hover:bg-primary/90 transition-colors whitespace-nowrap"
+                  aria-label="보내기"
+                >
+                  보내기
+                </button>
+              </>
+            ) : (
+              <label className="cursor-pointer flex items-center justify-center">
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  accept=".txt,.pdf,.doc,.docx"
+                />
+                <Icon name="upload" size={24} className="text-gray-600" />
+              </label>
+            )}
+          </div>
+>>>>>>> Stashed changes
         </div>
       </div>
 
@@ -224,6 +314,14 @@ const HomePage = () => {
       <LoginModal
         isOpen={isLoginModalOpen}
         onClose={handleCloseLoginModal}
+      />
+
+      {/* Quiz Create Modal */}
+      <QuizCreateModal
+        isOpen={isQuizCreateModalOpen}
+        onClose={handleCloseQuizCreateModal}
+        onSelectQuizType={handleSelectQuizType}
+        isLoggedIn={isLoggedIn}
       />
     </div>
   );
