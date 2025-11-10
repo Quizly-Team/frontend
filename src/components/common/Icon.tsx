@@ -29,7 +29,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
   const getIconMap = (): Record<IconName, ReactElement> => ({
     search: (
       <img
-        src="./public/icon/search.svg"
+        src="/icon/search.svg"
         alt="search"
         width={size}
         height={size}
@@ -55,8 +55,8 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
     ),
     write: (
       <img
-        src="./public/icon/write.svg"
-        alt="search"
+        src="/icon/write.svg"
+        alt="write"
         width={size}
         height={size}
         className={className}
@@ -64,8 +64,8 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
     ),
     book: (
       <img
-        src="./public/icon/book.svg"
-        alt="search"
+        src="/icon/book.svg"
+        alt="book"
         width={size}
         height={size}
         className={className}
@@ -138,8 +138,8 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
     ),
     delete: (
       <img
-        src="./public/icon/delete.svg"
-        alt="search"
+        src="/icon/delete.svg"
+        alt="delete"
         width={size}
         height={size}
         className={className}
@@ -147,8 +147,8 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
     ),
     upload: (
       <img
-        src="./public/icon/upload.svg"
-        alt="search"
+        src="/icon/upload.svg"
+        alt="upload"
         width={size}
         height={size}
         className={className}
