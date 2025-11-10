@@ -1,4 +1,6 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components';
+import { authUtils } from '@/lib/auth';
 
 type HeaderProps = {
   logoUrl?: string;
@@ -6,13 +8,25 @@ type HeaderProps = {
 };
 
 const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
-  const handleLoginClick = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(authUtils.isAuthenticated());
+  }, []);
+
+  const handleLoginClick = useCallback(() => {
     if (onLoginClick) {
       onLoginClick();
     } else {
       window.location.href = '/login';
     }
-  };
+  }, [onLoginClick]);
+
+  const handleLogoutClick = useCallback(() => {
+    authUtils.logout();
+    setIsAuthenticated(false);
+    window.location.reload();
+  }, []);
 
   return (
     <header className="w-full bg-bg-home">
@@ -43,13 +57,23 @@ const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
             >
               틀린문제 풀어보기
             </a>
-            <Button
-              variant="primary"
-              size="medium"
-              onClick={handleLoginClick}
-            >
-              로그인
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                variant="primary"
+                size="medium"
+                onClick={handleLogoutClick}
+              >
+                로그아웃
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                size="medium"
+                onClick={handleLoginClick}
+              >
+                로그인
+              </Button>
+            )}
           </nav>
         </div>
       </div>
