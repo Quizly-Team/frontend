@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import { Header, Footer, Icon, LoginModal, QuizCreateModal } from '@/components';
 import { authUtils } from '@/lib/auth';
+import { useCreateQuiz } from '@/hooks/useCreateQuiz';
 
 type QuizType = 'multiple' | 'ox';
 
@@ -11,6 +12,8 @@ const HomePage = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
+
+  const { mutate: createQuiz, isPending } = useCreateQuiz();
 
   const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
@@ -42,11 +45,46 @@ const HomePage = () => {
     setIsQuizCreateModalOpen(false);
   }, []);
 
-  const handleSelectQuizType = useCallback((type: QuizType) => {
-    // TODO: 선택한 퀴즈 타입으로 문제 생성 API 호출
-    console.log('Selected quiz type:', type);
-    console.log('Content:', searchText || file?.name);
-  }, [searchText, file]);
+  const handleSelectQuizType = useCallback(
+    (type: QuizType) => {
+      const content = file || searchText;
+      if (!content) return;
+
+      // QuizType 매핑 (multiple -> MULTIPLE_CHOICE, ox -> TRUE_FALSE)
+      const apiType = type === 'multiple' ? 'MULTIPLE_CHOICE' : 'TRUE_FALSE';
+
+      console.log('[HomePage] 문제 생성 시작:', {
+        type: apiType,
+        isLoggedIn,
+        contentType: content instanceof File ? 'file' : 'text',
+        hasToken: !!authUtils.getAccessToken(),
+      });
+
+      createQuiz(
+        {
+          content,
+          type: apiType,
+          isLoggedIn,
+        },
+        {
+          onSuccess: (response) => {
+            console.log('문제 생성 성공:', response);
+            alert(`문제 ${response.quizDetailList.length}개가 생성되었습니다!`);
+            setIsQuizCreateModalOpen(false);
+            setSearchText('');
+            setFile(null);
+          },
+          onError: (error) => {
+            console.error('문제 생성 오류:', error);
+            alert(
+              error.message || '문제 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
+            );
+          },
+        }
+      );
+    },
+    [searchText, file, isLoggedIn, createQuiz]
+  );
 
   const handleKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && (searchText || file)) {
@@ -234,13 +272,8 @@ const HomePage = () => {
       </main>
 
       {/* Fixed Bottom Input - Mobile Only */}
-<<<<<<< Updated upstream
       <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] h-[140px] z-50">
-        <div className="pt-6 px-5 flex items-center justify-between">
-=======
-      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] pt-6 pb-10 px-l z-50">
-        <div className="flex items-center justify-between gap-3">
->>>>>>> Stashed changes
+        <div className="pt-6 px-5 flex items-center justify-between gap-3">
           <input
             type="text"
             value={file ? file.name : searchText}
@@ -250,28 +283,7 @@ const HomePage = () => {
             className="flex-1 text-body3-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed"
           />
 
-<<<<<<< Updated upstream
-          {searchText || file ? (
-            <button
-              onClick={handleClearSearch}
-              className="flex items-center justify-center ml-3 shrink-0"
-              aria-label="입력 내용 지우기"
-            >
-              <Icon name="delete" size={24} className="text-gray-600" />
-            </button>
-          ) : (
-            <label className="cursor-pointer flex items-center justify-center ml-3 shrink-0">
-              <input
-                type="file"
-                onChange={handleFileUpload}
-                className="hidden"
-                accept=".txt,.pdf,.doc,.docx"
-              />
-              <Icon name="upload" size={24} className="text-gray-600" />
-            </label>
-          )}
-=======
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             {searchText || file ? (
               <>
                 <button
@@ -301,8 +313,10 @@ const HomePage = () => {
               </label>
             )}
           </div>
->>>>>>> Stashed changes
         </div>
+
+        {/* Home Indicator */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
       </div>
 
       {/* Footer - Web/Tablet Only */}
@@ -323,6 +337,16 @@ const HomePage = () => {
         onSelectQuizType={handleSelectQuizType}
         isLoggedIn={isLoggedIn}
       />
+
+      {/* Loading Overlay */}
+      {isPending && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
+          <div className="bg-white rounded-[24px] p-8 flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <p className="text-body3-medium text-gray-900">문제 생성 중...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
