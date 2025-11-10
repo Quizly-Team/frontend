@@ -14,14 +14,7 @@ const QuizCard = ({
   className = '',
 }: QuizCardProps) => {
   return (
-    <div
-      className={`
-        bg-white border border-gray-300 rounded-[12px]
-        p-8
-        flex flex-col gap-l
-        ${className}
-      `}
-    >
+    <div className={`bg-white border border-gray-300 rounded-[12px] p-8 flex flex-col gap-l ${className}`}>
       {/* Question Section */}
       <div className="flex flex-col gap-xs">
         <p className="text-body2-medium leading-[1.4]">
@@ -45,5 +38,7 @@ const QuizCard = ({
     </div>
   );
 };
+
+QuizCard.displayName = 'QuizCard';
 
 export default QuizCard;

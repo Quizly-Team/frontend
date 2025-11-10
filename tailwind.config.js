@@ -2,14 +2,16 @@
 import { colors } from './src/styles/theme/colors';
 import { typography } from './src/styles/theme/typography';
 import { spacing } from './src/styles/theme/spacing';
+import plugin from 'tailwindcss/plugin';
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      colors: colors,
+      colors: {
+        ...colors,
+      },
       fontFamily: typography.fontFamily,
-      fontSize: typography.fontSize,
       fontWeight: typography.fontWeight,
       spacing: spacing,
       screens: {
@@ -40,5 +42,107 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        // Header Styles
+        '.text-header1-bold': {
+          fontSize: '32px',
+          lineHeight: '1.4',
+          fontWeight: '700',
+        },
+        '.text-header1-semibold': {
+          fontSize: '32px',
+          lineHeight: '1.4',
+          fontWeight: '600',
+        },
+        '.text-header1-medium': {
+          fontSize: '32px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        '.text-header2-bold': {
+          fontSize: '28px',
+          lineHeight: '1.4',
+          fontWeight: '700',
+        },
+        '.text-header2-semibold': {
+          fontSize: '28px',
+          lineHeight: '1.4',
+          fontWeight: '600',
+        },
+        '.text-header2-medium': {
+          fontSize: '28px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        '.text-header3-bold': {
+          fontSize: '24px',
+          lineHeight: '1.4',
+          fontWeight: '700',
+        },
+        '.text-header3-semibold': {
+          fontSize: '24px',
+          lineHeight: '1.4',
+          fontWeight: '600',
+        },
+        '.text-header3-medium': {
+          fontSize: '24px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        // Body Styles
+        '.text-body1-medium': {
+          fontSize: '20px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        '.text-body1-regular': {
+          fontSize: '20px',
+          lineHeight: '1.4',
+          fontWeight: '400',
+        },
+        '.text-body2-medium': {
+          fontSize: '18px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        '.text-body2-regular': {
+          fontSize: '18px',
+          lineHeight: '1.4',
+          fontWeight: '400',
+        },
+        '.text-body3-medium': {
+          fontSize: '16px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        '.text-body3-regular': {
+          fontSize: '16px',
+          lineHeight: '1.4',
+          fontWeight: '400',
+        },
+        // Tint Styles
+        '.text-tint-regular': {
+          fontSize: '14px',
+          lineHeight: '1.4',
+          fontWeight: '400',
+        },
+        '.text-tint-light': {
+          fontSize: '14px',
+          lineHeight: '1.4',
+          fontWeight: '300',
+        },
+        // Footer Text - Responsive
+        '.text-footer': {
+          fontSize: '16px',
+          lineHeight: '1.4',
+          fontWeight: '400',
+          '@media (max-width: 1023px)': {
+            fontSize: '14px',
+          },
+        },
+      });
+    }),
+  ],
 };
