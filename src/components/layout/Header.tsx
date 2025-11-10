@@ -1,14 +1,18 @@
-import { useCallback } from 'react';
 import { Button } from '@/components';
 
 type HeaderProps = {
   logoUrl?: string;
+  onLoginClick?: () => void;
 };
 
-const Header = ({ logoUrl = '/logo.svg' }: HeaderProps) => {
-  const handleLoginClick = useCallback(() => {
-    window.location.href = '/login';
-  }, []);
+const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
+  const handleLoginClick = () => {
+    if (onLoginClick) {
+      onLoginClick();
+    } else {
+      window.location.href = '/login';
+    }
+  };
 
   return (
     <header className="w-full bg-bg-home">
