@@ -19,3 +19,15 @@ export type UserAnswer = {
   quizId: number;
   selectedAnswer: string;
 };
+
+export type SubmitAnswerRequest = {
+  userAnswer: string;
+};
+
+export type SubmitAnswerResponse = {
+  success: boolean;
+  quizId: number;
+  answer: string;
+  explanation: string;
+  correct: boolean;
+};
