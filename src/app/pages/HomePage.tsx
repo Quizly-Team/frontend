@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
 import type { ChangeEvent } from 'react';
-import { Header, Footer, Icon } from '@/components';
+import { Header, Footer, Icon, LoginModal } from '@/components';
 
 const HomePage = () => {
   const [searchText, setSearchText] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
@@ -19,10 +20,18 @@ const HomePage = () => {
     setFile(null);
   }, []);
 
+  const handleOpenLoginModal = useCallback(() => {
+    setIsLoginModalOpen(true);
+  }, []);
+
+  const handleCloseLoginModal = useCallback(() => {
+    setIsLoginModalOpen(false);
+  }, []);
+
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
       {/* Header */}
-      <Header logoUrl="/logo.svg" />
+      <Header logoUrl="/logo.svg" onLoginClick={handleOpenLoginModal} />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
@@ -210,6 +219,12 @@ const HomePage = () => {
       <div className="max-md:hidden">
         <Footer />
       </div>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={handleCloseLoginModal}
+      />
     </div>
   );
 };
