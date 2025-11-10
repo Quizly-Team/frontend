@@ -7,7 +7,6 @@ type IconName =
   | "book"
   | "close"
   | "calendar"
-  | "check"
   | "delete"
   | "upload"
   | "note"
@@ -16,7 +15,18 @@ type IconName =
   | "menu"
   | "arrow"
   | "correct"
-  | "error";
+  | "error"
+  | "correct_black"
+  | "error_black"
+  | "correct_red"
+  | "correct_blue"
+  | "error_red"
+  | "error_blue"
+  | "check"
+  | "check_black"
+  | "check_blue"
+  | "check_red"
+  | "check_green";
 
 type IconProps = {
   name: IconName;
@@ -110,6 +120,7 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
         />
       </svg>
     ),
+    /* [제거됨]
     check: (
       <svg
         width={size}
@@ -128,6 +139,7 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
         />
       </svg>
     ),
+    */
     delete: (
       <img
         src="/icon/delete.svg"
@@ -262,10 +274,117 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
         className={className}
       />
     ),
+    correct_black: (
+      <img
+        src="/icon/correct_black.svg"
+        alt="correct_black"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
     error: (
       <img
         src="/icon/error.svg"
         alt="error"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    error_black: (
+      <img
+        src="/icon/error_black.svg"
+        alt="error_black"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    correct_red: (
+      <img
+        src="/icon/correct_red.svg"
+        alt="correct_red"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    correct_blue: (
+      <img
+        src="/icon/correct_blue.svg"
+        alt="correct_blue"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    error_red: (
+      <img
+        src="/icon/error_red.svg"
+        alt="error_red"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    error_blue: (
+      <img
+        src="/icon/error_blue.svg"
+        alt="error_blue"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    check: (
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 28 28"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 14L12 18L20 10"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    check_black: (
+      <img
+        src="/icon/check_black.svg"
+        alt="check_black"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    check_blue: (
+      <img
+        src="/icon/check_blue.svg"
+        alt="check_blue"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    check_red: (
+      <img
+        src="/icon/check_red.svg"
+        alt="check_red"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    check_green: (
+      <img
+        src="/icon/check_green.svg"
+        alt="check_green"
         width={size}
         height={size}
         className={className}
