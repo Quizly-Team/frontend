@@ -1,22 +1,22 @@
-import type { ReactElement } from 'react';
+import type { ReactElement } from "react";
 
 type IconName =
-  | 'search'
-  | 'light'
-  | 'write'
-  | 'book'
-  | 'close'
-  | 'calendar'
-  | 'check'
-  | 'delete'
-  | 'upload'
-  | 'note'
-  | 'checkbox'
-  | 'memo'
-  | 'menu'
-  | 'arrow'
-  | 'correct'
-  | 'error';
+  | "search"
+  | "light"
+  | "write"
+  | "book"
+  | "close"
+  | "calendar"
+  | "check"
+  | "delete"
+  | "upload"
+  | "note"
+  | "checkbox"
+  | "memo"
+  | "menu"
+  | "arrow"
+  | "correct"
+  | "error";
 
 type IconProps = {
   name: IconName;
@@ -25,7 +25,7 @@ type IconProps = {
   onClick?: () => void;
 };
 
-const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
+const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
   const getIconMap = (): Record<IconName, ReactElement> => ({
     search: (
       <img
@@ -37,21 +37,13 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
       />
     ),
     light: (
-      <svg
+      <img
+        src="/icon/light.svg"
+        alt="light"
         width={size}
         height={size}
-        viewBox="0 0 28 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M14 2V4M14 24V26M26 14H24M4 14H2M22.36 5.64L20.95 7.05M7.05 20.95L5.64 22.36M22.36 22.36L20.95 20.95M7.05 7.05L5.64 5.64"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <circle cx="14" cy="14" r="5" stroke="currentColor" strokeWidth="2" />
-      </svg>
+        className={className}
+      />
     ),
     write: (
       <img
@@ -262,41 +254,22 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
       </svg>
     ),
     correct: (
-      <svg
+      <img
+        src="/icon/correct.svg"
+        alt="correct"
         width={size}
         height={size}
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="20" cy="20" r="19" className="fill-primary opacity-10" />
-        <circle cx="20" cy="20" r="19" className="stroke-primary" strokeWidth="2" />
-        <path
-          d="M12 20L18 26L28 14"
-          className="stroke-primary"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+        className={className}
+      />
     ),
     error: (
-      <svg
+      <img
+        src="/icon/error.svg"
+        alt="error"
         width={size}
         height={size}
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="20" cy="20" r="19" className="fill-error opacity-10" />
-        <circle cx="20" cy="20" r="19" className="stroke-error" strokeWidth="2" />
-        <path
-          d="M26 14L14 26M14 14L26 26"
-          className="stroke-error"
-          strokeWidth="3"
-          strokeLinecap="round"
-        />
-      </svg>
+        className={className}
+      />
     ),
   });
 
@@ -310,7 +283,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
     <div
       className={containerStyles}
       onClick={onClick}
-      role={onClick ? 'button' : undefined}
+      role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
       {iconMap[name]}
@@ -318,6 +291,6 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
   );
 };
 
-Icon.displayName = 'Icon';
+Icon.displayName = "Icon";
 
 export default Icon;
