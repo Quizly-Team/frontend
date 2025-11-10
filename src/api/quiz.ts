@@ -1,5 +1,5 @@
 import { authUtils } from '@/lib/auth';
-import type { QuizResponse } from '@/types/quiz';
+import type { QuizResponse, SubmitAnswerRequest, SubmitAnswerResponse } from '@/types/quiz';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
@@ -211,4 +211,56 @@ export const createQuiz = async (
   return isLoggedIn
     ? createQuizByTextMember(request)
     : createQuizByTextGuest(request);
+};
+
+/**
+ * 답안 제출 (회원)
+ * @param quizId - 문제 ID
+ * @param userAnswer - 사용자가 선택한 답안
+ */
+export const submitAnswerMember = async (
+  quizId: number,
+  userAnswer: string
+): Promise<SubmitAnswerResponse> => {
+  const token = authUtils.getAccessToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  console.log('[회원] 답안 제출 요청:', {
+    url: `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
+    body: { userAnswer },
+    hasToken: !!token,
+  });
+
+  const response = await fetch(`${API_BASE_URL}/quizzes/${quizId}/answer/member`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ userAnswer }),
+  });
+
+  console.log('[회원] 답안 제출 응답 상태:', response.status, response.statusText);
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('[회원] 답안 제출 에러 응답:', errorText);
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `답안 제출 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  console.log('[회원] 답안 제출 성공 응답:', data);
+  return data;
 };
