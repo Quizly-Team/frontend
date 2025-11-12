@@ -531,8 +531,7 @@ const QuizSolvePage = ({
               : '제출'}
           </button>
         </div>
-        {/* Home Indicator */}
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
+        
       </div>
 
       {/* Footer - Web/Tablet Only */}
