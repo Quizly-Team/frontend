@@ -31,3 +31,26 @@ export type SubmitAnswerResponse = {
   explanation: string;
   correct: boolean;
 };
+
+// 문제 모아보기 API 타입
+export type QuizHistoryDetail = {
+  quizId: number;
+  text: string;
+  type: QuizType;
+  options: string[];
+  answer: string;
+  explanation: string;
+  topic: string;
+  isLastSolveCorrect: boolean;
+};
+
+export type QuizGroup = {
+  group: string;
+  quizHistoryDetailList: QuizHistoryDetail[];
+};
+
+export type QuizGroupResponse = {
+  success: boolean;
+  errorCode: string | null;
+  quizGroupList: QuizGroup[];
+};

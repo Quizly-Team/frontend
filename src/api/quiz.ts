@@ -1,5 +1,5 @@
 import { authUtils } from '@/lib/auth';
-import type { QuizResponse, SubmitAnswerRequest, SubmitAnswerResponse } from '@/types/quiz';
+import type { QuizResponse, SubmitAnswerRequest, SubmitAnswerResponse, QuizGroupResponse } from '@/types/quiz';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
@@ -262,5 +262,51 @@ export const submitAnswerMember = async (
 
   const data = await response.json();
   console.log('[회원] 답안 제출 성공 응답:', data);
+  return data;
+};
+
+/**
+ * 문제 모아보기 조회 (회원)
+ * @param groupType - 그룹화 기준 (예: 'date')
+ */
+export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGroupResponse> => {
+  const token = authUtils.getAccessToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  console.log('[회원] 문제 모아보기 조회 요청:', {
+    url: `${API_BASE_URL}/quizzes?groupType=${groupType}`,
+    hasToken: !!token,
+  });
+
+  const response = await fetch(`${API_BASE_URL}/quizzes?groupType=${groupType}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  console.log('[회원] 문제 모아보기 조회 응답 상태:', response.status, response.statusText);
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('[회원] 문제 모아보기 조회 에러 응답:', errorText);
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `문제 모아보기 조회 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const data = await response.json();
+  console.log('[회원] 문제 모아보기 조회 성공 응답:', data);
   return data;
 };
