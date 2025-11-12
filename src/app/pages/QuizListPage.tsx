@@ -1,15 +1,16 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header, Footer, LoginModal, UnauthorizedPage, DateCard, Icon } from '@/components';
 import { authUtils } from '@/lib/auth';
+import { getQuizGroups } from '@/api/quiz';
 
 const QuizListPage = () => {
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [quizDates, setQuizDates] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const isAuthenticated = authUtils.isAuthenticated();
-
-  // TODO: API 연결 시 사용
-  const quizDates: string[] = [];
 
   const handleOpenLoginModal = useCallback(() => {
     setIsLoginModalOpen(true);
@@ -25,6 +26,37 @@ const QuizListPage = () => {
     },
     [navigate]
   );
+
+  // 문제 모아보기 데이터 로드
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const fetchQuizGroups = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await getQuizGroups('date');
+
+        if (response.success && response.quizGroupList) {
+          // 날짜 목록 추출 및 정렬 (최신순)
+          const dates = response.quizGroupList
+            .map((group) => group.group)
+            .sort((a, b) => b.localeCompare(a));
+          setQuizDates(dates);
+        } else {
+          setError(response.errorCode || '데이터를 불러오는데 실패했습니다.');
+        }
+      } catch (err) {
+        console.error('문제 모아보기 조회 실패:', err);
+        setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchQuizGroups();
+  }, [isAuthenticated]);
 
   // 비회원인 경우
   if (!isAuthenticated) {
@@ -55,7 +87,22 @@ const QuizListPage = () => {
           </div>
 
           {/* Quiz Date Cards Grid */}
-          {quizDates.length === 0 ? (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+              <p className="text-body1-medium text-gray-600">로딩 중...</p>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <p className="text-body1-medium text-error mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-primary text-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+              >
+                다시 시도
+              </button>
+            </div>
+          ) : quizDates.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
               <p className="text-body1-medium text-gray-600">
                 아직 풀어본 문제가 없습니다.
@@ -91,7 +138,22 @@ const QuizListPage = () => {
         </div>
 
         {/* Quiz Date Cards Grid */}
-        {quizDates.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+            <p className="text-body3-medium text-gray-600">로딩 중...</p>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-body3-medium text-error mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-primary text-white text-tint-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+            >
+              다시 시도
+            </button>
+          </div>
+        ) : quizDates.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <p className="text-body3-medium text-gray-600">
               아직 풀어본 문제가 없습니다.

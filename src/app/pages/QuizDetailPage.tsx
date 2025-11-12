@@ -1,16 +1,17 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header, Footer, LoginModal, UnauthorizedPage, QuizCard } from '@/components';
 import { authUtils } from '@/lib/auth';
+import { getQuizGroups } from '@/api/quiz';
 import type { QuizHistoryDetail } from '@/types/quiz';
 
 const QuizDetailPage = () => {
   const { date } = useParams<{ date: string }>();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [quizzes, setQuizzes] = useState<QuizHistoryDetail[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const isAuthenticated = authUtils.isAuthenticated();
-
-  // TODO: API 연결 시 사용
-  const quizzes: QuizHistoryDetail[] = [];
 
   const handleOpenLoginModal = useCallback(() => {
     setIsLoginModalOpen(true);
@@ -19,6 +20,42 @@ const QuizDetailPage = () => {
   const handleCloseLoginModal = useCallback(() => {
     setIsLoginModalOpen(false);
   }, []);
+
+  // 특정 날짜의 문제 목록 로드
+  useEffect(() => {
+    if (!isAuthenticated || !date) return;
+
+    const fetchQuizzesByDate = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await getQuizGroups('date');
+
+        if (response.success && response.quizGroupList) {
+          // 해당 날짜의 문제 그룹 찾기
+          const targetGroup = response.quizGroupList.find(
+            (group) => group.group === date
+          );
+
+          if (targetGroup) {
+            setQuizzes(targetGroup.quizHistoryDetailList);
+          } else {
+            setQuizzes([]);
+          }
+        } else {
+          setError(response.errorCode || '데이터를 불러오는데 실패했습니다.');
+        }
+      } catch (err) {
+        console.error('문제 조회 실패:', err);
+        setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchQuizzesByDate();
+  }, [isAuthenticated, date]);
 
   // 비회원은 접근 불가
   if (!isAuthenticated) {
@@ -46,7 +83,22 @@ const QuizDetailPage = () => {
           </h1>
 
           {/* Quiz Cards Grid */}
-          {quizzes.length === 0 ? (
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+              <p className="text-body1-medium text-gray-600">로딩 중...</p>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <p className="text-body1-medium text-error mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="bg-primary text-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+              >
+                다시 시도
+              </button>
+            </div>
+          ) : quizzes.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
               <p className="text-body1-medium text-gray-600">
                 해당 날짜에 풀어본 문제가 없습니다.
@@ -83,7 +135,22 @@ const QuizDetailPage = () => {
         </h1>
 
         {/* Quiz Cards List (single column) */}
-        {quizzes.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+            <p className="text-body3-medium text-gray-600">로딩 중...</p>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-body3-medium text-error mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-primary text-white text-tint-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+            >
+              다시 시도
+            </button>
+          </div>
+        ) : quizzes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <p className="text-body3-medium text-gray-600">
               해당 날짜에 풀어본 문제가 없습니다.
