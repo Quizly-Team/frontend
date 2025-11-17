@@ -54,3 +54,34 @@ export type QuizGroupResponse = {
   errorCode: string | null;
   quizGroupList: QuizGroup[];
 };
+
+// 틀린 문제 조회 API 타입
+export type WrongQuizHistoryDetail = {
+  quizId: number;
+  text: string;
+  type: QuizType;
+  options: string[];
+  answer: string;
+  explanation: string;
+  topic: string;
+  isCorrect: boolean;
+};
+
+export type WrongQuizGroup = {
+  group: string;
+  quizHistoryDetailList: WrongQuizHistoryDetail[];
+};
+
+export type WrongQuizGroupResponse = {
+  quizGroupList: WrongQuizGroup[];
+};
+
+export type UpdateQuizzesTopicRequest = {
+  topic: string;
+  quizIdList: number[];
+};
+
+export type UpdateQuizzesTopicResponse = {
+  success: boolean;
+  errorCode?: string | null;
+};
