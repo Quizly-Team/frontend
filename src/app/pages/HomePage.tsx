@@ -238,12 +238,15 @@ const HomePage = () => {
               </span>
             </a>
 
-            <button className="bg-white px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1">
+            <a
+              href="/wrong-quizzes"
+              className="bg-white px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
+            >
               <Icon name="write" size={28} />
               <span className="text-body1-medium text-gray-900">
                 틀린문제 풀어보기
               </span>
-            </button>
+            </a>
           </div>
         </div>
       </main>
@@ -296,12 +299,15 @@ const HomePage = () => {
             </span>
           </a>
 
-          <button className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1">
+          <a
+            href="/wrong-quizzes"
+            className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
+          >
             <Icon name="write" size={24} />
             <span className="text-tint-regular text-gray-900">
               틀린문제 풀어보기
             </span>
-          </button>
+          </a>
         </div>
       </main>
 

@@ -3,6 +3,8 @@ import HomePage from '@/app/pages/HomePage';
 import AuthCallback from '@/app/pages/AuthCallback';
 import QuizListPage from '@/app/pages/QuizListPage';
 import QuizDetailPage from '@/app/pages/QuizDetailPage';
+import WrongQuizPage from '@/app/pages/WrongQuizPage';
+import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage';
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +18,14 @@ export const router = createBrowserRouter([
   {
     path: '/my-quizzes/:date',
     element: <QuizDetailPage />,
+  },
+  {
+    path: '/wrong-quizzes',
+    element: <WrongQuizPage />,
+  },
+  {
+    path: '/wrong-quizzes/solve',
+    element: <WrongQuizSolvePage />,
   },
   {
     path: '/login/oauth2/code/:provider',
