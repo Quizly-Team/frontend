@@ -9,3 +9,4 @@ export { default as ProgressBar } from "./common/ProgressBar";
 export { default as DateCard } from "./common/DateCard";
 export { default as QuizCard } from "./common/QuizCard";
 export { default as UnauthorizedPage } from "./common/UnauthorizedPage";
+export { default as MemberOnlyPage } from "./common/MemberOnlyPage";

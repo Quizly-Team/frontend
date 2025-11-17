@@ -14,7 +14,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-white rounded-[24px] p-8 max-w-[450px] w-full mx-m outline-none">
+      <div className="bg-white rounded-[24px] pt-[60px] pr-8 pb-8 pl-8 w-[430px] min-h-[324px] mx-m outline-none">
         {children}
       </div>
     </MuiModal>
@@ -75,22 +75,11 @@ export const QuizResultModal = ({
         <div className="flex flex-col items-center gap-4">
           {/* Success Icon */}
           <div className="w-[100px] h-[100px] flex items-center justify-center">
-            <svg
-              width="100"
-              height="100"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <circle cx="50" cy="50" r="40" className="fill-primary opacity-10" />
-              <path
-                d="M35 50L45 60L65 40"
-                className="stroke-primary"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src="/icon/group.svg"
+              alt="그룹 아이콘"
+              className="w-full h-full object-contain"
+            />
           </div>
 
           <p className="text-body3-medium text-primary">
