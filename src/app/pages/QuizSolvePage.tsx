@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { Header, Footer, Icon } from '@/components';
+import { useState, useCallback, useMemo } from 'react';
+import { Header, Footer, Icon, QuizResultModal } from '@/components';
 import ProgressBar from '@/components/common/ProgressBar';
 import type { QuizDetail, UserAnswer } from '@/types/quiz';
 import { submitAnswerMember } from '@/api/quiz';
@@ -9,18 +9,22 @@ type QuizSolvePageProps = {
   quizDetailList: QuizDetail[];
   onComplete?: (answers: UserAnswer[]) => void;
   onExit?: () => void;
+  onViewAll?: (answers: UserAnswer[]) => void;
 };
 
 const QuizSolvePage = ({
   quizDetailList,
   onComplete,
   onExit,
+  onViewAll,
 }: QuizSolvePageProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([]);
 
   const currentQuiz = quizDetailList[currentIndex];
   const isLastQuestion = currentIndex === quizDetailList.length - 1;
@@ -33,6 +37,23 @@ const QuizSolvePage = ({
     if (answer === 'FALSE') return 'X';
     return answer;
   };
+
+  const correctCount = useMemo(() => {
+    if (!finalAnswers.length) return 0;
+
+    return finalAnswers.reduce((count, answer) => {
+      const quiz = quizDetailList.find(
+        (quiz) => quiz.quizId === answer.quizId
+      );
+
+      if (!quiz) return count;
+
+      return normalizeAnswer(answer.selectedAnswer) ===
+        normalizeAnswer(quiz.answer)
+        ? count + 1
+        : count;
+    }, 0);
+  }, [finalAnswers, quizDetailList]);
 
   const isCorrect =
     normalizeAnswer(selectedAnswer) === normalizeAnswer(currentQuiz.answer);
@@ -56,7 +77,6 @@ const QuizSolvePage = ({
         setIsSubmitting(true);
         try {
           await submitAnswerMember(currentQuiz.quizId, selectedAnswer);
-          console.log('답안 제출 성공');
         } catch (error) {
           console.error('답안 제출 실패:', error);
           // 에러가 발생해도 UI 흐름은 유지 (사용자 경험 보호)
@@ -78,22 +98,50 @@ const QuizSolvePage = ({
     setUserAnswers(updatedAnswers);
 
     if (isLastQuestion) {
-      onComplete?.(updatedAnswers);
-    } else {
-      setCurrentIndex((prev) => prev + 1);
-      setSelectedAnswer('');
-      setShowResult(false);
+      setFinalAnswers(updatedAnswers);
+      setIsResultModalOpen(true);
+      return;
     }
+
+    setCurrentIndex((prev) => prev + 1);
+    setSelectedAnswer('');
+    setShowResult(false);
   }, [
     selectedAnswer,
     currentQuiz,
     userAnswers,
     isLastQuestion,
-    onComplete,
     showResult,
     isAuthenticated,
     isSubmitting,
   ]);
+
+  const handleResultClose = useCallback(() => {
+    if (!finalAnswers.length) return;
+    setIsResultModalOpen(false);
+    onComplete?.(finalAnswers);
+  }, [finalAnswers, onComplete]);
+
+  const handleViewAllClick = useCallback(() => {
+    if (!finalAnswers.length) return;
+    setIsResultModalOpen(false);
+    if (onViewAll) {
+      onViewAll(finalAnswers);
+      return;
+    }
+    onComplete?.(finalAnswers);
+  }, [finalAnswers, onComplete, onViewAll]);
+
+  const handleCreateMore = useCallback(() => {
+    setIsResultModalOpen(false);
+    if (onExit) {
+      onExit();
+      return;
+    }
+    if (finalAnswers.length) {
+      onComplete?.(finalAnswers);
+    }
+  }, [finalAnswers, onComplete, onExit]);
 
   if (!currentQuiz) {
     return <div>로딩 중...</div>;
@@ -538,6 +586,15 @@ const QuizSolvePage = ({
       <div className="max-md:hidden">
         <Footer />
       </div>
+
+      <QuizResultModal
+        isOpen={isResultModalOpen}
+        onClose={handleResultClose}
+        correctCount={correctCount}
+        totalCount={quizDetailList.length}
+        onViewAll={handleViewAllClick}
+        onCreateMore={handleCreateMore}
+      />
     </div>
   );
 };

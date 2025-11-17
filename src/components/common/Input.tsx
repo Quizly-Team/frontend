@@ -10,6 +10,8 @@ type InputProps = {
   disabled?: boolean;
   type?: 'text' | 'email' | 'password' | 'number';
   className?: string;
+  labelClassName?: string;
+  inputClassName?: string;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -23,6 +25,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled = false,
       type = 'text',
       className = '',
+      labelClassName = '',
+      inputClassName = '',
     },
     ref
   ) => {
@@ -35,7 +39,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={`flex flex-col gap-xs w-full ${className}`}>
         {label && (
-          <label className="text-body3-regular text-gray-600">{label}</label>
+          <label
+            className={`text-body3-regular text-gray-600 ${labelClassName}`}
+          >
+            {label}
+          </label>
         )}
 
         <input
@@ -45,7 +53,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={inputStyles}
+          className={`${inputStyles} ${inputClassName}`}
         />
 
         {error && (

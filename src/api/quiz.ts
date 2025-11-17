@@ -1,5 +1,12 @@
 import { authUtils } from '@/lib/auth';
-import type { QuizResponse, SubmitAnswerRequest, SubmitAnswerResponse, QuizGroupResponse } from '@/types/quiz';
+import type {
+  QuizResponse,
+  SubmitAnswerResponse,
+  QuizGroupResponse,
+  WrongQuizGroupResponse,
+  UpdateQuizzesTopicRequest,
+  UpdateQuizzesTopicResponse,
+} from '@/types/quiz';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
@@ -309,4 +316,108 @@ export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGro
   const data = await response.json();
   console.log('[회원] 문제 모아보기 조회 성공 응답:', data);
   return data;
+};
+
+/**
+ * 틀린 문제 조회 (회원)
+ * @param groupType - 그룹화 기준 (date | topic)
+ */
+export const getWrongQuizzes = async (
+  groupType: 'date' | 'topic' = 'date'
+): Promise<WrongQuizGroupResponse> => {
+  const token = authUtils.getAccessToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  console.log('[회원] 틀린 문제 조회 요청:', {
+    url: `${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`,
+    hasToken: !!token,
+    groupType,
+  });
+
+  const response = await fetch(`${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  console.log('[회원] 틀린 문제 조회 응답 상태:', response.status, response.statusText);
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('[회원] 틀린 문제 조회 에러 응답:', errorText);
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    if (response.status === 401) {
+      authUtils.logout();
+    }
+
+    throw new Error(
+      errorData.message ||
+        `틀린 문제 조회 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return response.json();
+};
+
+export const updateQuizzesTopic = async (
+  request: UpdateQuizzesTopicRequest
+): Promise<UpdateQuizzesTopicResponse> => {
+  const token = authUtils.getAccessToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  console.log('[회원] 틀린 문제 주제 수정 요청:', {
+    url: `${API_BASE_URL}/quizzes/topic`,
+    hasToken: !!token,
+    quizCount: request.quizIdList.length,
+  });
+
+  const response = await fetch(`${API_BASE_URL}/quizzes/topic`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('[회원] 틀린 문제 주제 수정 에러 응답:', errorText);
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message ||
+        `주제 수정에 실패했어요: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const rawText = await response.text();
+  if (!rawText) {
+    return { success: true };
+  }
+
+  try {
+    return JSON.parse(rawText) as UpdateQuizzesTopicResponse;
+  } catch {
+    return { success: true };
+  }
 };
