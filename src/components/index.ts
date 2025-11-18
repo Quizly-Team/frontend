@@ -10,3 +10,5 @@ export { default as DateCard } from "./common/DateCard";
 export { default as QuizCard } from "./common/QuizCard";
 export { default as UnauthorizedPage } from "./common/UnauthorizedPage";
 export { default as MemberOnlyPage } from "./common/MemberOnlyPage";
+export { default as QuizGenerationLoadingPage } from "./common/QuizGenerationLoadingPage";
+export { default as LoadingStageCard } from "./common/LoadingStageCard";

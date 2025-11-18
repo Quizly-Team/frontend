@@ -27,6 +27,7 @@ type IconName =
   | "check_blue"
   | "check_red"
   | "check_green"
+  | "check_white"
   | "icn_checkbox"
   | "icn_note";
 
@@ -364,6 +365,15 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
     check_green: (
       <img
         src="/icon/check_green.svg"
+        alt="check_green"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+      check_white: (
+      <img
+        src="/icon/check_white.svg"
         alt="check_green"
         width={size}
         height={size}
