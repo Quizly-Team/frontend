@@ -63,7 +63,14 @@ const WrongQuizPage = () => {
     refetchOnMount: 'always',
   });
 
-  const quizGroups = useMemo(() => data?.quizGroupList ?? [], [data]);
+  const quizGroups = useMemo(() => {
+    const groups = data?.quizGroupList ?? [];
+    // 날짜순일 때 최신순 정렬 적용
+    if (groupType === 'date') {
+      return [...groups].sort((a, b) => b.group.localeCompare(a.group));
+    }
+    return groups;
+  }, [data, groupType]);
   const targetQuizCount = targetGroup?.quizHistoryDetailList.length ?? 0;
   const trimmedTopicInput = topicInput.trim();
   const cardBaseClass =
