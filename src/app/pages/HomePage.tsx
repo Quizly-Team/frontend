@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
-import { Header, Footer, Icon, LoginModal, QuizCreateModal } from '@/components';
+import { Header, Footer, Icon, LoginModal, QuizCreateModal, QuizGenerationLoadingPage } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { useCreateQuiz } from '@/hooks/useCreateQuiz';
 import QuizSolvePage from './QuizSolvePage';
@@ -15,6 +15,7 @@ const HomePage = () => {
   const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
   const [quizData, setQuizData] = useState<QuizDetail[] | null>(null);
+  const [isLoadingComplete, setIsLoadingComplete] = useState(false);
 
   const { mutate: createQuiz, isPending } = useCreateQuiz();
 
@@ -63,6 +64,8 @@ const HomePage = () => {
         hasToken: !!authUtils.getAccessToken(),
       });
 
+      setIsLoadingComplete(false);
+
       createQuiz(
         {
           content,
@@ -79,6 +82,7 @@ const HomePage = () => {
               setFile(null);
             } else {
               alert('문제 생성에 실패했습니다. 다시 시도해주세요.');
+              setIsLoadingComplete(true);
             }
           },
           onError: (error) => {
@@ -86,6 +90,7 @@ const HomePage = () => {
             alert(
               error.message || '문제 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
             );
+            setIsLoadingComplete(true);
           },
         }
       );
@@ -124,14 +129,20 @@ const HomePage = () => {
     console.log('퀴즈 완료! 답변:', answers);
     // TODO: 채점 API 호출
     setQuizData(null); // 홈으로 돌아가기
+    setIsLoadingComplete(false);
   }, []);
 
   const handleQuizExit = useCallback(() => {
     setQuizData(null); // 홈으로 돌아가기
+    setIsLoadingComplete(false);
   }, []);
 
-  // 문제 풀이 페이지 표시
-  if (quizData) {
+  const handleLoadingComplete = useCallback(() => {
+    setIsLoadingComplete(true);
+  }, []);
+
+  // 문제 풀이 페이지 표시 (로딩 완료 후에만)
+  if (quizData && isLoadingComplete) {
     return (
       <QuizSolvePage
         quizDetailList={quizData}
@@ -376,15 +387,11 @@ const HomePage = () => {
         isLoggedIn={isLoggedIn}
       />
 
-      {/* Loading Overlay */}
-      {isPending && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
-          <div className="bg-white rounded-[24px] p-8 flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            <p className="text-body3-medium text-gray-900">문제 생성 중...</p>
-          </div>
-        </div>
-      )}
+      {/* Quiz Generation Loading Page */}
+      <QuizGenerationLoadingPage
+        isLoading={isPending}
+        onComplete={handleLoadingComplete}
+      />
     </div>
   );
 };
