@@ -377,18 +377,19 @@ export const createQuiz = async (
  */
 export const submitAnswerMember = async (
   quizId: number,
-  userAnswer: string
+  userAnswer: string,
+  solveTime: number
 ): Promise<SubmitAnswerResponse> => {
   console.log('[회원] 답안 제출 요청:', {
     url: `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
-    body: { userAnswer },
+    body: { userAnswer, solveTime },
   });
 
   const response = await authenticatedFetch(
     `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
     {
       method: 'POST',
-      body: JSON.stringify({ userAnswer }),
+      body: JSON.stringify({ userAnswer, solveTime }),
     }
   );
 
