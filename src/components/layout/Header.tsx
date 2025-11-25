@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Button } from '@/components';
-import { authUtils } from '@/lib/auth';
+import { useState, useEffect, useCallback } from "react";
+import { Button } from "@/components";
+import { authUtils } from "@/lib/auth";
 
 type HeaderProps = {
   logoUrl?: string;
   onLoginClick?: () => void;
 };
 
-const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
+const Header = ({ logoUrl = "/logo.svg", onLoginClick }: HeaderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
     if (onLoginClick) {
       onLoginClick();
     } else {
-      window.location.href = '/login';
+      window.location.href = "/login";
     }
   }, [onLoginClick]);
 
@@ -33,43 +33,54 @@ const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
       {/* Desktop/Tablet Header */}
       <div className="h-[90px] max-lg:h-[72px] max-md:hidden">
         <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-xl max-lg:px-15">
-          <div className="flex items-center">
+          <a href="/" className="flex items-center shrink-0">
             <img
               src={logoUrl}
               alt="Quizly Logo"
-              className="h-[32px] w-[120px]"
+              className="h-[32px] w-[120px] max-lg:h-[26px] max-lg:w-[98px]"
             />
-          </div>
+          </a>
 
-          <nav className="flex items-center gap-xxl">
-            <a href="/create" className="text-body3-medium text-gray-900">
+          <nav className="flex items-center whitespace-nowrap">
+            <a
+              href="/create"
+              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 max-lg:text-[clamp(14px,1.8vw,16px)]"
+            >
               문제 만들기
             </a>
-            <a href="/mock-exam" className="text-body3-medium text-gray-900">
+            <a
+              href="/mock-exam"
+              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 ml-[50px] max-lg:ml-[clamp(8px,2.5vw,30px)]"
+            >
               실전 모의고사
             </a>
-            <a href="/my-quizzes" className="text-body3-medium text-gray-900">
+            <a
+              href="/my-quizzes"
+              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 ml-[30px] max-lg:ml-[clamp(8px,2.5vw,30px)]"
+            >
               문제 모아보기
             </a>
             <a
               href="/wrong-quizzes"
-              className="text-body3-medium text-gray-900"
+              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 ml-[24px] max-lg:ml-[clamp(8px,2.5vw,30px)]"
             >
               틀린문제 풀어보기
             </a>
             {isAuthenticated ? (
               <Button
                 variant="primary"
-                size="medium"
+                size="small"
                 onClick={handleLogoutClick}
+                className="ml-[17px] max-lg:ml-[clamp(6px,1.2vw,9px)] w-[70px] max-lg:w-[clamp(58px,7vw,70px)] whitespace-nowrap text-tint-regular max-lg:text-[clamp(12px,1.5vw,14px)] shrink-0"
               >
                 로그아웃
               </Button>
             ) : (
               <Button
                 variant="primary"
-                size="medium"
+                size="small"
                 onClick={handleLoginClick}
+                className="ml-[17px] max-lg:ml-[clamp(6px,1.2vw,9px)] w-[70px] max-lg:w-[clamp(58px,7vw,70px)] whitespace-nowrap text-tint-regular max-lg:text-[clamp(12px,1.5vw,14px)] shrink-0"
               >
                 로그인
               </Button>
@@ -79,10 +90,10 @@ const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
       </div>
 
       {/* Mobile Header */}
-      <div className="hidden max-md:flex items-center justify-between h-[50px] px-5 py-s">
-        <div className="flex items-center">
+      <div className="hidden max-md:flex items-center justify-between h-[46px] px-5 py-3">
+        <a href="/" className="flex items-center">
           <img src={logoUrl} alt="Quizly Logo" className="h-[22px] w-[84px]" />
-        </div>
+        </a>
 
         <button
           type="button"
@@ -98,6 +109,6 @@ const Header = ({ logoUrl = '/logo.svg', onLoginClick }: HeaderProps) => {
   );
 };
 
-Header.displayName = 'Header';
+Header.displayName = "Header";
 
 export default Header;
