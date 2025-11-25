@@ -16,7 +16,7 @@ export default {
       spacing: spacing,
       screens: {
         md: '768px',
-        lg: '1024px',
+        lg: '1025px',
       },
       // Grid System - Figma Design System
       container: {
@@ -132,6 +132,11 @@ export default {
           fontSize: '14px',
           lineHeight: '1.4',
           fontWeight: '300',
+        },
+        '.text-caption': {
+          fontSize: '12px',
+          lineHeight: '1.4',
+          fontWeight: '400',
         },
         // Footer Text - Responsive
         '.text-footer': {
