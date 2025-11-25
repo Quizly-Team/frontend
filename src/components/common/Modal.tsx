@@ -28,6 +28,7 @@ type QuizResultModalProps = {
   onClose: () => void;
   correctCount: number;
   totalCount: number;
+  totalSolveTime?: number;
   onViewAll: () => void;
   onCreateMore: () => void;
 };
@@ -37,10 +38,12 @@ export const QuizResultModal = ({
   onClose,
   correctCount,
   totalCount,
+  totalSolveTime = 0,
   onViewAll,
   onCreateMore,
 }: QuizResultModalProps) => {
   const wrongCount = totalCount - correctCount;
+  const formattedSolveTime = totalSolveTime.toFixed(2);
 
   return (
     <MuiModal
@@ -93,6 +96,9 @@ export const QuizResultModal = ({
               <span className="text-gray-600">
                 (정답{correctCount}, 오답{wrongCount})
               </span>
+            </p>
+            <p className="text-sm text-gray-500">
+              총 풀이 시간 {formattedSolveTime}초
             </p>
           </div>
 

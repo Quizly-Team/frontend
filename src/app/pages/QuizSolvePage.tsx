@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header, Footer, Icon, QuizResultModal } from '@/components';
 import ProgressBar from '@/components/common/ProgressBar';
 import type { QuizDetail, UserAnswer } from '@/types/quiz';
@@ -18,6 +19,7 @@ const QuizSolvePage = ({
   onExit,
   onViewAll,
 }: QuizSolvePageProps) => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -25,11 +27,51 @@ const QuizSolvePage = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([]);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const startTimeRef = useRef<number | null>(null);
+  const solveTimeRef = useRef(0);
 
   const currentQuiz = quizDetailList[currentIndex];
   const isLastQuestion = currentIndex === quizDetailList.length - 1;
   const questionNumber = currentIndex + 1;
   const isAuthenticated = authUtils.isAuthenticated();
+
+  useEffect(() => {
+    if (typeof performance === 'undefined') return;
+    startTimeRef.current = performance.now();
+    solveTimeRef.current = 0;
+    setElapsedMs(0);
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (showResult || typeof performance === 'undefined') {
+      return;
+    }
+
+    let animationFrame: number;
+
+    const updateElapsed = () => {
+      if (startTimeRef.current === null) {
+        startTimeRef.current = performance.now();
+      }
+      setElapsedMs(performance.now() - startTimeRef.current);
+      animationFrame = requestAnimationFrame(updateElapsed);
+    };
+
+    animationFrame = requestAnimationFrame(updateElapsed);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [showResult, currentIndex]);
+
+  const calculateSolveTime = useCallback(() => {
+    if (typeof performance === 'undefined' || startTimeRef.current === null) {
+      return 0;
+    }
+    const raw = (performance.now() - startTimeRef.current) / 1000;
+    return Number(raw.toFixed(2));
+  }, []);
 
   // 정답 여부 확인 (TRUE/FALSE를 O/X로 변환하여 비교)
   const normalizeAnswer = (answer: string) => {
@@ -58,6 +100,20 @@ const QuizSolvePage = ({
   const isCorrect =
     normalizeAnswer(selectedAnswer) === normalizeAnswer(currentQuiz.answer);
 
+  const displayedElapsedSeconds = showResult
+    ? solveTimeRef.current
+    : Number((elapsedMs / 1000).toFixed(2));
+  const formattedElapsedSeconds = displayedElapsedSeconds.toFixed(2);
+
+  const totalSolveTime = useMemo(
+    () =>
+      finalAnswers.reduce(
+        (total, answer) => total + (answer.solveTime ?? 0),
+        0
+      ),
+    [finalAnswers]
+  );
+
   const handleSelectAnswer = useCallback(
     (answer: string) => {
       if (!showResult) {
@@ -72,11 +128,18 @@ const QuizSolvePage = ({
 
     // 아직 채점 결과를 보여주지 않았다면 결과 표시
     if (!showResult) {
+      const solveTimeSeconds = calculateSolveTime();
+      solveTimeRef.current = solveTimeSeconds;
+
       // 회원인 경우 API 호출
       if (isAuthenticated) {
         setIsSubmitting(true);
         try {
-          await submitAnswerMember(currentQuiz.quizId, selectedAnswer);
+          await submitAnswerMember(
+            currentQuiz.quizId,
+            selectedAnswer,
+            solveTimeSeconds
+          );
         } catch (error) {
           console.error('답안 제출 실패:', error);
           // 에러가 발생해도 UI 흐름은 유지 (사용자 경험 보호)
@@ -85,6 +148,7 @@ const QuizSolvePage = ({
         }
       }
 
+      setElapsedMs(solveTimeSeconds * 1000);
       setShowResult(true);
       return;
     }
@@ -93,6 +157,7 @@ const QuizSolvePage = ({
     const newAnswer: UserAnswer = {
       quizId: currentQuiz.quizId,
       selectedAnswer,
+      solveTime: solveTimeRef.current,
     };
     const updatedAnswers = [...userAnswers, newAnswer];
     setUserAnswers(updatedAnswers);
@@ -114,6 +179,7 @@ const QuizSolvePage = ({
     showResult,
     isAuthenticated,
     isSubmitting,
+    calculateSolveTime,
   ]);
 
   const handleResultClose = useCallback(() => {
@@ -129,8 +195,9 @@ const QuizSolvePage = ({
       onViewAll(finalAnswers);
       return;
     }
-    onComplete?.(finalAnswers);
-  }, [finalAnswers, onComplete, onViewAll]);
+    // 문제 모아보기 페이지로 이동
+    navigate('/my-quizzes');
+  }, [finalAnswers, onViewAll, navigate]);
 
   const handleCreateMore = useCallback(() => {
     setIsResultModalOpen(false);
@@ -185,34 +252,39 @@ const QuizSolvePage = ({
             }`}
           >
             {/* Question */}
-            <h2
-              className={`text-body1-medium mb-8 ${
-                showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
-              }`}
-            >
-              <span
-                className={
-                  showResult
-                    ? isCorrect
-                      ? 'text-[#2473fc]'
-                      : 'text-error'
-                    : 'text-primary'
-                }
+            <div className="flex items-start justify-between gap-4 mb-8">
+              <h2
+                className={`text-body1-medium ${
+                  showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
+                }`}
               >
-                Q{questionNumber}.{' '}
+                <span
+                  className={
+                    showResult
+                      ? isCorrect
+                        ? 'text-[#2473fc]'
+                        : 'text-error'
+                      : 'text-primary'
+                  }
+                >
+                  Q{questionNumber}.{' '}
+                </span>
+                <span
+                  className={
+                    showResult
+                      ? isCorrect
+                        ? 'text-[#2473fc]'
+                        : 'text-error'
+                      : 'text-gray-900'
+                  }
+                >
+                  {currentQuiz.text}
+                </span>
+              </h2>
+              <span className="text-sm text-gray-500 font-medium whitespace-nowrap">
+                풀이 {formattedElapsedSeconds}초
               </span>
-              <span
-                className={
-                  showResult
-                    ? isCorrect
-                      ? 'text-[#2473fc]'
-                      : 'text-error'
-                    : 'text-gray-900'
-                }
-              >
-                {currentQuiz.text}
-              </span>
-            </h2>
+            </div>
 
             {/* Options */}
             <div className="space-y-4">
@@ -391,34 +463,39 @@ const QuizSolvePage = ({
             }`}
           >
             {/* Question */}
-            <h2
-              className={`text-body3-medium mb-l ${
-                showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
-              }`}
-            >
-              <span
-                className={
-                  showResult
-                    ? isCorrect
-                      ? 'text-[#2473fc]'
-                      : 'text-error'
-                    : 'text-primary'
-                }
+            <div className="flex items-start justify-between gap-3 mb-l">
+              <h2
+                className={`text-body3-medium ${
+                  showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
+                }`}
               >
-                Q{questionNumber}.{' '}
+                <span
+                  className={
+                    showResult
+                      ? isCorrect
+                        ? 'text-[#2473fc]'
+                        : 'text-error'
+                      : 'text-primary'
+                  }
+                >
+                  Q{questionNumber}.{' '}
+                </span>
+                <span
+                  className={
+                    showResult
+                      ? isCorrect
+                        ? 'text-[#2473fc]'
+                        : 'text-error'
+                      : 'text-gray-900'
+                  }
+                >
+                  {currentQuiz.text}
+                </span>
+              </h2>
+              <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
+                풀이 {formattedElapsedSeconds}초
               </span>
-              <span
-                className={
-                  showResult
-                    ? isCorrect
-                      ? 'text-[#2473fc]'
-                      : 'text-error'
-                    : 'text-gray-900'
-                }
-              >
-                {currentQuiz.text}
-              </span>
-            </h2>
+            </div>
 
             {/* Options */}
             <div className="space-y-3">
@@ -594,6 +671,7 @@ const QuizSolvePage = ({
         totalCount={quizDetailList.length}
         onViewAll={handleViewAllClick}
         onCreateMore={handleCreateMore}
+        totalSolveTime={totalSolveTime}
       />
     </div>
   );
