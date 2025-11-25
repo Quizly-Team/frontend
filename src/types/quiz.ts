@@ -18,10 +18,12 @@ export type QuizResponse = {
 export type UserAnswer = {
   quizId: number;
   selectedAnswer: string;
+  solveTime?: number;
 };
 
 export type SubmitAnswerRequest = {
   userAnswer: string;
+  solveTime: number;
 };
 
 export type SubmitAnswerResponse = {
