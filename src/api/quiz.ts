@@ -1,4 +1,5 @@
 import { authUtils } from '@/lib/auth';
+import { OAUTH_ENDPOINTS, type TokenReissueResponse } from './auth';
 import type {
   QuizResponse,
   SubmitAnswerResponse,
@@ -19,28 +20,185 @@ type CreateQuizTextRequest = {
 };
 
 /**
- * 텍스트 입력으로 문제 생성 (회원)
+ * 재발급 중인지 추적하는 플래그 (동시 재발급 방지)
  */
-export const createQuizByTextMember = async (
-  request: CreateQuizTextRequest
-): Promise<QuizResponse> => {
+let isRefreshing = false;
+/**
+ * 재발급 대기 중인 요청들을 저장하는 큐
+ */
+const refreshSubscribers: Array<{
+  resolve: (accessToken: string) => void;
+  reject: (error: Error) => void;
+}> = [];
+
+/**
+ * 재발급 대기 중인 모든 요청에 새 토큰을 전달
+ */
+const onRefreshed = (accessToken: string) => {
+  refreshSubscribers.forEach(({ resolve }) => resolve(accessToken));
+  refreshSubscribers.length = 0;
+};
+
+/**
+ * 재발급 실패 시 모든 대기 중인 요청을 실패 처리
+ */
+const onRefreshFailed = (error: Error) => {
+  refreshSubscribers.forEach(({ reject }) => reject(error));
+  refreshSubscribers.length = 0;
+};
+
+/**
+ * 토큰 재발급 API 호출
+ * Refresh Token은 HttpOnly 쿠키에 저장되어 있어 자동으로 전송됨
+ */
+const reissueTokens = async (): Promise<TokenReissueResponse> => {
+  const response = await fetch(OAUTH_ENDPOINTS.REISSUE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include', // HttpOnly 쿠키를 포함하여 요청
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    // 재발급 실패 시 토큰 삭제 및 로그인 페이지로 리다이렉트
+    authUtils.removeAllTokens();
+    window.location.href = '/';
+
+    throw new Error(
+      errorData.message || `토큰 재발급 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  const data: TokenReissueResponse = await response.json();
+  return data;
+};
+
+/**
+ * 토큰 재발급 처리 (동시 요청 방지)
+ */
+const handleTokenRefresh = async (): Promise<string> => {
+  // 이미 재발급 중이면 대기
+  if (isRefreshing) {
+    return new Promise<string>((resolve, reject) => {
+      refreshSubscribers.push({ resolve, reject });
+    });
+  }
+
+  isRefreshing = true;
+
+  try {
+    const { accessToken } = await reissueTokens();
+
+    // 새 accessToken을 localStorage에 저장
+    authUtils.setAccessToken(accessToken);
+
+    // 대기 중인 모든 요청에 새 토큰 전달
+    onRefreshed(accessToken);
+
+    return accessToken;
+  } catch (error) {
+    // 재발급 실패 시 모든 대기 중인 요청 실패 처리
+    onRefreshFailed(error as Error);
+    throw error;
+  } finally {
+    isRefreshing = false;
+  }
+};
+
+/**
+ * 인증이 필요한 API 요청을 위한 공통 fetch 함수
+ * 401 에러 시 자동으로 토큰 재발급 및 재시도
+ */
+const authenticatedFetch = async (
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> => {
   const token = authUtils.getAccessToken();
   if (!token) {
     throw new Error('로그인이 필요합니다.');
   }
 
+  // 초기 요청 헤더 설정
+  const headers = new Headers(options.headers);
+  headers.set('Authorization', `Bearer ${token}`);
+  
+  // FormData가 아닌 경우 Content-Type 설정
+  if (!(options.body instanceof FormData)) {
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+  }
+
+  // 초기 요청 실행
+  const response = await fetch(url, {
+    ...options,
+    headers,
+    credentials: 'include', // HttpOnly 쿠키를 포함하여 요청
+  });
+
+  // 401 에러인 경우 토큰 재발급 시도
+  if (response.status === 401) {
+    try {
+      // 토큰 재발급
+      const newAccessToken = await handleTokenRefresh();
+
+      // 새 토큰으로 원래 요청 재시도
+      const retryHeaders = new Headers(options.headers);
+      retryHeaders.set('Authorization', `Bearer ${newAccessToken}`);
+      
+      // FormData인 경우 Content-Type 제거 (브라우저가 자동으로 boundary 설정)
+      if (options.body instanceof FormData && retryHeaders.has('Content-Type')) {
+        retryHeaders.delete('Content-Type');
+      } else if (!(options.body instanceof FormData) && !retryHeaders.has('Content-Type')) {
+        retryHeaders.set('Content-Type', 'application/json');
+      }
+
+      const retryResponse = await fetch(url, {
+        ...options,
+        headers: retryHeaders,
+        credentials: 'include',
+      });
+
+      if (!retryResponse.ok) {
+        // 재시도 후에도 401/403이면 로그아웃 처리
+        if (retryResponse.status === 401 || retryResponse.status === 403) {
+          authUtils.removeAllTokens();
+          window.location.href = '/';
+        }
+      }
+
+      return retryResponse;
+    } catch (refreshError) {
+      // 토큰 재발급 실패 시 이미 handleTokenRefresh에서 로그아웃 처리됨
+      throw refreshError;
+    }
+  }
+
+  return response;
+};
+
+/**
+ * 텍스트 입력으로 문제 생성 (회원)
+ */
+export const createQuizByTextMember = async (
+  request: CreateQuizTextRequest
+): Promise<QuizResponse> => {
   console.log('[회원] 문제 생성 요청:', {
     url: `${API_BASE_URL}/quizzes/member`,
     body: request,
-    hasToken: !!token,
   });
 
-  const response = await fetch(`${API_BASE_URL}/quizzes/member`, {
+  const response = await authenticatedFetch(`${API_BASE_URL}/quizzes/member`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(request),
   });
 
@@ -116,21 +274,13 @@ export const createQuizByFileMember = async (
   file: File,
   type: QuizType
 ): Promise<QuizResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
-
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(
+  const response = await authenticatedFetch(
     `${API_BASE_URL}/quizzes/member/ocr?type=${type}`,
     {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       body: formData,
     }
   );
@@ -229,25 +379,18 @@ export const submitAnswerMember = async (
   quizId: number,
   userAnswer: string
 ): Promise<SubmitAnswerResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
-
   console.log('[회원] 답안 제출 요청:', {
     url: `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
     body: { userAnswer },
-    hasToken: !!token,
   });
 
-  const response = await fetch(`${API_BASE_URL}/quizzes/${quizId}/answer/member`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ userAnswer }),
-  });
+  const response = await authenticatedFetch(
+    `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ userAnswer }),
+    }
+  );
 
   console.log('[회원] 답안 제출 응답 상태:', response.status, response.statusText);
 
@@ -277,23 +420,16 @@ export const submitAnswerMember = async (
  * @param groupType - 그룹화 기준 (예: 'date')
  */
 export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGroupResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
-
   console.log('[회원] 문제 모아보기 조회 요청:', {
     url: `${API_BASE_URL}/quizzes?groupType=${groupType}`,
-    hasToken: !!token,
   });
 
-  const response = await fetch(`${API_BASE_URL}/quizzes?groupType=${groupType}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await authenticatedFetch(
+    `${API_BASE_URL}/quizzes?groupType=${groupType}`,
+    {
+      method: 'GET',
+    }
+  );
 
   console.log('[회원] 문제 모아보기 조회 응답 상태:', response.status, response.statusText);
 
@@ -325,24 +461,17 @@ export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGro
 export const getWrongQuizzes = async (
   groupType: 'date' | 'topic' = 'date'
 ): Promise<WrongQuizGroupResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
-
   console.log('[회원] 틀린 문제 조회 요청:', {
     url: `${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`,
-    hasToken: !!token,
     groupType,
   });
 
-  const response = await fetch(`${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await authenticatedFetch(
+    `${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`,
+    {
+      method: 'GET',
+    }
+  );
 
   console.log('[회원] 틀린 문제 조회 응답 상태:', response.status, response.statusText);
 
@@ -357,10 +486,6 @@ export const getWrongQuizzes = async (
       errorData = { message: errorText };
     }
 
-    if (response.status === 401) {
-      authUtils.logout();
-    }
-
     throw new Error(
       errorData.message ||
         `틀린 문제 조회 실패: ${response.status} ${response.statusText}`
@@ -373,23 +498,13 @@ export const getWrongQuizzes = async (
 export const updateQuizzesTopic = async (
   request: UpdateQuizzesTopicRequest
 ): Promise<UpdateQuizzesTopicResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
-
   console.log('[회원] 틀린 문제 주제 수정 요청:', {
     url: `${API_BASE_URL}/quizzes/topic`,
-    hasToken: !!token,
     quizCount: request.quizIdList.length,
   });
 
-  const response = await fetch(`${API_BASE_URL}/quizzes/topic`, {
+  const response = await authenticatedFetch(`${API_BASE_URL}/quizzes/topic`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(request),
   });
 
