@@ -1,4 +1,5 @@
 import { Modal as MuiModal } from '@mui/material';
+import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 type ModalProps = {
@@ -43,7 +44,19 @@ export const QuizResultModal = ({
   onCreateMore,
 }: QuizResultModalProps) => {
   const wrongCount = totalCount - correctCount;
-  const formattedSolveTime = totalSolveTime.toFixed(2);
+  
+  // 초를 분:초 형식으로 변환 (예: 05:20)
+  const formatTimeToMinutesSeconds = useCallback((seconds: number): string => {
+    const totalSeconds = Math.floor(seconds);
+    const minutes = Math.floor(totalSeconds / 60);
+    const remainingSeconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+  }, []);
+  
+  const formattedSolveTime = useMemo(
+    () => formatTimeToMinutesSeconds(totalSolveTime),
+    [totalSolveTime, formatTimeToMinutesSeconds]
+  );
 
   return (
     <MuiModal
@@ -98,7 +111,7 @@ export const QuizResultModal = ({
               </span>
             </p>
             <p className="text-sm text-gray-500">
-              총 풀이 시간 {formattedSolveTime}초
+              총 풀이 시간 {formattedSolveTime}
             </p>
           </div>
 
