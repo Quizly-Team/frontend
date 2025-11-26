@@ -1,7 +1,8 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import { Header, Footer, Icon, LoginModal, QuizCreateModal, QuizGenerationLoadingPage } from '@/components';
 import { authUtils } from '@/lib/auth';
+import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils';
 import { useCreateQuiz } from '@/hooks/useCreateQuiz';
 import QuizSolvePage from './QuizSolvePage';
 import type { QuizDetail, UserAnswer } from '@/types/quiz';
@@ -16,15 +17,46 @@ const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
   const [quizData, setQuizData] = useState<QuizDetail[] | null>(null);
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+  const [showPdfTooltip, setShowPdfTooltip] = useState(false);
+  const webTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const mobileTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const { mutate: createQuiz, isPending } = useCreateQuiz();
 
-  const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setSearchText('');
+    if (!uploadedFile) return;
+
+    // 지원하는 파일 형식 체크
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    const typeValidation = validateFileType(uploadedFile, allowedTypes);
+
+    if (!typeValidation.isValid) {
+      alert(typeValidation.error);
+      e.target.value = '';
+      return;
     }
+
+    // PDF 파일인 경우 페이지 수 체크
+    if (uploadedFile.type === 'application/pdf') {
+      const pdfValidation = await validatePdfPageCount(uploadedFile, 10);
+
+      if (!pdfValidation.isValid) {
+        alert(pdfValidation.error);
+        e.target.value = '';
+        return;
+      }
+
+      console.log('PDF 페이지 수:', pdfValidation.pageCount);
+    }
+
+    // JPG/PNG 파일인 경우 안내 메시지 (이미 한 장만 선택 가능)
+    if (uploadedFile.type.startsWith('image/')) {
+      console.log('이미지 파일 업로드:', uploadedFile.name);
+    }
+
+    setFile(uploadedFile);
+    setSearchText('');
   }, []);
 
   const handleClearSearch = useCallback(() => {
@@ -98,11 +130,54 @@ const HomePage = () => {
     [searchText, file, isLoggedIn, createQuiz]
   );
 
-  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && (searchText || file)) {
+  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey && (searchText || file)) {
+      e.preventDefault();
       handleOpenQuizCreateModal();
     }
   }, [searchText, file, handleOpenQuizCreateModal]);
+
+  // Textarea 자동 높이 조절 (웹/태블릿: 최대 2줄)
+  const adjustWebTextareaHeight = useCallback(() => {
+    const textarea = webTextareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    const lineHeight = 28; // body2-regular의 line-height (20px * 1.4)
+    const maxHeight = lineHeight * 2;
+
+    if (textarea.scrollHeight > maxHeight) {
+      textarea.style.height = `${maxHeight}px`;
+      textarea.style.overflowY = 'auto';
+    } else {
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    }
+  }, []);
+
+  // Textarea 자동 높이 조절 (모바일: 최대 6줄)
+  const adjustMobileTextareaHeight = useCallback(() => {
+    const textarea = mobileTextareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    const lineHeight = 22.4; // body3-regular의 line-height (16px * 1.4)
+    const maxHeight = lineHeight * 6;
+
+    if (textarea.scrollHeight > maxHeight) {
+      textarea.style.height = `${maxHeight}px`;
+      textarea.style.overflowY = 'auto';
+    } else {
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    }
+  }, []);
+
+  // searchText 변경 시 textarea 높이 조절
+  useEffect(() => {
+    adjustWebTextareaHeight();
+    adjustMobileTextareaHeight();
+  }, [searchText, adjustWebTextareaHeight, adjustMobileTextareaHeight]);
 
   // 로그인 상태 체크 (컴포넌트 마운트 시 및 storage 이벤트 감지)
   useEffect(() => {
@@ -204,34 +279,51 @@ const HomePage = () => {
               <div className="flex items-center gap-3">
                 <Icon name="search" size={32} className="text-gray-600" />
 
-                <input
-                  type="text"
+                <textarea
+                  ref={webTextareaRef}
                   value={file ? file.name : searchText}
                   onChange={(e) => setSearchText(e.target.value)}
-                  onKeyDown={handleKeyDown}
                   placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
                   disabled={!!file}
-                  className="flex-1 text-body2-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed"
+                  rows={1}
+                  className="flex-1 text-body2-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed resize-none overflow-hidden"
                 />
 
                 {searchText || file ? (
                   <button
                     onClick={handleClearSearch}
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-center shrink-0"
                     aria-label="입력 내용 지우기"
                   >
                     <Icon name="delete" size={32} className="text-gray-600" />
                   </button>
                 ) : (
-                  <label className="cursor-pointer flex items-center justify-center">
-                    <input
-                      type="file"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      accept=".txt,.pdf,.doc,.docx"
-                    />
-                    <Icon name="upload" size={32} className="text-gray-600" />
-                  </label>
+                  <div className="relative">
+                    <label
+                      className="cursor-pointer flex items-center justify-center"
+                      onMouseEnter={() => setShowPdfTooltip(true)}
+                      onMouseLeave={() => setShowPdfTooltip(false)}
+                    >
+                      <input
+                        type="file"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                      />
+                      <Icon name="upload" size={32} className="text-gray-600" />
+                    </label>
+                    {showPdfTooltip && (
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-[9px] z-10">
+                        {/* 삼각형 화살표 */}
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[7.8px] border-l-transparent border-r-[7.8px] border-r-transparent border-b-[8.5px] border-b-[#333333]" />
+                        {/* 툴팁 내용 */}
+                        <div className="bg-[#333333] text-white px-3 py-2 rounded-[4px] text-center text-[14px] font-normal leading-[1.4] min-w-max">
+                          <div>PDF는 10장까지</div>
+                          <div>가능합니다.</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -323,49 +415,66 @@ const HomePage = () => {
       </main>
 
       {/* Fixed Bottom Input - Mobile Only */}
-      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] h-[140px] z-50">
-        <div className="pt-6 px-5 flex items-center justify-between gap-3">
-          <input
-            type="text"
-            value={file ? file.name : searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            disabled={!!file}
-            placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
-            className="flex-1 text-body3-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed"
-          />
+      <div
+        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-50"
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+      >
+        <div className="pt-6 px-5 pb-6 flex flex-col">
+          {file ? (
+            <div className="flex items-start gap-1 min-h-[67.2px]">
+              <span className="text-body3-regular text-gray-600">
+                {file.name}
+              </span>
+              <button
+                onClick={handleClearSearch}
+                className="flex items-center justify-center shrink-0 -mt-[1px]"
+                aria-label="파일 삭제"
+              >
+                <Icon name="delete" size={20} className="text-gray-600" />
+              </button>
+            </div>
+          ) : (
+            <textarea
+              ref={mobileTextareaRef}
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
+              rows={3}
+              className="w-full text-body3-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent resize-none overflow-y-hidden min-h-[67.2px]"
+            />
+          )}
 
-          <div className="flex items-center gap-3 shrink-0">
-            {searchText || file ? (
-              <>
-                <button
-                  onClick={handleClearSearch}
-                  className="flex items-center justify-center"
-                  aria-label="입력 내용 지우기"
-                >
-                  <Icon name="delete" size={24} className="text-gray-600" />
-                </button>
-                <button
-                  onClick={handleOpenQuizCreateModal}
-                  className="bg-primary text-white text-tint-regular px-4 py-2 rounded-[6px] hover:bg-primary/90 transition-colors whitespace-nowrap"
-                  aria-label="보내기"
-                >
-                  보내기
-                </button>
-              </>
+          <div className="flex items-center justify-end gap-3 mt-2">
+            {file ? (
+              <button
+                onClick={handleOpenQuizCreateModal}
+                className="flex items-center justify-center"
+                aria-label="보내기"
+              >
+                <Icon name="send_black" size={24} />
+              </button>
+            ) : searchText ? (
+              <button
+                onClick={handleOpenQuizCreateModal}
+                className="flex items-center justify-center"
+                aria-label="보내기"
+              >
+                <Icon name="send_black" size={24} />
+              </button>
             ) : (
               <label className="cursor-pointer flex items-center justify-center">
                 <input
                   type="file"
                   onChange={handleFileUpload}
                   className="hidden"
-                  accept=".txt,.pdf,.doc,.docx"
+                  accept=".jpg,.jpeg,.png,.pdf"
                 />
                 <Icon name="upload" size={24} className="text-gray-600" />
               </label>
             )}
           </div>
         </div>
-
       </div>
 
       {/* Footer - Web/Tablet Only */}
