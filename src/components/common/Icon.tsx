@@ -14,6 +14,7 @@ type IconName =
   | "memo"
   | "menu"
   | "arrow"
+  | "send_black"
   | "correct"
   | "error"
   | "correct_black"
@@ -246,6 +247,15 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
         />
       </svg>
     ),
+    send_black: (
+      <img
+        src="/icon/send_black.svg"
+        alt="correct"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
     correct: (
       <img
         src="/icon/correct.svg"
@@ -371,7 +381,7 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
         className={className}
       />
     ),
-      check_white: (
+    check_white: (
       <img
         src="/icon/check_white.svg"
         alt="check_green"
