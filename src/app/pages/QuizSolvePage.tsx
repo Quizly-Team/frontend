@@ -100,10 +100,10 @@ const QuizSolvePage = ({
   const isCorrect =
     normalizeAnswer(selectedAnswer) === normalizeAnswer(currentQuiz.answer);
 
-  const displayedElapsedSeconds = showResult
-    ? solveTimeRef.current
-    : Number((elapsedMs / 1000).toFixed(2));
-  const formattedElapsedSeconds = displayedElapsedSeconds.toFixed(2);
+  // const displayedElapsedSeconds = showResult
+  //   ? solveTimeRef.current
+  //   : Number((elapsedMs / 1000).toFixed(2));
+  // const formattedElapsedSeconds = displayedElapsedSeconds.toFixed(2);
 
   const totalSolveTime = useMemo(
     () =>
@@ -141,8 +141,10 @@ const QuizSolvePage = ({
             solveTimeSeconds
           );
         } catch (error) {
-          console.error('답안 제출 실패:', error);
           // 에러가 발생해도 UI 흐름은 유지 (사용자 경험 보호)
+          if (import.meta.env.DEV) {
+            console.error('답안 제출 실패:', error);
+          }
         } finally {
           setIsSubmitting(false);
         }
@@ -246,7 +248,7 @@ const QuizSolvePage = ({
             className={`bg-white border rounded-[16px] p-10 mb-[30px] ${
               showResult
                 ? isCorrect
-                  ? 'border-[#2473fc]'
+                  ? 'border-info'
                   : 'border-error'
                 : 'border-gray-300'
             }`}
@@ -255,14 +257,14 @@ const QuizSolvePage = ({
             <div className="flex items-start justify-between gap-4 mb-8">
               <h2
                 className={`text-body1-medium ${
-                  showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
+                  showResult ? (isCorrect ? 'text-info' : 'text-error') : ''
                 }`}
               >
                 <span
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-[#2473fc]'
+                        ? 'text-info'
                         : 'text-error'
                       : 'text-primary'
                   }
@@ -273,7 +275,7 @@ const QuizSolvePage = ({
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-[#2473fc]'
+                        ? 'text-info'
                         : 'text-error'
                       : 'text-gray-900'
                   }
@@ -281,9 +283,9 @@ const QuizSolvePage = ({
                   {currentQuiz.text}
                 </span>
               </h2>
-              <span className="text-sm text-gray-500 font-medium whitespace-nowrap">
+              {/* <span className="text-sm text-gray-500 font-medium whitespace-nowrap">
                 풀이 {formattedElapsedSeconds}초
-              </span>
+              </span> */}
             </div>
 
             {/* Options */}
@@ -299,7 +301,7 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'O'
                             ? normalizeAnswer(currentQuiz.answer) === 'O'
-                              ? 'bg-white border-[#2473fc]'
+                              ? 'bg-white border-info'
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'O'
@@ -327,7 +329,7 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'X'
                             ? normalizeAnswer(currentQuiz.answer) === 'X'
-                              ? 'bg-white border-[#2473fc]'
+                              ? 'bg-white border-info'
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'X'
@@ -356,7 +358,7 @@ const QuizSolvePage = ({
 
                   return (
                     <button
-                      key={index}
+                      key={`${currentQuiz.quizId}-option-${index}`}
                       onClick={() => handleSelectAnswer(option)}
                       className={`
                         w-full flex items-center gap-3 px-3 py-4 rounded-[12px] border text-left transition-colors
@@ -364,7 +366,7 @@ const QuizSolvePage = ({
                           showResult
                             ? isSelected
                               ? isCorrectAnswer
-                                ? 'bg-white border-[#2473fc]'
+                                ? 'bg-white border-info'
                                 : 'bg-white border-error'
                               : 'bg-white border-gray-300'
                             : isSelected
@@ -457,7 +459,7 @@ const QuizSolvePage = ({
             className={`bg-white border rounded-[16px] p-l mb-6 ${
               showResult
                 ? isCorrect
-                  ? 'border-[#2473fc]'
+                  ? 'border-info'
                   : 'border-error'
                 : 'border-gray-300'
             }`}
@@ -466,14 +468,14 @@ const QuizSolvePage = ({
             <div className="flex items-start justify-between gap-3 mb-l">
               <h2
                 className={`text-body3-medium ${
-                  showResult ? (isCorrect ? 'text-[#2473fc]' : 'text-error') : ''
+                  showResult ? (isCorrect ? 'text-info' : 'text-error') : ''
                 }`}
               >
                 <span
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-[#2473fc]'
+                        ? 'text-info'
                         : 'text-error'
                       : 'text-primary'
                   }
@@ -484,7 +486,7 @@ const QuizSolvePage = ({
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-[#2473fc]'
+                        ? 'text-info'
                         : 'text-error'
                       : 'text-gray-900'
                   }
@@ -492,9 +494,9 @@ const QuizSolvePage = ({
                   {currentQuiz.text}
                 </span>
               </h2>
-              <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
+              {/* <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
                 풀이 {formattedElapsedSeconds}초
-              </span>
+              </span> */}
             </div>
 
             {/* Options */}
@@ -510,7 +512,7 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'O'
                             ? normalizeAnswer(currentQuiz.answer) === 'O'
-                              ? 'bg-white border-[#2473fc]'
+                              ? 'bg-white border-info'
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'O'
@@ -538,7 +540,7 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'X'
                             ? normalizeAnswer(currentQuiz.answer) === 'X'
-                              ? 'bg-white border-[#2473fc]'
+                              ? 'bg-white border-info'
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'X'
@@ -567,7 +569,7 @@ const QuizSolvePage = ({
 
                   return (
                     <button
-                      key={index}
+                      key={`${currentQuiz.quizId}-option-${index}`}
                       onClick={() => handleSelectAnswer(option)}
                       className={`
                         w-full flex items-center gap-2 px-3 py-3 rounded-[8px] border text-left transition-colors
@@ -575,7 +577,7 @@ const QuizSolvePage = ({
                           showResult
                             ? isSelected
                               ? isCorrectAnswer
-                                ? 'bg-white border-[#2473fc]'
+                                ? 'bg-white border-info'
                                 : 'bg-white border-error'
                               : 'bg-white border-gray-300'
                             : isSelected
