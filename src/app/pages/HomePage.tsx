@@ -1,6 +1,14 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
-import { Header, Footer, Icon, LoginModal, QuizCreateModal, QuizGenerationLoadingPage } from '@/components';
+import {
+  Header,
+  Footer,
+  Icon,
+  LoginModal,
+  QuizCreateModal,
+  QuizGenerationLoadingPage,
+  Tooltip,
+} from '@/components';
 import { authUtils } from '@/lib/auth';
 import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils';
 import { useCreateQuiz } from '@/hooks/useCreateQuiz';
@@ -313,15 +321,10 @@ const HomePage = () => {
                       <Icon name="upload" size={32} className="text-gray-600" />
                     </label>
                     {showPdfTooltip && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 mt-[9px] z-10">
-                        {/* 삼각형 화살표 */}
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[7.8px] border-l-transparent border-r-[7.8px] border-r-transparent border-b-[8.5px] border-b-[#333333]" />
-                        {/* 툴팁 내용 */}
-                        <div className="bg-[#333333] text-white px-3 py-2 rounded-[4px] text-center text-[14px] font-normal leading-[1.4] min-w-max">
-                          <div>PDF는 10장까지</div>
-                          <div>가능합니다.</div>
-                        </div>
-                      </div>
+                      <Tooltip>
+                        <div>PDF는 10장까지</div>
+                        <div>가능합니다.</div>
+                      </Tooltip>
                     )}
                   </div>
                 )}
