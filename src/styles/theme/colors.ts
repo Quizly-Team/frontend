@@ -1,6 +1,8 @@
 export const colors = {
   // Primary Colors (Green) - From Figma
   primary: '#30a10e',
+  'primary-light': '#f6fbf4',
+  'primary-dark': '#258a0b',
 
   // Secondary Colors (Light Green) - From Figma
   secondary: '#f6fbf4',

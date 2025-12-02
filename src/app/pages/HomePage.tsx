@@ -8,12 +8,15 @@ import {
   QuizCreateModal,
   QuizGenerationLoadingPage,
   Tooltip,
+  MockExamSettingModal,
 } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils';
 import { useCreateQuiz } from '@/hooks/useCreateQuiz';
+import { useCreateMockExam, useCreateMockExamByFile } from '@/hooks/useMockExam';
+import { useNavigate } from 'react-router-dom';
 import QuizSolvePage from './QuizSolvePage';
-import type { QuizDetail, UserAnswer } from '@/types/quiz';
+import type { QuizDetail, UserAnswer, MockExamSettingData } from '@/types/quiz';
 
 type QuizType = 'multiple' | 'ox';
 
@@ -22,6 +25,7 @@ const HomePage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
+  const [isMockExamModalOpen, setIsMockExamModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
   const [quizData, setQuizData] = useState<QuizDetail[] | null>(null);
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
@@ -29,7 +33,10 @@ const HomePage = () => {
   const webTextareaRef = useRef<HTMLTextAreaElement>(null);
   const mobileTextareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const navigate = useNavigate();
   const { mutate: createQuiz, isPending } = useCreateQuiz();
+  const { mutate: createMockExam, isPending: isMockExamPending } = useCreateMockExam();
+  const { mutate: createMockExamByFile, isPending: isMockExamFilePending } = useCreateMockExamByFile();
 
   const handleFileUpload = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
@@ -150,17 +157,15 @@ const HomePage = () => {
     const textarea = webTextareaRef.current;
     if (!textarea) return;
 
+    // Reset height to recalculate
     textarea.style.height = 'auto';
-    const lineHeight = 28; // body2-regular의 line-height (20px * 1.4)
-    const maxHeight = lineHeight * 2;
 
-    if (textarea.scrollHeight > maxHeight) {
-      textarea.style.height = `${maxHeight}px`;
-      textarea.style.overflowY = 'auto';
-    } else {
-      textarea.style.height = `${textarea.scrollHeight}px`;
-      textarea.style.overflowY = 'hidden';
-    }
+    const lineHeight = 28; // body2-regular의 line-height (20px * 1.4)
+    const maxHeight = lineHeight * 2; // 2줄 최대
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+
+    textarea.style.height = `${newHeight}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
   }, []);
 
   // Textarea 자동 높이 조절 (모바일: 최대 6줄)
@@ -168,17 +173,15 @@ const HomePage = () => {
     const textarea = mobileTextareaRef.current;
     if (!textarea) return;
 
+    // Reset height to recalculate
     textarea.style.height = 'auto';
-    const lineHeight = 22.4; // body3-regular의 line-height (16px * 1.4)
-    const maxHeight = lineHeight * 6;
 
-    if (textarea.scrollHeight > maxHeight) {
-      textarea.style.height = `${maxHeight}px`;
-      textarea.style.overflowY = 'auto';
-    } else {
-      textarea.style.height = `${textarea.scrollHeight}px`;
-      textarea.style.overflowY = 'hidden';
-    }
+    const lineHeight = 22.4; // body3-regular의 line-height (16px * 1.4)
+    const maxHeight = lineHeight * 6; // 6줄 최대
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+
+    textarea.style.height = `${newHeight}px`;
+    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
   }, []);
 
   // searchText 변경 시 textarea 높이 조절
@@ -224,6 +227,61 @@ const HomePage = () => {
     setIsLoadingComplete(true);
   }, []);
 
+  const handleOpenMockExamModal = useCallback(() => {
+    if (!isLoggedIn) {
+      alert('로그인이 필요합니다.');
+      handleOpenLoginModal();
+      return;
+    }
+    setIsMockExamModalOpen(true);
+  }, [isLoggedIn]);
+
+  const handleCloseMockExamModal = useCallback(() => {
+    setIsMockExamModalOpen(false);
+  }, []);
+
+  const handleMockExamSubmit = useCallback(
+    (data: MockExamSettingData) => {
+      const onSuccess = (response: any) => {
+        console.log('모의고사 생성 성공:', response);
+        setIsMockExamModalOpen(false);
+        navigate('/mock-exam', {
+          state: {
+            mockExamDetailList: response.mockExamDetailList,
+          },
+        });
+      };
+
+      const onError = (error: Error) => {
+        console.error('모의고사 생성 오류:', error);
+        alert(
+          error.message || '모의고사 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
+        );
+      };
+
+      // 파일이 있는 경우 OCR API 호출
+      if (data.file) {
+        createMockExamByFile(
+          {
+            file: data.file,
+            mockExamTypeList: data.mockExamTypeList,
+          },
+          { onSuccess, onError }
+        );
+      } else if (data.plainText) {
+        // 텍스트만 있는 경우 기존 API 호출
+        createMockExam(
+          {
+            plainText: data.plainText,
+            mockExamTypeList: data.mockExamTypeList,
+          },
+          { onSuccess, onError }
+        );
+      }
+    },
+    [createMockExam, createMockExamByFile, navigate]
+  );
+
   // 문제 풀이 페이지 표시 (로딩 완료 후에만)
   if (quizData && isLoadingComplete) {
     return (
@@ -238,7 +296,11 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
       {/* Header */}
-      <Header logoUrl="/logo.svg" onLoginClick={handleOpenLoginModal} />
+      <Header
+        logoUrl="/logo.svg"
+        onLoginClick={handleOpenLoginModal}
+        onMockExamClick={handleOpenMockExamModal}
+      />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
@@ -399,11 +461,11 @@ const HomePage = () => {
             href="/my-quizzes"
             className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
           >
-            <Icon name="book" size={24} />
-            <span className="text-tint-regular text-gray-900">
-              문제 모아보기
-            </span>
-          </a>
+              <Icon name="book" size={24} />
+              <span className="text-tint-regular text-gray-900">
+                문제 모아보기
+              </span>
+            </a>
 
           <a
             href="/wrong-quizzes"
@@ -499,9 +561,16 @@ const HomePage = () => {
         isLoggedIn={isLoggedIn}
       />
 
+      {/* Mock Exam Setting Modal */}
+      <MockExamSettingModal
+        isOpen={isMockExamModalOpen}
+        onClose={handleCloseMockExamModal}
+        onSubmit={handleMockExamSubmit}
+      />
+
       {/* Quiz Generation Loading Page */}
       <QuizGenerationLoadingPage
-        isLoading={isPending}
+        isLoading={isPending || isMockExamPending || isMockExamFilePending}
         onComplete={handleLoadingComplete}
       />
     </div>

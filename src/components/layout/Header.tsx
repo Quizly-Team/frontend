@@ -5,9 +5,10 @@ import { authUtils } from "@/lib/auth";
 type HeaderProps = {
   logoUrl?: string;
   onLoginClick?: () => void;
+  onMockExamClick?: () => void;
 };
 
-const Header = ({ logoUrl = "/logo.svg", onLoginClick }: HeaderProps) => {
+const Header = ({ logoUrl = "/logo.svg", onLoginClick, onMockExamClick }: HeaderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -28,6 +29,14 @@ const Header = ({ logoUrl = "/logo.svg", onLoginClick }: HeaderProps) => {
     window.location.reload();
   }, []);
 
+  const handleMockExamClick = useCallback(() => {
+    if (onMockExamClick) {
+      onMockExamClick();
+    } else {
+      window.location.href = "/";
+    }
+  }, [onMockExamClick]);
+
   return (
     <header className="w-full bg-bg-home">
       {/* Desktop/Tablet Header */}
@@ -43,26 +52,26 @@ const Header = ({ logoUrl = "/logo.svg", onLoginClick }: HeaderProps) => {
 
           <nav className="flex items-center whitespace-nowrap">
             <a
-              href="/create"
-              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 max-lg:text-[clamp(14px,1.8vw,16px)]"
+              href="/"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 max-lg:text-sm"
             >
               문제 만들기
             </a>
-            <a
-              href="/mock-exam"
-              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 ml-[50px] max-lg:ml-[clamp(8px,2.5vw,30px)]"
+            <button
+              onClick={handleMockExamClick}
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-12 max-lg:ml-2 hover:text-primary transition-colors"
             >
               실전 모의고사
-            </a>
+            </button>
             <a
               href="/my-quizzes"
-              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 ml-[30px] max-lg:ml-[clamp(8px,2.5vw,30px)]"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-8 max-lg:ml-2"
             >
               문제 모아보기
             </a>
             <a
               href="/wrong-quizzes"
-              className="text-gray-900 px-3 py-2 text-[16px] leading-[1.4] font-medium shrink-0 ml-[24px] max-lg:ml-[clamp(8px,2.5vw,30px)]"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-6 max-lg:ml-2"
             >
               틀린문제 풀어보기
             </a>
@@ -71,7 +80,7 @@ const Header = ({ logoUrl = "/logo.svg", onLoginClick }: HeaderProps) => {
                 variant="primary"
                 size="small"
                 onClick={handleLogoutClick}
-                className="ml-[17px] max-lg:ml-[clamp(6px,1.2vw,9px)] w-[70px] max-lg:w-[clamp(58px,7vw,70px)] whitespace-nowrap text-tint-regular max-lg:text-[clamp(12px,1.5vw,14px)] shrink-0"
+                className="ml-4 max-lg:ml-2 w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
               >
                 로그아웃
               </Button>
@@ -80,7 +89,7 @@ const Header = ({ logoUrl = "/logo.svg", onLoginClick }: HeaderProps) => {
                 variant="primary"
                 size="small"
                 onClick={handleLoginClick}
-                className="ml-[17px] max-lg:ml-[clamp(6px,1.2vw,9px)] w-[70px] max-lg:w-[clamp(58px,7vw,70px)] whitespace-nowrap text-tint-regular max-lg:text-[clamp(12px,1.5vw,14px)] shrink-0"
+                className="ml-4 max-lg:ml-2 w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
               >
                 로그인
               </Button>

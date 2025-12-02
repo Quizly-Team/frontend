@@ -5,6 +5,7 @@ import QuizListPage from '@/app/pages/QuizListPage';
 import QuizDetailPage from '@/app/pages/QuizDetailPage';
 import WrongQuizPage from '@/app/pages/WrongQuizPage';
 import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage';
+import MockExamPage from '@/app/pages/MockExamPage';
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
   {
     path: '/wrong-quizzes/solve',
     element: <WrongQuizSolvePage />,
+  },
+  {
+    path: '/mock-exam',
+    element: <MockExamPage />,
   },
   {
     path: '/login/oauth2/code/:provider',
