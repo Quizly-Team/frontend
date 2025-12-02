@@ -1,6 +1,6 @@
 import { Modal as MuiModal } from '@mui/material';
-import { useCallback } from 'react';
-import { Icon } from '@/components';
+import { useCallback, useState } from 'react';
+import { Icon, Tooltip } from '@/components';
 
 type QuizType = 'multiple' | 'ox';
 
@@ -17,6 +17,8 @@ const QuizCreateModal = ({
   onSelectQuizType,
   isLoggedIn = false,
 }: QuizCreateModalProps) => {
+  const [showMultipleTooltip, setShowMultipleTooltip] = useState(false);
+
   const handleMultipleChoice = useCallback(() => {
     if (!isLoggedIn) return;
     onSelectQuizType('multiple');
@@ -38,36 +40,50 @@ const QuizCreateModal = ({
         {/* Web/Tablet 레이아웃 */}
         <div className="max-md:hidden flex gap-3 justify-center">
           {/* 객관식 문제 카드 */}
-          <button
-            onClick={handleMultipleChoice}
-            disabled={!isLoggedIn}
-            className="bg-white rounded-[24px] flex-1 max-w-[420px] h-[306px] flex flex-col items-center justify-center gap-6 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
+          <div
+            className="relative"
+            onMouseEnter={() => !isLoggedIn && setShowMultipleTooltip(true)}
+            onMouseLeave={() => setShowMultipleTooltip(false)}
           >
-            {/* 비회원 비활성화 오버레이 */}
-            {!isLoggedIn && (
-              <div className="absolute inset-0 bg-black/30 rounded-[24px] z-10" />
+            <button
+              onClick={handleMultipleChoice}
+              disabled={!isLoggedIn}
+              className="bg-white rounded-[24px] w-[420px] h-[306px] flex flex-col items-center justify-center gap-6 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
+            >
+              {/* 비회원 비활성화 오버레이 */}
+              {!isLoggedIn && (
+                <div className="absolute inset-0 bg-black/30 rounded-[24px] z-10" />
+              )}
+
+              {/* 아이콘 */}
+              <div className="relative">
+                <Icon name="light" size={60} />
+              </div>
+
+              {/* 텍스트 */}
+              <div className="flex flex-col items-center gap-1">
+                <h3 className="text-header3-bold text-gray-900">
+                  객관식 문제 만들기
+                </h3>
+                <p className="text-body3-regular text-gray-600 text-center whitespace-pre-wrap">
+                  {'사지선다형의 객관식 문제를\n만들어 드립니다.'}
+                </p>
+              </div>
+            </button>
+
+            {/* 툴팁 */}
+            {showMultipleTooltip && !isLoggedIn && (
+              <Tooltip position="bottom">
+                <div>객관식 문제 만들기는</div>
+                <div>회원일 경우만 가능합니다.</div>
+              </Tooltip>
             )}
-
-            {/* 아이콘 */}
-            <div className="relative">
-              <Icon name="light" size={60} />
-            </div>
-
-            {/* 텍스트 */}
-            <div className="flex flex-col items-center gap-1">
-              <h3 className="text-header3-bold text-gray-900">
-                객관식 문제 만들기
-              </h3>
-              <p className="text-body3-regular text-gray-600 text-center whitespace-pre-wrap">
-                {'사지선다형의 객관식 문제를\n만들어 드립니다.'}
-              </p>
-            </div>
-          </button>
+          </div>
 
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-white rounded-[24px] flex-1 max-w-[420px] h-[306px] flex flex-col items-center justify-center gap-6 hover:bg-gray-50 transition-colors"
+            className="bg-white rounded-[24px] w-[420px] h-[306px] flex flex-col items-center justify-center gap-6 hover:bg-gray-50 transition-colors"
           >
             {/* 아이콘 */}
             <div className="flex gap-2">
