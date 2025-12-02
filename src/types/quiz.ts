@@ -87,3 +87,29 @@ export type UpdateQuizzesTopicResponse = {
   success: boolean;
   errorCode?: string | null;
 };
+
+// 모의고사 API 타입
+export type MockExamType =
+  | 'FIND_CORRECT'
+  | 'FIND_INCORRECT'
+  | 'FIND_MATCH'
+  | 'ESSAY'
+  | 'SHORT_ANSWER'
+  | 'TRUE_FALSE';
+
+export type MockExamDetail = {
+  text: string;
+  type: MockExamType;
+  options: string[];
+  answer: string;
+  explanation: string;
+};
+
+export type CreateMockExamRequest = {
+  plainText: string;
+  mockExamTypeList: string[];
+};
+
+export type MockExamResponse = {
+  mockExamDetailList: MockExamDetail[];
+};
