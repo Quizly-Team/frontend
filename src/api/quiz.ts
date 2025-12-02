@@ -7,6 +7,8 @@ import type {
   WrongQuizGroupResponse,
   UpdateQuizzesTopicRequest,
   UpdateQuizzesTopicResponse,
+  CreateMockExamRequest,
+  MockExamResponse,
 } from '@/types/quiz';
 
 const API_BASE_URL =
@@ -130,7 +132,7 @@ const authenticatedFetch = async (
   // 초기 요청 헤더 설정
   const headers = new Headers(options.headers);
   headers.set('Authorization', `Bearer ${token}`);
-  
+
   // FormData가 아닌 경우 Content-Type 설정
   if (!(options.body instanceof FormData)) {
     if (!headers.has('Content-Type')) {
@@ -154,7 +156,7 @@ const authenticatedFetch = async (
       // 새 토큰으로 원래 요청 재시도
       const retryHeaders = new Headers(options.headers);
       retryHeaders.set('Authorization', `Bearer ${newAccessToken}`);
-      
+
       // FormData인 경우 Content-Type 제거 (브라우저가 자동으로 boundary 설정)
       if (options.body instanceof FormData && retryHeaders.has('Content-Type')) {
         retryHeaders.delete('Content-Type');
@@ -202,11 +204,8 @@ export const createQuizByTextMember = async (
     body: JSON.stringify(request),
   });
 
-  console.log('[회원] 응답 상태:', response.status, response.statusText);
-
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[회원] 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -220,9 +219,7 @@ export const createQuizByTextMember = async (
     );
   }
 
-  const data = await response.json();
-  console.log('[회원] 성공 응답:', data);
-  return data;
+  return response.json();
 };
 
 /**
@@ -231,11 +228,6 @@ export const createQuizByTextMember = async (
 export const createQuizByTextGuest = async (
   request: CreateQuizTextRequest
 ): Promise<QuizResponse> => {
-  console.log('[비회원] 문제 생성 요청:', {
-    url: `${API_BASE_URL}/quizzes/guest`,
-    body: request,
-  });
-
   const response = await fetch(`${API_BASE_URL}/quizzes/guest`, {
     method: 'POST',
     headers: {
@@ -244,11 +236,8 @@ export const createQuizByTextGuest = async (
     body: JSON.stringify(request),
   });
 
-  console.log('[비회원] 응답 상태:', response.status, response.statusText);
-
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[비회원] 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -262,9 +251,7 @@ export const createQuizByTextGuest = async (
     );
   }
 
-  const data = await response.json();
-  console.log('[비회원] 성공 응답:', data);
-  return data;
+  return response.json();
 };
 
 /**
@@ -305,13 +292,6 @@ export const createQuizByFileGuest = async (
   const formData = new FormData();
   formData.append('file', file);
 
-  console.log('[비회원 파일] 문제 생성 요청:', {
-    url: `${API_BASE_URL}/quizzes/guest/ocr?type=${type}`,
-    fileName: file.name,
-    fileSize: file.size,
-    fileType: file.type,
-  });
-
   const response = await fetch(
     `${API_BASE_URL}/quizzes/guest/ocr?type=${type}`,
     {
@@ -320,11 +300,8 @@ export const createQuizByFileGuest = async (
     }
   );
 
-  console.log('[비회원 파일] 응답 상태:', response.status, response.statusText);
-
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[비회원 파일] 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -338,9 +315,7 @@ export const createQuizByFileGuest = async (
     );
   }
 
-  const data = await response.json();
-  console.log('[비회원 파일] 성공 응답:', data);
-  return data;
+  return response.json();
 };
 
 /**
@@ -393,11 +368,8 @@ export const submitAnswerMember = async (
     }
   );
 
-  console.log('[회원] 답안 제출 응답 상태:', response.status, response.statusText);
-
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[회원] 답안 제출 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -411,9 +383,7 @@ export const submitAnswerMember = async (
     );
   }
 
-  const data = await response.json();
-  console.log('[회원] 답안 제출 성공 응답:', data);
-  return data;
+  return response.json();
 };
 
 /**
@@ -432,11 +402,8 @@ export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGro
     }
   );
 
-  console.log('[회원] 문제 모아보기 조회 응답 상태:', response.status, response.statusText);
-
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[회원] 문제 모아보기 조회 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -450,9 +417,7 @@ export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGro
     );
   }
 
-  const data = await response.json();
-  console.log('[회원] 문제 모아보기 조회 성공 응답:', data);
-  return data;
+  return response.json();
 };
 
 /**
@@ -474,11 +439,8 @@ export const getWrongQuizzes = async (
     }
   );
 
-  console.log('[회원] 틀린 문제 조회 응답 상태:', response.status, response.statusText);
-
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[회원] 틀린 문제 조회 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -511,7 +473,6 @@ export const updateQuizzesTopic = async (
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[회원] 틀린 문제 주제 수정 에러 응답:', errorText);
 
     let errorData;
     try {
@@ -536,4 +497,90 @@ export const updateQuizzesTopic = async (
   } catch {
     return { success: true };
   }
+};
+
+/**
+ * 모의고사 생성 - 텍스트 입력 (회원)
+ * @param request - 텍스트 및 문제 유형 목록
+ */
+export const createMockExam = async (
+  request: CreateMockExamRequest
+): Promise<MockExamResponse> => {
+  const token = authUtils.getAccessToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  const response = await fetch(`${API_BASE_URL}/mock/member`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `모의고사 생성 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return response.json();
+};
+
+/**
+ * 모의고사 생성 - OCR 파일 입력 (회원)
+ * @param file - OCR로 읽을 이미지/PDF 파일
+ * @param mockExamTypeList - 생성할 문제 유형 목록
+ */
+export const createMockExamByFile = async (
+  file: File,
+  mockExamTypeList: string[]
+): Promise<MockExamResponse> => {
+  const token = authUtils.getAccessToken();
+  if (!token) {
+    throw new Error('로그인이 필요합니다.');
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const queryParams = mockExamTypeList
+    .map((type) => `mockExamTypeList=${type}`)
+    .join('&');
+
+  const response = await fetch(`${API_BASE_URL}/mock/member/ocr?${queryParams}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `모의고사 생성 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return response.json();
 };
