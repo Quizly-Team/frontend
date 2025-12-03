@@ -1,6 +1,8 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
 import Tooltip from '@/components/common/Tooltip';
+import Icon from '@/components/common/Icon';
+import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils';
 
 type MockExamType = 'TRUE_FALSE' | 'FIND_CORRECT' | 'SHORT_ANSWER' | 'ESSAY';
 type MockExamCharacteristic = 'FIND_CORRECT' | 'FIND_INCORRECT' | 'FIND_MATCH';
@@ -35,8 +37,9 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
   const [selectedCharacteristics, setSelectedCharacteristics] = useState<MockExamCharacteristic[]>([]);
   const [plainText, setPlainText] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const tooltipTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleTypeToggle = useCallback((type: MockExamType) => {
@@ -53,26 +56,63 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
   }, []);
 
   const handleCharacteristicToggle = useCallback((characteristic: MockExamCharacteristic) => {
-    setSelectedCharacteristics((prev) =>
-      prev.includes(characteristic)
+    setSelectedCharacteristics((prev) => {
+      const isRemoving = prev.includes(characteristic);
+      const newCharacteristics = isRemoving
         ? prev.filter((c) => c !== characteristic)
-        : [...prev, characteristic]
-    );
+        : [...prev, characteristic];
+
+      // FIND_MATCH를 선택하면 FIND_CORRECT를 selectedTypes에서 제거
+      if (characteristic === 'FIND_MATCH' && !isRemoving) {
+        setSelectedTypes((prevTypes) => prevTypes.filter((t) => t !== 'FIND_CORRECT'));
+      }
+
+      return newCharacteristics;
+    });
   }, []);
 
   const handleTextChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
     setPlainText(e.target.value);
     if (e.target.value) {
-      setFile(null); // 텍스트 입력 시 파일 초기화
+      setFile(null);
+      setImagePreviewUrl(null);
     }
   }, []);
 
-  const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setPlainText(''); // 파일 업로드 시 텍스트 초기화
+    if (!uploadedFile) return;
+
+    // 지원하는 파일 형식 체크
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    const typeValidation = validateFileType(uploadedFile, allowedTypes);
+
+    if (!typeValidation.isValid) {
+      alert(typeValidation.error);
+      e.target.value = '';
+      return;
     }
+
+    // PDF 파일인 경우 페이지 수 체크
+    if (uploadedFile.type === 'application/pdf') {
+      const pdfValidation = await validatePdfPageCount(uploadedFile, 10);
+
+      if (!pdfValidation.isValid) {
+        alert(pdfValidation.error);
+        e.target.value = '';
+        return;
+      }
+
+      console.log('PDF 페이지 수:', pdfValidation.pageCount);
+    }
+
+    // JPG/PNG 파일인 경우 안내 메시지 (이미 한 장만 선택 가능)
+    if (uploadedFile.type.startsWith('image/')) {
+      console.log('이미지 파일 업로드:', uploadedFile.name);
+    }
+
+    setFile(uploadedFile);
+    setPlainText(''); // 파일 업로드 시 텍스트 초기화
   }, []);
 
   const handleFileButtonClick = useCallback(() => {
@@ -91,7 +131,23 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
   }, []);
 
   const handleSubmit = useCallback(() => {
-    const allSelectedTypes = [...new Set([...selectedTypes, ...selectedCharacteristics])];
+    // 객관식 문제가 선택되었는데 특성이 선택되지 않았으면 에러
+    if (selectedTypes.includes('FIND_CORRECT') && selectedCharacteristics.length === 0) {
+      alert('객관식 문제의 출제 특성을 선택해주세요.');
+      return;
+    }
+
+    // FIND_MATCH가 선택되어 있으면 FIND_CORRECT를 제외
+    let finalTypes = [...selectedTypes];
+    if (selectedCharacteristics.includes('FIND_MATCH')) {
+      finalTypes = finalTypes.filter((t) => t !== 'FIND_CORRECT');
+    }
+    
+    // FIND_CORRECT는 selectedTypes에서 제거하고, selectedCharacteristics만 사용
+    finalTypes = finalTypes.filter((t) => t !== 'FIND_CORRECT');
+    
+    // 최종적으로는 selectedCharacteristics만 전달 (다른 타입들도 포함)
+    const allSelectedTypes = [...new Set([...finalTypes, ...selectedCharacteristics])];
 
     if (allSelectedTypes.length === 0) {
       alert('최소 1개 이상의 문제 유형을 선택해주세요.');
@@ -124,12 +180,28 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
     setSelectedCharacteristics([]);
     setPlainText('');
     setFile(null);
+    setImagePreviewUrl(null);
     setShowTooltip(false);
     if (tooltipTimerRef.current) {
       clearTimeout(tooltipTimerRef.current);
     }
     onClose();
   }, [onClose]);
+
+  // 이미지 파일 업로드 시 미리보기 URL 생성
+  useEffect(() => {
+    if (!file || !file.type.startsWith('image/')) {
+      setImagePreviewUrl(null);
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    setImagePreviewUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
 
   if (!isOpen) return null;
 
@@ -142,7 +214,13 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
       />
 
       {/* Modal - 모바일에서는 하단에서 올라오는 Bottom Sheet */}
-      <div className="relative bg-white border border-[#ededed] rounded-[24px] max-md:rounded-t-[24px] max-md:rounded-b-none shadow-lg w-[520px] max-lg:w-[520px] max-md:w-full max-md:max-h-[75vh] max-lg:mx-4 max-md:mx-0 max-h-[90vh] overflow-hidden">
+      <div 
+        className={`relative bg-white border border-[#ededed] rounded-[24px] max-md:rounded-t-[24px] max-md:rounded-b-none shadow-lg w-[520px] max-lg:w-[520px] max-md:w-full max-lg:mx-4 max-md:mx-0 max-h-[90vh] overflow-hidden flex flex-col ${
+          selectedTypes.includes('FIND_CORRECT') 
+            ? 'max-md:h-[758px]' 
+            : 'max-md:h-[670px]'
+        }`}
+      >
         {/* Close button */}
         <button
           onClick={handleClose}
@@ -165,7 +243,7 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
         </div>
 
         {/* Content */}
-        <div className="p-10 max-md:p-5 pb-5 overflow-y-auto max-h-[calc(90vh-80px)] max-md:max-h-[calc(75vh-64px-106px)]">
+        <div className="p-10 max-md:p-5 pb-3 overflow-y-auto flex-1">
           {/* Title - Desktop/Tablet only */}
           <div className="mb-6 max-lg:mb-6 max-md:hidden">
             <h2 className="text-lg max-lg:text-xl font-medium text-[#222222] mb-1 leading-[1.4]">
@@ -187,24 +265,32 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
               어떤 유형의 문제를 만드시겠어요?(복수 선택 가능)
             </h3>
             <div className="flex flex-wrap gap-[5px] max-md:gap-1">
-              {EXAM_TYPES.map((type) => (
-                <button
-                  key={type.id}
-                  onClick={() => handleTypeToggle(type.id)}
-                  className={
-                    selectedTypes.includes(type.id)
-                      ? 'px-3 py-2 rounded-full border border-primary bg-primary text-white text-sm max-lg:text-sm max-md:text-sm font-normal leading-[1.4]'
-                      : 'px-3 py-2 rounded-full border border-[#dedede] bg-white text-[#777777] text-sm max-lg:text-sm max-md:text-sm font-normal hover:border-gray-400 leading-[1.4]'
-                  }
-                >
-                  {type.label}
-                </button>
-              ))}
+              {EXAM_TYPES.map((type) => {
+                // FIND_CORRECT의 경우 selectedTypes에 있거나 selectedCharacteristics에 객관식 관련 특성이 있으면 활성화
+                const isActive = type.id === 'FIND_CORRECT'
+                  ? selectedTypes.includes(type.id) || selectedCharacteristics.some(c => ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c))
+                  : selectedTypes.includes(type.id);
+                
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => handleTypeToggle(type.id)}
+                    className={
+                      isActive
+                        ? 'px-3 py-2 rounded-full border border-primary bg-primary text-white text-sm max-lg:text-sm max-md:text-sm font-normal leading-[1.4]'
+                        : 'px-3 py-2 rounded-full border border-[#dedede] bg-white text-[#777777] text-sm max-lg:text-sm max-md:text-sm font-normal hover:border-gray-400 leading-[1.4]'
+                    }
+                  >
+                    {type.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Question 2: 출제 특성 선택 - 객관식 문제 선택 시에만 표시 */}
-          {selectedTypes.includes('FIND_CORRECT') && (
+          {(selectedTypes.includes('FIND_CORRECT') || 
+            selectedCharacteristics.some(c => ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c))) && (
             <div className="mb-6 max-lg:mb-6 max-md:mb-[30px]">
               <h3 className="text-base max-lg:text-lg max-md:text-base font-medium text-[#222222] mb-3 max-lg:mb-3 max-md:mb-3 leading-[1.4]">
                 문항을 어떤 특성으로 출제할까요?(복수 선택 가능)
@@ -258,7 +344,7 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                   </text>
                 </svg>
                 {showTooltip && (
-                  <Tooltip position="top" className="w-[286px] max-lg:w-[310px] max-md:w-[286px]">
+                  <Tooltip className="w-[286px] max-lg:w-[310px] max-md:w-[286px]">
                     <p className="mb-0">최소 300자 이상의 내용을 작성해주시면</p>
                     <p className="mb-0">중복 없이 문제를 만들 수 있습니다.</p>
                     <p>내용 또는 파일 업로드 둘 중 하나만 선택 가능합니다.</p>
@@ -290,45 +376,47 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
               onClick={handleFileButtonClick}
               className="px-3 py-2 rounded-full border border-[#dedede] bg-white text-[#222222] text-sm max-lg:text-sm font-normal hover:border-gray-400 flex items-center gap-1 leading-[1.4]"
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M10 15V5M5 10H15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <Icon name="upload" size={20} className="text-gray-600" />
               파일 업로드
             </button>
-            {file && (
-              <span className="text-sm text-[#222222] leading-[1.4]">
-                {file.name}
-              </span>
+            {imagePreviewUrl ? (
+              <img
+                src={imagePreviewUrl}
+                alt={file?.name || '업로드된 이미지'}
+                className="w-[38px] h-[38px] object-cover rounded"
+              />
+            ) : (
+              file && !imagePreviewUrl && (
+                <span className="text-sm text-gray-600 underline leading-[1.4]">
+                  {file.name}
+                </span>
+              )
             )}
           </div>
         </div>
 
         {/* File upload button - Mobile */}
-        <div className="hidden max-md:block px-5 pb-3">
+        <div className="hidden max-md:block px-5 py-3 border-t border-[#ededed]">
           <div className="flex items-center gap-2">
             <button
               onClick={handleFileButtonClick}
               className="px-3 py-2 rounded-full border border-[#dedede] bg-white text-[#222222] text-sm font-normal hover:border-gray-400 flex items-center gap-1 leading-[1.4]"
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M10 15V5M5 10H15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <Icon name="upload" size={20} className="text-gray-600" />
               파일 업로드
             </button>
-            {file && (
-              <span className="text-sm text-[#222222] leading-[1.4] truncate flex-1">
-                {file.name}
-              </span>
+            {imagePreviewUrl ? (
+              <img
+                src={imagePreviewUrl}
+                alt={file?.name || '업로드된 이미지'}
+                className="w-[38px] h-[38px] object-cover rounded"
+              />
+            ) : (
+              file && !imagePreviewUrl && (
+                <span className="text-sm text-gray-600 underline leading-[1.4] truncate flex-1">
+                  {file.name}
+                </span>
+              )
             )}
           </div>
         </div>
@@ -346,7 +434,7 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
         </div>
 
         {/* Bottom button - Mobile */}
-        <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white border-t border-[#ededed] p-5 pb-[34px]">
+        <div className="hidden max-md:block px-5 py-4 border-t border-[#ededed]">
           <button
             onClick={handleSubmit}
             className="w-full h-[52px] rounded-lg bg-primary text-white text-base font-medium hover:bg-primary-dark"
