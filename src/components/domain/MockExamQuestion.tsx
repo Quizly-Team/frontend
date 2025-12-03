@@ -26,7 +26,7 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
   };
 
   const renderTrueFalse = () => (
-    <div className="py-3">
+    <div className="pt-5">
       <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-2">
         {questionNumber}. {question.text}
       </p>
@@ -42,7 +42,7 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
     const displayText = question.text;
 
     return (
-      <div className="py-3">
+      <div className="pt-5">
         <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3">
           {questionNumber}. {displayText}
         </p>
@@ -76,7 +76,7 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
     const viewOptions = question.text.match(/ㄱ\..+|ㄴ\..+|ㄷ\..+|ㄹ\..+/g) || [];
 
     return (
-      <div className="py-3">
+      <div className="pt-5">
         <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3">
           {questionNumber}. {questionText}
         </p>
@@ -123,7 +123,7 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
   };
 
   const renderShortAnswer = () => (
-    <div className="py-3">
+    <div className="pt-5">
       <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3">
         {questionNumber}. {question.text}
       </p>
@@ -136,7 +136,7 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
   );
 
   const renderEssay = () => (
-    <div className="py-3">
+    <div className="pt-5">
       <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3 whitespace-pre-line">
         {questionNumber}. {question.text}
       </p>
@@ -164,25 +164,105 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
   };
 
   if (showAnswer) {
+    // 한글 원문자 변환 함수 (1~5)
+    const getCircleNumber = (num: number): string => {
+      const circleNumbers = ['①', '②', '③', '④', '⑤'];
+      if (num >= 1 && num <= 5) {
+        return circleNumbers[num - 1];
+      }
+      return String(num);
+    };
+
+    // 동그라미 번호를 렌더링하는 함수 (18x18)
+    const renderCircleNumber = (num: number) => {
+      return (
+        <div className="relative inline-flex items-center justify-center w-[18px] h-[18px] align-middle" style={{ marginTop: '-2px' }}>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="absolute">
+            <circle cx="9" cy="9" r="8.5" stroke="#222222" strokeWidth="1" />
+          </svg>
+          <span className="relative text-[13px] font-medium text-[#222222] leading-none">
+            {num}
+          </span>
+        </div>
+      );
+    };
+
     // 객관식 문제의 경우 답의 번호를 찾기
     const getAnswerWithNumber = () => {
-      const isMultipleChoice =
-        question.type === 'FIND_CORRECT' ||
-        question.type === 'FIND_INCORRECT' ||
-        question.type === 'FIND_MATCH';
-
-      if (isMultipleChoice && question.options.length > 0) {
-        const answerIndex = question.options.findIndex(option => option === question.answer);
-        if (answerIndex !== -1) {
-          return `${answerIndex + 1}번. ${question.answer}`;
+      // TRUE_FALSE 타입의 경우 O/X로 변환
+      if (question.type === 'TRUE_FALSE') {
+        if (question.answer === 'TRUE') {
+          return 'O';
+        } else if (question.answer === 'FALSE') {
+          return 'X';
         }
+        return question.answer;
       }
+
+      // FIND_CORRECT, FIND_INCORRECT: 동그라미 안에 번호만 표시
+      if (question.type === 'FIND_CORRECT' || question.type === 'FIND_INCORRECT') {
+        if (question.options.length > 0) {
+          const answerIndex = question.options.findIndex(option => option === question.answer);
+          if (answerIndex !== -1) {
+            return renderCircleNumber(answerIndex + 1);
+          }
+        }
+        return question.answer;
+      }
+
+      // FIND_MATCH (보기 유형): 동그라미 안의 번호 + 정답 표시
+      if (question.type === 'FIND_MATCH') {
+        if (question.options.length > 0) {
+          // answer가 options 배열의 텍스트와 일치하는 경우 (선택지 번호 찾기)
+          const answerIndex = question.options.findIndex(option => option === question.answer);
+          if (answerIndex !== -1) {
+            // answer가 옵션 텍스트와 일치하는 경우, 보기 번호는 별도로 저장되어 있을 수 있음
+            // 일단 동그라미 번호만 표시 (보기 번호는 answer에 포함되어 있지 않을 수 있음)
+            return renderCircleNumber(answerIndex + 1);
+          }
+          
+          // answer가 options에 없는 경우
+          // answer에서 선택지 번호를 추출 (숫자 또는 동그라미 번호)
+          const numMatch = question.answer.match(/^(\d+)/);
+          const circleMatch = question.answer.match(/^([①②③④⑤])/);
+          
+          if (circleMatch) {
+            // 이미 동그라미 번호가 있는 경우 - 숫자 추출
+            const circleNumbers = ['①', '②', '③', '④', '⑤'];
+            const num = circleNumbers.indexOf(circleMatch[1]) + 1;
+            const restOfAnswer = question.answer.replace(/^[①②③④⑤]\s*/, '').trim();
+            return (
+              <span className="inline-flex items-center gap-1">
+                {renderCircleNumber(num)}
+                {restOfAnswer && <span>{restOfAnswer}</span>}
+              </span>
+            );
+          } else if (numMatch) {
+            // 숫자로 시작하는 경우 (예: "3 ㄱ, ㄷ, ㄹ")
+            const num = parseInt(numMatch[1], 10);
+            // answer에서 숫자 부분을 제거하고 나머지(보기 번호)를 표시
+            const restOfAnswer = question.answer.replace(/^\d+\s*/, '').trim();
+            return (
+              <span className="inline-flex items-center gap-1">
+                {renderCircleNumber(num)}
+                {restOfAnswer && <span>{restOfAnswer}</span>}
+              </span>
+            );
+          } else {
+            // answer가 보기 번호만 있는 경우 (예: "ㄱ, ㄷ, ㄹ")
+            // 선택지 번호를 찾을 수 없으므로, answer를 그대로 표시
+            return question.answer;
+          }
+        }
+        return question.answer;
+      }
+
       return question.answer;
     };
 
     // 해설 모드: 간단하게 문제번호 + 답 + 해설만 표시
     return (
-      <div className="pb-3 mb-3">
+      <div className="pt-5 mb-5">
         <p className="text-lg font-medium text-[#222222] mb-2">
           {questionNumber}. {getAnswerWithNumber()}
         </p>
@@ -193,7 +273,7 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
 
   // 문제 모드: 전체 문제 표시
   return (
-    <div className="pb-3 mb-3">
+    <div className="mb-5">
       {renderQuestionContent()}
     </div>
   );
