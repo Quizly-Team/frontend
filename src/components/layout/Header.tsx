@@ -1,27 +1,25 @@
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components";
 import { authUtils } from "@/lib/auth";
 
 type HeaderProps = {
   logoUrl?: string;
-  onLoginClick?: () => void;
+  onLoginClick?: () => void; // deprecated: 이제 사용되지 않지만 하위 호환성을 위해 유지
   onMockExamClick?: () => void;
 };
 
 const Header = ({ logoUrl = "/logo.svg", onLoginClick, onMockExamClick }: HeaderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsAuthenticated(authUtils.isAuthenticated());
   }, []);
 
   const handleLoginClick = useCallback(() => {
-    if (onLoginClick) {
-      onLoginClick();
-    } else {
-      window.location.href = "/login";
-    }
-  }, [onLoginClick]);
+    navigate("/login");
+  }, [navigate]);
 
   const handleLogoutClick = useCallback(() => {
     authUtils.logout();
