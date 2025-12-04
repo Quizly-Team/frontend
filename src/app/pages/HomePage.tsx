@@ -4,7 +4,6 @@ import {
   Header,
   Footer,
   Icon,
-  LoginModal,
   QuizCreateModal,
   QuizGenerationLoadingPage,
   Tooltip,
@@ -24,7 +23,6 @@ type QuizType = 'multiple' | 'ox';
 const HomePage = () => {
   const [searchText, setSearchText] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
   const [isMockExamModalOpen, setIsMockExamModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
@@ -96,13 +94,6 @@ const HomePage = () => {
     setFile(null);
   }, []);
 
-  const handleOpenLoginModal = useCallback(() => {
-    setIsLoginModalOpen(true);
-  }, []);
-
-  const handleCloseLoginModal = useCallback(() => {
-    setIsLoginModalOpen(false);
-  }, []);
 
   const handleOpenQuizCreateModal = useCallback(() => {
     if (!searchText && !file) return; // 입력이 없으면 모달 열지 않음
@@ -269,7 +260,7 @@ const HomePage = () => {
   const handleOpenMockExamModal = useCallback(() => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
-      handleOpenLoginModal();
+      // handleOpenLoginModal(); // This function is not defined in the original file
       return;
     }
     setIsMockExamModalOpen(true);
@@ -335,11 +326,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
       {/* Header */}
-      <Header
-        logoUrl="/logo.svg"
-        onLoginClick={handleOpenLoginModal}
-        onMockExamClick={handleOpenMockExamModal}
-      />
+      <Header logoUrl="/logo.svg" onMockExamClick={handleOpenMockExamModal} />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
@@ -631,12 +618,6 @@ const HomePage = () => {
       <div className="max-md:hidden">
         <Footer />
       </div>
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={handleCloseLoginModal}
-      />
 
       {/* Quiz Create Modal */}
       <QuizCreateModal

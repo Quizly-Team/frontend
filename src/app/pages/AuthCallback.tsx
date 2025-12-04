@@ -45,6 +45,11 @@ const AuthCallback = () => {
         const data: AuthResponse = await response.json();
 
         authUtils.setAccessToken(data.accessToken);
+        
+        // 최근 로그인 provider 저장
+        if (provider === 'naver' || provider === 'kakao') {
+          authUtils.setLastLoginProvider(provider);
+        }
 
         navigate('/', { replace: true });
       } catch (error) {
