@@ -30,10 +30,26 @@ const HomePage = () => {
   const [quizData, setQuizData] = useState<QuizDetail[] | null>(null);
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
   const [showPdfTooltip, setShowPdfTooltip] = useState(false);
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const webTextareaRef = useRef<HTMLTextAreaElement>(null);
   const mobileTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const navigate = useNavigate();
+
+  const heroTexts = [
+    '(퀴즐리)로 문제 생성부터 오답정리까지 한 번에!',
+    '자격증 대비 (요점 정리)를 검색창에 입력해보세요.',
+    '오늘 배운 과목의 (필기 내용)을 입력해보세요.',
+    '전공 (시험 대비)를 위한 범위를 입력해보세요.'
+  ];
+
+  const heroTextsMobile = [
+    '(퀴즐리)로 문제 생성부터\n오답정리까지 한 번에!',
+    '자격증 대비 (요점 정리)를\n검색창에 입력해보세요.',
+    '오늘 배운 과목의 (필기 내용)을\n입력해보세요.',
+    '전공 (시험 대비)를 위한\n범위를 입력해보세요.'
+  ];
   const { mutate: createQuiz, isPending } = useCreateQuiz();
   const { mutate: createMockExam, isPending: isMockExamPending } = useCreateMockExam();
   const { mutate: createMockExamByFile, isPending: isMockExamFilePending } = useCreateMockExamByFile();
@@ -145,7 +161,7 @@ const HomePage = () => {
     [searchText, file, isLoggedIn, createQuiz]
   );
 
-  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement | HTMLDivElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && (searchText || file)) {
       e.preventDefault();
       handleOpenQuizCreateModal();
@@ -189,6 +205,28 @@ const HomePage = () => {
     adjustWebTextareaHeight();
     adjustMobileTextareaHeight();
   }, [searchText, adjustWebTextareaHeight, adjustMobileTextareaHeight]);
+
+  // 텍스트 무한 슬라이드 애니메이션
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentTextIndex((prev) => prev + 1);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // 인덱스가 마지막에 도달하면 첫 번째로 리셋
+  useEffect(() => {
+    if (currentTextIndex === heroTexts.length) {
+      const timeout = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentTextIndex(0);
+      }, 700);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [currentTextIndex, heroTexts.length]);
 
   // 로그인 상태 체크 (컴포넌트 마운트 시 및 storage 이벤트 감지)
   useEffect(() => {
@@ -306,38 +344,59 @@ const HomePage = () => {
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
         <div className="max-w-[1024px] w-full px-xl max-lg:px-15 flex flex-col items-center justify-center">
           {/* Character Images */}
-          <div className="flex gap-[15px] mb-10 ">
-            <img
-              src="/characters/character1.png"
-              alt="캐릭터 1"
-              className="w-[72px] h-[72px]"
-            />
-            <img
-              src="/characters/character2.png"
-              alt="캐릭터 2"
-              className="w-[79px] h-[72px]"
-            />
-            <img
-              src="/characters/character3.png"
-              alt="캐릭터 3"
-              className="w-[72px] h-[72px]"
-            />
-            <img
-              src="/characters/character4.png"
-              alt="캐릭터 4"
-              className="w-[72px] h-[72px]"
-            />
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="flex gap-[15px] mb-10 relative z-10"></div>
-            <div className="w-[300px] h-[10px] bg-gray-400 rounded-full blur-sm opacity-50 -mt-10 z-0 absolute"></div>
+          <div className="flex flex-col items-center mb-2 relative">
+            <div className="flex gap-[15px] relative z-10">
+              <img
+                src="/characters/character1.png"
+                alt="캐릭터 1"
+                className="w-[72px] h-[72px] animate-[bounce_2s_ease-in-out_infinite]"
+              />
+              <img
+                src="/characters/character2.png"
+                alt="캐릭터 2"
+                className="w-[79px] h-[72px] animate-[bounce_2s_ease-in-out_0.2s_infinite]"
+              />
+              <img
+                src="/characters/character3.png"
+                alt="캐릭터 3"
+                className="w-[72px] h-[72px] animate-[bounce_2s_ease-in-out_0.4s_infinite]"
+              />
+              <img
+                src="/characters/character4.png"
+                alt="캐릭터 4"
+                className="w-[72px] h-[72px] animate-[bounce_2s_ease-in-out_0.6s_infinite]"
+              />
+            </div>
+            <div className="w-[300px] h-[10px] bg-gray-400 rounded-full blur-sm opacity-50 mt-2 z-0"></div>
           </div>
 
-          {/* Title */}
-          <h1 className="text-header1-bold text-gray-900 text-center mb-12">
-            <span className="text-primary">퀴즐리</span>로 문제 생성부터 오답
-            정리까지 한 번에!
-          </h1>
+          {/* Title - 무한 슬라이드 애니메이션 */}
+          <div className="h-[84px] mb-8 overflow-hidden relative">
+            <div
+              className={isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}
+              style={{ transform: `translateY(-${currentTextIndex * 84}px)` }}
+            >
+              {[...heroTexts, heroTexts[0]].map((text, index) => (
+                <h1
+                  key={index}
+                  className="text-header1-bold text-gray-900 text-center h-[84px] flex items-center justify-center whitespace-pre-wrap"
+                  style={{ lineHeight: '1.4' }}
+                >
+                  {text.split(/(\([^)]+\))/).map((part, partIndex) => {
+                    if (!part) return null;
+                    if (part.match(/^\([^)]+\)$/)) {
+                      return (
+                        <span key={partIndex} className="text-primary">
+                          {part.slice(1, -1)}
+                        </span>
+                      );
+                    }
+                    return part;
+                  })}
+                </h1>
+              ))}
+            </div>
+          </div>
 
           {/* Search Bar - Web/Tablet */}
           <div className="w-full mb-8">
@@ -422,38 +481,63 @@ const HomePage = () => {
       {/* Main Content - Mobile */}
       <main className="hidden max-md:flex flex-1 flex-col items-center pt-41 pb-[180px] px-margin-mobile">
         {/* Character Images - Mobile */}
-        <div className="flex flex-col items-center mb-6 relative">
+        <div className="flex flex-col items-center mb-8 relative">
           <div className="flex gap-[7px] relative z-10">
             <img
               src="/characters/character1.png"
               alt="캐릭터 1"
-              className="w-[60px] h-[60px]"
+              className="w-[60px] h-[60px] animate-[bounce_2s_ease-in-out_infinite]"
             />
             <img
               src="/characters/character2.png"
               alt="캐릭터 2"
-              className="w-[66px] h-[60px]"
+              className="w-[66px] h-[60px] animate-[bounce_2s_ease-in-out_0.2s_infinite]"
             />
             <img
               src="/characters/character3.png"
               alt="캐릭터 3"
-              className="w-[60px] h-[60px]"
+              className="w-[60px] h-[60px] animate-[bounce_2s_ease-in-out_0.4s_infinite]"
             />
             <img
               src="/characters/character4.png"
               alt="캐릭터 4"
-              className="w-[60px] h-[60px]"
+              className="w-[60px] h-[60px] animate-[bounce_2s_ease-in-out_0.6s_infinite]"
             />
           </div>
           <div className="absolute top-[50px] w-[280px] h-[10px] bg-gray-400 rounded-full blur-sm opacity-75 z-0"></div>
         </div>
 
-        {/* Title - Mobile (2줄) */}
-        <h1 className="text-header3-bold text-gray-900 text-center mb-10">
-          <span className="text-primary">퀴즐리</span>로 문제 생성부터
-          <br />
-          오답 정리까지 한 번에!
-        </h1>
+        {/* Title - Mobile - 무한 슬라이드 애니메이션 */}
+        <div className="h-[96px] mb-2 overflow-hidden relative">
+          <div
+            className={isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}
+            style={{ transform: `translateY(-${currentTextIndex * 96}px)` }}
+          >
+            {[...heroTextsMobile, heroTextsMobile[0]].map((text, index) => (
+              <h1
+                key={index}
+                className="text-header3-bold text-gray-900 text-center h-[96px] px-4"
+                style={{ lineHeight: '1.4', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+              >
+                {text.split('\n').map((line, lineIndex) => (
+                  <div key={lineIndex}>
+                    {line.split(/(\([^)]+\))/).map((part, partIndex) => {
+                      if (!part) return null;
+                      if (part.match(/^\([^)]+\)$/)) {
+                        return (
+                          <span key={partIndex} className="text-primary">
+                            {part.slice(1, -1)}
+                          </span>
+                        );
+                      }
+                      return part;
+                    })}
+                  </div>
+                ))}
+              </h1>
+            ))}
+          </div>
+        </div>
 
         {/* Action Buttons - Mobile */}
         <div className="flex gap-3">
