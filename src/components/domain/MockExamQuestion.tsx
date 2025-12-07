@@ -164,15 +164,6 @@ const MockExamQuestion = ({ question, questionNumber, showAnswer = false }: Mock
   };
 
   if (showAnswer) {
-    // 한글 원문자 변환 함수 (1~5)
-    const getCircleNumber = (num: number): string => {
-      const circleNumbers = ['①', '②', '③', '④', '⑤'];
-      if (num >= 1 && num <= 5) {
-        return circleNumbers[num - 1];
-      }
-      return String(num);
-    };
-
     // 동그라미 번호를 렌더링하는 함수 (18x18)
     const renderCircleNumber = (num: number) => {
       return (
