@@ -27,7 +27,6 @@ const QuizSolvePage = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([]);
-  const [elapsedMs, setElapsedMs] = useState(0);
   const startTimeRef = useRef<number | null>(null);
   const solveTimeRef = useRef(0);
 
@@ -40,30 +39,8 @@ const QuizSolvePage = ({
     if (typeof performance === 'undefined') return;
     startTimeRef.current = performance.now();
     solveTimeRef.current = 0;
-    setElapsedMs(0);
   }, [currentIndex]);
 
-  useEffect(() => {
-    if (showResult || typeof performance === 'undefined') {
-      return;
-    }
-
-    let animationFrame: number;
-
-    const updateElapsed = () => {
-      if (startTimeRef.current === null) {
-        startTimeRef.current = performance.now();
-      }
-      setElapsedMs(performance.now() - startTimeRef.current);
-      animationFrame = requestAnimationFrame(updateElapsed);
-    };
-
-    animationFrame = requestAnimationFrame(updateElapsed);
-
-    return () => {
-      cancelAnimationFrame(animationFrame);
-    };
-  }, [showResult, currentIndex]);
 
   const calculateSolveTime = useCallback(() => {
     if (typeof performance === 'undefined' || startTimeRef.current === null) {
@@ -150,7 +127,6 @@ const QuizSolvePage = ({
         }
       }
 
-      setElapsedMs(solveTimeSeconds * 1000);
       setShowResult(true);
       return;
     }

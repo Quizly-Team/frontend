@@ -16,7 +16,8 @@ import { useCreateQuiz } from '@/hooks/useCreateQuiz';
 import { useCreateMockExam, useCreateMockExamByFile } from '@/hooks/useMockExam';
 import { useNavigate } from 'react-router-dom';
 import QuizSolvePage from './QuizSolvePage';
-import type { QuizDetail, UserAnswer, MockExamSettingData } from '@/types/quiz';
+import type { QuizDetail, UserAnswer } from '@/types/quiz';
+import type { MockExamSettingData } from '@/components/modal/MockExamSettingModal';
 
 type QuizType = 'multiple' | 'ox';
 
