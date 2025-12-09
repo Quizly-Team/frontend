@@ -1,4 +1,5 @@
 const ACCESS_TOKEN_KEY = 'accessToken';
+const LAST_LOGIN_PROVIDER_KEY = 'lastLoginProvider';
 
 export const authUtils = {
   setAccessToken: (token: string): void => {
@@ -19,6 +20,7 @@ export const authUtils = {
 
   logout: (): void => {
     authUtils.removeAccessToken();
+    // 로그아웃 시 최근 로그인 정보는 유지 (선택사항)
   },
 
   /**
@@ -28,5 +30,19 @@ export const authUtils = {
    */
   removeAllTokens: (): void => {
     authUtils.removeAccessToken();
+  },
+
+  // 최근 로그인 provider 저장
+  setLastLoginProvider: (provider: 'naver' | 'kakao'): void => {
+    localStorage.setItem(LAST_LOGIN_PROVIDER_KEY, provider);
+  },
+
+  // 최근 로그인 provider 조회
+  getLastLoginProvider: (): 'naver' | 'kakao' | null => {
+    const provider = localStorage.getItem(LAST_LOGIN_PROVIDER_KEY);
+    if (provider === 'naver' || provider === 'kakao') {
+      return provider;
+    }
+    return null;
   },
 };
