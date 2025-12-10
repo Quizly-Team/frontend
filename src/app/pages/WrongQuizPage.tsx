@@ -369,7 +369,7 @@ const WrongQuizPage = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-bg-home flex flex-col">
-        <Header logoUrl="/logo.svg" onLoginClick={handleOpenLoginModal} />
+        <Header logoUrl="/logo.svg" />
 
         {/* Main Content - Web/Tablet */}
         <main className="flex-1 flex flex-col items-center justify-center px-6 max-md:hidden">
