@@ -47,7 +47,7 @@ const MemberOnlyPage = ({
   // Full variant with characters
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
-      <Header logoUrl="/logo.svg" onLoginClick={onOpenLoginModal} />
+      <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 max-md:hidden">
