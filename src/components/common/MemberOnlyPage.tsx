@@ -10,7 +10,7 @@ type MemberOnlyPageProps = {
 const MemberOnlyPage = ({
   variant = 'full',
   isLoginModalOpen,
-  onOpenLoginModal,
+  onOpenLoginModal: _,
   onCloseLoginModal,
 }: MemberOnlyPageProps) => {
   if (variant === 'simple') {
