@@ -10,13 +10,13 @@ type MemberOnlyPageProps = {
 const MemberOnlyPage = ({
   variant = 'full',
   isLoginModalOpen,
-  onOpenLoginModal,
+  onOpenLoginModal: _,
   onCloseLoginModal,
 }: MemberOnlyPageProps) => {
   if (variant === 'simple') {
     return (
       <div className="min-h-screen bg-bg-home flex flex-col">
-        <Header logoUrl="/logo.svg" onLoginClick={onOpenLoginModal} />
+        <Header logoUrl="/logo.svg" />
 
         <main className="flex-1 flex flex-col items-center justify-center px-6">
           <h1 className="text-header1-bold text-gray-900 text-center mb-4 max-md:text-header3-bold">
@@ -47,7 +47,7 @@ const MemberOnlyPage = ({
   // Full variant with characters
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
-      <Header logoUrl="/logo.svg" onLoginClick={onOpenLoginModal} />
+      <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 max-md:hidden">
