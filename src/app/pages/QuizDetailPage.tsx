@@ -72,7 +72,7 @@ const QuizDetailPage = () => {
   // 회원인 경우
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
-      <Header logoUrl="/logo.svg" onLoginClick={handleOpenLoginModal} />
+      <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-md:hidden">
