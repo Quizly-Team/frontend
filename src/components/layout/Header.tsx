@@ -5,11 +5,10 @@ import { authUtils } from "@/lib/auth";
 
 type HeaderProps = {
   logoUrl?: string;
-  onLoginClick?: () => void; // deprecated: 이제 사용되지 않지만 하위 호환성을 위해 유지
   onMockExamClick?: () => void;
 };
 
-const Header = ({ logoUrl = "/logo.svg", onLoginClick, onMockExamClick }: HeaderProps) => {
+const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
