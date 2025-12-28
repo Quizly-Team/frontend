@@ -26,6 +26,10 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
     window.location.reload();
   }, []);
 
+  const handleProfileClick = useCallback(() => {
+    navigate("/analytics");
+  }, [navigate]);
+
   const handleMockExamClick = useCallback(() => {
     if (onMockExamClick) {
       onMockExamClick();
@@ -73,14 +77,18 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
               틀린문제 풀어보기
             </a>
             {isAuthenticated ? (
-              <Button
-                variant="primary"
-                size="small"
-                onClick={handleLogoutClick}
-                className="ml-4 max-lg:ml-2 w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
+              <button
+                onClick={handleProfileClick}
+                className="ml-4 max-lg:ml-2 w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] rounded-full bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center shrink-0 cursor-pointer overflow-hidden"
+                aria-label="프로필 페이지로 이동"
               >
-                로그아웃
-              </Button>
+                {/* 프로필 이미지 - 나중에 API로 연결 */}
+                <img
+                  src="/icon/default.svg"
+                  alt="프로필"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </button>
             ) : (
               <Button
                 variant="primary"

@@ -7,6 +7,7 @@ import QuizDetailPage from '@/app/pages/QuizDetailPage';
 import WrongQuizPage from '@/app/pages/WrongQuizPage';
 import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage';
 import MockExamPage from '@/app/pages/MockExamPage';
+import AnalyticsPage from '@/app/pages/AnalyticsPage';
 
 export const router = createBrowserRouter([
   {
@@ -40,5 +41,9 @@ export const router = createBrowserRouter([
   {
     path: '/login/oauth2/code/:provider',
     element: <AuthCallback />,
+  },
+  {
+    path: '/analytics',
+    element: <AnalyticsPage />,
   },
 ]);
