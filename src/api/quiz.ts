@@ -506,17 +506,13 @@ export const updateQuizzesTopic = async (
 export const createMockExam = async (
   request: CreateMockExamRequest
 ): Promise<MockExamResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
+  console.log('[회원] 모의고사 생성 요청:', {
+    url: `${API_BASE_URL}/mock/member`,
+    body: request,
+  });
 
-  const response = await fetch(`${API_BASE_URL}/mock/member`, {
+  const response = await authenticatedFetch(`${API_BASE_URL}/mock/member`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
     body: JSON.stringify(request),
   });
 
@@ -547,11 +543,6 @@ export const createMockExamByFile = async (
   file: File,
   mockExamTypeList: string[]
 ): Promise<MockExamResponse> => {
-  const token = authUtils.getAccessToken();
-  if (!token) {
-    throw new Error('로그인이 필요합니다.');
-  }
-
   const formData = new FormData();
   formData.append('file', file);
 
@@ -559,13 +550,13 @@ export const createMockExamByFile = async (
     .map((type) => `mockExamTypeList=${type}`)
     .join('&');
 
-  const response = await fetch(`${API_BASE_URL}/mock/member/ocr?${queryParams}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  });
+  const response = await authenticatedFetch(
+    `${API_BASE_URL}/mock/member/ocr?${queryParams}`,
+    {
+      method: 'POST',
+      body: formData,
+    }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();

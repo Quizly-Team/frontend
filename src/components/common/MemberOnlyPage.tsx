@@ -1,4 +1,4 @@
-import { Header, Footer, LoginModal } from '@/components';
+import { Header, LoginModal } from '@/components';
 
 type MemberOnlyPageProps = {
   variant?: 'full' | 'simple';
@@ -34,10 +34,6 @@ const MemberOnlyPage = ({
             홈으로 돌아가기
           </button>
         </main>
-
-        <div className="max-md:hidden">
-          <Footer />
-        </div>
 
         <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
       </div>
@@ -142,11 +138,6 @@ const MemberOnlyPage = ({
           홈으로 돌아가기
         </button>
       </main>
-
-      {/* Footer - Web/Tablet Only */}
-      <div className="max-md:hidden">
-        <Footer />
-      </div>
 
       {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />

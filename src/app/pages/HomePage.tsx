@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import type { ChangeEvent, KeyboardEvent } from 'react';
 import {
   Header,
-  Footer,
   Icon,
   QuizCreateModal,
   QuizGenerationLoadingPage,
@@ -612,11 +611,6 @@ const HomePage = () => {
             )}
           </div>
         </div>
-      </div>
-
-      {/* Footer - Web/Tablet Only */}
-      <div className="max-md:hidden">
-        <Footer />
       </div>
 
       {/* Quiz Create Modal */}

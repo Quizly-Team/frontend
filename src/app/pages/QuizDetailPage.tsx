@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Header, Footer, LoginModal, UnauthorizedPage, QuizCard } from '@/components';
+import { Header, LoginModal, UnauthorizedPage, QuizCard } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getQuizGroups } from '@/api/quiz';
 import type { QuizHistoryDetail } from '@/types/quiz';
@@ -164,11 +164,6 @@ const QuizDetailPage = () => {
           </div>
         )}
       </main>
-
-      {/* Footer - Web/Tablet Only */}
-      <div className="max-md:hidden">
-        <Footer />
-      </div>
 
       {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />

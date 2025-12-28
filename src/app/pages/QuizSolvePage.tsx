@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Footer, Icon, QuizResultModal } from '@/components';
+import { Header, Icon, QuizResultModal } from '@/components';
 import ProgressBar from '@/components/common/ProgressBar';
 import type { QuizDetail, UserAnswer } from '@/types/quiz';
 import { submitAnswerMember } from '@/api/quiz';
@@ -635,11 +635,6 @@ const QuizSolvePage = ({
           </button>
         </div>
         
-      </div>
-
-      {/* Footer - Web/Tablet Only */}
-      <div className="max-md:hidden">
-        <Footer />
       </div>
 
       <QuizResultModal
