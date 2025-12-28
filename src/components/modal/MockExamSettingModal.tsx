@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
 import Tooltip from '@/components/common/Tooltip';
 import Icon from '@/components/common/Icon';
-import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils';
+import { validateFileType } from '@/lib/pdfUtils';
 
 type MockExamType = 'TRUE_FALSE' | 'FIND_CORRECT' | 'SHORT_ANSWER' | 'ESSAY';
 type MockExamCharacteristic = 'FIND_CORRECT' | 'FIND_INCORRECT' | 'FIND_MATCH';
@@ -79,7 +79,7 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
     }
   }, []);
 
-  const handleFileUpload = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = e.target.files?.[0];
     if (!uploadedFile) return;
 
@@ -91,19 +91,6 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
       alert(typeValidation.error);
       e.target.value = '';
       return;
-    }
-
-    // PDF 파일인 경우 페이지 수 체크
-    if (uploadedFile.type === 'application/pdf') {
-      const pdfValidation = await validatePdfPageCount(uploadedFile, 10);
-
-      if (!pdfValidation.isValid) {
-        alert(pdfValidation.error);
-        e.target.value = '';
-        return;
-      }
-
-      console.log('PDF 페이지 수:', pdfValidation.pageCount);
     }
 
     // JPG/PNG 파일인 경우 안내 메시지 (이미 한 장만 선택 가능)

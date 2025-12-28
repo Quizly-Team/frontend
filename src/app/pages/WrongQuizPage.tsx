@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { ChangeEvent } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Header, Footer, LoginModal, Icon, Modal, Input } from '@/components';
+import { Header, LoginModal, Icon, Modal, Input } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getWrongQuizzes, updateQuizzesTopic } from '@/api/quiz';
 import type {
@@ -463,11 +463,6 @@ const WrongQuizPage = () => {
           </button>
         </main>
 
-        {/* Footer - Web/Tablet Only */}
-        <div className="max-md:hidden">
-          <Footer />
-        </div>
-
         {/* Login Modal */}
         <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
       </div>
@@ -613,10 +608,6 @@ const WrongQuizPage = () => {
           {renderContent('grid grid-cols-2 gap-3 w-full')}
         </div>
       </main>
-
-      <div className="max-md:hidden">
-        <Footer />
-      </div>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
 
