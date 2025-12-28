@@ -1,4 +1,4 @@
-import { Header, Footer, LoginModal } from '@/components';
+import { Header, LoginModal } from '@/components';
 
 type UnauthorizedPageProps = {
   variant?: 'full' | 'simple';
@@ -32,10 +32,6 @@ const UnauthorizedPage = ({
             로그인하기
           </button>
         </main>
-
-        <div className="max-md:hidden">
-          <Footer />
-        </div>
 
         <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
       </div>
@@ -138,11 +134,6 @@ const UnauthorizedPage = ({
           지금 가입하기
         </button>
       </main>
-
-      {/* Footer - Web/Tablet Only */}
-      <div className="max-md:hidden">
-        <Footer />
-      </div>
 
       {/* Login Modal */}
       <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
