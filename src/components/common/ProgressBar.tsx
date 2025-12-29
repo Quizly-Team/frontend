@@ -2,10 +2,11 @@ type ProgressBarProps = {
   current: number;
   total: number;
   className?: string;
+  isCompleted?: boolean;
 };
 
-const ProgressBar = ({ current, total, className = '' }: ProgressBarProps) => {
-  const percentage = Math.round((current / total) * 100);
+const ProgressBar = ({ current, total, className = '', isCompleted = false }: ProgressBarProps) => {
+  const percentage = isCompleted ? 100 : Math.round((current / total) * 100);
   const progressWidth = `${percentage}%`;
 
   return (
@@ -21,20 +22,24 @@ const ProgressBar = ({ current, total, className = '' }: ProgressBarProps) => {
 
       {/* Character Icon */}
       <div
-        className="absolute top-1.5 -translate-y-1/2 transition-all duration-300"
-        style={{ left: progressWidth }}
+        className={`absolute top-1.5 -translate-y-1/2 transition-all duration-300 ${
+          percentage === 100 ? '' : '-translate-x-1/2'
+        }`}
+        style={percentage === 100 ? { right: '0px' } : { left: progressWidth }}
       >
         <img
           src="/characters/character2.png"
           alt="진행 캐릭터"
-          className="w-10 h-9 -translate-x-1/2"
+          className="w-10 h-9"
         />
       </div>
 
       {/* Percentage Text */}
       <div
-        className="absolute top-[24px] -translate-x-1/2 text-body2-medium text-primary whitespace-nowrap"
-        style={{ left: progressWidth }}
+        className={`absolute top-[24px] text-body2-medium text-primary whitespace-nowrap transition-all duration-300 ${
+          percentage === 100 ? '' : '-translate-x-1/2'
+        }`}
+        style={percentage === 100 ? { right: '0px' } : { left: progressWidth }}
       >
         {percentage}%
       </div>

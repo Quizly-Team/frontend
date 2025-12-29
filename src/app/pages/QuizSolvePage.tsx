@@ -214,8 +214,9 @@ const QuizSolvePage = ({
           {/* Progress Bar */}
           <div className="mb-[60px]">
             <ProgressBar
-              current={questionNumber}
+              current={showResult ? questionNumber : questionNumber - 1}
               total={quizDetailList.length}
+              isCompleted={isLastQuestion && showResult}
             />
           </div>
 
@@ -425,8 +426,9 @@ const QuizSolvePage = ({
           {/* Progress Bar */}
           <div className="mb-[47px]">
             <ProgressBar
-              current={questionNumber}
+              current={showResult ? questionNumber : questionNumber - 1}
               total={quizDetailList.length}
+              isCompleted={isLastQuestion && showResult}
             />
           </div>
 
