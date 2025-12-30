@@ -1,25 +1,16 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Header, LoginModal, UnauthorizedPage, QuizCard } from '@/components';
+import { Header, UnauthorizedPage, QuizCard } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getQuizGroups } from '@/api/quiz';
 import type { QuizHistoryDetail } from '@/types/quiz';
 
 const QuizDetailPage = () => {
   const { date } = useParams<{ date: string }>();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [quizzes, setQuizzes] = useState<QuizHistoryDetail[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isAuthenticated = authUtils.isAuthenticated();
-
-  const handleOpenLoginModal = useCallback(() => {
-    setIsLoginModalOpen(true);
-  }, []);
-
-  const handleCloseLoginModal = useCallback(() => {
-    setIsLoginModalOpen(false);
-  }, []);
 
   // 특정 날짜의 문제 목록 로드
   useEffect(() => {
@@ -59,14 +50,7 @@ const QuizDetailPage = () => {
 
   // 비회원은 접근 불가
   if (!isAuthenticated) {
-    return (
-      <UnauthorizedPage
-        variant="simple"
-        isLoginModalOpen={isLoginModalOpen}
-        onOpenLoginModal={handleOpenLoginModal}
-        onCloseLoginModal={handleCloseLoginModal}
-      />
-    );
+    return <UnauthorizedPage variant="simple" />;
   }
 
   // 회원인 경우
@@ -164,9 +148,6 @@ const QuizDetailPage = () => {
           </div>
         )}
       </main>
-
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
 
       {/* Home Indicator - Mobile Only */}
       <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />

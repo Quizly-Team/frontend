@@ -259,11 +259,11 @@ const HomePage = () => {
   const handleOpenMockExamModal = useCallback(() => {
     if (!isLoggedIn) {
       alert('로그인이 필요합니다.');
-      // handleOpenLoginModal(); // This function is not defined in the original file
+      navigate('/login');
       return;
     }
     setIsMockExamModalOpen(true);
-  }, [isLoggedIn]);
+  }, [isLoggedIn, navigate]);
 
   const handleCloseMockExamModal = useCallback(() => {
     setIsMockExamModalOpen(false);
