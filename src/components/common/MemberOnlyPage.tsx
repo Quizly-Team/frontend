@@ -1,17 +1,11 @@
-import { Header, LoginModal } from '@/components';
+import { Header } from '@/components';
 
 type MemberOnlyPageProps = {
   variant?: 'full' | 'simple';
-  isLoginModalOpen: boolean;
-  onOpenLoginModal: () => void;
-  onCloseLoginModal: () => void;
 };
 
 const MemberOnlyPage = ({
   variant = 'full',
-  isLoginModalOpen,
-  onOpenLoginModal: _,
-  onCloseLoginModal,
 }: MemberOnlyPageProps) => {
   if (variant === 'simple') {
     return (
@@ -34,8 +28,6 @@ const MemberOnlyPage = ({
             홈으로 돌아가기
           </button>
         </main>
-
-        <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
       </div>
     );
   }
@@ -138,9 +130,6 @@ const MemberOnlyPage = ({
           홈으로 돌아가기
         </button>
       </main>
-
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
     </div>
   );
 };

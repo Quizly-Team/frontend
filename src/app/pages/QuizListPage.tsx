@@ -1,24 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, LoginModal, UnauthorizedPage, DateCard, Icon } from '@/components';
+import { Header, UnauthorizedPage, DateCard, Icon } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getQuizGroups } from '@/api/quiz';
 
 const QuizListPage = () => {
   const navigate = useNavigate();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [quizDates, setQuizDates] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isAuthenticated = authUtils.isAuthenticated();
-
-  const handleOpenLoginModal = useCallback(() => {
-    setIsLoginModalOpen(true);
-  }, []);
-
-  const handleCloseLoginModal = useCallback(() => {
-    setIsLoginModalOpen(false);
-  }, []);
 
   const handleDateClick = useCallback(
     (date: string) => {
@@ -60,14 +51,7 @@ const QuizListPage = () => {
 
   // 비회원인 경우
   if (!isAuthenticated) {
-    return (
-      <UnauthorizedPage
-        variant="full"
-        isLoginModalOpen={isLoginModalOpen}
-        onOpenLoginModal={handleOpenLoginModal}
-        onCloseLoginModal={handleCloseLoginModal}
-      />
-    );
+    return <UnauthorizedPage variant="full" />;
   }
 
   // 회원인 경우
@@ -171,9 +155,6 @@ const QuizListPage = () => {
           </div>
         )}
       </main>
-
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
 
       {/* Home Indicator - Mobile Only */}
       <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
