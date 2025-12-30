@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { ChangeEvent } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Header, LoginModal, Icon, Modal, Input } from '@/components';
+import { Header, Icon, Modal, Input } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getWrongQuizzes, updateQuizzesTopic } from '@/api/quiz';
 import type {
@@ -23,7 +23,6 @@ const GROUP_TYPE_LABEL: Record<'date' | 'topic', string> = {
 
 const WrongQuizPage = () => {
   const navigate = useNavigate();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [groupType, setGroupType] = useState<'date' | 'topic'>('date');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() =>
     authUtils.isAuthenticated()
@@ -42,13 +41,9 @@ const WrongQuizPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTopicEdited, setIsTopicEdited] = useState(false);
 
-  const handleOpenLoginModal = useCallback(() => {
-    setIsLoginModalOpen(true);
-  }, []);
-
-  const handleCloseLoginModal = useCallback(() => {
-    setIsLoginModalOpen(false);
-  }, []);
+  const handleLoginClick = useCallback(() => {
+    navigate('/login');
+  }, [navigate]);
 
   const {
     data,
@@ -89,9 +84,9 @@ const WrongQuizPage = () => {
     if (isAuthError) {
       authUtils.logout();
       setIsAuthenticated(false);
-      setIsLoginModalOpen(true);
+      navigate('/login');
     }
-  }, [error]);
+  }, [error, navigate]);
 
   useEffect(() => {
     if (!isDropdownOpen) return;
@@ -409,7 +404,7 @@ const WrongQuizPage = () => {
 
           {/* Sign Up Button */}
           <button
-            onClick={handleOpenLoginModal}
+            onClick={handleLoginClick}
             className="bg-primary text-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary/90 transition-colors"
           >
             지금 가입하기
@@ -456,15 +451,12 @@ const WrongQuizPage = () => {
 
           {/* Sign Up Button */}
           <button
-            onClick={handleOpenLoginModal}
+            onClick={handleLoginClick}
             className="bg-primary text-white text-body3-regular px-l py-[14px] rounded-[6px] hover:bg-primary/90 transition-colors"
           >
             지금 가입하기
           </button>
         </main>
-
-        {/* Login Modal */}
-        <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
       </div>
     );
   }
@@ -608,8 +600,6 @@ const WrongQuizPage = () => {
           {renderContent('grid grid-cols-2 gap-3 w-full')}
         </div>
       </main>
-
-      <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
 
       <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
         <div className="w-full max-w-[430px]">

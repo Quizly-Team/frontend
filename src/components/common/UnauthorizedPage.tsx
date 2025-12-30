@@ -1,18 +1,18 @@
-import { Header, LoginModal } from '@/components';
+import { Header } from '@/components';
+import { useNavigate } from 'react-router-dom';
 
 type UnauthorizedPageProps = {
   variant?: 'full' | 'simple';
-  isLoginModalOpen: boolean;
-  onOpenLoginModal: () => void;
-  onCloseLoginModal: () => void;
 };
 
 const UnauthorizedPage = ({
   variant = 'full',
-  isLoginModalOpen,
-  onOpenLoginModal,
-  onCloseLoginModal,
 }: UnauthorizedPageProps) => {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
   if (variant === 'simple') {
     return (
       <div className="min-h-screen bg-bg-home flex flex-col">
@@ -26,14 +26,12 @@ const UnauthorizedPage = ({
             문제를 확인하려면 로그인해주세요.
           </p>
           <button
-            onClick={onOpenLoginModal}
+            onClick={handleLoginClick}
             className="bg-primary text-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary/90 transition-colors"
           >
             로그인하기
           </button>
         </main>
-
-        <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
       </div>
     );
   }
@@ -81,7 +79,7 @@ const UnauthorizedPage = ({
 
         {/* Sign Up Button */}
         <button
-          onClick={onOpenLoginModal}
+          onClick={handleLoginClick}
           className="bg-primary text-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary/90 transition-colors"
         >
           지금 가입하기
@@ -128,15 +126,12 @@ const UnauthorizedPage = ({
 
         {/* Sign Up Button */}
         <button
-          onClick={onOpenLoginModal}
+          onClick={handleLoginClick}
           className="bg-primary text-white text-body3-regular px-l py-[14px] rounded-[6px] hover:bg-primary/90 transition-colors"
         >
           지금 가입하기
         </button>
       </main>
-
-      {/* Login Modal */}
-      <LoginModal isOpen={isLoginModalOpen} onClose={onCloseLoginModal} />
 
     </div>
   );
