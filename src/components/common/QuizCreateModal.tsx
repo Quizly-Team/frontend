@@ -104,12 +104,12 @@ const QuizCreateModal = ({
         </div>
 
         {/* Mobile 레이아웃 */}
-        <div className="hidden max-md:flex flex-col gap-3 items-center">
+        <div className="hidden max-md:flex flex-row gap-3 justify-center">
           {/* 객관식 문제 카드 */}
           <button
             onClick={handleMultipleChoice}
             disabled={!isLoggedIn}
-            className="bg-white rounded-[24px] w-[240px] h-[194px] flex flex-col items-center justify-center gap-2 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
+            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-center gap-4 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
           >
             {/* 비회원 비활성화 오버레이 */}
             {!isLoggedIn && (
@@ -122,36 +122,26 @@ const QuizCreateModal = ({
             </div>
 
             {/* 텍스트 */}
-            <div className="flex flex-col items-center gap-2">
-              <h3 className="text-body1-medium text-gray-900">
-                객관식 문제 만들기
-              </h3>
-              <p className="text-tint-regular text-gray-600 text-center whitespace-pre-wrap">
-                {'사지선다형의 객관식 문제를\n만들어 드립니다.'}
-              </p>
-            </div>
+            <h3 className="text-header3-bold text-gray-900">
+              객관식 문제
+            </h3>
           </button>
 
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-white rounded-[24px] w-[240px] h-[194px] flex flex-col items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
+            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-center gap-4 hover:bg-gray-50 transition-colors"
           >
             {/* 아이콘 */}
             <div className="flex gap-2">
-              <Icon name="correct" size={42} />
-              <Icon name="error" size={42} />
+              <Icon name="correct" size={38} />
+              <Icon name="error" size={38} />
             </div>
 
             {/* 텍스트 */}
-            <div className="flex flex-col items-center gap-2">
-              <h3 className="text-body1-medium text-gray-900">
-                OX 문제 만들기
-              </h3>
-              <p className="text-tint-regular text-gray-600 text-center whitespace-pre-wrap">
-                {'간단한 OX 형식의 문제를\n만들어 드립니다.'}
-              </p>
-            </div>
+            <h3 className="text-header3-bold text-gray-900">
+              OX 문제
+            </h3>
           </button>
         </div>
       </div>
