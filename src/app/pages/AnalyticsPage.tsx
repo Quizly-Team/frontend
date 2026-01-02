@@ -246,25 +246,25 @@ const AnalyticsPage = () => {
                 {/* 프로필 이미지 */}
                 <div className="flex items-center justify-center gap-6 mb-8">
                   <div className="relative">
-                    <div className="w-[110px] h-[110px] rounded-full border-2 border-primary flex items-center justify-center bg-gray-100 overflow-hidden">
+                    <div className="w-[110px] h-[110px] rounded-full border-2 border-primary overflow-hidden">
                       {previewImageUrl ? (
                         // 미리보기 이미지 표시
                         <img
                           src={previewImageUrl}
                           alt="프로필 미리보기"
-                          className="w-[100px] h-[100px] rounded-full object-cover"
-                        />
-                      ) : profileImageUrl ? (
-                        <img
-                          src={profileImageUrl}
-                          alt="프로필"
-                          className="w-[100px] h-[100px] rounded-full object-cover"
+                          className="w-full h-full rounded-full object-cover"
                         />
                       ) : (
                         <img
-                          src="/icon/default.svg"
-                          alt="기본 프로필"
-                          className="w-[100px] h-[100px] rounded-full object-cover"
+                          src={profileImageUrl || '/icon/default.svg'}
+                          alt="프로필"
+                          className="w-full h-full rounded-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (target.src !== `${window.location.origin}/icon/default.svg`) {
+                              target.src = '/icon/default.svg';
+                            }
+                          }}
                         />
                       )}
                     </div>
