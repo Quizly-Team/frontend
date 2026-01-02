@@ -22,12 +22,6 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
     navigate("/login");
   }, [navigate]);
 
-  const handleLogoutClick = useCallback(() => {
-    authUtils.logout();
-    setIsAuthenticated(false);
-    window.location.reload();
-  }, []);
-
   const handleProfileClick = useCallback(() => {
     navigate("/analytics");
   }, [navigate]);

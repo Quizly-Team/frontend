@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Header, UnauthorizedPage, QuizCard } from '@/components';
 import { authUtils } from '@/lib/auth';
