@@ -6,6 +6,7 @@ import {
   getUserInfo,
   updateNickname,
   updateProfileImage,
+  logout,
   type ReadUserInfoResponse,
 } from '@/api/account';
 
@@ -157,6 +158,25 @@ const AnalyticsPage = () => {
     }
   };
 
+  const handleLogout = async () => {
+    if (!confirm('로그아웃 하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      await logout();
+      // 로그아웃 성공 시 홈으로 이동
+      navigate('/', { replace: true });
+      window.location.reload();
+    } catch (err) {
+      console.error('로그아웃 실패:', err);
+      // API 호출 실패해도 클라이언트 측 토큰은 제거하고 로그아웃 처리
+      authUtils.removeAllTokens();
+      navigate('/', { replace: true });
+      window.location.reload();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
       <Header />
@@ -288,14 +308,22 @@ const AnalyticsPage = () => {
               </div>
             </div>
 
-                {/* 저장 버튼 */}
-                <div className="flex justify-center">
+                {/* 저장 및 로그아웃 버튼 */}
+                <div className="flex justify-center gap-4">
+                  <Button
+                    variant="secondary"
+                    size="medium"
+                    onClick={handleLogout}
+                    className="w-[120px] h-[46px] rounded-md bg-[#f6fbf4] text-primary hover:bg-[#e8f5e0]"
+                  >
+                    로그아웃
+                  </Button>
                   <Button
                     variant="primary"
                     size="medium"
                     onClick={handleSaveProfile}
                     disabled={isSaving}
-                    className="rounded-md"
+                    className="w-[120px] h-[46px] rounded-md"
                   >
                     {isSaving ? '저장 중...' : '변경사항 저장'}
                   </Button>
