@@ -110,6 +110,12 @@ const AnalyticsPage = () => {
       return;
     }
 
+    // 닉네임 길이 검증 (6자 제한)
+    if (nickname.length > 6) {
+      setSaveError('닉네임은 6자까지 입력 가능합니다.');
+      return;
+    }
+
     // 변경사항이 있는지 확인
     const hasNicknameChange = userInfo && nickname !== userInfo.nickName;
     const hasImageChange = selectedFile !== null;
@@ -286,16 +292,26 @@ const AnalyticsPage = () => {
 
             {/* 닉네임 입력 */}
             <div className="mb-6 flex flex-col items-center">
-              <Input
-                label="닉네임"
-                value={nickname}
-                onChange={(e) => {
-                  setNickname(e.target.value);
-                  setSaveError(null);
-                }}
-                className="max-w-[350px] w-full"
-                error={saveError || undefined}
-              />
+              <div className="max-w-[350px] w-full">
+                <Input
+                  label="닉네임"
+                  value={nickname}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    // 6자까지만 입력 가능
+                    if (newValue.length <= 6) {
+                      setNickname(newValue);
+                      setSaveError(null);
+                    }
+                  }}
+                  maxLength={6}
+                  className="w-full"
+                  error={saveError || undefined}
+                />
+                <p className="mt-2 text-[14px] text-gray-600 text-left">
+                  닉네임은 6자까지만 가능합니다.
+                </p>
+              </div>
             </div>
 
             {/* 이메일 입력 (비활성화) */}

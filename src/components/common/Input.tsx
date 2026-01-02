@@ -12,6 +12,7 @@ type InputProps = {
   className?: string;
   labelClassName?: string;
   inputClassName?: string;
+  maxLength?: number;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -27,6 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       className = '',
       labelClassName = '',
       inputClassName = '',
+      maxLength,
     },
     ref
   ) => {
@@ -53,6 +55,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
+          maxLength={maxLength}
           className={`${inputStyles} ${inputClassName}`}
         />
 
