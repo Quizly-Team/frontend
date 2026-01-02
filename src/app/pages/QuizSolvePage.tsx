@@ -273,7 +273,7 @@ const QuizSolvePage = ({
                   <button
                     onClick={() => handleSelectAnswer('O')}
                     className={`
-                      h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
+                      h-[120px] max-lg:h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
                       ${
                         showResult
                           ? selectedAnswer === 'O'
@@ -301,7 +301,7 @@ const QuizSolvePage = ({
                   <button
                     onClick={() => handleSelectAnswer('X')}
                     className={`
-                      h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
+                      h-[120px] max-lg:h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
                       ${
                         showResult
                           ? selectedAnswer === 'X'
@@ -338,7 +338,7 @@ const QuizSolvePage = ({
                       key={`${currentQuiz.quizId}-option-${index}`}
                       onClick={() => handleSelectAnswer(option)}
                       className={`
-                        w-full flex items-center gap-3 px-3 py-4 rounded-[12px] border text-left transition-colors
+                        w-full flex items-center gap-3 px-3 py-4 max-lg:h-[120px] max-lg:min-h-[120px] max-lg:py-0 rounded-[12px] border text-left transition-colors
                         ${
                           showResult
                             ? isSelected

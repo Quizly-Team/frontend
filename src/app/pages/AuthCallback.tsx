@@ -51,6 +51,9 @@ const AuthCallback = () => {
           authUtils.setLastLoginProvider(provider);
         }
 
+        // UserContext에 인증 상태 변경 알림
+        window.dispatchEvent(new Event('authStateChanged'));
+
         navigate('/', { replace: true });
       } catch (error) {
         console.error('OAuth callback error:', error);
