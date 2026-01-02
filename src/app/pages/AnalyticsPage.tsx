@@ -9,11 +9,13 @@ import {
   logout,
   type ReadUserInfoResponse,
 } from '@/api/account';
+import { useUser } from '@/contexts/UserContext';
 
 type TabType = 'analytics' | 'account';
 
 const AnalyticsPage = () => {
   const navigate = useNavigate();
+  const { userInfo: contextUserInfo, refreshUserInfo } = useUser();
   const [activeTab, setActiveTab] = useState<TabType>('analytics');
   const [userInfo, setUserInfo] = useState<ReadUserInfoResponse | null>(null);
   const [nickname, setNickname] = useState('');
@@ -29,7 +31,7 @@ const AnalyticsPage = () => {
 
   const isAuthenticated = authUtils.isAuthenticated();
 
-  // 사용자 정보 조회
+  // 사용자 정보 조회 (Context에서 가져오거나 직접 조회)
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
@@ -40,7 +42,7 @@ const AnalyticsPage = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const data = await getUserInfo();
+        const data = contextUserInfo || await getUserInfo();
         setUserInfo(data);
         setNickname(data.nickName || '');
         setEmail(data.email || '');
@@ -54,7 +56,7 @@ const AnalyticsPage = () => {
     };
 
     fetchUserInfo();
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, contextUserInfo]);
 
   if (!isAuthenticated) {
     return null;
@@ -136,6 +138,9 @@ const AnalyticsPage = () => {
       setUserInfo(updatedData);
       setNickname(updatedData.nickName || '');
       setProfileImageUrl(updatedData.profileImageUrl);
+
+      // Context의 유저 정보도 업데이트 (Header에 즉시 반영)
+      await refreshUserInfo();
 
       // 미리보기 정리
       if (previewImageUrl) {

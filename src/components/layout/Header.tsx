@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components";
 import { authUtils } from "@/lib/auth";
+import { useUser } from "@/contexts/UserContext";
 
 type HeaderProps = {
   logoUrl?: string;
@@ -10,6 +11,7 @@ type HeaderProps = {
 
 const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { userInfo, isLoading: isUserInfoLoading } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,18 +79,50 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
               틀린문제 풀어보기
             </a>
             {isAuthenticated ? (
-              <button
-                onClick={handleProfileClick}
-                className="ml-4 max-lg:ml-2 w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] rounded-full bg-gray-200 hover:bg-gray-300 transition-colors flex items-center justify-center shrink-0 cursor-pointer overflow-hidden"
-                aria-label="프로필 페이지로 이동"
-              >
-                {/* 프로필 이미지 - 나중에 API로 연결 */}
-                <img
-                  src="/icon/default.svg"
-                  alt="프로필"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </button>
+              // 유저 정보 로딩 중이 아니고 userInfo가 있을 때만 프로필 표시
+              !isUserInfoLoading && userInfo ? (
+                <button
+                  onClick={handleProfileClick}
+                  className="ml-4 max-lg:ml-2 flex items-center gap-2 shrink-0 cursor-pointer"
+                  aria-label="프로필 페이지로 이동"
+                >
+                  {/* 프로필 이미지 - Figma 디자인에 맞춰 녹색 테두리 추가 */}
+                  <div className="relative w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] flex items-center justify-center">
+                    {/* 외곽 원: 38x38, stroke #30a10e */}
+                    <div className="absolute inset-0 rounded-full border-2 border-primary"></div>
+                    {/* 내부 원: 34.5x34.5, fill #efefef */}
+                    <div className="w-[34.5px] h-[34.5px] max-lg:w-[28px] max-lg:h-[28px] rounded-full bg-[#efefef] overflow-hidden flex items-center justify-center">
+                      {userInfo.profileImageUrl ? (
+                        <img
+                          src={userInfo.profileImageUrl}
+                          alt="프로필"
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src="/icon/default.svg"
+                          alt="프로필"
+                          className="w-[20px] h-[20px] max-lg:w-[16px] max-lg:h-[16px] object-cover"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  {/* 닉네임 텍스트 - 프로필 이미지가 없어도 닉네임은 항상 표시 */}
+                  {userInfo.nickName ? (
+                    <span className="text-[14px] text-primary font-normal max-lg:text-xs">
+                      {userInfo.nickName}
+                    </span>
+                  ) : (
+                    // 닉네임이 없을 경우 기본값 표시 (필요시)
+                    <span className="text-[14px] text-primary font-normal max-lg:text-xs">
+                      사용자
+                    </span>
+                  )}
+                </button>
+              ) : (
+                // 로딩 중일 때는 공간만 유지 (깜빡임 방지)
+                <div className="ml-4 max-lg:ml-2 w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] shrink-0" />
+              )
             ) : (
               <Button
                 variant="primary"
