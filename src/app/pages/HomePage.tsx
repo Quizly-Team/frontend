@@ -552,7 +552,7 @@ const HomePage = () => {
 
       {/* Fixed Bottom Input - Mobile Only */}
       <div
-        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-50"
+        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-[30]"
         onKeyDown={handleKeyDown}
         tabIndex={0}
       >
