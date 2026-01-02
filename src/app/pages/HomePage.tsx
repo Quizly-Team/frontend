@@ -585,7 +585,7 @@ const HomePage = () => {
             {file ? (
               <button
                 onClick={handleOpenQuizCreateModal}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center w-6 h-6 shrink-0"
                 aria-label="보내기"
               >
                 <Icon name="send_black" size={24} />
@@ -593,13 +593,13 @@ const HomePage = () => {
             ) : searchText ? (
               <button
                 onClick={handleOpenQuizCreateModal}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center w-6 h-6 shrink-0"
                 aria-label="보내기"
               >
                 <Icon name="send_black" size={24} />
               </button>
             ) : (
-              <label className="cursor-pointer flex items-center justify-center">
+              <label className="cursor-pointer flex items-center justify-center w-6 h-6 shrink-0">
                 <input
                   type="file"
                   onChange={handleFileUpload}
