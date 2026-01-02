@@ -290,3 +290,30 @@ export const updateProfileImage = async (
   return response.json();
 };
 
+/**
+ * 로그아웃 API
+ */
+export const logout = async (): Promise<void> => {
+  const response = await authenticatedFetch(`${API_BASE_URL}/auth/logout`, {
+    method: 'POST',
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `로그아웃 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  // 로그아웃 성공 시 클라이언트 측 토큰도 제거
+  authUtils.removeAllTokens();
+};
+
