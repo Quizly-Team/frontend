@@ -5,6 +5,7 @@ export const OAUTH_ENDPOINTS = {
   KAKAO: `${AUTH_BASE_URL}/oauth2/authorization/kakao`,
   CALLBACK: `${AUTH_BASE_URL}/login/oauth2/code`,
   REISSUE: `${AUTH_BASE_URL}/auth/reissue`,
+  LOGOUT: `${AUTH_BASE_URL}/auth/logout`,
 } as const;
 
 export type OAuthProvider = 'naver' | 'kakao';
