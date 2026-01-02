@@ -109,7 +109,7 @@ const QuizCreateModal = ({
           <button
             onClick={handleMultipleChoice}
             disabled={!isLoggedIn}
-            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-center gap-4 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
+            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
           >
             {/* 비회원 비활성화 오버레이 */}
             {!isLoggedIn && (
@@ -117,12 +117,12 @@ const QuizCreateModal = ({
             )}
 
             {/* 아이콘 */}
-            <div className="relative">
+            <div className="relative flex items-center justify-center flex-1">
               <Icon name="light" size={42} />
             </div>
 
             {/* 텍스트 */}
-            <h3 className="text-header3-bold text-gray-900">
+            <h3 className="text-[20px] font-bold leading-[28px] text-gray-900">
               객관식 문제
             </h3>
           </button>
@@ -130,16 +130,16 @@ const QuizCreateModal = ({
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-center gap-4 hover:bg-gray-50 transition-colors"
+            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-gray-50 transition-colors"
           >
             {/* 아이콘 */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center justify-center flex-1">
               <Icon name="correct" size={38} />
               <Icon name="error" size={38} />
             </div>
 
             {/* 텍스트 */}
-            <h3 className="text-header3-bold text-gray-900">
+            <h3 className="text-[20px] font-bold leading-[28px] text-gray-900">
               OX 문제
             </h3>
           </button>
