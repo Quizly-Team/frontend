@@ -30,7 +30,15 @@ type IconName =
   | "check_green"
   | "check_white"
   | "icn_checkbox"
-  | "icn_note";
+  | "icn_note"
+  | "dashboard_check"
+  | "dashboard_up"
+  | "dashboard_delete"
+  | "dashboard_i"
+  | "dashboard_fire"
+  | "dashboard_book"
+  | "dashboard_chart"
+  | "dashboard_fire_white";
 
 type IconProps = {
   name: IconName;
@@ -403,6 +411,78 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
       <img
         src="/icon/icn_note.svg"
         alt="icn_note"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_check: (
+      <img
+        src="/icon/dashboard_check.svg"
+        alt="dashboard_check"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_up: (
+      <img
+        src="/icon/dashboard_up.svg"
+        alt="dashboard_up"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_delete: (
+      <img
+        src="/icon/dashboard_delete.svg"
+        alt="dashboard_delete"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_i: (
+      <img
+        src="/icon/dashboard_i.svg"
+        alt="dashboard_i"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_fire: (
+      <img
+        src="/icon/dashboard_fire.svg"
+        alt="dashboard_fire"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_book: (
+      <img
+        src="/icon/dashboard_book.svg"
+        alt="dashboard_book"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_chart: (
+      <img
+        src="/icon/dashboard_chart.svg"
+        alt="dashboard_chart"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_fire_white: (
+      <img
+        src="/icon/dashboard_fire_white.svg"
+        alt="dashboard_fire_white"
         width={size}
         height={size}
         className={className}
