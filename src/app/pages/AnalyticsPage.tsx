@@ -10,6 +10,13 @@ import {
   type ReadUserInfoResponse,
 } from '@/api/account';
 import { useUser } from '@/contexts/UserContext';
+import { useDashboardStats } from '@/hooks/useDashboard';
+import TodaySummary from '@/components/dashboard/today-summary';
+import CumulativeSummary from '@/components/dashboard/cumulative-summary';
+import QuizTypeChart from '@/components/dashboard/quiz-type-chart';
+import HourlyChart from '@/components/dashboard/hourly-chart';
+import TopicChart from '@/components/dashboard/topic-chart';
+import DailyHeatmap from '@/components/dashboard/daily-heatmap';
 
 type TabType = 'analytics' | 'account';
 
@@ -30,6 +37,9 @@ const AnalyticsPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isAuthenticated = authUtils.isAuthenticated();
+
+  // 대시보드 통계 조회
+  const { data: dashboardData, isLoading: isDashboardLoading, error: dashboardError } = useDashboardStats();
 
   // 사용자 정보 조회 (Context에서 가져오거나 직접 조회)
   useEffect(() => {
@@ -192,11 +202,11 @@ const AnalyticsPage = () => {
     <div className="min-h-screen bg-bg-home flex flex-col">
       <Header />
       
-      <main className="flex-1 flex flex-col items-center pt-10 pb-24 px-[60px] max-lg:px-15 max-md:px-margin-mobile max-md:pt-6">
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-15 max-md:px-margin-mobile max-md:pt-6">
         <div className="w-full max-w-[1024px]">
           {/* 탭 헤더 */}
-          <div className="mb-6">
-            <div className="flex items-center gap-8 mb-4">
+          <div className="mb-[30px]">
+            <div className="flex items-center gap-6 mb-[6px]">
               <button
                 onClick={() => setActiveTab('analytics')}
                 className={`text-[32px] font-bold leading-[44.8px] ${
@@ -220,10 +230,40 @@ const AnalyticsPage = () => {
           </div>
 
         {activeTab === 'analytics' && (
-          <div className="bg-white rounded-2xl p-8 border border-gray-300">
-            <p className="text-gray-600 text-center py-20">
-              학습분석 기능은 준비 중입니다.
-            </p>
+          <div className="flex flex-col gap-5">
+            {isDashboardLoading ? (
+              <div className="bg-white rounded-2xl p-8 border border-gray-300">
+                <div className="flex justify-center items-center py-20">
+                  <p className="text-gray-600">로딩 중...</p>
+                </div>
+              </div>
+            ) : dashboardError ? (
+              <div className="bg-white rounded-2xl p-8 border border-gray-300">
+                <div className="flex justify-center items-center py-20">
+                  <p className="text-red-500">데이터를 불러오는데 실패했습니다.</p>
+                </div>
+              </div>
+            ) : dashboardData ? (
+              <>
+                {/* 오늘의 학습 요약 */}
+                <TodaySummary data={dashboardData.todaySummary} dailyData={dashboardData.dailySummaryList} />
+
+                {/* 누적 통계 */}
+                <CumulativeSummary data={dashboardData.cumulativeSummary} />
+
+                {/* 일별 학습 히트맵 */}
+                <DailyHeatmap data={dashboardData.dailySummaryList} />
+
+                {/* 유형별/시간대별 차트 */}
+                <div className="flex gap-5">
+                  <QuizTypeChart data={dashboardData.quizTypeSummaryList} />
+                  <HourlyChart data={dashboardData.hourlySummaryList} nickname={userInfo?.nickName} />
+                </div>
+
+                {/* 주제별 차트 */}
+                <TopicChart data={dashboardData.topicSummaryList} />
+              </>
+            ) : null}
           </div>
         )}
 

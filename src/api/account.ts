@@ -103,7 +103,7 @@ const handleTokenRefresh = async (): Promise<string> => {
  * 인증이 필요한 API 요청을 위한 공통 fetch 함수
  * 401 에러 시 자동으로 토큰 재발급 및 재시도
  */
-const authenticatedFetch = async (
+export const authenticatedFetch = async (
   url: string,
   options: RequestInit = {}
 ): Promise<Response> => {
