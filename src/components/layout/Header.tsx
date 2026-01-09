@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components";
 import { authUtils } from "@/lib/auth";
 import { useUser } from "@/contexts/UserContext";
-import { logout } from "@/api/account";
+import { logout, getTodaySummary } from "@/api/account";
 
 type HeaderProps = {
   logoUrl?: string;
@@ -15,6 +16,15 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { userInfo, isLoading: isUserInfoLoading } = useUser();
   const navigate = useNavigate();
+
+  // 오늘의 학습 요약 조회 (로그인 상태일 때만)
+  const { data: todaySummaryData } = useQuery({
+    queryKey: ['account', 'today-summary'],
+    queryFn: getTodaySummary,
+    enabled: isAuthenticated,
+    staleTime: 1000 * 60, // 1분
+    refetchOnWindowFocus: true, // 문제 풀고 돌아왔을 때 자동 갱신
+  });
 
   useEffect(() => {
     setIsAuthenticated(authUtils.isAuthenticated());
@@ -264,7 +274,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
                           {/* 배너 - 로그아웃 버튼 아래 */}
                           <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
                             <p className="text-[14px] text-primary leading-[19.6px]">
-                              오늘 15개의 문제 풀이를 진행했어요!
+                              오늘 {todaySummaryData?.todaySummary.solvedCount ?? 0}개의 문제 풀이를 진행했어요!
                             </p>
                           </div>
                         </>
