@@ -1,5 +1,6 @@
 import { authUtils } from '@/lib/auth';
 import { OAUTH_ENDPOINTS, type TokenReissueResponse } from './auth';
+import type { TodaySummary } from './dashboard';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
@@ -315,5 +316,32 @@ export const logout = async (): Promise<void> => {
 
   // 로그아웃 성공 시 클라이언트 측 토큰도 제거
   authUtils.removeAllTokens();
+};
+
+/**
+ * 오늘의 학습 요약 조회 API
+ */
+export const getTodaySummary = async (): Promise<{ todaySummary: TodaySummary }> => {
+  const response = await authenticatedFetch(`${API_BASE_URL}/account/today-summary`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message ||
+        `오늘의 학습 요약 조회 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return response.json();
 };
 
