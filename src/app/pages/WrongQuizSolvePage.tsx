@@ -70,6 +70,7 @@ const WrongQuizSolvePage = () => {
   return (
     <QuizSolvePage
       quizDetailList={quizDetailList}
+      isRetryMode={true}
       onComplete={handleComplete}
       onExit={handleExit}
       onViewAll={handleViewAll}
