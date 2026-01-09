@@ -22,10 +22,10 @@ const Footer = () => {
           </p>
 
           <a
-            href="mailto:liz021229@gmail.com"
+            href="mailto:quizlystudy@gmail.com"
             className="text-[14px] max-lg:text-[clamp(12px,1.5vw,14px)] text-gray-600 px-s py-xs leading-[1.4] shrink-0"
           >
-            문의: liz021229@gmail.com
+            문의: quizlystudy@gmail.com
           </a>
 
           <p className="text-[14px] max-lg:text-[clamp(12px,1.5vw,14px)] text-gray-600 px-s py-xs leading-[1.4] shrink-0">
@@ -53,10 +53,10 @@ const Footer = () => {
           </p>
 
           <a
-            href="mailto:liz021229@gmail.com"
+            href="mailto:quizlystudy@gmail.com"
             className="text-tint-regular text-gray-600 text-center"
           >
-            문의: liz021229@gmail.com
+            문의: quizlystudy@gmail.com
           </a>
 
           <p className="text-tint-regular text-gray-600 text-center">
