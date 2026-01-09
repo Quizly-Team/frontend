@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Header, Icon, QuizResultModal } from '@/components';
 import ProgressBar from '@/components/common/ProgressBar';
 import type { QuizDetail, UserAnswer } from '@/types/quiz';
-import { submitAnswerMember } from '@/api/quiz';
+import { submitAnswerMember, submitAnswerRetry } from '@/api/quiz';
 import { authUtils } from '@/lib/auth';
 
 type QuizSolvePageProps = {
   quizDetailList: QuizDetail[];
+  isRetryMode?: boolean;
   onComplete?: (answers: UserAnswer[]) => void;
   onExit?: () => void;
   onViewAll?: (answers: UserAnswer[]) => void;
@@ -15,6 +16,7 @@ type QuizSolvePageProps = {
 
 const QuizSolvePage = ({
   quizDetailList,
+  isRetryMode = false,
   onComplete,
   onExit,
   onViewAll,
@@ -112,11 +114,20 @@ const QuizSolvePage = ({
       if (isAuthenticated) {
         setIsSubmitting(true);
         try {
-          await submitAnswerMember(
-            currentQuiz.quizId,
-            selectedAnswer,
-            solveTimeSeconds
-          );
+          // 틀린 문제 재도전 모드면 retry API 사용, 아니면 기본 API 사용
+          if (isRetryMode) {
+            await submitAnswerRetry(
+              currentQuiz.quizId,
+              selectedAnswer,
+              solveTimeSeconds
+            );
+          } else {
+            await submitAnswerMember(
+              currentQuiz.quizId,
+              selectedAnswer,
+              solveTimeSeconds
+            );
+          }
         } catch (error) {
           // 에러가 발생해도 UI 흐름은 유지 (사용자 경험 보호)
           if (import.meta.env.DEV) {

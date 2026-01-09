@@ -387,6 +387,48 @@ export const submitAnswerMember = async (
 };
 
 /**
+ * 답안 제출 - 틀린 문제 재도전 (회원)
+ * @param quizId - 문제 ID
+ * @param userAnswer - 사용자가 선택한 답안
+ * @param solveTime - 문제 풀이 시간 (초)
+ */
+export const submitAnswerRetry = async (
+  quizId: number,
+  userAnswer: string,
+  solveTime: number
+): Promise<SubmitAnswerResponse> => {
+  console.log('[회원] 틀린 문제 재도전 답안 제출 요청:', {
+    url: `${API_BASE_URL}/quizzes/${quizId}/answer/retry`,
+    body: { userAnswer, solveTime },
+  });
+
+  const response = await authenticatedFetch(
+    `${API_BASE_URL}/quizzes/${quizId}/answer/retry`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ userAnswer, solveTime }),
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `답안 제출 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  return response.json();
+};
+
+/**
  * 문제 모아보기 조회 (회원)
  * @param groupType - 그룹화 기준 (예: 'date')
  */
