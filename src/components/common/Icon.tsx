@@ -30,6 +30,8 @@ type IconName =
   | "check_green"
   | "check_white"
   | "icn_checkbox"
+  | "icn_check_fill"
+  | "icn_check_fill_in"
   | "icn_note"
   | "dashboard_check"
   | "dashboard_up"
@@ -402,6 +404,24 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
       <img
         src="/icon/icn_checkbox.svg"
         alt="icn_checkbox"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    icn_check_fill: (
+      <img
+        src="/icon/icn_check_fill.svg"
+        alt="icn_check_fill"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    icn_check_fill_in: (
+      <img
+        src="/icon/icn_check_fill_in.svg"
+        alt="icn_check_fill_in"
         width={size}
         height={size}
         className={className}
