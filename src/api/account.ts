@@ -180,6 +180,7 @@ export type ReadUserInfoResponse = {
   nickName: string;
   email: string;
   profileImageUrl: string | null;
+  onboardingCompleted: boolean;
 };
 
 /**
@@ -345,3 +346,46 @@ export const getTodaySummary = async (): Promise<{ todaySummary: TodaySummary }>
   return response.json();
 };
 
+/**
+ * 온보딩 정보 저장 요청 타입
+ */
+export type SaveOnboardingRequest = {
+  targetType: string;
+  studyGoal: string;
+};
+
+/**
+ * 온보딩 정보 저장 응답 타입
+ */
+export type SaveOnboardingResponse = {};
+
+/**
+ * 온보딩 정보 저장 API
+ */
+export const saveOnboarding = async (
+  request: SaveOnboardingRequest
+): Promise<SaveOnboardingResponse> => {
+  const response = await authenticatedFetch(`${API_BASE_URL}/account/onboarding`, {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `온보딩 정보 저장 실패: ${response.status} ${response.statusText}`
+    );
+  }
+
+  // 응답이 비어있을 수 있으므로 빈 객체 반환
+  const text = await response.text();
+  return text ? JSON.parse(text) : {};
+};

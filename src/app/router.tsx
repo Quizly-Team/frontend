@@ -8,6 +8,7 @@ import WrongQuizPage from '@/app/pages/WrongQuizPage';
 import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage';
 import MockExamPage from '@/app/pages/MockExamPage';
 import AnalyticsPage from '@/app/pages/AnalyticsPage';
+import OnboardingPage from '@/app/pages/OnboardingPage';
 
 export const router = createBrowserRouter([
   {
@@ -45,5 +46,9 @@ export const router = createBrowserRouter([
   {
     path: '/analytics',
     element: <AnalyticsPage />,
+  },
+  {
+    path: '/onboarding',
+    element: <OnboardingPage />,
   },
 ]);
