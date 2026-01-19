@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import type { TopicSummary } from '@/api/dashboard';
 
 type Props = {
@@ -39,32 +39,43 @@ export default function TopicChart({ data }: Props) {
         {currentMonth} 주제별 정답률 비교
       </h3>
 
-      <div className="h-[263px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} margin={{ top: 0, right: 30, left: -20, bottom: 0 }} barCategoryGap={100}>
-            <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
-            <XAxis
-              dataKey="name"
-              axisLine={{ stroke: '#222', strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: '#222', fontSize: 16 }}
-              height={60}
-            />
-            <YAxis
-              axisLine={{ stroke: '#222', strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: '#777', fontSize: 14 }}
-              ticks={yAxisTicks}
-              domain={[0, 100]}
-            />
-            <Bar
-              dataKey="value"
-              fill="#ff243e"
-              radius={[4, 4, 0, 0]}
-              barSize={40}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+      <div className="h-[263px] w-full flex justify-center">
+        <BarChart
+          data={chartData}
+          width={916}
+          height={263}
+          margin={{ top: 0, right: 30, left: -20, bottom: 0 }}
+          barCategoryGap={60}
+        >
+          <defs>
+            <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ff243e" stopOpacity={1} />
+              <stop offset="100%" stopColor="#ff6078" stopOpacity={0.8} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
+          <XAxis
+            dataKey="name"
+            axisLine={{ stroke: '#222', strokeWidth: 1 }}
+            tickLine={false}
+            tick={{ fill: '#222', fontSize: 16 }}
+            height={60}
+            padding={{ left: 85, right: 85 }}
+          />
+          <YAxis
+            axisLine={{ stroke: '#222', strokeWidth: 1 }}
+            tickLine={false}
+            tick={{ fill: '#777', fontSize: 14 }}
+            ticks={yAxisTicks}
+            domain={[0, 100]}
+          />
+          <Bar
+            dataKey="value"
+            fill="url(#redGradient)"
+            radius={[8, 8, 0, 0]}
+            barSize={40}
+          />
+        </BarChart>
       </div>
 
       <div className="bg-[#fef3f2] rounded-[4px] px-[12px] py-[10px] mt-[16px]">

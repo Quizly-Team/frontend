@@ -83,34 +83,34 @@ export default function DailyHeatmap({ data }: Props) {
   };
 
   return (
-    <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-[976px] max-lg:w-[904px]">
-      <h3 className="text-[20px] font-medium text-[#222] mb-[30px]">
+    <div className="bg-white border border-[#dedede] rounded-[16px] p-[20px] w-[478px] max-lg:w-[442px]">
+      <h3 className="text-[16px] font-medium text-[#222] mb-[20px]">
         {currentMonth} 학습 문제 기록
       </h3>
 
       <div className="flex flex-col items-center">
         {/* 요일 헤더 */}
-        <div className="flex gap-[12px] mb-[12px]">
+        <div className="flex gap-[6px] mb-[6px]">
           {WEEKDAYS.map((day) => (
-            <div key={day} className="w-[100px] max-lg:w-[90px] flex items-center justify-center">
-              <p className="text-[16px] text-[#777]">{day}</p>
+            <div key={day} className="w-[54px] max-lg:w-[50px] flex items-center justify-center">
+              <p className="text-[12px] text-[#777]">{day}</p>
             </div>
           ))}
         </div>
 
         {/* 날짜 칸 */}
-        <div className="flex flex-col gap-[12px] mb-[20px]">
+        <div className="flex flex-col gap-[6px] mb-[12px]">
           {calendarData.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex gap-[12px]">
+            <div key={weekIndex} className="flex gap-[6px]">
               {week.map((cell, dayIndex) => (
                 <div
                   key={`${weekIndex}-${dayIndex}`}
-                  className={`w-[100px] h-[100px] max-lg:w-[90px] max-lg:h-[90px] rounded-[4px] flex items-center justify-center ${
+                  className={`w-[54px] h-[54px] max-lg:w-[50px] max-lg:h-[50px] rounded-[4px] flex items-center justify-center ${
                     cell ? getCellColor(cell.count) : 'bg-white'
                   }`}
                 >
                   {cell && fireStreaks.has(cell.date) && (
-                    <Icon name="dashboard_fire" size={40} />
+                    <Icon name="dashboard_fire" size={24} />
                   )}
                 </div>
               ))}
@@ -120,8 +120,8 @@ export default function DailyHeatmap({ data }: Props) {
       </div>
 
       <div className="flex items-center gap-[6px] justify-end">
-        <div className="w-[20px] h-[20px] bg-[#efefef] rounded-[2px]" />
-        <div className="w-[20px] h-[20px] bg-[#fef3f2] rounded-[2px]" />
+        <div className="w-[16px] h-[16px] bg-[#efefef] rounded-[2px]" />
+        <div className="w-[16px] h-[16px] bg-[#fef3f2] rounded-[2px]" />
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ import CumulativeSummary from '@/components/dashboard/cumulative-summary';
 import QuizTypeChart from '@/components/dashboard/quiz-type-chart';
 import HourlyChart from '@/components/dashboard/hourly-chart';
 import TopicChart from '@/components/dashboard/topic-chart';
-import DailyHeatmap from '@/components/dashboard/daily-heatmap';
+import LearningStats from '@/components/dashboard/learning-stats';
 
 type TabType = 'analytics' | 'account';
 
@@ -251,8 +251,12 @@ const AnalyticsPage = () => {
                 {/* 누적 통계 */}
                 <CumulativeSummary data={dashboardData.cumulativeSummary} />
 
-                {/* 일별 학습 히트맵 */}
-                <DailyHeatmap data={dashboardData.dailySummaryList} />
+                {/* 일별 학습 히트맵 및 학습 통계 */}
+                <LearningStats
+                  dailyData={dashboardData.dailySummaryList}
+                  quizTypeData={dashboardData.quizTypeSummaryList}
+                  hourlyData={dashboardData.hourlySummaryList}
+                />
 
                 {/* 유형별/시간대별 차트 */}
                 <div className="flex gap-5">
