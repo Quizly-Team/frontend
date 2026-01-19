@@ -40,7 +40,11 @@ type IconName =
   | "dashboard_fire"
   | "dashboard_book"
   | "dashboard_chart"
-  | "dashboard_fire_white";
+  | "dashboard_fire_white"
+  | "dashboard_3d_fire"
+  | "dashboard_3d_calendar"
+  | "dashboard_3d_clock"
+  | "dashboard_3d_lightbulb";
 
 type IconProps = {
   name: IconName;
@@ -503,6 +507,42 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
       <img
         src="/icon/dashboard_fire_white.svg"
         alt="dashboard_fire_white"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_3d_fire: (
+      <img
+        src="/icon/dashboard_3d_fire.svg"
+        alt="dashboard_3d_fire"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_3d_calendar: (
+      <img
+        src="/icon/dashboard_3d_calendar.svg"
+        alt="dashboard_3d_calendar"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_3d_clock: (
+      <img
+        src="/icon/dashboard_3d_clock.svg"
+        alt="dashboard_3d_clock"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    dashboard_3d_lightbulb: (
+      <img
+        src="/icon/dashboard_3d_lightbulb.svg"
+        alt="dashboard_3d_lightbulb"
         width={size}
         height={size}
         className={className}

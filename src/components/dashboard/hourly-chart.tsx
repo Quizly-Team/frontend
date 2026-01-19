@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import type { HourlySummary } from '@/api/dashboard';
 
 type Props = {
@@ -74,32 +74,43 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
         {currentMonth} 시간대별 학습 패턴
       </h3>
 
-      <div className="h-[263px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} margin={{ top: 0, right: 10, left: -20, bottom: 0 }} barCategoryGap={12}>
-            <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
-            <XAxis
-              dataKey="name"
-              axisLine={{ stroke: '#222', strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: '#222', fontSize: 16 }}
-              height={40}
-            />
-            <YAxis
-              axisLine={{ stroke: '#222', strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: '#777', fontSize: 14 }}
-              ticks={yAxisTicks}
-              domain={[0, 100]}
-            />
-            <Bar
-              dataKey="value"
-              fill="#2473fc"
-              radius={[4, 4, 0, 0]}
-              barSize={isTablet ? 30 : 40}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+      <div className="h-[263px] w-full flex justify-center">
+        <BarChart
+          data={chartData}
+          width={isTablet ? 382 : 418}
+          height={263}
+          margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
+          barCategoryGap={12}
+        >
+          <defs>
+            <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0053e2" stopOpacity={1} />
+              <stop offset="100%" stopColor="#5895ff" stopOpacity={0.8} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
+          <XAxis
+            dataKey="name"
+            axisLine={{ stroke: '#222', strokeWidth: 1 }}
+            tickLine={false}
+            tick={{ fill: '#222', fontSize: 16 }}
+            height={40}
+            padding={{ left: 15, right: 15 }}
+          />
+          <YAxis
+            axisLine={{ stroke: '#222', strokeWidth: 1 }}
+            tickLine={false}
+            tick={{ fill: '#777', fontSize: 14 }}
+            ticks={yAxisTicks}
+            domain={[0, 100]}
+          />
+          <Bar
+            dataKey="value"
+            fill="url(#blueGradient)"
+            radius={[8, 8, 0, 0]}
+            barSize={isTablet ? 30 : 34}
+          />
+        </BarChart>
       </div>
 
       <div className="bg-[#eff6ff] rounded-[4px] px-[12px] py-[10px] mt-[16px]">
