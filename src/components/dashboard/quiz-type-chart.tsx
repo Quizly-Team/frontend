@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  ResponsiveContainer,
 } from "recharts";
 import type { QuizTypeSummary } from "@/api/dashboard";
 
@@ -87,36 +86,42 @@ export default function QuizTypeChart({ data }: Props) {
         {currentMonth} 유형별 정답률 비교
       </h3>
 
-      <div className="h-[263px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={chartData}
-            margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
-            barCategoryGap="30%"
-          >
-            <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
-            <XAxis
-              dataKey="name"
-              axisLine={{ stroke: "#222", strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: "#222", fontSize: 16 }}
-              height={40}
-            />
-            <YAxis
-              axisLine={{ stroke: "#222", strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: "#777", fontSize: 14 }}
-              ticks={[0, 25, 50, 75, 100]}
-              domain={[0, 100]}
-            />
-            <Bar
-              dataKey="value"
-              fill="#30a10e"
-              radius={[4, 4, 0, 0]}
-              barSize={isTablet ? 52 : 70}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+      <div className="h-[263px] w-full flex justify-center">
+        <BarChart
+          data={chartData}
+          width={isTablet ? 382 : 418}
+          height={263}
+          margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
+        >
+          <defs>
+            <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#30a10e" stopOpacity={1} />
+              <stop offset="100%" stopColor="#4fd328" stopOpacity={0.8} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
+          <XAxis
+            dataKey="name"
+            axisLine={{ stroke: "#222", strokeWidth: 1 }}
+            tickLine={false}
+            tick={{ fill: "#222", fontSize: 16 }}
+            height={40}
+            padding={{ left: isTablet ? 75 : 80, right: isTablet ? 75 : 80 }}
+          />
+          <YAxis
+            axisLine={{ stroke: "#222", strokeWidth: 1 }}
+            tickLine={false}
+            tick={{ fill: "#777", fontSize: 14 }}
+            ticks={[0, 25, 50, 75, 100]}
+            domain={[0, 100]}
+          />
+          <Bar
+            dataKey="value"
+            fill="url(#greenGradient)"
+            radius={[8, 8, 0, 0]}
+            barSize={52}
+          />
+        </BarChart>
       </div>
 
       <div className="bg-[#f6fbf4] rounded-[4px] px-[12px] py-[10px] mt-[16px]">
