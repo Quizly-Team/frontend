@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import type { HourlySummary } from '@/api/dashboard';
 
 type Props = {
@@ -103,6 +103,26 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
             tick={{ fill: '#777', fontSize: 14 }}
             ticks={yAxisTicks}
             domain={[0, 100]}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#fff',
+              border: '1px solid #dedede',
+              borderRadius: '8px',
+              padding: '8px 12px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            }}
+            labelStyle={{
+              color: '#222',
+              fontSize: '14px',
+              fontWeight: 500,
+              marginBottom: '4px',
+            }}
+            itemStyle={{
+              color: '#222',
+              fontSize: '14px',
+            }}
+            formatter={(value: number) => [`${value}문제`, '풀이 개수']}
           />
           <Bar
             dataKey="value"
