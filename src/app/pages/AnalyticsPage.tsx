@@ -41,6 +41,7 @@ const AnalyticsPage = () => {
   // 대시보드 통계 조회
   const { data: dashboardData, isLoading: isDashboardLoading, error: dashboardError } = useDashboardStats();
 
+
   // 사용자 정보 조회 (Context에서 가져오거나 직접 조회)
   useEffect(() => {
     if (!isAuthenticated) {
@@ -247,6 +248,32 @@ const AnalyticsPage = () => {
               <>
                 {/* 오늘의 학습 요약 */}
                 <TodaySummary data={dashboardData.todaySummary} dailyData={dashboardData.dailySummaryList} />
+
+                {/* AI 학습 분석 */}
+                <div className="bg-[#eff6ff] border border-[#4f8fff] rounded-[16px] px-[45px] py-[35px] w-[976px] max-lg:w-[904px]">
+                  <div className="flex items-center gap-[6px] mb-[22px]">
+                    <div className="w-[24px] h-[24px] flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10.5" stroke="#0053e2" strokeWidth="1.5"/>
+                        <circle cx="12" cy="9" r="1.5" fill="#0053e2"/>
+                        <rect x="11" y="13" width="2" height="4" rx="1" fill="#0053e2"/>
+                      </svg>
+                    </div>
+                    <h3 className="text-[20px] font-medium text-[#0053e2]">
+                      체험판 AI 학습 분석
+                    </h3>
+                  </div>
+                  <p className="text-[16px] leading-[22.4px] text-[#0053e2]">
+                    {(() => {
+                      const aiResult = dashboardData.aiAnalysisResult;
+                      if (aiResult === undefined || aiResult === null) {
+                        return 'AI 분석 데이터를 불러오는 중입니다...';
+                      }
+                      const resultString = typeof aiResult === 'string' ? aiResult : String(aiResult);
+                      return resultString.trim() !== '' ? resultString : 'AI 분석 데이터를 불러오는 중입니다...';
+                    })()}
+                  </p>
+                </div>
 
                 {/* 누적 통계 */}
                 <CumulativeSummary data={dashboardData.cumulativeSummary} />
