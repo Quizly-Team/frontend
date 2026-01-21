@@ -5,6 +5,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  Tooltip,
 } from "recharts";
 import type { QuizTypeSummary } from "@/api/dashboard";
 
@@ -114,6 +115,26 @@ export default function QuizTypeChart({ data }: Props) {
             tick={{ fill: "#777", fontSize: 14 }}
             ticks={[0, 25, 50, 75, 100]}
             domain={[0, 100]}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: '#fff',
+              border: '1px solid #dedede',
+              borderRadius: '8px',
+              padding: '8px 12px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            }}
+            labelStyle={{
+              color: '#222',
+              fontSize: '14px',
+              fontWeight: 500,
+              marginBottom: '4px',
+            }}
+            itemStyle={{
+              color: '#222',
+              fontSize: '14px',
+            }}
+            formatter={(value: number) => [`${value}%`, '정답률']}
           />
           <Bar
             dataKey="value"
