@@ -39,11 +39,12 @@ const LoginPage = ({
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center px-6 py-12">
-        {/* Login Box */}
-        <div className="bg-white rounded-[24px] border border-[#dedede] w-full max-w-[500px] px-[75px] py-[72px] flex flex-col items-center">
+      <main className="flex-1 flex justify-center px-6">
+        <div className="flex flex-col items-center max-md:pt-[100px] md:pt-[200px]">
+          {/* Login Box */}
+          <div className="bg-white rounded-[24px] border border-[#dedede] w-[500px] max-md:w-full max-md:mx-4 px-[60px] max-md:px-[20px] py-[72px] max-md:py-[40px] flex flex-col items-center">
           {/* Logo */}
-          <div className="w-[170px] h-[60px] mb-[20px] flex items-center justify-center">
+          <div className="w-[170px] max-md:w-[110px] h-[60px] max-md:h-[44px] mb-[20px] flex items-center justify-center">
             <img
               src="/logo.svg"
               alt="Quizly Logo"
@@ -52,22 +53,22 @@ const LoginPage = ({
           </div>
 
           {/* Title */}
-          <h1 className="text-[24px] font-bold text-[#222222] text-center mb-[16px] leading-[33.6px]">
+          <h1 className="text-[24px] max-md:text-[20px] font-bold max-md:font-semibold text-[#222222] text-center mb-[16px] leading-[33.6px] max-md:leading-[28px]">
             학습을 더 쉽고 재미있게
           </h1>
 
           {/* Description */}
-          <p className="text-[16px] font-normal text-[#777777] text-center mb-[56px] leading-[22.4px]">
+          <p className="text-[16px] font-normal text-[#777777] text-center mb-[56px] max-md:mb-[32px] leading-[22.4px]">
             로그인하고 문제를 더 많이 만들어보세요!
           </p>
 
           {/* SignIn Buttons */}
-          <div className="w-full flex flex-col gap-4 mb-[48px]">
+          <div className="w-full flex flex-col items-center gap-4 mb-[48px] max-md:mb-[24px]">
             {/* Naver Button */}
             <div className="relative">
               <button
                 onClick={handleNaverLogin}
-                className="w-full h-[48px] bg-[#00c73c] hover:bg-[#00b836] transition-colors rounded-[6px] flex items-center justify-center gap-2"
+                className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#00c73c] hover:bg-[#00b836] transition-colors rounded-[6px] flex items-center justify-center gap-2"
               >
                 <img
                   src="/icon/naver.svg"
@@ -80,12 +81,12 @@ const LoginPage = ({
               </button>
               {/* Recent Login Badge for Naver */}
               {lastLoginProvider === 'naver' && (
-                <div className="absolute top-1/2 -translate-y-1/2 left-full ml-2 w-[180px] bg-[#333333] rounded-[4px] px-3 py-2 z-10">
+                <div className="absolute top-1/2 -translate-y-1/2 max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-full max-md:mt-2 md:left-full md:ml-2 w-[180px] bg-[#333333] rounded-[4px] px-3 py-2 z-10">
                   <p className="text-[14px] font-normal text-white text-center leading-[19.6px]">
                     최근에 로그인한 수단입니다.
                   </p>
-                  {/* 삼각형 포인터 (왼쪽을 가리킴) */}
-                  <div className="absolute top-1/2 -translate-y-1/2 -left-[6px] w-0 h-0 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-[#333333]"></div>
+                  {/* 삼각형 포인터 */}
+                  <div className="absolute max-md:top-0 max-md:left-1/2 max-md:-translate-x-1/2 max-md:-translate-y-full max-md:border-b-[#333333] max-md:border-t-transparent max-md:border-l-transparent max-md:border-r-transparent max-md:border-b-[6px] max-md:border-l-[6px] max-md:border-r-[6px] md:top-1/2 md:-translate-y-1/2 md:-left-[6px] md:border-t-[6px] md:border-b-[6px] md:border-r-[6px] md:border-t-transparent md:border-b-transparent md:border-r-[#333333] w-0 h-0"></div>
                 </div>
               )}
             </div>
@@ -94,7 +95,7 @@ const LoginPage = ({
             <div className="relative">
               <button
                 onClick={handleKakaoLogin}
-                className="w-full h-[48px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-[6px] flex items-center justify-center gap-2"
+                className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-[6px] flex items-center justify-center gap-2"
               >
                 <img
                   src="/icon/kakao.svg"
@@ -107,12 +108,12 @@ const LoginPage = ({
               </button>
               {/* Recent Login Badge for Kakao */}
               {lastLoginProvider === 'kakao' && (
-                <div className="absolute top-1/2 -translate-y-1/2 left-full ml-2 w-[180px] bg-[#333333] rounded-[4px] px-3 py-2 z-10">
+                <div className="absolute top-1/2 -translate-y-1/2 max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-full max-md:mt-2 md:left-full md:ml-2 w-[180px] bg-[#333333] rounded-[4px] px-3 py-2 z-10">
                   <p className="text-[14px] font-normal text-white text-center leading-[19.6px]">
                     최근에 로그인한 수단입니다.
                   </p>
-                  {/* 삼각형 포인터 (왼쪽을 가리킴) */}
-                  <div className="absolute top-1/2 -translate-y-1/2 -left-[6px] w-0 h-0 border-t-[6px] border-b-[6px] border-r-[6px] border-t-transparent border-b-transparent border-r-[#333333]"></div>
+                  {/* 삼각형 포인터 */}
+                  <div className="absolute max-md:top-0 max-md:left-1/2 max-md:-translate-x-1/2 max-md:-translate-y-full max-md:border-b-[#333333] max-md:border-t-transparent max-md:border-l-transparent max-md:border-r-transparent max-md:border-b-[6px] max-md:border-l-[6px] max-md:border-r-[6px] md:top-1/2 md:-translate-y-1/2 md:-left-[6px] md:border-t-[6px] md:border-b-[6px] md:border-r-[6px] md:border-t-transparent md:border-b-transparent md:border-r-[#333333] w-0 h-0"></div>
                 </div>
               )}
             </div>
@@ -147,6 +148,7 @@ const LoginPage = ({
               최근에 로그인한 수단입니다.
             </p>
           </div> */}
+        </div>
         </div>
       </main>
     </div>
