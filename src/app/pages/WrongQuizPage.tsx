@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import type { ChangeEvent } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Header, Icon, Modal, Input } from '@/components';
+import { Header, Icon, Modal } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getWrongQuizzes, updateQuizzesTopic } from '@/api/quiz';
 import type {
@@ -69,7 +69,7 @@ const WrongQuizPage = () => {
   const targetQuizCount = targetGroup?.quizHistoryDetailList.length ?? 0;
   const trimmedTopicInput = topicInput.trim();
   const cardBaseClass =
-    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#dedede] bg-white px-4 pt-10 pb-4 text-left shadow-[0_12px_30px_rgba(0,0,0,0.06)] transition-[transform,box-shadow] hover:-translate-y-1 hover:shadow-[0_16px_32px_rgba(0,0,0,0.1)] flex flex-col justify-between';
+    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto';
   const isSubmitDisabled =
     !targetGroup ||
     !trimmedTopicInput ||
@@ -273,56 +273,59 @@ const WrongQuizPage = () => {
                 onClick={() => handleCardClick(group.quizHistoryDetailList)}
                 className={cardBaseClass}
               >
-                <div className="mb-6 flex items-center justify-center gap-3 text-center">
-                  <Icon name="icn_note" size={24} />
-                  <span className="text-[20px] font-medium text-gray-900 truncate max-w-[220px]">
-                    {group.group}
-                  </span>
-                  <button
-                    type="button"
-                    aria-label={`${group.group} 더보기`}
-                    className="absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      setActiveMenuGroup((prev) =>
-                        prev === group.group ? null : group.group
-                      );
-                    }}
+                <button
+                  type="button"
+                  aria-label={`${group.group} 더보기`}
+                  className="absolute right-[16px] top-[16px] flex h-6 w-6 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/30 max-lg:right-[26px] max-lg:top-[20px]"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setActiveMenuGroup((prev) =>
+                      prev === group.group ? null : group.group
+                    );
+                  }}
+                >
+                  <svg width="18" height="4" viewBox="0 0 18 4" fill="none">
+                    <circle cx="2" cy="2" r="2" fill="currentColor" />
+                    <circle cx="9" cy="2" r="2" fill="currentColor" />
+                    <circle cx="16" cy="2" r="2" fill="currentColor" />
+                  </svg>
+                </button>
+
+                {activeMenuGroup === group.group && (
+                  <div
+                    className="absolute right-0 top-10 z-30"
+                    onClick={(event) => event.stopPropagation()}
                   >
-                    <svg width="18" height="4" viewBox="0 0 18 4" fill="none">
-                      <circle cx="2" cy="2" r="2" fill="currentColor" />
-                      <circle cx="9" cy="2" r="2" fill="currentColor" />
-                      <circle cx="16" cy="2" r="2" fill="currentColor" />
-                    </svg>
-                  </button>
-
-                  {activeMenuGroup === group.group && (
-                    <div
-                      className="absolute right-0 top-10 z-30"
-                      onClick={(event) => event.stopPropagation()}
-                    >
-                      <div className="w-[170px] rounded-[10px] border border-[#dedede] bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
-                        <button
-                          type="button"
-                          className="w-full rounded-[6px] px-3 py-2 text-left text-body3-medium text-gray-900 hover:bg-gray-50"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            handleOpenEditModal(group);
-                          }}
-                        >
-                          주제 수정하기
-                        </button>
-                      </div>
+                    <div className="w-[170px] rounded-[10px] border border-[#dedede] bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+                      <button
+                        type="button"
+                        className="w-full rounded-[6px] px-3 py-2 text-left text-body3-medium text-gray-900 hover:bg-gray-50"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          handleOpenEditModal(group);
+                        }}
+                      >
+                        주제 수정하기
+                      </button>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
-                <div className="mt-auto flex justify-end">
-                  <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-[#f6fbf4] px-3">
-                    <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-body3-regular text-primary">
-                      틀린문제 {quizCount}개
+                <div className="flex flex-col gap-[24px] items-center w-full max-lg:gap-[20px]">
+                  <div className="flex items-center justify-center gap-1 w-full">
+                    <Icon name="icn_note" className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]" />
+                    <span className="text-[20px] font-medium text-gray-900 truncate max-w-[200px] max-md:text-[18px]">
+                      {group.group}
                     </span>
+                  </div>
+
+                  <div className="w-full flex justify-end mr-[-44px] max-lg:mr-0">
+                    <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-[#f6fbf4] px-3">
+                      <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary">
+                        틀린문제 {quizCount}개
+                      </span>
+                    </div>
                   </div>
                 </div>
               </button>
@@ -341,17 +344,19 @@ const WrongQuizPage = () => {
             onClick={() => handleCardClick(group.quizHistoryDetailList)}
             className={cardBaseClass}
           >
-            <div className="mb-6 flex items-center justify-center gap-3 text-center">
-              <Icon name="calendar" size={24} />
-              <span className="text-[20px] font-medium text-gray-900">
-                {group.group}
-              </span>
-            </div>
-            <div className="mt-auto flex justify-end">
-              <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-[#f6fbf4] px-3">
-                <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-body3-regular text-primary">
-                  틀린문제 {group.quizHistoryDetailList.length}개
+            <div className="flex flex-col gap-[24px] items-center w-full max-lg:gap-[20px]">
+              <div className="flex items-center justify-center gap-1 w-full">
+                <Icon name="calendar" className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]" />
+                <span className="text-[20px] font-medium text-gray-900 max-md:text-[18px]">
+                  {group.group}
                 </span>
+              </div>
+              <div className="w-full flex justify-end mr-[-48px] max-lg:mr-0">
+                <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-[#f6fbf4] px-3">
+                  <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary">
+                    틀린문제 {group.quizHistoryDetailList.length}개
+                  </span>
+                </div>
               </div>
             </div>
           </button>
@@ -468,7 +473,7 @@ const WrongQuizPage = () => {
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-md:hidden">
-        <div className="w-full max-w-[1024px]">
+        <div className="w-full max-w-[904px] xl:max-w-[976px]">
           <div className="flex flex-col gap-6 mb-12">
             <div className="flex items-center justify-center gap-3 text-center">
               <h1 className="text-header1-bold text-gray-900">
@@ -479,7 +484,7 @@ const WrongQuizPage = () => {
           </div>
 
           <div className="flex justify-end mb-8">
-            <div className="relative w-[140px]" ref={desktopDropdownRef}>
+            <div className="relative w-[120px]" ref={desktopDropdownRef}>
               <button
                 type="button"
                 onClick={handleDropdownToggle}
@@ -529,25 +534,25 @@ const WrongQuizPage = () => {
           </div>
 
           <div className="mt-5">
-            {renderContent('grid grid-cols-3 gap-4 max-md:grid-cols-2')}
+            {renderContent('grid grid-cols-3 gap-[20px]')}
           </div>
         </div>
       </main>
 
       {/* Main Content - Mobile */}
-      <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[120px] px-5">
-        <div className="flex flex-col items-center gap-2 mb-8">
+      <main className="hidden max-md:flex flex-1 flex-col pt-[20px] pb-[120px] px-5">
+        <div className="flex flex-col items-center gap-0 mb-[12px]">
           <div className="flex items-center gap-2">
             <h1 className="text-header3-bold text-gray-900">
-              <span className="text-primary">틀린문제</span> 다시 한번
+              <span className="text-primary">틀린문제</span> 다시
             </h1>
-            <Icon name="icn_checkbox" size={32} />
+            <Icon name="icn_checkbox" size={28} />
           </div>
-          <h1 className="text-header3-bold text-gray-900">풀어봐요</h1>
+          <h1 className="text-header3-bold text-gray-900">한번 풀어봐요</h1>
         </div>
 
-        <div className="flex justify-end mb-6">
-          <div className="relative w-[140px]" ref={mobileDropdownRef}>
+        <div className="flex justify-end mb-[20px]">
+          <div className="relative w-[97px]" ref={mobileDropdownRef}>
             <button
               type="button"
               onClick={handleDropdownToggle}
@@ -596,35 +601,42 @@ const WrongQuizPage = () => {
           </div>
         </div>
 
-        <div className="mt-4 w-full">
-          {renderContent('grid grid-cols-2 gap-3 w-full')}
+        <div className="w-full">
+          {renderContent('grid grid-cols-1 gap-3 w-full')}
         </div>
       </main>
 
-      <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
-        <div className="w-full max-w-[430px]">
-          <div className="flex flex-col gap-6">
-            <h2 className="text-center text-header3-bold text-gray-900">
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        className="max-md:w-[300px] max-md:px-[24px] max-md:py-[40px] max-md:min-h-0"
+      >
+        <div className="w-full">
+          <div className="flex flex-col gap-6 max-md:gap-[24px]">
+            <h2 className="text-center text-header3-bold text-gray-900 max-md:text-[20px]">
               주제 수정하기
             </h2>
 
             <div className="flex flex-col gap-3">
-              <div className="mx-auto w-[350px]">
-                <Input
-                  label="새로운 주제"
-                  placeholder={targetGroup?.group ?? '새로운 주제를 입력하세요'}
-                  value={topicInput}
-                  onChange={handleTopicInputChange}
-                  labelClassName="text-left"
-                  inputClassName={`${
-                    !isTopicEdited ? '!text-gray-500 !placeholder:text-gray-400' : ''
-                  }`}
-                  className="w-full"
-                />
+              <div className="mx-auto w-[350px] max-md:w-full">
+                <div className="flex flex-col items-start w-full">
+                  <label className="text-[16px] font-medium text-[#777] mb-2 max-md:text-[14px]">
+                    새로운 주제
+                  </label>
+                  <div className="w-full border-b border-[#dedede] py-[12px]">
+                    <input
+                      type="text"
+                      value={topicInput}
+                      onChange={handleTopicInputChange}
+                      placeholder={targetGroup?.group ?? '새로운 주제를 입력하세요'}
+                      className="w-full text-[16px] text-gray-900 placeholder:text-[#9e9e9e] outline-none bg-transparent"
+                    />
+                  </div>
+                </div>
               </div>
               {formMessage && (
                 <p
-                  className={`text-body3-medium ${
+                  className={`text-body3-medium text-center ${
                     formMessage.type === 'error' ? 'text-error' : 'text-primary'
                   }`}
                 >
@@ -633,11 +645,11 @@ const WrongQuizPage = () => {
               )}
             </div>
 
-            <div className="mt-2 flex items-center justify-center gap-3">
+            <div className="mt-2 flex items-center justify-center gap-3 max-md:gap-[12px]">
               <button
                 type="button"
                 onClick={handleCloseEditModal}
-                className="h-[46px] w-[120px] rounded-[6px] border border-[#dedede] bg-[#efefef] text-body3-medium text-gray-900 hover:bg-gray-200 disabled:opacity-60"
+                className="h-[46px] w-[120px] rounded-[6px] border border-[#dedede] bg-[#efefef] text-body3-regular text-gray-900 hover:bg-gray-200 disabled:opacity-60 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
                 disabled={isSubmitting}
               >
                 취소
@@ -646,7 +658,7 @@ const WrongQuizPage = () => {
                 type="button"
                 onClick={handleTopicSubmit}
                 disabled={isSubmitDisabled}
-                className="h-[46px] w-[120px] rounded-[6px] bg-primary text-body3-medium text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="h-[46px] w-[120px] rounded-[6px] bg-primary text-body3-regular text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
               >
                 {isSubmitting ? '수정 중...' : '수정하기'}
               </button>
