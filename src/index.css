@@ -141,6 +141,18 @@
     font-weight: 700;
   }
 
+  .onboarding-title {
+    font-size: var(--font-size-header3-bold);
+    line-height: 1.4;
+    font-weight: 700;
+  }
+
+  @media (max-width: 767px) {
+    .onboarding-title {
+      font-size: 20px;
+    }
+  }
+
   .text-header3-semibold {
     font-size: var(--font-size-header3-semibold);
     line-height: 1.4;
