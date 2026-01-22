@@ -1,4 +1,5 @@
 const ACCESS_TOKEN_KEY = 'accessToken';
+const TEMP_ACCESS_TOKEN_KEY = 'tempAccessToken'; // 온보딩 완료 전 임시 저장용
 const LAST_LOGIN_PROVIDER_KEY = 'lastLoginProvider';
 
 export const authUtils = {
@@ -14,12 +15,37 @@ export const authUtils = {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
   },
 
+  // 임시 토큰 저장 (온보딩 완료 전)
+  setTempAccessToken: (token: string): void => {
+    sessionStorage.setItem(TEMP_ACCESS_TOKEN_KEY, token);
+  },
+
+  // 임시 토큰 조회
+  getTempAccessToken: (): string | null => {
+    return sessionStorage.getItem(TEMP_ACCESS_TOKEN_KEY);
+  },
+
+  // 임시 토큰 제거
+  removeTempAccessToken: (): void => {
+    sessionStorage.removeItem(TEMP_ACCESS_TOKEN_KEY);
+  },
+
+  // 임시 토큰을 정식 토큰으로 전환 (온보딩 완료 시)
+  activateTempToken: (): void => {
+    const tempToken = authUtils.getTempAccessToken();
+    if (tempToken) {
+      authUtils.setAccessToken(tempToken);
+      authUtils.removeTempAccessToken();
+    }
+  },
+
   isAuthenticated: (): boolean => {
     return !!authUtils.getAccessToken();
   },
 
   logout: (): void => {
     authUtils.removeAccessToken();
+    authUtils.removeTempAccessToken();
     // 로그아웃 시 최근 로그인 정보는 유지 (선택사항)
   },
 
@@ -30,6 +56,7 @@ export const authUtils = {
    */
   removeAllTokens: (): void => {
     authUtils.removeAccessToken();
+    authUtils.removeTempAccessToken();
   },
 
   // 최근 로그인 provider 저장
