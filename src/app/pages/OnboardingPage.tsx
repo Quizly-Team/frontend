@@ -77,6 +77,12 @@ const OnboardingPage = () => {
         studyGoal: selectedGoals.join(','),
       });
       
+      // 온보딩 완료 후 임시 토큰을 정식 토큰으로 전환 (로그인 완료 처리)
+      authUtils.activateTempToken();
+      
+      // UserContext에 인증 상태 변경 알림
+      window.dispatchEvent(new Event('authStateChanged'));
+      
       // 최소 1초 로딩 화면 표시
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(0, 1000 - elapsedTime);
@@ -191,12 +197,12 @@ const OnboardingPage = () => {
                 어떤 분이 이용하시나요?
               </p>
 
-              <div className="flex flex-wrap justify-center gap-4 max-md:gap-2 w-full max-md:mb-0 max-md:px-4 md:mb-12">
+              <div className="flex flex-wrap justify-center gap-4 max-md:gap-2 w-full max-w-[584px] max-md:mb-0 max-md:px-4 md:mb-12">
                 {userTypes.map((type) => (
                   <button
                     key={type.id}
                     onClick={() => handleUserTypeSelect(type.id)}
-                    className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-[16px] border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[calc(50%-8px)] max-md:flex-shrink-0 md:h-[148px] ${
+                    className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-[16px] border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[284px] md:h-[148px] max-md:flex-shrink-0 ${
                       selectedUserType === type.id
                         ? 'bg-white border-primary'
                         : 'bg-white border-[#ededed] hover:border-primary/50'
@@ -217,7 +223,7 @@ const OnboardingPage = () => {
               <button
                 onClick={handleNext}
                 disabled={isStep1NextDisabled}
-                className={`w-full max-w-[580px] max-md:hidden h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
+                className={`w-full max-w-[584px] max-md:hidden h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
                   isStep1NextDisabled
                     ? 'bg-[#b7b7b7] cursor-not-allowed'
                     : 'bg-primary hover:bg-primary-dark'
