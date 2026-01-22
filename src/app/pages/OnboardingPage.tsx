@@ -110,30 +110,30 @@ const OnboardingPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="h-screen bg-bg-home flex flex-col overflow-hidden max-md:overflow-hidden">
       <Header logoUrl="/logo.svg" />
 
-      <main className="flex-1 flex items-center justify-center px-6 py-12">
-        <div className="flex flex-col items-center">
+      <main className="flex-1 flex justify-center px-6 overflow-hidden max-md:overflow-hidden max-md:relative">
+        <div className="flex flex-col items-center max-md:pt-[20px] md:pt-[80px] max-md:pb-[106px] max-md:h-full w-full max-w-[700px]">
           {/* Progress Indicator */}
-          <div className="flex items-center justify-center mb-[40px]">
+          <div className="flex items-center justify-center mb-[40px] max-md:mb-[20px] max-md:shrink-0">
             {/* Step 1 */}
-            <div className="flex flex-col items-center gap-4" style={{ width: '91px', height: '80px' }}>
-              <div className="relative flex items-center justify-center w-[46px] h-[46px]">
+            <div className="flex flex-col items-center gap-4 max-md:gap-2" style={{ width: '91px', height: '80px' }}>
+              <div className="relative flex items-center justify-center w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px]">
                 {step > 1 ? (
-                  <Icon name="icn_check_fill_in" size={46} />
+                  <Icon name="icn_check_fill_in" size={46} className="max-md:w-[32px] max-md:h-[32px]" />
                 ) : step === 1 ? (
-                  <div className="w-[46px] h-[46px] rounded-full bg-primary flex items-center justify-center">
-                    <span className="text-[20px] font-medium text-white">1</span>
+                  <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-primary flex items-center justify-center">
+                    <span className="text-[20px] max-md:text-[16px] font-medium text-white">1</span>
                   </div>
                 ) : (
-                  <div className="w-[46px] h-[46px] rounded-full bg-white border border-[#dedede] flex items-center justify-center">
-                    <span className="text-[20px] font-medium text-[#b7b7b7]">1</span>
+                  <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-white border border-[#dedede] flex items-center justify-center">
+                    <span className="text-[20px] max-md:text-[16px] font-medium text-[#b7b7b7]">1</span>
                   </div>
                 )}
               </div>
               <span
-                className={`text-[16px] font-medium ${
+                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal ${
                   step >= 1 ? 'text-primary' : 'text-[#b7b7b7]'
                 }`}
               >
@@ -142,25 +142,25 @@ const OnboardingPage = () => {
             </div>
 
             {/* Line */}
-            <div className="w-[50px] h-0 border-t border-[#dedede]" style={{ marginLeft: '20px', marginRight: '20px' }} />
+            <div className="w-[50px] max-md:w-[32px] h-0 border-t border-[#dedede] max-md:mx-2 md:mx-5" />
 
             {/* Step 2 */}
-            <div className="flex flex-col items-center gap-4" style={{ width: '91px', height: '80px' }}>
-              <div className="relative flex items-center justify-center w-[46px] h-[46px]">
+            <div className="flex flex-col items-center gap-4 max-md:gap-2" style={{ width: '91px', height: '80px' }}>
+              <div className="relative flex items-center justify-center w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px]">
                 {selectedGoals.length > 0 ? (
-                  <Icon name="icn_check_fill_in" size={46} />
+                  <Icon name="icn_check_fill_in" size={46} className="max-md:w-[32px] max-md:h-[32px]" />
                 ) : step === 2 ? (
-                  <div className="w-[46px] h-[46px] rounded-full bg-primary flex items-center justify-center">
-                    <span className="text-[20px] font-medium text-white">2</span>
+                  <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-primary flex items-center justify-center">
+                    <span className="text-[20px] max-md:text-[16px] font-medium text-white">2</span>
                   </div>
                 ) : (
-                  <div className="w-[46px] h-[46px] rounded-full bg-white border border-[#dedede] flex items-center justify-center">
-                    <span className="text-[20px] font-medium text-[#b7b7b7]">2</span>
+                  <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-white border border-[#dedede] flex items-center justify-center">
+                    <span className="text-[20px] max-md:text-[16px] font-medium text-[#b7b7b7]">2</span>
                   </div>
                 )}
               </div>
               <span
-                className={`text-[16px] font-medium ${
+                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal ${
                   step === 2 || selectedGoals.length > 0 || selectedUserType ? 'text-primary' : 'text-[#b7b7b7]'
                 }`}
               >
@@ -170,46 +170,44 @@ const OnboardingPage = () => {
           </div>
 
           {/* Content Box */}
-          <div className="bg-white rounded-[24px] border border-[#dedede] w-[700px] relative flex flex-col items-center" style={{ height: step === 1 ? '596px' : '684px' }}>
+          <div className={`bg-white rounded-[24px] border border-[#dedede] w-full max-w-[700px] max-md:max-w-[335px] max-md:w-[335px] relative flex flex-col items-center max-md:shrink-0 ${step === 1 ? 'max-md:h-[364px] md:h-[606px]' : 'max-md:h-[492px] md:h-[694px]'}`}>
           {/* Step 1: User Type Selection */}
           {step === 1 && (
             <>
               <div 
-                className="flex items-center justify-center"
-                style={{ width: '318px', height: '34px', marginTop: '60px', marginBottom: '6px' }}
+                className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px] px-4"
               >
                 <h1 
-                  className="text-header3-bold text-gray-900"
-                  style={{ lineHeight: '34px', whiteSpace: 'nowrap' }}
+                  className="onboarding-title max-md:font-semibold text-gray-900 text-center max-md:whitespace-nowrap"
+                  style={{ lineHeight: '28px' }}
                 >
                   퀴즐리에 오신 것을 환영합니다!👋🏻
                 </h1>
               </div>
               <p 
-                className="text-body3-regular text-gray-600 text-center"
-                style={{ width: '154px', height: '22px', marginBottom: '40px' }}
+                className="text-body3-regular text-gray-600 text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[52px] md:mb-[40px]"
+                style={{ lineHeight: '22.4px' }}
               >
                 어떤 분이 이용하시나요?
               </p>
 
-              <div className="flex flex-wrap justify-center gap-4 w-full mb-12">
+              <div className="flex flex-wrap justify-center gap-4 max-md:gap-2 w-full max-md:mb-0 max-md:px-4 md:mb-12">
                 {userTypes.map((type) => (
                   <button
                     key={type.id}
                     onClick={() => handleUserTypeSelect(type.id)}
-                    className={`flex flex-col items-center justify-center gap-4 rounded-[16px] border transition-colors ${
+                    className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-[16px] border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[calc(50%-8px)] max-md:flex-shrink-0 md:h-[148px] ${
                       selectedUserType === type.id
                         ? 'bg-white border-primary'
                         : 'bg-white border-[#ededed] hover:border-primary/50'
                     }`}
-                    style={{ width: '284px', height: '148px' }}
                   >
                     <img
                       src={type.character}
                       alt={type.label}
-                      className={type.id === 'university' ? 'w-[57px] h-[52px]' : 'w-[52px] h-[52px]'}
+                      className={type.id === 'university' ? 'w-[57px] h-[52px] max-md:w-[40px] max-md:h-[36px]' : 'w-[52px] h-[52px] max-md:w-[36px] max-md:h-[36px]'}
                     />
-                    <span className="text-body2-medium text-gray-900">
+                    <span className="text-body2-medium max-md:text-[16px] text-gray-900">
                       {type.label}
                     </span>
                   </button>
@@ -219,12 +217,12 @@ const OnboardingPage = () => {
               <button
                 onClick={handleNext}
                 disabled={isStep1NextDisabled}
-                className={`absolute w-[92px] h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
+                className={`w-full max-w-[580px] max-md:hidden h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
                   isStep1NextDisabled
                     ? 'bg-[#b7b7b7] cursor-not-allowed'
                     : 'bg-primary hover:bg-primary-dark'
                 }`}
-                style={{ right: '60px', bottom: '60px' }}
+                style={{ marginBottom: '48px' }}
               >
                 다음 질문
               </button>
@@ -235,36 +233,34 @@ const OnboardingPage = () => {
           {step === 2 && (
             <>
               <div 
-                className="flex items-center justify-center"
-                style={{ width: '318px', height: '34px', marginTop: '60px', marginBottom: '6px' }}
+                className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px]"
               >
                 <h1 
-                  className="text-header3-bold text-gray-900 text-center"
-                  style={{ lineHeight: '34px', whiteSpace: 'nowrap' }}
+                  className="onboarding-title max-md:font-semibold text-gray-900 text-center max-md:px-4"
+                  style={{ lineHeight: '28px' }}
                 >
                   학습 목표를 선택해주세요
                 </h1>
               </div>
               <p 
-                className="text-body3-regular text-gray-600 text-center"
-                style={{ width: '154px', height: '22px', marginBottom: '40px' }}
+                className="text-body3-regular text-gray-600 text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[52px] md:mb-[40px]"
+                style={{ lineHeight: '22.4px' }}
               >
                 중복 선택이 가능합니다.
               </p>
 
-              <div className="flex flex-col gap-2 mb-12" style={{ width: '580px' }}>
+              <div className="flex flex-col gap-2 max-md:mb-0 max-md:px-[30px] w-full max-w-[580px] md:mb-12">
                 {learningGoals.map((goal) => {
                   const isSelected = selectedGoals.includes(goal.id);
                   return (
                     <button
                       key={goal.id}
                       onClick={() => handleGoalToggle(goal.id)}
-                      className={`flex items-center gap-4 px-4 py-4 rounded-[12px] border text-left transition-colors ${
+                      className={`flex items-center gap-4 px-4 py-4 rounded-[12px] border text-left transition-colors w-full max-md:h-[48px] md:h-[56px] ${
                         isSelected
                           ? 'bg-[#fcfcfc] border-primary'
                           : 'bg-[#fcfcfc] border-[#ededed] hover:border-primary/50'
                       }`}
-                      style={{ width: '580px', height: '56px' }}
                     >
                       <Icon
                         name={isSelected ? 'icn_check_fill_in' : 'icn_check_fill'}
@@ -278,28 +274,74 @@ const OnboardingPage = () => {
                 })}
               </div>
 
-              <button
-                onClick={handlePrev}
-                className="absolute w-[92px] h-[46px] rounded-[6px] bg-white border border-[#d9d9d9] text-body3-regular text-gray-600 hover:bg-gray-50 transition-colors"
-                style={{ right: '152px', bottom: '60px' }}
-              >
-                이전 질문
-              </button>
-              <button
-                onClick={handleComplete}
-                disabled={isStep2NextDisabled}
-                className={`absolute w-[88px] h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
-                  isStep2NextDisabled
-                    ? 'bg-[#b7b7b7] cursor-not-allowed'
-                    : 'bg-primary hover:bg-primary-dark'
-                }`}
-                style={{ right: '60px', bottom: '60px' }}
-              >
-                시작하기
-              </button>
+              <div className="flex gap-4 max-md:hidden w-full max-w-[580px]">
+                <button
+                  onClick={handlePrev}
+                  className="flex-1 h-[46px] rounded-[6px] bg-white border border-[#d9d9d9] text-body3-regular text-gray-600 hover:bg-gray-50 transition-colors"
+                >
+                  이전 질문
+                </button>
+                <button
+                  onClick={handleComplete}
+                  disabled={isStep2NextDisabled}
+                  className={`flex-1 h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
+                    isStep2NextDisabled
+                      ? 'bg-[#b7b7b7] cursor-not-allowed'
+                      : 'bg-primary hover:bg-primary-dark'
+                  }`}
+                >
+                  시작하기
+                </button>
+              </div>
             </>
           )}
           </div>
+
+          {/* Mobile Bottom Button - Step 1 */}
+          {step === 1 && (
+            <div className="hidden max-md:block bg-white max-md:shrink-0 max-md:fixed max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:w-full" style={{ height: '106px', maxWidth: '375px', margin: '0 auto', zIndex: 10 }}>
+              <div className="flex items-center justify-center h-full" style={{ paddingTop: '16px', paddingLeft: '20px', paddingRight: '20px', paddingBottom: '41px' }}>
+                <button
+                  onClick={handleNext}
+                  disabled={isStep1NextDisabled}
+                  className={`w-full h-[49px] rounded-[6px] text-[18px] text-white transition-colors ${
+                    isStep1NextDisabled
+                      ? 'bg-[#b7b7b7] cursor-not-allowed'
+                      : 'bg-primary hover:bg-primary-dark'
+                  }`}
+                >
+                  다음 질문
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Bottom Button - Step 2 */}
+          {step === 2 && (
+            <div className="hidden max-md:block bg-white max-md:shrink-0 max-md:fixed max-md:bottom-0 max-md:left-0 max-md:right-0 max-md:w-full" style={{ height: '106px', maxWidth: '375px', margin: '0 auto', zIndex: 10 }}>
+              <div className="flex items-center justify-center h-full" style={{ paddingTop: '16px', paddingLeft: '20px', paddingRight: '20px', paddingBottom: '41px' }}>
+                <div className="flex gap-3 w-full">
+                  <button
+                    onClick={handlePrev}
+                    className="flex-1 h-[49px] rounded-[6px] bg-white border border-[#d9d9d9] text-[18px] text-[#777777] hover:bg-gray-50 transition-colors"
+                  >
+                    이전 질문
+                  </button>
+                  <button
+                    onClick={handleComplete}
+                    disabled={isStep2NextDisabled}
+                    className={`flex-1 h-[49px] rounded-[6px] text-[18px] text-white transition-colors ${
+                      isStep2NextDisabled
+                        ? 'bg-[#b7b7b7] cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary-dark'
+                    }`}
+                  >
+                    시작하기
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
