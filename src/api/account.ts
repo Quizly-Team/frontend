@@ -108,7 +108,7 @@ export const authenticatedFetch = async (
   url: string,
   options: RequestInit = {}
 ): Promise<Response> => {
-  const token = authUtils.getAccessToken();
+  const token = authUtils.getAccessToken() || authUtils.getTempAccessToken();
   if (!token) {
     throw new Error('로그인이 필요합니다.');
   }

@@ -48,25 +48,31 @@ const AuthCallback = () => {
 
         const data: AuthResponse = await response.json();
 
-        authUtils.setAccessToken(data.accessToken);
-        
         // 최근 로그인 provider 저장
         if (provider === 'naver' || provider === 'kakao') {
           authUtils.setLastLoginProvider(provider);
         }
 
-        // UserContext에 인증 상태 변경 알림
-        window.dispatchEvent(new Event('authStateChanged'));
-
         // 사용자 정보 조회하여 온보딩 완료 여부 확인
         try {
+          // 임시 토큰으로 사용자 정보 조회 시도
+          authUtils.setTempAccessToken(data.accessToken);
+          
           const userInfo = await getUserInfo();
           if (!userInfo.onboardingCompleted) {
-            // 온보딩 미완료 시 로딩 화면을 보여주지 않고 바로 온보딩 화면으로 이동
+            // 온보딩 미완료 시 임시 토큰만 저장하고 온보딩 화면으로 이동
+            // (정식 토큰은 저장하지 않아서 로그인 상태가 아님)
             setShowLoading(false);
             navigate('/onboarding', { replace: true });
           } else {
-            // 온보딩 완료 시 로딩 화면을 최소 1초간 보여주고 홈으로 이동
+            // 온보딩 완료 시 정식 토큰 저장 및 로그인 완료 처리
+            authUtils.setAccessToken(data.accessToken);
+            authUtils.removeTempAccessToken();
+            
+            // UserContext에 인증 상태 변경 알림
+            window.dispatchEvent(new Event('authStateChanged'));
+            
+            // 로딩 화면을 최소 1초간 보여주고 홈으로 이동
             setShowLoading(true);
             const elapsedTime = Date.now() - startTime;
             const remainingTime = Math.max(0, 1000 - elapsedTime);
@@ -75,12 +81,10 @@ const AuthCallback = () => {
           }
         } catch (error) {
           console.error('유저 정보 조회 실패:', error);
-          // 조회 실패 시 기본 동작 (로딩 화면 최소 1초간 표시 후 홈으로 이동)
-          setShowLoading(true);
-          const elapsedTime = Date.now() - startTime;
-          const remainingTime = Math.max(0, 1000 - elapsedTime);
-          await new Promise(resolve => setTimeout(resolve, remainingTime));
-          navigate('/', { replace: true });
+          // 조회 실패 시 임시 토큰 제거하고 로그인 페이지로 이동
+          authUtils.removeTempAccessToken();
+          alert('로그인에 실패했습니다. 다시 시도해주세요.');
+          navigate('/login', { replace: true });
         }
       } catch (error) {
         console.error('OAuth callback error:', error);
