@@ -104,25 +104,25 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
           <nav className="flex items-center whitespace-nowrap">
             <a
               href="/"
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 max-lg:text-sm"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0"
             >
               문제 만들기
             </a>
             <button
               onClick={handleMockExamClick}
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-12 max-lg:ml-2 hover:text-primary transition-colors"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors"
             >
               실전 모의고사
             </button>
             <a
               href="/my-quizzes"
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-8 max-lg:ml-2"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px]"
             >
               문제 모아보기
             </a>
             <a
               href="/wrong-quizzes"
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-6 max-lg:ml-2"
+              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px]"
             >
               틀린문제 풀어보기
             </a>
@@ -131,15 +131,15 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
               !isUserInfoLoading && userInfo ? (
                 <button
                   onClick={handleProfileClick}
-                  className="ml-4 max-lg:ml-2 flex items-center gap-2 shrink-0 cursor-pointer"
+                  className="ml-10 max-lg:ml-[51px] flex items-center gap-1 shrink-0 cursor-pointer"
                   aria-label="프로필 페이지로 이동"
                 >
                   {/* 프로필 이미지 - Figma 디자인에 맞춰 녹색 테두리 추가 */}
-                  <div className="relative w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] flex items-center justify-center">
+                  <div className="relative w-[38px] h-[38px] flex items-center justify-center">
                     {/* 외곽 원: 38x38, stroke #30a10e */}
                     <div className="absolute inset-0 rounded-full border-2 border-primary"></div>
                     {/* 내부 원: 34.5x34.5, fill #efefef */}
-                    <div className="w-[34.5px] h-[34.5px] max-lg:w-[28px] max-lg:h-[28px] rounded-full bg-[#efefef] overflow-hidden flex items-center justify-center">
+                    <div className="w-[34.5px] h-[34.5px] rounded-full bg-[#efefef] overflow-hidden flex items-center justify-center">
                       <img
                         src={userInfo.profileImageUrl || '/icon/default.svg'}
                         alt="프로필"
@@ -156,26 +156,26 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
                   </div>
                   {/* 닉네임 텍스트 - 프로필 이미지가 없어도 닉네임은 항상 표시 */}
                   {userInfo.nickName ? (
-                    <span className="text-[14px] text-primary font-normal max-lg:text-xs">
+                    <span className="text-[14px] text-primary font-normal leading-[1.4]">
                       {userInfo.nickName}
                     </span>
                   ) : (
                     // 닉네임이 없을 경우 기본값 표시 (필요시)
-                    <span className="text-[14px] text-primary font-normal max-lg:text-xs">
+                    <span className="text-[14px] text-primary font-normal leading-[1.4]">
                       사용자
                     </span>
                   )}
                 </button>
               ) : (
                 // 로딩 중일 때는 공간만 유지 (깜빡임 방지)
-                <div className="ml-4 max-lg:ml-2 w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] shrink-0" />
+                <div className="ml-10 max-lg:ml-[51px] w-[38px] h-[38px] shrink-0" />
               )
             ) : (
               <Button
                 variant="primary"
                 size="small"
                 onClick={handleLoginClick}
-                className="ml-4 max-lg:ml-2 w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
+                className="ml-10 max-lg:ml-[51px] w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
               >
                 로그인
               </Button>
@@ -273,7 +273,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
                           
                           {/* 배너 - 로그아웃 버튼 아래 */}
                           <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
-                            <p className="text-[14px] text-primary leading-[19.6px]">
+                            <p className="text-[14px] text-primary leading-[1.4] whitespace-nowrap">
                               오늘 {todaySummaryData?.todaySummary.solvedCount ?? 0}개의 문제 풀이를 진행했어요!
                             </p>
                           </div>
@@ -329,7 +329,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
                         
                         {/* 배너 - 로그인 버튼 아래, 구분선 위 */}
                         <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
-                          <p className="text-[14px] text-primary leading-[19.6px]">
+                          <p className="text-[14px] text-primary leading-[1.4] whitespace-nowrap">
                             회원가입하면 다양한 문제 제작이 가능해요!
                           </p>
                         </div>
