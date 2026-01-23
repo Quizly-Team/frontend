@@ -39,7 +39,6 @@ const WrongQuizPage = () => {
     text: string;
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isTopicEdited, setIsTopicEdited] = useState(false);
 
   const handleLoginClick = useCallback(() => {
     navigate('/login');
