@@ -26,7 +26,6 @@ const QuizSolvePage = ({
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
   const [showResult, setShowResult] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([]);
   const startTimeRef = useRef<number | null>(null);
@@ -84,47 +83,31 @@ const QuizSolvePage = ({
   //   : Number((elapsedMs / 1000).toFixed(2));
   // const formattedElapsedSeconds = displayedElapsedSeconds.toFixed(2);
 
-  const totalSolveTime = useMemo(
-    () =>
-      finalAnswers.reduce(
-        (total, answer) => total + (answer.solveTime ?? 0),
-        0
-      ),
-    [finalAnswers]
-  );
 
   const handleSelectAnswer = useCallback(
-    (answer: string) => {
-      if (!showResult) {
-        setSelectedAnswer(answer);
-      }
-    },
-    [showResult]
-  );
+    async (answer: string) => {
+      if (showResult) return;
 
-  const handleNextQuestion = useCallback(async () => {
-    if (!selectedAnswer || isSubmitting) return;
+      setSelectedAnswer(answer);
 
-    // 아직 채점 결과를 보여주지 않았다면 결과 표시
-    if (!showResult) {
+      // 답 선택 즉시 채점 실행
       const solveTimeSeconds = calculateSolveTime();
       solveTimeRef.current = solveTimeSeconds;
 
       // 회원인 경우 API 호출
       if (isAuthenticated) {
-        setIsSubmitting(true);
         try {
           // 틀린 문제 재도전 모드면 retry API 사용, 아니면 기본 API 사용
           if (isRetryMode) {
             await submitAnswerRetry(
               currentQuiz.quizId,
-              selectedAnswer,
+              answer,
               solveTimeSeconds
             );
           } else {
             await submitAnswerMember(
               currentQuiz.quizId,
-              selectedAnswer,
+              answer,
               solveTimeSeconds
             );
           }
@@ -133,14 +116,16 @@ const QuizSolvePage = ({
           if (import.meta.env.DEV) {
             console.error('답안 제출 실패:', error);
           }
-        } finally {
-          setIsSubmitting(false);
         }
       }
 
       setShowResult(true);
-      return;
-    }
+    },
+    [showResult, calculateSolveTime, isAuthenticated, isRetryMode, currentQuiz.quizId]
+  );
+
+  const handleNextQuestion = useCallback(() => {
+    if (!selectedAnswer || !showResult) return;
 
     // 현재 답안 저장
     const newAnswer: UserAnswer = {
@@ -166,9 +151,6 @@ const QuizSolvePage = ({
     userAnswers,
     isLastQuestion,
     showResult,
-    isAuthenticated,
-    isSubmitting,
-    calculateSolveTime,
   ]);
 
   const handleResultClose = useCallback(() => {
@@ -223,7 +205,7 @@ const QuizSolvePage = ({
           </div>
 
           {/* Progress Bar */}
-          <div className="mb-[60px]">
+          <div className="mb-[55px] max-lg:mb-[55px]">
             <ProgressBar
               current={showResult ? questionNumber : questionNumber - 1}
               total={quizDetailList.length}
@@ -359,7 +341,7 @@ const QuizSolvePage = ({
                               : 'bg-white border-gray-300'
                             : isSelected
                             ? 'bg-primary/10 border-primary'
-                            : 'bg-gray-50 border-gray-300'
+                            : 'bg-white border-gray-300'
                         }
                       `}
                     >
@@ -389,23 +371,17 @@ const QuizSolvePage = ({
           <div className="flex justify-end">
             <button
               onClick={handleNextQuestion}
-              disabled={!selectedAnswer || isSubmitting}
+              disabled={!showResult}
               className={`
                 px-4 py-3 rounded-[6px] text-body3-regular text-white transition-colors
                 ${
-                  selectedAnswer && !isSubmitting
+                  showResult
                     ? 'bg-primary hover:bg-primary/90'
                     : 'bg-gray-400 cursor-not-allowed'
                 }
               `}
             >
-              {isSubmitting
-                ? '제출 중...'
-                : showResult
-                ? isLastQuestion
-                  ? '결과보기'
-                  : '다음 문제'
-                : '제출'}
+              {isLastQuestion ? '결과보기' : '다음 문제'}
             </button>
           </div>
 
@@ -630,21 +606,17 @@ const QuizSolvePage = ({
           </button>
           <button
             onClick={handleNextQuestion}
-            disabled={!selectedAnswer || isSubmitting}
+            disabled={!showResult}
             className={`
               flex-1 px-l py-[14px] rounded-[6px] text-body2-regular text-white transition-colors
               ${
-                selectedAnswer && !isSubmitting
+                showResult
                   ? 'bg-primary hover:bg-primary/90'
                   : 'bg-gray-400 cursor-not-allowed'
               }
             `}
           >
-            {isSubmitting
-              ? '제출 중...'
-              : showResult
-              ? (isLastQuestion ? '결과보기' : '다음 문제')
-              : '제출'}
+            {isLastQuestion ? '결과보기' : '다음 문제'}
           </button>
         </div>
         
@@ -657,7 +629,6 @@ const QuizSolvePage = ({
         totalCount={quizDetailList.length}
         onViewAll={handleViewAllClick}
         onCreateMore={handleCreateMore}
-        totalSolveTime={totalSolveTime}
       />
     </div>
   );
