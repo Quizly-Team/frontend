@@ -1,21 +1,21 @@
 import { Modal as MuiModal } from '@mui/material';
-import { useCallback, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  className?: string;
 };
 
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps) => {
   return (
     <MuiModal
       open={isOpen}
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-white rounded-[24px] pt-[60px] pr-8 pb-8 pl-8 w-[430px] min-h-[324px] mx-m outline-none">
+      <div className={`bg-white rounded-[24px] pt-[60px] px-8 pb-8 w-[430px] min-h-[324px] mx-m outline-none ${className}`}>
         {children}
       </div>
     </MuiModal>
@@ -29,7 +29,6 @@ type QuizResultModalProps = {
   onClose: () => void;
   correctCount: number;
   totalCount: number;
-  totalSolveTime?: number;
   onViewAll: () => void;
   onCreateMore: () => void;
 };
@@ -39,24 +38,10 @@ export const QuizResultModal = ({
   onClose,
   correctCount,
   totalCount,
-  totalSolveTime = 0,
   onViewAll,
   onCreateMore,
 }: QuizResultModalProps) => {
   const wrongCount = totalCount - correctCount;
-  
-  // 초를 분:초 형식으로 변환 (예: 05:20)
-  const formatTimeToMinutesSeconds = useCallback((seconds: number): string => {
-    const totalSeconds = Math.floor(seconds);
-    const minutes = Math.floor(totalSeconds / 60);
-    const remainingSeconds = totalSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  }, []);
-  
-  const formattedSolveTime = useMemo(
-    () => formatTimeToMinutesSeconds(totalSolveTime),
-    [totalSolveTime, formatTimeToMinutesSeconds]
-  );
 
   return (
     <MuiModal
@@ -64,11 +49,11 @@ export const QuizResultModal = ({
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-white rounded-[24px] p-8 max-w-[450px] w-full mx-m outline-none relative">
+      <div className="bg-white rounded-[24px] p-8 max-w-[450px] w-full mx-m outline-none relative max-lg:max-w-[440px] max-lg:pt-10 max-lg:pb-10 max-md:max-w-[300px] max-md:h-[270px] max-md:pt-[30px] max-md:px-[38px] max-md:pb-[30px]">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 w-7 h-7 flex items-center justify-center"
+          className="absolute top-6 right-6 w-7 h-7 flex items-center justify-center max-md:top-5 max-md:right-5 max-md:w-5 max-md:h-5"
           aria-label="닫기"
         >
           <svg
@@ -77,6 +62,7 @@ export const QuizResultModal = ({
             viewBox="0 0 28 28"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="max-md:w-5 max-md:h-5"
           >
             <path
               d="M21 7L7 21M7 7L21 21"
@@ -88,9 +74,9 @@ export const QuizResultModal = ({
         </button>
 
         {/* Content */}
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center">
           {/* Success Icon */}
-          <div className="w-[100px] h-[100px] flex items-center justify-center">
+          <div className="w-[100px] h-[100px] flex items-center justify-center max-lg:w-[92px] max-lg:h-[62px] max-md:w-[77px] max-md:h-[52px]">
             <img
               src="/icon/group.svg"
               alt="그룹 아이콘"
@@ -98,33 +84,30 @@ export const QuizResultModal = ({
             />
           </div>
 
-          <p className="text-body3-medium text-primary">
+          <p className="text-body3-medium text-primary mt-4 max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4] max-md:!mt-3">
             모든 문제를 다 풀었어요!
           </p>
 
-          <div className="flex flex-col items-center gap-4">
-            <h2 className="text-header3-bold text-gray-900">문제 정답 결과</h2>
-            <p className="text-body2-medium text-gray-900">
+          <div className="flex flex-col items-center mt-4 max-md:!mt-3">
+            <h2 className="text-header3-bold text-gray-900 max-md:!text-[20px] max-md:!font-bold max-md:!leading-[1.4]">문제 정답 결과</h2>
+            <p className="text-body2-medium text-gray-900 mt-1 max-md:!text-[16px] max-md:!font-medium max-md:!leading-[1.4] max-md:!mt-1">
               {correctCount} / {totalCount}문제{' '}
               <span className="text-gray-600">
                 (정답{correctCount}, 오답{wrongCount})
               </span>
             </p>
-            <p className="text-sm text-gray-500">
-              총 풀이 시간 {formattedSolveTime}
-            </p>
           </div>
 
-          <div className="flex gap-4 mt-6">
+          <div className="flex gap-4 mt-6 max-md:gap-3 max-md:!mt-4">
             <button
               onClick={onViewAll}
-              className="bg-secondary text-primary text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-secondary/80 transition-colors"
+              className="bg-secondary text-primary text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-secondary/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
             >
               문제 모아보기
             </button>
             <button
               onClick={onCreateMore}
-              className="bg-primary text-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary/90 transition-colors"
+              className="bg-primary text-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
             >
               문제 더 만들기
             </button>
