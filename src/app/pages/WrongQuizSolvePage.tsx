@@ -5,7 +5,6 @@ import QuizSolvePage from '@/app/pages/QuizSolvePage';
 import type {
   QuizDetail,
   WrongQuizHistoryDetail,
-  UserAnswer,
 } from '@/types/quiz';
 
 type WrongQuizSolveState = {
@@ -47,7 +46,7 @@ const WrongQuizSolvePage = () => {
   }, [queryClient]);
 
   const handleComplete = useCallback(
-    async (_answers: UserAnswer[]) => {
+    async () => {
       await invalidateWrongQuizQueries();
       navigate('/wrong-quizzes', { replace: true });
     },
@@ -55,7 +54,7 @@ const WrongQuizSolvePage = () => {
   );
 
   const handleViewAll = useCallback(
-    async (_answers: UserAnswer[]) => {
+    async () => {
       await invalidateWrongQuizQueries();
       navigate('/my-quizzes', { replace: true });
     },
