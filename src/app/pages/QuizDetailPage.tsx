@@ -12,20 +12,35 @@ const QuizDetailPage = () => {
   const [error, setError] = useState<string | null>(null);
   const isAuthenticated = authUtils.isAuthenticated();
 
-  // 특정 날짜의 문제 목록 로드
+  // 특정 날짜 또는 주제의 문제 목록 로드
   useEffect(() => {
     if (!isAuthenticated || !date) return;
 
-    const fetchQuizzesByDate = async () => {
+    const fetchQuizzes = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await getQuizGroups('date');
+        // 먼저 날짜순으로 조회
+        const dateResponse = await getQuizGroups('date');
 
-        if (response.success && response.quizGroupList) {
-          // 해당 날짜의 문제 그룹 찾기
-          const targetGroup = response.quizGroupList.find(
+        if (dateResponse.success && dateResponse.quizGroupList) {
+          const targetGroup = dateResponse.quizGroupList.find(
+            (group) => group.group === date
+          );
+
+          if (targetGroup) {
+            setQuizzes(targetGroup.quizHistoryDetailList);
+            setIsLoading(false);
+            return;
+          }
+        }
+
+        // 날짜순에서 찾지 못하면 주제순으로 조회
+        const topicResponse = await getQuizGroups('topic');
+
+        if (topicResponse.success && topicResponse.quizGroupList) {
+          const targetGroup = topicResponse.quizGroupList.find(
             (group) => group.group === date
           );
 
@@ -35,7 +50,7 @@ const QuizDetailPage = () => {
             setQuizzes([]);
           }
         } else {
-          setError(response.errorCode || '데이터를 불러오는데 실패했습니다.');
+          setError(topicResponse.errorCode || '데이터를 불러오는데 실패했습니다.');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
@@ -44,7 +59,7 @@ const QuizDetailPage = () => {
       }
     };
 
-    fetchQuizzesByDate();
+    fetchQuizzes();
   }, [isAuthenticated, date]);
 
   // 비회원은 접근 불가
@@ -84,7 +99,7 @@ const QuizDetailPage = () => {
           ) : quizzes.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
               <p className="text-body1-medium text-gray-600">
-                해당 날짜에 풀어본 문제가 없습니다.
+                해당 항목에 풀어본 문제가 없습니다.
               </p>
             </div>
           ) : (
@@ -136,7 +151,7 @@ const QuizDetailPage = () => {
         ) : quizzes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <p className="text-body3-medium text-gray-600">
-              해당 날짜에 풀어본 문제가 없습니다.
+              해당 항목에 풀어본 문제가 없습니다.
             </p>
           </div>
         ) : (
