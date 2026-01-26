@@ -42,7 +42,7 @@ const LoginPage = ({
       <main className="flex-1 flex justify-center px-6">
         <div className="flex flex-col items-center max-md:pt-[100px] md:pt-[200px]">
           {/* Login Box */}
-          <div className="bg-white rounded-[24px] border border-[#dedede] w-[500px] max-md:w-full max-md:mx-4 px-[60px] max-md:px-[20px] py-[72px] max-md:py-[40px] flex flex-col items-center">
+          <div className="relative bg-white rounded-[24px] border border-[#dedede] w-[500px] max-md:w-full max-md:mx-4 px-[60px] max-md:px-[20px] py-[72px] max-md:py-[40px] flex flex-col items-center">
           {/* Logo */}
           <div className="w-[170px] max-md:w-[110px] h-[60px] max-md:h-[44px] mb-[20px] flex items-center justify-center">
             <img
@@ -65,7 +65,7 @@ const LoginPage = ({
           {/* SignIn Buttons */}
           <div className="w-full flex flex-col items-center gap-4 mb-[48px] max-md:mb-[24px]">
             {/* Naver Button */}
-            <div className="relative">
+            <div className="relative w-full flex justify-center">
               <button
                 onClick={handleNaverLogin}
                 className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#00c73c] hover:bg-[#00b836] transition-colors rounded-[6px] flex items-center justify-center gap-2"
@@ -81,18 +81,18 @@ const LoginPage = ({
               </button>
               {/* Recent Login Badge for Naver */}
               {lastLoginProvider === 'naver' && (
-                <div className="absolute top-1/2 -translate-y-1/2 max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-full max-md:mt-2 md:left-full md:ml-2 w-[180px] bg-[#333333] rounded-[4px] px-3 py-2 z-10">
+                <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-[#333333] rounded-[4px] flex items-center justify-center z-10">
                   <p className="text-[14px] font-normal text-white text-center leading-[19.6px]">
-                    최근에 로그인한 수단입니다.
+                    최근 로그인
                   </p>
                   {/* 삼각형 포인터 */}
-                  <div className="absolute max-md:top-0 max-md:left-1/2 max-md:-translate-x-1/2 max-md:-translate-y-full max-md:border-b-[#333333] max-md:border-t-transparent max-md:border-l-transparent max-md:border-r-transparent max-md:border-b-[6px] max-md:border-l-[6px] max-md:border-r-[6px] md:top-1/2 md:-translate-y-1/2 md:-left-[6px] md:border-t-[6px] md:border-b-[6px] md:border-r-[6px] md:border-t-transparent md:border-b-transparent md:border-r-[#333333] w-0 h-0"></div>
+                  <div className="absolute top-1/2 -translate-y-1/2 -left-[8px] border-t-[6px] border-b-[7px] border-r-[8px] border-t-transparent border-b-transparent border-r-[#333333] w-0 h-0"></div>
                 </div>
               )}
             </div>
 
             {/* Kakao Button */}
-            <div className="relative">
+            <div className="relative w-full flex justify-center">
               <button
                 onClick={handleKakaoLogin}
                 className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-[6px] flex items-center justify-center gap-2"
@@ -108,12 +108,12 @@ const LoginPage = ({
               </button>
               {/* Recent Login Badge for Kakao */}
               {lastLoginProvider === 'kakao' && (
-                <div className="absolute top-1/2 -translate-y-1/2 max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-full max-md:mt-2 md:left-full md:ml-2 w-[180px] bg-[#333333] rounded-[4px] px-3 py-2 z-10">
+                <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-[#333333] rounded-[4px] flex items-center justify-center z-10">
                   <p className="text-[14px] font-normal text-white text-center leading-[19.6px]">
-                    최근에 로그인한 수단입니다.
+                    최근 로그인
                   </p>
                   {/* 삼각형 포인터 */}
-                  <div className="absolute max-md:top-0 max-md:left-1/2 max-md:-translate-x-1/2 max-md:-translate-y-full max-md:border-b-[#333333] max-md:border-t-transparent max-md:border-l-transparent max-md:border-r-transparent max-md:border-b-[6px] max-md:border-l-[6px] max-md:border-r-[6px] md:top-1/2 md:-translate-y-1/2 md:-left-[6px] md:border-t-[6px] md:border-b-[6px] md:border-r-[6px] md:border-t-transparent md:border-b-transparent md:border-r-[#333333] w-0 h-0"></div>
+                  <div className="absolute top-1/2 -translate-y-1/2 -left-[8px] border-t-[6px] border-b-[7px] border-r-[8px] border-t-transparent border-b-transparent border-r-[#333333] w-0 h-0"></div>
                 </div>
               )}
             </div>
