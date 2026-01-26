@@ -1,14 +1,12 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { ChangeEvent } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Header, Icon, Modal } from '@/components';
+import { Header, Icon } from '@/components';
 import { authUtils } from '@/lib/auth';
-import { getWrongQuizzes, updateQuizzesTopic } from '@/api/quiz';
+import { getWrongQuizzes } from '@/api/quiz';
 import type {
   WrongQuizGroupResponse,
   WrongQuizHistoryDetail,
-  WrongQuizGroup,
 } from '@/types/quiz';
 
 const GROUP_TYPE_OPTIONS: Array<{ label: string; value: 'date' | 'topic' }> = [
@@ -30,15 +28,6 @@ const WrongQuizPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const desktopDropdownRef = useRef<HTMLDivElement | null>(null);
   const mobileDropdownRef = useRef<HTMLDivElement | null>(null);
-  const [activeMenuGroup, setActiveMenuGroup] = useState<string | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [targetGroup, setTargetGroup] = useState<WrongQuizGroup | null>(null);
-  const [topicInput, setTopicInput] = useState('');
-  const [formMessage, setFormMessage] = useState<{
-    type: 'error' | 'success';
-    text: string;
-  } | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLoginClick = useCallback(() => {
     navigate('/login');
@@ -65,16 +54,8 @@ const WrongQuizPage = () => {
     }
     return groups;
   }, [data, groupType]);
-  const targetQuizCount = targetGroup?.quizHistoryDetailList.length ?? 0;
-  const trimmedTopicInput = topicInput.trim();
   const cardBaseClass =
     'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto';
-  const isSubmitDisabled =
-    !targetGroup ||
-    !trimmedTopicInput ||
-    trimmedTopicInput === targetGroup.group ||
-    isSubmitting ||
-    targetQuizCount === 0;
 
   useEffect(() => {
     if (!error) return;
@@ -108,107 +89,15 @@ const WrongQuizPage = () => {
     };
   }, [isDropdownOpen]);
 
-  useEffect(() => {
-    if (typeof document === 'undefined') return undefined;
-
-    const handleMenuClose = () => {
-      setActiveMenuGroup(null);
-    };
-
-    document.addEventListener('click', handleMenuClose);
-    return () => {
-      document.removeEventListener('click', handleMenuClose);
-    };
-  }, []);
 
   const handleGroupTypeChange = useCallback((value: 'date' | 'topic') => {
     setGroupType(value);
     setIsDropdownOpen(false);
-    setActiveMenuGroup(null);
   }, []);
 
   const handleDropdownToggle = useCallback(() => {
     setIsDropdownOpen((prev) => !prev);
   }, []);
-
-  const handleTopicInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setTopicInput(event.target.value);
-      setIsTopicEdited(true);
-      if (formMessage) {
-        setFormMessage(null);
-      }
-    },
-    [formMessage]
-  );
-
-  const handleOpenEditModal = useCallback((group: WrongQuizGroup) => {
-    setTargetGroup(group);
-    setTopicInput(group.group);
-    setFormMessage(null);
-    setIsEditModalOpen(true);
-    setActiveMenuGroup(null);
-    setIsTopicEdited(false);
-  }, []);
-
-  const handleCloseEditModal = useCallback(() => {
-    setIsEditModalOpen(false);
-    setTargetGroup(null);
-    setTopicInput('');
-    setFormMessage(null);
-    setIsSubmitting(false);
-    setIsTopicEdited(false);
-  }, []);
-
-  const handleTopicSubmit = useCallback(async () => {
-    if (!targetGroup) return;
-    const nextTopic = trimmedTopicInput;
-
-    if (!nextTopic) {
-      setFormMessage({ type: 'error', text: '주제를 입력해주세요.' });
-      return;
-    }
-
-    if (targetQuizCount === 0) {
-      setFormMessage({ type: 'error', text: '수정할 문제가 없어요.' });
-      return;
-    }
-
-    if (nextTopic === targetGroup.group) {
-      setFormMessage({ type: 'error', text: '변경된 내용이 없어요.' });
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      await updateQuizzesTopic({
-        topic: nextTopic,
-        quizIdList: targetGroup.quizHistoryDetailList.map((quiz) => quiz.quizId),
-      });
-      setFormMessage({ type: 'success', text: '주제를 수정했어요!' });
-      await refetch();
-
-      setTimeout(() => {
-        handleCloseEditModal();
-      }, 800);
-    } catch (submitError) {
-      setFormMessage({
-        type: 'error',
-        text:
-          submitError instanceof Error
-            ? submitError.message
-            : '주제 수정 중 문제가 발생했어요.',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [
-    handleCloseEditModal,
-    refetch,
-    targetGroup,
-    targetQuizCount,
-    trimmedTopicInput,
-  ]);
 
   const handleCardClick = useCallback(
     (quizzes: WrongQuizHistoryDetail[]) => {
@@ -272,45 +161,6 @@ const WrongQuizPage = () => {
                 onClick={() => handleCardClick(group.quizHistoryDetailList)}
                 className={cardBaseClass}
               >
-                <button
-                  type="button"
-                  aria-label={`${group.group} 더보기`}
-                  className="absolute right-[16px] top-[16px] flex h-6 w-6 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/30 max-lg:right-[26px] max-lg:top-[20px]"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    setActiveMenuGroup((prev) =>
-                      prev === group.group ? null : group.group
-                    );
-                  }}
-                >
-                  <svg width="18" height="4" viewBox="0 0 18 4" fill="none">
-                    <circle cx="2" cy="2" r="2" fill="currentColor" />
-                    <circle cx="9" cy="2" r="2" fill="currentColor" />
-                    <circle cx="16" cy="2" r="2" fill="currentColor" />
-                  </svg>
-                </button>
-
-                {activeMenuGroup === group.group && (
-                  <div
-                    className="absolute right-0 top-10 z-30"
-                    onClick={(event) => event.stopPropagation()}
-                  >
-                    <div className="w-[170px] rounded-[10px] border border-[#dedede] bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
-                      <button
-                        type="button"
-                        className="w-full rounded-[6px] px-3 py-2 text-left text-body3-medium text-gray-900 hover:bg-gray-50"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          handleOpenEditModal(group);
-                        }}
-                      >
-                        주제 수정하기
-                      </button>
-                    </div>
-                  </div>
-                )}
-
                 <div className="flex flex-col gap-[24px] items-center w-full max-lg:gap-[20px]">
                   <div className="flex items-center justify-center gap-1 w-full">
                     <Icon name="icn_note" className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]" />
@@ -604,67 +454,6 @@ const WrongQuizPage = () => {
           {renderContent('grid grid-cols-1 gap-3 w-full')}
         </div>
       </main>
-
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={handleCloseEditModal}
-        className="max-md:w-[300px] max-md:px-[24px] max-md:py-[40px] max-md:min-h-0"
-      >
-        <div className="w-full">
-          <div className="flex flex-col gap-6 max-md:gap-[24px]">
-            <h2 className="text-center text-header3-bold text-gray-900 max-md:text-[20px]">
-              주제 수정하기
-            </h2>
-
-            <div className="flex flex-col gap-3">
-              <div className="mx-auto w-[350px] max-md:w-full">
-                <div className="flex flex-col items-start w-full">
-                  <label className="text-[16px] font-medium text-[#777] mb-2 max-md:text-[14px]">
-                    새로운 주제
-                  </label>
-                  <div className="w-full border-b border-[#dedede] py-[12px]">
-                    <input
-                      type="text"
-                      value={topicInput}
-                      onChange={handleTopicInputChange}
-                      placeholder={targetGroup?.group ?? '새로운 주제를 입력하세요'}
-                      className="w-full text-[16px] text-gray-900 placeholder:text-[#9e9e9e] outline-none bg-transparent"
-                    />
-                  </div>
-                </div>
-              </div>
-              {formMessage && (
-                <p
-                  className={`text-body3-medium text-center ${
-                    formMessage.type === 'error' ? 'text-error' : 'text-primary'
-                  }`}
-                >
-                  {formMessage.text}
-                </p>
-              )}
-            </div>
-
-            <div className="mt-2 flex items-center justify-center gap-3 max-md:gap-[12px]">
-              <button
-                type="button"
-                onClick={handleCloseEditModal}
-                className="h-[46px] w-[120px] rounded-[6px] border border-[#dedede] bg-[#efefef] text-body3-regular text-gray-900 hover:bg-gray-200 disabled:opacity-60 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
-                disabled={isSubmitting}
-              >
-                취소
-              </button>
-              <button
-                type="button"
-                onClick={handleTopicSubmit}
-                disabled={isSubmitDisabled}
-                className="h-[46px] w-[120px] rounded-[6px] bg-primary text-body3-regular text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
-              >
-                {isSubmitting ? '수정 중...' : '수정하기'}
-              </button>
-            </div>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };
