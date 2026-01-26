@@ -134,7 +134,7 @@ export default function QuizTypeChart({ data }: Props) {
               color: '#222',
               fontSize: '14px',
             }}
-            formatter={(value: number) => [`${value}%`, '정답률']}
+            formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
           />
           <Bar
             dataKey="value"

@@ -122,7 +122,7 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
               color: '#222',
               fontSize: '14px',
             }}
-            formatter={(value: number) => [`${value}문제`, '풀이 개수']}
+            formatter={(value: number | undefined) => [`${value ?? 0}문제`, '풀이 개수']}
           />
           <Bar
             dataKey="value"

@@ -87,7 +87,7 @@ export default function TopicChart({ data }: Props) {
               color: '#222',
               fontSize: '14px',
             }}
-            formatter={(value: number) => [`${value}%`, '정답률']}
+            formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
             labelFormatter={(label) => chartData.find((item) => item.name === label)?.fullName || label}
           />
           <Bar
