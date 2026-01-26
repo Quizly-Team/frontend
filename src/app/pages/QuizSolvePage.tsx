@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Icon, QuizResultModal } from '@/components';
+import { Header, Icon, QuizResultModal, QuizExitConfirmModal } from '@/components';
 import ProgressBar from '@/components/common/ProgressBar';
 import type { QuizDetail, UserAnswer } from '@/types/quiz';
 import { submitAnswerMember, submitAnswerRetry } from '@/api/quiz';
@@ -28,6 +28,8 @@ const QuizSolvePage = ({
   const [showResult, setShowResult] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([]);
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState<(() => void) | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const solveTimeRef = useRef(0);
 
@@ -181,6 +183,66 @@ const QuizSolvePage = ({
     }
   }, [finalAnswers, onComplete, onExit]);
 
+  const handleHeaderClick = useCallback((e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const link = target.closest('a, button, img');
+
+    if (!link) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    if (link.tagName === 'A') {
+      const href = (link as HTMLAnchorElement).href;
+      setPendingNavigation(() => () => {
+        window.location.href = href;
+      });
+    } else if (link.tagName === 'BUTTON') {
+      setPendingNavigation(() => () => {
+        if (onExit) {
+          onExit();
+        } else {
+          window.location.href = '/';
+        }
+      });
+    } else if (link.tagName === 'IMG') {
+      const parentLink = link.closest('a');
+      if (parentLink) {
+        const href = (parentLink as HTMLAnchorElement).href;
+        setPendingNavigation(() => () => {
+          window.location.href = href;
+        });
+      }
+    }
+
+    setIsExitModalOpen(true);
+  }, [onExit]);
+
+  const handleMobileExitClick = useCallback(() => {
+    setPendingNavigation(() => () => {
+      if (onExit) {
+        onExit();
+      } else {
+        navigate(-1);
+      }
+    });
+    setIsExitModalOpen(true);
+  }, [onExit, navigate]);
+
+  const handleExitModalClose = useCallback(() => {
+    setIsExitModalOpen(false);
+    setPendingNavigation(null);
+  }, []);
+
+  const handleConfirmExit = useCallback(() => {
+    setIsExitModalOpen(false);
+    if (pendingNavigation) {
+      pendingNavigation();
+    }
+    setPendingNavigation(null);
+  }, [pendingNavigation]);
+
   if (!currentQuiz) {
     return <div>로딩 중...</div>;
   }
@@ -188,7 +250,7 @@ const QuizSolvePage = ({
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
       {/* Header - Web/Tablet Only */}
-      <div className="max-md:hidden">
+      <div className="max-md:hidden" onClickCapture={handleHeaderClick}>
         <Header logoUrl="/logo.svg" />
       </div>
 
@@ -599,7 +661,7 @@ const QuizSolvePage = ({
       <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white pt-4 pb-10 px-l z-50">
         <div className="flex gap-3">
           <button
-            onClick={onExit}
+            onClick={handleMobileExitClick}
             className="bg-white border border-gray-300 px-l py-[14px] rounded-[6px] text-body2-regular text-gray-600 whitespace-nowrap"
           >
             나가기
@@ -629,6 +691,12 @@ const QuizSolvePage = ({
         totalCount={quizDetailList.length}
         onViewAll={handleViewAllClick}
         onCreateMore={handleCreateMore}
+      />
+
+      <QuizExitConfirmModal
+        isOpen={isExitModalOpen}
+        onClose={handleExitModalClose}
+        onConfirmExit={handleConfirmExit}
       />
     </div>
   );
