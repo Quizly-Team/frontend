@@ -95,10 +95,9 @@ export const getDashboardStats = async (): Promise<DashboardResponse> => {
   }
 
   const data = await response.json();
-  
+
   // 데이터가 유효한지 확인
   if (!data || typeof data !== 'object') {
-    console.error('Invalid dashboard response:', data);
     throw new Error('대시보드 응답 데이터가 유효하지 않습니다.');
   }
   

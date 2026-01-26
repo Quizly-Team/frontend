@@ -59,7 +59,6 @@ const AnalyticsPage = () => {
         setEmail(data.email || '');
         setProfileImageUrl(data.profileImageUrl);
       } catch (err) {
-        console.error('유저 정보 조회 실패:', err);
         setError(err instanceof Error ? err.message : '유저 정보를 불러오는데 실패했습니다.');
       } finally {
         setIsLoading(false);
@@ -173,7 +172,6 @@ const AnalyticsPage = () => {
 
       alert('변경사항이 저장되었습니다.');
     } catch (err) {
-      console.error('변경사항 저장 실패:', err);
       setSaveError(err instanceof Error ? err.message : '변경사항 저장에 실패했습니다.');
     } finally {
       setIsSaving(false);
@@ -191,7 +189,6 @@ const AnalyticsPage = () => {
       navigate('/', { replace: true });
       window.location.reload();
     } catch (err) {
-      console.error('로그아웃 실패:', err);
       // API 호출 실패해도 클라이언트 측 토큰은 제거하고 로그아웃 처리
       authUtils.removeAllTokens();
       navigate('/', { replace: true });

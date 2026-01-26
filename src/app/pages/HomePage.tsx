@@ -75,13 +75,6 @@ const HomePage = () => {
         e.target.value = '';
         return;
       }
-
-      console.log('PDF 페이지 수:', pdfValidation.pageCount);
-    }
-
-    // JPG/PNG 파일인 경우 안내 메시지 (이미 한 장만 선택 가능)
-    if (uploadedFile.type.startsWith('image/')) {
-      console.log('이미지 파일 업로드:', uploadedFile.name);
     }
 
     setFile(uploadedFile);
@@ -111,13 +104,6 @@ const HomePage = () => {
       // QuizType 매핑 (multiple -> MULTIPLE_CHOICE, ox -> TRUE_FALSE)
       const apiType = type === 'multiple' ? 'MULTIPLE_CHOICE' : 'TRUE_FALSE';
 
-      console.log('[HomePage] 문제 생성 시작:', {
-        type: apiType,
-        isLoggedIn,
-        contentType: content instanceof File ? 'file' : 'text',
-        hasToken: !!authUtils.getAccessToken(),
-      });
-
       setIsLoadingComplete(false);
 
       createQuiz(
@@ -128,7 +114,6 @@ const HomePage = () => {
         },
         {
           onSuccess: (response) => {
-            console.log('문제 생성 성공:', response);
             if (response.success && response.quizDetailList.length > 0) {
               setQuizData(response.quizDetailList);
               setIsQuizCreateModalOpen(false);
@@ -140,7 +125,6 @@ const HomePage = () => {
             }
           },
           onError: (error) => {
-            console.error('문제 생성 오류:', error);
             alert(
               error.message || '문제 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
             );
@@ -241,7 +225,6 @@ const HomePage = () => {
   }, []);
 
   const handleQuizComplete = useCallback((answers: UserAnswer[]) => {
-    console.log('퀴즈 완료! 답변:', answers);
     // TODO: 채점 API 호출
     setQuizData(null); // 홈으로 돌아가기
     setIsLoadingComplete(false);
@@ -272,7 +255,6 @@ const HomePage = () => {
   const handleMockExamSubmit = useCallback(
     (data: MockExamSettingData) => {
       const onSuccess = (response: any) => {
-        console.log('모의고사 생성 성공:', response);
         setIsMockExamModalOpen(false);
         navigate('/mock-exam', {
           state: {
@@ -282,7 +264,6 @@ const HomePage = () => {
       };
 
       const onError = (error: Error) => {
-        console.error('모의고사 생성 오류:', error);
         alert(
           error.message || '모의고사 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
         );

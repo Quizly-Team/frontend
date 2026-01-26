@@ -188,7 +188,6 @@ const MockExamPage = () => {
       if (strayClone && strayClone.style.top === '-10000px') {
         document.body.removeChild(strayClone);
       }
-      console.error('PDF 생성 오류:', error);
       alert('PDF 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   }, []);
