@@ -35,7 +35,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       const data = await getUserInfo();
       setUserInfo(data);
     } catch (err) {
-      console.error('유저 정보 조회 실패:', err);
       setUserInfo(null);
     } finally {
       setIsLoading(false);

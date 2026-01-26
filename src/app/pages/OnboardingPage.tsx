@@ -87,10 +87,9 @@ const OnboardingPage = () => {
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(0, 1000 - elapsedTime);
       await new Promise(resolve => setTimeout(resolve, remainingTime));
-      
+
       navigate('/', { replace: true });
     } catch (error) {
-      console.error('온보딩 정보 저장 실패:', error);
       setIsLoading(false);
       alert(`온보딩 정보 저장에 실패했습니다: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
     }

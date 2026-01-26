@@ -80,14 +80,12 @@ const AuthCallback = () => {
             navigate('/', { replace: true });
           }
         } catch (error) {
-          console.error('유저 정보 조회 실패:', error);
           // 조회 실패 시 임시 토큰 제거하고 로그인 페이지로 이동
           authUtils.removeTempAccessToken();
           alert('로그인에 실패했습니다. 다시 시도해주세요.');
           navigate('/login', { replace: true });
         }
       } catch (error) {
-        console.error('OAuth callback error:', error);
         alert(`로그인에 실패했습니다: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
         navigate('/', { replace: true });
       }
