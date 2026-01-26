@@ -253,8 +253,15 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
                               </button>
                             </div>
                             {/* 프로필 이미지 */}
-                            <div className="relative w-[60px] h-[60px] flex items-center justify-center shrink-0">
-                              <div className="w-[60px] h-[60px] rounded-full bg-[#efefef] overflow-hidden">
+                            <button
+                              onClick={handleProfileClick}
+                              className="relative w-[60px] h-[60px] flex items-center justify-center shrink-0 cursor-pointer"
+                              aria-label="대시보드로 이동"
+                            >
+                              {/* 외곽 원: 60x60, stroke primary (1.5px) */}
+                              <div className="absolute inset-0 rounded-full border-[1.5px] border-primary"></div>
+                              {/* 내부 원: 57x57 (60 - 3px border), fill #efefef */}
+                              <div className="w-[57px] h-[57px] rounded-full bg-[#efefef] overflow-hidden">
                                 <img
                                   src={userInfo.profileImageUrl || '/icon/default.svg'}
                                   alt="프로필"
@@ -267,7 +274,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
                                   }}
                                 />
                               </div>
-                            </div>
+                            </button>
                           </div>
                           
                           {/* 배너 - 로그아웃 버튼 아래 */}
