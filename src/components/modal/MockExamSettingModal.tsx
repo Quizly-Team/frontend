@@ -93,11 +93,6 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
       return;
     }
 
-    // JPG/PNG 파일인 경우 안내 메시지 (이미 한 장만 선택 가능)
-    if (uploadedFile.type.startsWith('image/')) {
-      console.log('이미지 파일 업로드:', uploadedFile.name);
-    }
-
     setFile(uploadedFile);
     setPlainText(''); // 파일 업로드 시 텍스트 초기화
   }, []);

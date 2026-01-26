@@ -115,9 +115,6 @@ const QuizSolvePage = ({
           }
         } catch (error) {
           // 에러가 발생해도 UI 흐름은 유지 (사용자 경험 보호)
-          if (import.meta.env.DEV) {
-            console.error('답안 제출 실패:', error);
-          }
         }
       }
 

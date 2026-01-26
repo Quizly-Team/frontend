@@ -39,7 +39,6 @@ const QuizListPage = () => {
           setError(response.errorCode || '데이터를 불러오는데 실패했습니다.');
         }
       } catch (err) {
-        console.error('문제 모아보기 조회 실패:', err);
         setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
       } finally {
         setIsLoading(false);

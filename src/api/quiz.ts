@@ -194,11 +194,6 @@ const authenticatedFetch = async (
 export const createQuizByTextMember = async (
   request: CreateQuizTextRequest
 ): Promise<QuizResponse> => {
-  console.log('[회원] 문제 생성 요청:', {
-    url: `${API_BASE_URL}/quizzes/member`,
-    body: request,
-  });
-
   const response = await authenticatedFetch(`${API_BASE_URL}/quizzes/member`, {
     method: 'POST',
     body: JSON.stringify(request),
@@ -355,11 +350,6 @@ export const submitAnswerMember = async (
   userAnswer: string,
   solveTime: number
 ): Promise<SubmitAnswerResponse> => {
-  console.log('[회원] 답안 제출 요청:', {
-    url: `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
-    body: { userAnswer, solveTime },
-  });
-
   const response = await authenticatedFetch(
     `${API_BASE_URL}/quizzes/${quizId}/answer/member`,
     {
@@ -397,11 +387,6 @@ export const submitAnswerRetry = async (
   userAnswer: string,
   solveTime: number
 ): Promise<SubmitAnswerResponse> => {
-  console.log('[회원] 틀린 문제 재도전 답안 제출 요청:', {
-    url: `${API_BASE_URL}/quizzes/${quizId}/answer/retry`,
-    body: { userAnswer, solveTime },
-  });
-
   const response = await authenticatedFetch(
     `${API_BASE_URL}/quizzes/${quizId}/answer/retry`,
     {
@@ -433,10 +418,6 @@ export const submitAnswerRetry = async (
  * @param groupType - 그룹화 기준 (예: 'date')
  */
 export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGroupResponse> => {
-  console.log('[회원] 문제 모아보기 조회 요청:', {
-    url: `${API_BASE_URL}/quizzes?groupType=${groupType}`,
-  });
-
   const response = await authenticatedFetch(
     `${API_BASE_URL}/quizzes?groupType=${groupType}`,
     {
@@ -469,11 +450,6 @@ export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGro
 export const getWrongQuizzes = async (
   groupType: 'date' | 'topic' = 'date'
 ): Promise<WrongQuizGroupResponse> => {
-  console.log('[회원] 틀린 문제 조회 요청:', {
-    url: `${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`,
-    groupType,
-  });
-
   const response = await authenticatedFetch(
     `${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`,
     {
@@ -503,11 +479,6 @@ export const getWrongQuizzes = async (
 export const updateQuizzesTopic = async (
   request: UpdateQuizzesTopicRequest
 ): Promise<UpdateQuizzesTopicResponse> => {
-  console.log('[회원] 틀린 문제 주제 수정 요청:', {
-    url: `${API_BASE_URL}/quizzes/topic`,
-    quizCount: request.quizIdList.length,
-  });
-
   const response = await authenticatedFetch(`${API_BASE_URL}/quizzes/topic`, {
     method: 'PATCH',
     body: JSON.stringify(request),
@@ -548,11 +519,6 @@ export const updateQuizzesTopic = async (
 export const createMockExam = async (
   request: CreateMockExamRequest
 ): Promise<MockExamResponse> => {
-  console.log('[회원] 모의고사 생성 요청:', {
-    url: `${API_BASE_URL}/mock/member`,
-    body: request,
-  });
-
   const response = await authenticatedFetch(`${API_BASE_URL}/mock/member`, {
     method: 'POST',
     body: JSON.stringify(request),

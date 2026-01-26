@@ -74,7 +74,6 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
       navigate("/", { replace: true });
       window.location.reload();
     } catch (err) {
-      console.error("로그아웃 실패:", err);
       // API 호출 실패해도 클라이언트 측 토큰은 제거하고 로그아웃 처리
       authUtils.removeAllTokens();
       setIsMobileMenuOpen(false);

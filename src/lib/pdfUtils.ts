@@ -42,7 +42,6 @@ export const validatePdfPageCount = async (
       pageCount,
     };
   } catch (error) {
-    console.error('PDF 페이지 수 확인 오류:', error);
     return {
       isValid: false,
       pageCount: 0,
