@@ -120,4 +120,62 @@ export const QuizResultModal = ({
 
 QuizResultModal.displayName = 'QuizResultModal';
 
+type QuizExitConfirmModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirmExit: () => void;
+};
+
+export const QuizExitConfirmModal = ({
+  isOpen,
+  onClose,
+  onConfirmExit,
+}: QuizExitConfirmModalProps) => {
+  return (
+    <MuiModal
+      open={isOpen}
+      onClose={onClose}
+      className="flex items-center justify-center"
+    >
+      <div className="bg-white rounded-[24px] px-6 py-[30px] w-[380px] mx-m outline-none max-md:w-[300px]">
+        {/* Content */}
+        <div className="flex flex-col items-center gap-6">
+          {/* Text Content */}
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-tint-regular text-primary text-center">
+              아직 문제를 다 풀지 못했어요!
+            </p>
+            <div className="flex flex-col items-center gap-3">
+              <h2 className="text-[20px] font-bold text-gray-900 leading-[1.4] text-center">
+                멈추고 나가시겠어요?
+              </h2>
+              <p className="text-body3-regular text-gray-600 text-center">
+                풀이가 종료되면 생성된 문제는<br />전부 오답처리 됩니다.
+              </p>
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={onClose}
+              className="bg-gray-200 text-gray-900 text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-gray-300 transition-colors"
+            >
+              취소
+            </button>
+            <button
+              onClick={onConfirmExit}
+              className="bg-primary text-white text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-primary/90 transition-colors"
+            >
+              나가기
+            </button>
+          </div>
+        </div>
+      </div>
+    </MuiModal>
+  );
+};
+
+QuizExitConfirmModal.displayName = 'QuizExitConfirmModal';
+
 export default Modal;
