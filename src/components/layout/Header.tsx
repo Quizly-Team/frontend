@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components";
 import { authUtils } from "@/lib/auth";
@@ -9,13 +9,15 @@ import { logout, getTodaySummary } from "@/api/account";
 type HeaderProps = {
   logoUrl?: string;
   onMockExamClick?: () => void;
+  isMockExamModalOpen?: boolean;
 };
 
-const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
+const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = false }: HeaderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { userInfo, isLoading: isUserInfoLoading } = useUser();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // 오늘의 학습 요약 조회 (로그인 상태일 때만)
   const { data: todaySummaryData } = useQuery({
@@ -103,25 +105,33 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick }: HeaderProps) => {
           <nav className="flex items-center whitespace-nowrap">
             <a
               href="/"
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0"
+              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 hover:text-primary transition-colors ${
+                location.pathname === "/" && !isMockExamModalOpen ? "text-primary" : "text-gray-900"
+              }`}
             >
               문제 만들기
             </a>
             <button
               onClick={handleMockExamClick}
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors"
+              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors ${
+                location.pathname === "/mock-exam" || isMockExamModalOpen ? "text-primary" : "text-gray-900"
+              }`}
             >
               실전 모의고사
             </button>
             <a
               href="/my-quizzes"
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px]"
+              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors ${
+                location.pathname === "/my-quizzes" ? "text-primary" : "text-gray-900"
+              }`}
             >
               문제 모아보기
             </a>
             <a
               href="/wrong-quizzes"
-              className="text-gray-900 px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px]"
+              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors ${
+                location.pathname === "/wrong-quizzes" ? "text-primary" : "text-gray-900"
+              }`}
             >
               틀린문제 풀어보기
             </a>
