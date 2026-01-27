@@ -327,7 +327,7 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                 </svg>
                 {showTooltip && (
                   <Tooltip className="w-[286px] max-lg:w-[310px] max-md:w-[286px]">
-                    <p className="mb-0">최소 300자 이상의 내용을 작성해주시면</p>
+                    <p className="mb-0">최소 2000자 이상의 내용을 작성해주시면</p>
                     <p className="mb-0">중복 없이 문제를 만들 수 있습니다.</p>
                     <p>내용 또는 파일 업로드 둘 중 하나만 선택 가능합니다.</p>
                   </Tooltip>
