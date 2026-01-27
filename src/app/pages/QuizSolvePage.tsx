@@ -467,8 +467,8 @@ const QuizSolvePage = ({
       </main>
 
       {/* Main Content - Mobile */}
-      <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[140px]">
-        <div className="w-full px-l">
+      <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[140px] px-l">
+        <div className="w-full">
           {/* Progress Bar */}
           <div className="mb-[47px]">
             <ProgressBar
