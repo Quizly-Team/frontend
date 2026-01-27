@@ -63,7 +63,8 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
 
   const chartData = data.map((item) => ({
     name: `${String(item.startHour).padStart(2, '0')}시`,
-    value: item.solvedCount,
+    value: Math.min(item.solvedCount, 100),
+    actualValue: item.solvedCount,
   }));
 
   const yAxisTicks = [0, 25, 50, 75, 100];
@@ -122,7 +123,10 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
               color: '#222',
               fontSize: '14px',
             }}
-            formatter={(value: number | undefined) => [`${value ?? 0}문제`, '풀이 개수']}
+            formatter={(_value: number | undefined, _name: string | undefined, props: any) => [
+              `${props.payload.actualValue ?? 0}문제`,
+              '풀이 개수'
+            ]}
           />
           <Bar
             dataKey="value"
