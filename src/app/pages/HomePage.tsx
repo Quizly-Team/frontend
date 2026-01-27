@@ -306,7 +306,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-bg-home flex flex-col">
       {/* Header */}
-      <Header logoUrl="/logo.svg" onMockExamClick={handleOpenMockExamModal} />
+      <Header logoUrl="/logo.svg" onMockExamClick={handleOpenMockExamModal} isMockExamModalOpen={isMockExamModalOpen} />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
