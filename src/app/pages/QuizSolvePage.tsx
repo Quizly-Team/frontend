@@ -390,7 +390,7 @@ const QuizSolvePage = ({
                       key={`${currentQuiz.quizId}-option-${index}`}
                       onClick={() => handleSelectAnswer(option)}
                       className={`
-                        w-full flex items-center gap-3 px-3 py-4 max-lg:h-[120px] max-lg:min-h-[120px] max-lg:py-0 rounded-[12px] border text-left transition-colors
+                        w-full flex items-center gap-3 px-3 py-4 rounded-[12px] border text-left transition-colors
                         ${
                           showResult
                             ? isSelected
