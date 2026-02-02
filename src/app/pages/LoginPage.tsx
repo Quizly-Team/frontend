@@ -39,8 +39,8 @@ const LoginPage = ({
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content */}
-      <main className="flex-1 flex justify-center px-6">
-        <div className="flex flex-col items-center max-md:pt-[100px] md:pt-[200px]">
+      <main className="flex-1 flex items-center justify-center px-6 max-lg:items-start max-lg:pt-[80px]">
+        <div className="flex flex-col items-center">
           {/* Login Box */}
           <div className="relative bg-white rounded-[24px] border border-[#dedede] w-[500px] max-md:w-full max-md:mx-4 px-[60px] max-md:px-[20px] py-[72px] max-md:py-[40px] flex flex-col items-center">
           {/* Logo */}
