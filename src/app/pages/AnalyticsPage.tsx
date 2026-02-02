@@ -228,39 +228,56 @@ const AnalyticsPage = () => {
           </div>
 
         {activeTab === 'analytics' && (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5 max-md:gap-[20px]">
             {isDashboardLoading ? (
-              <div className="bg-white rounded-2xl p-8 border border-gray-300">
+              <div className="bg-white rounded-2xl p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
                 <div className="flex justify-center items-center py-20">
                   <p className="text-gray-600">로딩 중...</p>
                 </div>
               </div>
             ) : dashboardError ? (
-              <div className="bg-white rounded-2xl p-8 border border-gray-300">
+              <div className="bg-white rounded-2xl p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
                 <div className="flex justify-center items-center py-20">
                   <p className="text-red-500">데이터를 불러오는데 실패했습니다.</p>
                 </div>
               </div>
             ) : dashboardData ? (
               <>
-                {/* 오늘의 학습 요약 */}
-                <TodaySummary data={dashboardData.todaySummary} dailyData={dashboardData.dailySummaryList} />
+                {/* 모바일: 가로 스크롤 가능한 카드 컨테이너 */}
+                <div className="hidden max-md:block">
+                  <div className="overflow-x-auto -mx-5 px-5">
+                    <div className="flex gap-[20px] min-w-max pb-2">
+                      <div className="flex-shrink-0 w-[250px]">
+                        <TodaySummary data={dashboardData.todaySummary} dailyData={dashboardData.dailySummaryList} />
+                      </div>
+                      <div className="flex-shrink-0 w-[250px]">
+                        <CumulativeSummary data={dashboardData.cumulativeSummary} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* PC: 오늘의 학습 요약 */}
+                <div className="max-md:hidden">
+                  <TodaySummary data={dashboardData.todaySummary} dailyData={dashboardData.dailySummaryList} />
+                </div>
 
                 {/* AI 학습 분석 */}
-                <div className="bg-[#eff6ff] border border-[#4f8fff] rounded-[16px] px-[45px] py-[35px] w-[976px] max-lg:w-[904px]">
-                  <div className="flex items-center gap-[6px] mb-[22px]">
-                    <div className="w-[24px] h-[24px] flex items-center justify-center">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div className="bg-[#eff6ff] border border-[#4f8fff] rounded-[16px] px-[45px] py-[35px] max-md:px-[20px] max-md:py-[20px] w-[976px] max-lg:w-[904px] max-md:w-full">
+                  <div className="flex items-center gap-[6px] mb-[22px] max-md:mb-[15px]">
+                    <div className="w-[24px] h-[24px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="max-md:w-[20px] max-md:h-[20px]">
                         <circle cx="12" cy="12" r="10.5" stroke="#0053e2" strokeWidth="1.5"/>
                         <circle cx="12" cy="9" r="1.5" fill="#0053e2"/>
                         <rect x="11" y="13" width="2" height="4" rx="1" fill="#0053e2"/>
                       </svg>
                     </div>
-                    <h3 className="text-[20px] font-medium text-[#0053e2]">
-                      체험판 AI 학습 분석
+                    <h3 className="text-[20px] max-md:text-[18px] font-medium text-[#0053e2]">
+                      <span className="max-md:hidden">체험판 AI 학습 분석</span>
+                      <span className="hidden max-md:inline">AI 학습 분석</span>
                     </h3>
                   </div>
-                  <p className="text-[16px] leading-[22.4px] text-[#0053e2]">
+                  <p className="text-[16px] max-md:text-[14px] leading-[22.4px] max-md:leading-[19.6px] text-[#0053e2]">
                     {(() => {
                       const aiResult = dashboardData.aiAnalysisResult;
                       if (aiResult === undefined || aiResult === null) {
@@ -272,8 +289,10 @@ const AnalyticsPage = () => {
                   </p>
                 </div>
 
-                {/* 누적 통계 */}
-                <CumulativeSummary data={dashboardData.cumulativeSummary} />
+                {/* PC: 누적 통계 */}
+                <div className="max-md:hidden">
+                  <CumulativeSummary data={dashboardData.cumulativeSummary} />
+                </div>
 
                 {/* 일별 학습 히트맵 및 학습 통계 */}
                 <LearningStats
@@ -283,13 +302,18 @@ const AnalyticsPage = () => {
                 />
 
                 {/* 유형별/시간대별 차트 */}
-                <div className="flex gap-5">
+                <div className="flex gap-5 max-md:flex-col max-md:gap-[20px]">
                   <QuizTypeChart data={dashboardData.quizTypeSummaryList} />
-                  <HourlyChart data={dashboardData.hourlySummaryList} nickname={userInfo?.nickName} />
+                  {/* 모바일에서 시간대별 차트 숨김 */}
+                  <div className="max-md:hidden">
+                    <HourlyChart data={dashboardData.hourlySummaryList} nickname={userInfo?.nickName} />
+                  </div>
                 </div>
 
-                {/* 주제별 차트 */}
-                <TopicChart data={dashboardData.topicSummaryList} />
+                {/* 주제별 차트 - 모바일에서 숨김 */}
+                <div className="max-md:hidden">
+                  <TopicChart data={dashboardData.topicSummaryList} />
+                </div>
               </>
             ) : null}
           </div>
