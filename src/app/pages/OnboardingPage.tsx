@@ -118,10 +118,10 @@ const OnboardingPage = () => {
     <div className="h-screen bg-bg-home flex flex-col overflow-hidden max-md:overflow-hidden">
       <Header logoUrl="/logo.svg" />
 
-      <main className="flex-1 flex justify-center px-6 overflow-hidden max-md:overflow-hidden max-md:relative">
-        <div className="flex flex-col items-center max-md:pt-[20px] md:pt-[80px] max-md:pb-[106px] max-md:h-full w-full max-w-[700px]">
+      <main className="flex-1 flex justify-center px-6 overflow-y-auto max-md:overflow-hidden max-md:relative">
+        <div className="flex flex-col items-center max-md:pt-[20px] md:pt-[60px] max-md:pb-[106px] max-md:h-full w-full max-w-[700px] md:pb-8">
           {/* Progress Indicator */}
-          <div className="flex items-center justify-center mb-[40px] max-md:mb-[20px] max-md:shrink-0">
+          <div className="flex items-center justify-center mb-[47px] max-md:mb-[20px] max-md:shrink-0">
             {/* Step 1 */}
             <div className="flex flex-col items-center gap-4 max-md:gap-2" style={{ width: '91px', height: '80px' }}>
               <div className="relative flex items-center justify-center w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px]">
@@ -138,7 +138,7 @@ const OnboardingPage = () => {
                 )}
               </div>
               <span
-                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal ${
+                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal whitespace-nowrap ${
                   step >= 1 ? 'text-primary' : 'text-[#b7b7b7]'
                 }`}
               >
@@ -165,7 +165,7 @@ const OnboardingPage = () => {
                 )}
               </div>
               <span
-                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal ${
+                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal whitespace-nowrap ${
                   step === 2 || selectedGoals.length > 0 || selectedUserType ? 'text-primary' : 'text-[#b7b7b7]'
                 }`}
               >
@@ -175,64 +175,65 @@ const OnboardingPage = () => {
           </div>
 
           {/* Content Box */}
-          <div className={`bg-white rounded-[24px] border border-[#dedede] w-full max-w-[700px] max-md:max-w-[335px] max-md:w-[335px] relative flex flex-col items-center max-md:shrink-0 ${step === 1 ? 'max-md:h-[364px] md:h-[606px]' : 'max-md:h-[492px] md:h-[694px]'}`}>
-          {/* Step 1: User Type Selection */}
-          {step === 1 && (
-            <>
-              <div 
-                className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px] px-4"
-              >
-                <h1 
-                  className="onboarding-title max-md:font-semibold text-gray-900 text-center max-md:whitespace-nowrap"
-                  style={{ lineHeight: '28px' }}
+          <div className={`bg-white rounded-[24px] border border-[#dedede] w-full max-w-[700px] max-md:max-w-[335px] max-md:w-[335px] max-md:mx-auto relative flex flex-col items-center max-md:shrink-0 ${step === 1 ? 'max-md:h-[364px]' : 'max-md:h-[492px]'}`}>
+            {/* Step 1: User Type Selection */}
+            {step === 1 && (
+              <>
+                <div
+                  className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px] px-4"
                 >
-                  퀴즐리에 오신 것을 환영합니다!👋🏻
-                </h1>
-              </div>
-              <p 
-                className="text-body3-regular text-gray-600 text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[52px] md:mb-[40px]"
-                style={{ lineHeight: '22.4px' }}
-              >
-                어떤 분이 이용하시나요?
-              </p>
+                  <h1
+                    className="onboarding-title max-md:font-semibold text-gray-900 text-center max-md:whitespace-nowrap"
+                    style={{ lineHeight: '28px' }}
+                  >
+                    퀴즐리에 오신 것을 환영합니다!👋🏻
+                  </h1>
+                </div>
+                <p
+                  className="text-body3-regular text-gray-600 text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
+                  style={{ lineHeight: '22.4px' }}
+                >
+                  어떤 분이 이용하시나요?
+                </p>
 
-              <div className="flex flex-wrap justify-center gap-4 max-md:gap-2 w-full max-w-[584px] max-md:mb-0 max-md:px-4 md:mb-12">
-                {userTypes.map((type) => (
+                <div className="grid grid-cols-2 gap-3 max-md:gap-2 w-full max-w-[580px] max-md:mb-0 max-md:px-4 max-md:justify-center">
+                  {userTypes.map((type) => (
+                    <button
+                      key={type.id}
+                      onClick={() => handleUserTypeSelect(type.id)}
+                      className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-[16px] border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[284px] md:h-[148px] ${
+                        selectedUserType === type.id
+                          ? 'bg-white border-primary'
+                          : 'bg-white border-[#ededed] hover:border-primary/50'
+                      }`}
+                    >
+                      <img
+                        src={type.character}
+                        alt={type.label}
+                        className={type.id === 'university' ? 'w-[57px] h-[52px] max-md:w-[40px] max-md:h-[36px]' : 'w-[52px] h-[52px] max-md:w-[36px] max-md:h-[36px]'}
+                      />
+                      <span className="text-body2-medium max-md:text-[16px] text-gray-900">
+                        {type.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="w-full max-w-[580px] flex justify-end mt-5 mb-[60px] max-md:hidden">
                   <button
-                    key={type.id}
-                    onClick={() => handleUserTypeSelect(type.id)}
-                    className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-[16px] border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[284px] md:h-[148px] max-md:flex-shrink-0 ${
-                      selectedUserType === type.id
-                        ? 'bg-white border-primary'
-                        : 'bg-white border-[#ededed] hover:border-primary/50'
+                    onClick={handleNext}
+                    disabled={isStep1NextDisabled}
+                    className={`px-4 py-3 rounded-[6px] text-body3-regular text-white transition-colors ${
+                      isStep1NextDisabled
+                        ? 'bg-[#b7b7b7] cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary-dark'
                     }`}
                   >
-                    <img
-                      src={type.character}
-                      alt={type.label}
-                      className={type.id === 'university' ? 'w-[57px] h-[52px] max-md:w-[40px] max-md:h-[36px]' : 'w-[52px] h-[52px] max-md:w-[36px] max-md:h-[36px]'}
-                    />
-                    <span className="text-body2-medium max-md:text-[16px] text-gray-900">
-                      {type.label}
-                    </span>
+                    다음 질문
                   </button>
-                ))}
-              </div>
-
-              <button
-                onClick={handleNext}
-                disabled={isStep1NextDisabled}
-                className={`w-full max-w-[584px] max-md:hidden h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
-                  isStep1NextDisabled
-                    ? 'bg-[#b7b7b7] cursor-not-allowed'
-                    : 'bg-primary hover:bg-primary-dark'
-                }`}
-                style={{ marginBottom: '48px' }}
-              >
-                다음 질문
-              </button>
-            </>
-          )}
+                </div>
+              </>
+            )}
 
           {/* Step 2: Learning Goals Selection */}
           {step === 2 && (
@@ -247,21 +248,21 @@ const OnboardingPage = () => {
                   학습 목표를 선택해주세요
                 </h1>
               </div>
-              <p 
-                className="text-body3-regular text-gray-600 text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[52px] md:mb-[40px]"
+              <p
+                className="text-body3-regular text-gray-600 text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
                 style={{ lineHeight: '22.4px' }}
               >
                 중복 선택이 가능합니다.
               </p>
 
-              <div className="flex flex-col gap-2 max-md:mb-0 max-md:px-[30px] w-full max-w-[580px] md:mb-12">
+              <div className="flex flex-col gap-2 max-md:mb-0 w-full max-w-[580px] max-md:max-w-[275px] max-md:mx-auto">
                 {learningGoals.map((goal) => {
                   const isSelected = selectedGoals.includes(goal.id);
                   return (
                     <button
                       key={goal.id}
                       onClick={() => handleGoalToggle(goal.id)}
-                      className={`flex items-center gap-4 px-4 py-4 rounded-[12px] border text-left transition-colors w-full max-md:h-[48px] md:h-[56px] ${
+                      className={`flex items-center gap-3 p-3 rounded-[12px] border text-left transition-colors w-full max-md:h-[52px] md:h-[56px] ${
                         isSelected
                           ? 'bg-[#fcfcfc] border-primary'
                           : 'bg-[#fcfcfc] border-[#ededed] hover:border-primary/50'
@@ -269,7 +270,8 @@ const OnboardingPage = () => {
                     >
                       <Icon
                         name={isSelected ? 'icn_check_fill_in' : 'icn_check_fill'}
-                        size={24}
+                        size={28}
+                        className="shrink-0"
                       />
                       <span className="text-body3-regular text-gray-900">
                         {goal.label}
@@ -279,24 +281,26 @@ const OnboardingPage = () => {
                 })}
               </div>
 
-              <div className="flex gap-4 max-md:hidden w-full max-w-[580px]">
-                <button
-                  onClick={handlePrev}
-                  className="flex-1 h-[46px] rounded-[6px] bg-white border border-[#d9d9d9] text-body3-regular text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                  이전 질문
-                </button>
-                <button
-                  onClick={handleComplete}
-                  disabled={isStep2NextDisabled}
-                  className={`flex-1 h-[46px] rounded-[6px] text-body3-regular text-white transition-colors ${
-                    isStep2NextDisabled
-                      ? 'bg-[#b7b7b7] cursor-not-allowed'
-                      : 'bg-primary hover:bg-primary-dark'
-                  }`}
-                >
-                  시작하기
-                </button>
+              <div className="w-full max-w-[580px] flex justify-end mt-5 mb-[60px] max-md:hidden">
+                <div className="flex gap-3">
+                  <button
+                    onClick={handlePrev}
+                    className="px-4 py-3 rounded-[6px] bg-white border border-[#d9d9d9] text-body3-regular text-gray-600 hover:bg-gray-50 transition-colors"
+                  >
+                    이전 질문
+                  </button>
+                  <button
+                    onClick={handleComplete}
+                    disabled={isStep2NextDisabled}
+                    className={`px-4 py-3 rounded-[6px] text-body3-regular text-white transition-colors ${
+                      isStep2NextDisabled
+                        ? 'bg-[#b7b7b7] cursor-not-allowed'
+                        : 'bg-primary hover:bg-primary-dark'
+                    }`}
+                  >
+                    시작하기
+                  </button>
+                </div>
               </div>
             </>
           )}

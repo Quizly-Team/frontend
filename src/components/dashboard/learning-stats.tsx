@@ -55,7 +55,7 @@ export default function LearningStats({ dailyData, quizTypeData, hourlyData }: P
       if (peakHour) {
         const startHour = String(peakHour.startHour).padStart(2, '0');
         const endHour = String(peakHour.startHour + 3).padStart(2, '0');
-        peakTimeRange = `${startHour}:00 ~ ${endHour}:00`;
+        peakTimeRange = `${startHour}시~${endHour}시`;
       }
     }
 

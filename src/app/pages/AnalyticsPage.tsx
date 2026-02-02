@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Header, Footer, Button, Input } from '@/components';
+import { Header, Footer, Button } from '@/components';
 import { authUtils } from '@/lib/auth';
 import {
   getUserInfo,
@@ -200,14 +200,14 @@ const AnalyticsPage = () => {
     <div className="min-h-screen bg-bg-home flex flex-col">
       <Header />
       
-      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-15 max-md:px-margin-mobile max-md:pt-6">
-        <div className="w-full max-w-[1024px]">
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-15 max-md:px-5 max-md:pt-5">
+        <div className="w-full max-w-[1024px] max-md:max-w-full">
           {/* 탭 헤더 */}
-          <div className="mb-[30px]">
-            <div className="flex items-center gap-6 mb-[6px]">
+          <div className="mb-[30px] max-md:mb-[31px]">
+            <div className="flex items-center gap-6 max-md:gap-4 mb-[6px] max-md:mb-5">
               <button
                 onClick={() => setActiveTab('analytics')}
-                className={`text-[32px] font-bold leading-[44.8px] ${
+                className={`text-[32px] max-md:text-[24px] font-bold leading-[44.8px] max-md:leading-[33.6px] ${
                   activeTab === 'analytics' ? 'text-gray-900' : 'text-gray-300'
                 }`}
               >
@@ -215,14 +215,14 @@ const AnalyticsPage = () => {
               </button>
               <button
                 onClick={() => setActiveTab('account')}
-                className={`text-[32px] font-bold leading-[44.8px] ${
+                className={`text-[32px] max-md:text-[24px] font-bold leading-[44.8px] max-md:leading-[33.6px] ${
                   activeTab === 'account' ? 'text-gray-900' : 'text-gray-300'
                 }`}
               >
                 계정관리
               </button>
             </div>
-            <p className="text-[20px] leading-[28px] text-gray-600">
+            <p className="text-[20px] max-md:text-[16px] leading-[28px] max-md:leading-[22.4px] text-gray-600">
               학습 현황을 확인하고 계정을 관리하세요
             </p>
           </div>
@@ -296,8 +296,8 @@ const AnalyticsPage = () => {
         )}
 
         {activeTab === 'account' && (
-          <div className="bg-white rounded-2xl p-8 border border-gray-300">
-            <h2 className="text-[20px] font-medium leading-[28px] mb-8 text-gray-900">
+          <div className="bg-white rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
+            <h2 className="text-[20px] font-medium leading-[28px] mb-[30px] max-md:mb-[20px] text-gray-900">
               프로필 정보
             </h2>
 
@@ -312,9 +312,9 @@ const AnalyticsPage = () => {
             ) : (
               <>
                 {/* 프로필 이미지 */}
-                <div className="flex items-center justify-center gap-6 mb-8">
+                <div className="flex items-center justify-center gap-6 mb-[30px] max-md:mb-[20px]">
                   <div className="relative">
-                    <div className="w-[110px] h-[110px] rounded-full border-2 border-primary overflow-hidden">
+                    <div className="w-[110px] h-[110px] max-md:w-[80px] max-md:h-[80px] rounded-full border-2 border-primary overflow-hidden">
                       {previewImageUrl ? (
                         // 미리보기 이미지 표시
                         <img
@@ -339,13 +339,13 @@ const AnalyticsPage = () => {
                     <button
                       onClick={handleProfileImageClick}
                       disabled={isSaving}
-                      className="absolute bottom-0 right-0 w-[26px] h-[26px] rounded-full bg-primary flex items-center justify-center hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="absolute bottom-0 right-0 w-[26px] h-[26px] max-md:w-[22px] max-md:h-[22px] rounded-full bg-primary flex items-center justify-center hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       aria-label="프로필 이미지 변경"
                     >
                       <img
                         src="/icon/icn_write.svg"
                         alt="프로필 이미지 변경"
-                        className="w-4 h-4"
+                        className="w-4 h-4 max-md:w-3 max-md:h-3"
                       />
                     </button>
                     <input
@@ -359,39 +359,51 @@ const AnalyticsPage = () => {
                 </div>
 
             {/* 닉네임 입력 */}
-            <div className="mb-6 flex flex-col items-center">
-              <div className="max-w-[350px] w-full">
-                <Input
-                  label="닉네임"
-                  value={nickname}
-                  onChange={(e) => {
-                    const newValue = e.target.value;
-                    // 6자까지만 입력 가능
-                    if (newValue.length <= 6) {
-                      setNickname(newValue);
-                      setSaveError(null);
-                    }
-                  }}
-                  maxLength={6}
-                  className="w-full"
-                  error={saveError || undefined}
-                />
-                <p className="mt-2 text-[14px] text-gray-600 text-left">
-                  닉네임은 6자까지만 가능합니다.
-                </p>
+            <div className="mb-[20px] max-md:mb-[20px] flex flex-col items-center">
+              <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
+                <label className="text-[16px] font-medium text-gray-600 mb-1">
+                  닉네임
+                </label>
+                <div className="border-b border-[#dedede] flex items-center w-full py-2">
+                  <input
+                    type="text"
+                    value={nickname}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      // 6자까지만 입력 가능
+                      if (newValue.length <= 6) {
+                        setNickname(newValue);
+                        setSaveError(null);
+                      }
+                    }}
+                    maxLength={6}
+                    disabled={isSaving}
+                    className="flex-1 text-[16px] text-gray-900 outline-none bg-transparent disabled:text-gray-500"
+                  />
+                </div>
+                {saveError && (
+                  <p className="mt-1 text-[14px] text-red-500">
+                    {saveError}
+                  </p>
+                )}
               </div>
             </div>
 
             {/* 이메일 입력 (비활성화) */}
-            <div className="mb-8 flex flex-col items-center">
-              <div className="max-w-[350px] w-full">
-                <Input
-                  label="이메일"
-                  value={email}
-                  disabled
-                  className="w-full"
-                />
-                <p className="mt-2 text-[14px] text-red-500 text-left">
+            <div className="mb-[30px] max-md:mb-[20px] flex flex-col items-center">
+              <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
+                <label className="text-[16px] font-medium text-gray-600 mb-1">
+                  이메일
+                </label>
+                <div className="border-b border-[#dedede] flex items-center w-full py-2">
+                  <input
+                    type="text"
+                    value={email}
+                    disabled
+                    className="flex-1 text-[16px] text-gray-900 outline-none bg-transparent disabled:text-gray-500"
+                  />
+                </div>
+                <p className="mt-1 text-[14px] text-red-500">
                   이메일은 변경할 수 없습니다.
                 </p>
               </div>
