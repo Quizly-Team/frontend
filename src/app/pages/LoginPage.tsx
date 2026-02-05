@@ -68,12 +68,12 @@ const LoginPage = ({
             <div className="relative w-full flex justify-center">
               <button
                 onClick={handleNaverLogin}
-                className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#00c73c] hover:bg-[#00b836] transition-colors rounded-[6px] flex items-center justify-center gap-2"
+                className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#03A94D] hover:bg-[#029440] transition-colors rounded-[6px] flex items-center justify-center gap-2"
               >
                 <img
                   src="/icon/naver.svg"
                   alt="Naver"
-                  className="w-6 h-6"
+                  className="w-[18px] h-[18px]"
                 />
                 <span className="text-[16px] font-normal text-white leading-[19.09px]">
                   Naver로 계속하기

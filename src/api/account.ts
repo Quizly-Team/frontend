@@ -297,7 +297,7 @@ export const updateProfileImage = async (
  */
 export const logout = async (): Promise<void> => {
   const response = await authenticatedFetch(`${API_BASE_URL}/auth/logout`, {
-    method: 'POST',
+    method: 'DELETE',
   });
 
   if (!response.ok) {
