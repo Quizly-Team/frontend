@@ -93,19 +93,19 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
     <header className="w-full bg-bg-home">
       {/* Desktop/Tablet Header */}
       <div className="h-[90px] max-lg:h-[72px] max-md:hidden">
-        <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-xl max-lg:px-15">
+        <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-xl max-lg:px-10">
           <a href="/" className="flex items-center shrink-0">
             <img
               src={logoUrl}
               alt="Quizly Logo"
-              className="h-[32px] w-[120px] max-lg:h-[26px] max-lg:w-[98px]"
+              className="h-[32px] w-[120px] max-lg:h-[24px] max-lg:w-[90px]"
             />
           </a>
 
           <nav className="flex items-center whitespace-nowrap">
             <a
               href="/"
-              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 hover:text-primary transition-colors ${
                 location.pathname === "/" && !isMockExamModalOpen ? "text-primary" : "text-gray-900"
               }`}
             >
@@ -113,7 +113,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             </a>
             <button
               onClick={handleMockExamClick}
-              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
                 location.pathname === "/mock-exam" || isMockExamModalOpen ? "text-primary" : "text-gray-900"
               }`}
             >
@@ -121,7 +121,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             </button>
             <a
               href="/my-quizzes"
-              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
                 location.pathname === "/my-quizzes" ? "text-primary" : "text-gray-900"
               }`}
             >
@@ -129,7 +129,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             </a>
             <a
               href="/wrong-quizzes"
-              className={`px-3 py-2 text-base leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-[30px] hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
                 location.pathname === "/wrong-quizzes" ? "text-primary" : "text-gray-900"
               }`}
             >
@@ -140,15 +140,15 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
               !isUserInfoLoading && userInfo ? (
                 <button
                   onClick={handleProfileClick}
-                  className="ml-10 max-lg:ml-[51px] flex items-center gap-1 shrink-0 cursor-pointer"
+                  className="ml-10 max-lg:ml-6 flex items-center gap-1 shrink-0 cursor-pointer"
                   aria-label="프로필 페이지로 이동"
                 >
                   {/* 프로필 이미지 - Figma 디자인에 맞춰 녹색 테두리 추가 */}
-                  <div className="relative w-[38px] h-[38px] flex items-center justify-center">
+                  <div className="relative w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] flex items-center justify-center">
                     {/* 외곽 원: 38x38, stroke #30a10e */}
-                    <div className="absolute inset-0 rounded-full border-2 border-primary"></div>
+                    <div className="absolute inset-0 rounded-full border-2 max-lg:border-[1.5px] border-primary"></div>
                     {/* 내부 원: 34.5x34.5, fill #efefef */}
-                    <div className="w-[34.5px] h-[34.5px] rounded-full bg-[#efefef] overflow-hidden flex items-center justify-center">
+                    <div className="w-[34.5px] h-[34.5px] max-lg:w-[29px] max-lg:h-[29px] rounded-full bg-[#efefef] overflow-hidden flex items-center justify-center">
                       <img
                         src={userInfo.profileImageUrl || '/icon/default.svg'}
                         alt="프로필"
@@ -165,26 +165,26 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                   </div>
                   {/* 닉네임 텍스트 - 프로필 이미지가 없어도 닉네임은 항상 표시 */}
                   {userInfo.nickName ? (
-                    <span className="text-[14px] text-primary font-normal leading-[1.4]">
+                    <span className="text-[14px] max-lg:text-[13px] text-primary font-normal leading-[1.4]">
                       {userInfo.nickName}
                     </span>
                   ) : (
                     // 닉네임이 없을 경우 기본값 표시 (필요시)
-                    <span className="text-[14px] text-primary font-normal leading-[1.4]">
+                    <span className="text-[14px] max-lg:text-[13px] text-primary font-normal leading-[1.4]">
                       사용자
                     </span>
                   )}
                 </button>
               ) : (
                 // 로딩 중일 때는 공간만 유지 (깜빡임 방지)
-                <div className="ml-10 max-lg:ml-[51px] w-[38px] h-[38px] shrink-0" />
+                <div className="ml-10 max-lg:ml-6 w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] shrink-0" />
               )
             ) : (
               <Button
                 variant="primary"
                 size="small"
                 onClick={handleLoginClick}
-                className="ml-10 max-lg:ml-[51px] w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
+                className="ml-10 max-lg:ml-6 w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
               >
                 로그인
               </Button>

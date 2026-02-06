@@ -6,6 +6,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import type { QuizTypeSummary } from "@/api/dashboard";
 
@@ -97,89 +98,78 @@ export default function QuizTypeChart({ data }: Props) {
   }, [data, hasData]);
 
   return (
-    <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] max-md:p-[20px] w-[478px] max-lg:w-[442px] max-md:w-full max-md:min-h-[306px] max-md:flex max-md:flex-col max-md:relative">
+    <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] max-md:p-[20px] w-full max-md:min-h-[306px] max-md:flex max-md:flex-col max-md:relative">
       {/* PC: 일반 표시 */}
       <div className="max-md:hidden">
-        {!hasData ? (
-          <>
-            <h3 className="text-[20px] font-medium text-[#222] mb-[30px]">
-              {currentMonth} 유형별 정답률 비교
-            </h3>
-            <div className="h-[240px] flex items-center justify-center">
-              <p className="text-[#777]">유형별 데이터가 없습니다.</p>
-            </div>
-          </>
-        ) : (
-          <>
-            <h3 className="text-[20px] font-medium text-[#222] mb-[35px]">
-              {currentMonth} 유형별 정답률 비교
-            </h3>
+        <h3 className="text-[20px] font-medium text-[#222] mb-[35px]">
+          {currentMonth} 유형별 정답률 비교
+        </h3>
 
-            <div className="h-[263px] w-full flex justify-center">
-              <BarChart
-                data={chartData}
-                width={isTablet ? 382 : 418}
-                height={263}
-                margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
-              >
-                <defs>
-                  <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#30a10e" stopOpacity={1} />
-                    <stop offset="100%" stopColor="#4fd328" stopOpacity={0.8} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
-                <XAxis
-                  dataKey="name"
-                  axisLine={{ stroke: "#222", strokeWidth: 1 }}
-                  tickLine={false}
-                  tick={{ fill: "#222", fontSize: 16 }}
-                  height={40}
-                  padding={{ left: isTablet ? 75 : 80, right: isTablet ? 75 : 80 }}
-                />
-                <YAxis
-                  axisLine={{ stroke: "#222", strokeWidth: 1 }}
-                  tickLine={false}
-                  tick={{ fill: "#777", fontSize: 14 }}
-                  ticks={[0, 25, 50, 75, 100]}
-                  domain={[0, 100]}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#fff',
-                    border: '1px solid #dedede',
-                    borderRadius: '8px',
-                    padding: '8px 12px',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                  }}
-                  labelStyle={{
-                    color: '#222',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    marginBottom: '4px',
-                  }}
-                  itemStyle={{
-                    color: '#222',
-                    fontSize: '14px',
-                  }}
-                  formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
-                />
-                <Bar
-                  dataKey="value"
-                  fill="url(#greenGradient)"
-                  radius={[8, 8, 0, 0]}
-                  barSize={52}
-                />
-              </BarChart>
-            </div>
+        <div className="w-full flex justify-center aspect-[418/263]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartData}
+              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+            >
+              <defs>
+                <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#30a10e" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#4fd328" stopOpacity={0.8} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
+              <XAxis
+                dataKey="name"
+                axisLine={{ stroke: "#222", strokeWidth: 1 }}
+                tickLine={false}
+                tick={{ fill: "#222", fontSize: 16 }}
+                height={40}
+                padding={{ left: isTablet ? 75 : 80, right: isTablet ? 75 : 80 }}
+              />
+              <YAxis
+                axisLine={{ stroke: "#222", strokeWidth: 1 }}
+                tickLine={false}
+                tick={{ fill: "#777", fontSize: 14 }}
+                ticks={[0, 25, 50, 75, 100]}
+                domain={[0, 100]}
+                interval={0}
+              />
+              <Tooltip
+                cursor={false}
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #dedede',
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                }}
+                labelStyle={{
+                  color: '#222',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  marginBottom: '4px',
+                }}
+                itemStyle={{
+                  color: '#222',
+                  fontSize: '14px',
+                }}
+                formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
+              />
+              <Bar
+                dataKey="value"
+                fill="url(#greenGradient)"
+                radius={[8, 8, 0, 0]}
+                barSize={52}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-            <div className="bg-[#f6fbf4] rounded-[4px] px-[12px] py-[10px] mt-[16px]">
-              <p className="text-[14px] text-[#30a10e]">
-                {summaryMessage}
-              </p>
-            </div>
-          </>
-        )}
+        <div className="bg-[#f6fbf4] rounded-[4px] px-[12px] py-[10px] mt-[16px]">
+          <p className="text-[14px] text-[#30a10e]">
+            {summaryMessage}
+          </p>
+        </div>
       </div>
 
       {/* 모바일: 블러 처리된 전체 카드 (제목 포함) */}
@@ -189,62 +179,64 @@ export default function QuizTypeChart({ data }: Props) {
         </h3>
 
         <div className="h-[215px] w-full flex justify-center px-[20px]">
-          <div className="w-full max-w-[295px]">
-            <BarChart
-              data={chartData}
-              width={295}
-              height={215}
-              margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
-            >
-            <defs>
-              <linearGradient id="greenGradientMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#30a10e" stopOpacity={1} />
-                <stop offset="100%" stopColor="#4fd328" stopOpacity={0.8} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
-            <XAxis
-              dataKey="name"
-              axisLine={{ stroke: "#222", strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: "#222", fontSize: 16 }}
-              height={40}
-              padding={{ left: 75, right: 75 }}
-            />
-            <YAxis
-              axisLine={{ stroke: "#222", strokeWidth: 1 }}
-              tickLine={false}
-              tick={{ fill: "#777", fontSize: 14 }}
-              ticks={[0, 25, 50, 75, 100]}
-              domain={[0, 100]}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: '#fff',
-                border: '1px solid #dedede',
-                borderRadius: '8px',
-                padding: '8px 12px',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-              }}
-              labelStyle={{
-                color: '#222',
-                fontSize: '14px',
-                fontWeight: 500,
-                marginBottom: '4px',
-              }}
-              itemStyle={{
-                color: '#222',
-                fontSize: '14px',
-              }}
-              formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
-            />
-            <Bar
-              dataKey="value"
-              fill="url(#greenGradientMobile)"
-              radius={[8, 8, 0, 0]}
-              barSize={52}
-            />
-            </BarChart>
+          <div className="w-full max-w-[295px] h-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{ top: 0, right: 10, left: -20, bottom: 0 }}
+              >
+              <defs>
+                <linearGradient id="greenGradientMobile" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#30a10e" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#4fd328" stopOpacity={0.8} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
+              <XAxis
+                dataKey="name"
+                axisLine={{ stroke: "#222", strokeWidth: 1 }}
+                tickLine={false}
+                tick={{ fill: "#222", fontSize: 16 }}
+                height={40}
+                padding={{ left: 75, right: 75 }}
+              />
+              <YAxis
+                axisLine={{ stroke: "#222", strokeWidth: 1 }}
+                tickLine={false}
+                tick={{ fill: "#777", fontSize: 14 }}
+                ticks={[0, 25, 50, 75, 100]}
+                domain={[0, 100]}
+                interval={0}
+              />
+              <Tooltip
+                cursor={false}
+                contentStyle={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #dedede',
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                }}
+                labelStyle={{
+                  color: '#222',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  marginBottom: '4px',
+                }}
+                itemStyle={{
+                  color: '#222',
+                  fontSize: '14px',
+                }}
+                formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
+              />
+              <Bar
+                dataKey="value"
+                fill="url(#greenGradientMobile)"
+                radius={[8, 8, 0, 0]}
+                barSize={52}
+              />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>

@@ -48,13 +48,13 @@ export default function TodaySummary({ data, dailyData }: Props) {
   }, []);
 
   return (
-    <div className="bg-[#30a10e] rounded-[16px] px-[30px] pt-[30px] pb-[60px] w-[976px] max-lg:w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:px-[20px] max-md:pt-[20px] max-md:pb-[20px] max-md:flex max-md:flex-col">
+    <div className="bg-[#30a10e] rounded-[16px] px-[30px] pt-[30px] pb-[60px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:px-[20px] max-md:pt-[20px] max-md:pb-[20px] max-md:flex max-md:flex-col">
       <h3 className="text-[20px] max-md:text-[20px] font-medium text-white mb-[50px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
         <span className="max-md:hidden">오늘의 학습 요약</span>
         <span className="hidden max-md:inline">{currentMonth} 학습 문제 기록</span>
       </h3>
 
-      <div className="flex justify-center gap-[180px] max-md:flex-col max-md:gap-[20px] max-md:items-start max-md:flex-1 max-md:justify-center">
+      <div className="flex justify-center gap-[180px] max-lg:gap-[100px] max-md:flex-col max-md:gap-[16px] max-md:items-start max-md:flex-1 max-md:justify-center">
         {/* 풀이 문제 */}
         <div className="flex items-center gap-[16px] max-md:w-[132px] max-md:h-[52px]">
           <div className="w-[54px] h-[54px] bg-[rgba(255,255,255,0.3)] rounded-[12px] flex items-center justify-center flex-shrink-0 max-md:w-[54px] max-md:h-[54px]">
