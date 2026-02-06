@@ -197,17 +197,17 @@ const AnalyticsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="min-h-screen w-full bg-bg-home flex flex-col">
       <Header />
       
-      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-15 max-md:px-5 max-md:pt-5">
-        <div className="w-full max-w-[1024px] max-md:max-w-full">
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
+        <div className="w-full max-w-[1024px] max-lg:max-w-full max-md:max-w-full">
           {/* 탭 헤더 */}
           <div className="mb-[30px] max-md:mb-[31px]">
-            <div className="flex items-center gap-6 max-md:gap-4 mb-[6px] max-md:mb-5">
+            <div className="flex items-center gap-6 max-lg:gap-4 max-md:gap-4 mb-[6px] max-md:mb-5">
               <button
                 onClick={() => setActiveTab('analytics')}
-                className={`text-[32px] max-md:text-[24px] font-bold leading-[44.8px] max-md:leading-[33.6px] ${
+                className={`text-[32px] max-lg:text-[28px] max-md:text-[24px] font-bold leading-[44.8px] max-lg:leading-[39.2px] max-md:leading-[33.6px] ${
                   activeTab === 'analytics' ? 'text-gray-900' : 'text-gray-300'
                 }`}
               >
@@ -215,14 +215,14 @@ const AnalyticsPage = () => {
               </button>
               <button
                 onClick={() => setActiveTab('account')}
-                className={`text-[32px] max-md:text-[24px] font-bold leading-[44.8px] max-md:leading-[33.6px] ${
+                className={`text-[32px] max-lg:text-[28px] max-md:text-[24px] font-bold leading-[44.8px] max-lg:leading-[39.2px] max-md:leading-[33.6px] ${
                   activeTab === 'account' ? 'text-gray-900' : 'text-gray-300'
                 }`}
               >
                 계정관리
               </button>
             </div>
-            <p className="text-[20px] max-md:text-[16px] leading-[28px] max-md:leading-[22.4px] text-gray-600">
+            <p className="text-[20px] max-lg:text-[18px] max-md:text-[16px] leading-[28px] max-lg:leading-[25.2px] max-md:leading-[22.4px] text-gray-600">
               학습 현황을 확인하고 계정을 관리하세요
             </p>
           </div>
@@ -263,7 +263,7 @@ const AnalyticsPage = () => {
                 </div>
 
                 {/* AI 학습 분석 */}
-                <div className="bg-[#eff6ff] border border-[#4f8fff] rounded-[16px] px-[45px] py-[35px] max-md:px-[20px] max-md:py-[20px] w-[976px] max-lg:w-[904px] max-md:w-full">
+                <div className="bg-[#eff6ff] border border-[#4f8fff] rounded-[16px] px-[45px] py-[35px] max-md:px-[20px] max-md:py-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
                   <div className="flex items-center gap-[6px] mb-[22px] max-md:mb-[15px]">
                     <div className="w-[24px] h-[24px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="max-md:w-[20px] max-md:h-[20px]">
@@ -303,9 +303,11 @@ const AnalyticsPage = () => {
 
                 {/* 유형별/시간대별 차트 */}
                 <div className="flex gap-5 max-md:flex-col max-md:gap-[20px]">
-                  <QuizTypeChart data={dashboardData.quizTypeSummaryList} />
+                  <div className="min-w-0 flex-1 max-w-[478px] max-lg:max-w-[442px] max-md:max-w-full">
+                    <QuizTypeChart data={dashboardData.quizTypeSummaryList} />
+                  </div>
                   {/* 모바일에서 시간대별 차트 숨김 */}
-                  <div className="max-md:hidden">
+                  <div className="min-w-0 flex-1 max-w-[478px] max-lg:max-w-[442px] max-md:hidden">
                     <HourlyChart data={dashboardData.hourlySummaryList} nickname={userInfo?.nickName} />
                   </div>
                 </div>
