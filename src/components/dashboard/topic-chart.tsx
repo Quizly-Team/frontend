@@ -14,7 +14,7 @@ export default function TopicChart({ data }: Props) {
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-[976px] max-lg:w-[904px]">
+      <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
         <h3 className="text-[20px] font-medium text-[#222] mb-[30px]">
           {currentMonth} 주제별 정답률 비교
         </h3>
@@ -34,7 +34,7 @@ export default function TopicChart({ data }: Props) {
   const yAxisTicks = [0, 25, 50, 75, 100];
 
   return (
-    <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-[976px] max-lg:w-[904px]">
+    <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
       <h3 className="text-[20px] font-medium text-[#222] mb-[35px]">
         {currentMonth} 주제별 정답률 비교
       </h3>
@@ -70,6 +70,7 @@ export default function TopicChart({ data }: Props) {
             domain={[0, 100]}
           />
           <Tooltip
+            cursor={false}
             contentStyle={{
               backgroundColor: '#fff',
               border: '1px solid #dedede',
