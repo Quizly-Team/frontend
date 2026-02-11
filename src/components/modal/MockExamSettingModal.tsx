@@ -101,6 +101,14 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
     fileInputRef.current?.click();
   }, []);
 
+  const handleFileDelete = useCallback(() => {
+    setFile(null);
+    setImagePreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, []);
+
   const handleTooltipMouseEnter = useCallback(() => {
     setShowTooltip(true);
     if (tooltipTimerRef.current) {
@@ -362,16 +370,34 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
               파일 업로드
             </button>
             {imagePreviewUrl ? (
-              <img
-                src={imagePreviewUrl}
-                alt={file?.name || '업로드된 이미지'}
-                className="w-[38px] h-[38px] object-cover rounded"
-              />
+              <div className="flex items-center gap-1">
+                <img
+                  src={imagePreviewUrl}
+                  alt={file?.name || '업로드된 이미지'}
+                  className="w-[38px] h-[38px] object-cover rounded"
+                />
+                <button
+                  onClick={handleFileDelete}
+                  className="flex items-center justify-center shrink-0"
+                  aria-label="파일 삭제"
+                >
+                  <Icon name="delete" size={20} className="text-gray-600" />
+                </button>
+              </div>
             ) : (
               file && !imagePreviewUrl && (
-                <span className="text-sm text-gray-600 underline leading-[1.4]">
-                  {file.name}
-                </span>
+                <div className="flex items-center gap-1">
+                  <span className="text-sm text-gray-600 underline leading-[1.4]">
+                    {file.name}
+                  </span>
+                  <button
+                    onClick={handleFileDelete}
+                    className="flex items-center justify-center shrink-0"
+                    aria-label="파일 삭제"
+                  >
+                    <Icon name="delete" size={20} className="text-gray-600" />
+                  </button>
+                </div>
               )
             )}
           </div>
@@ -388,16 +414,34 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
               파일 업로드
             </button>
             {imagePreviewUrl ? (
-              <img
-                src={imagePreviewUrl}
-                alt={file?.name || '업로드된 이미지'}
-                className="w-[38px] h-[38px] object-cover rounded"
-              />
+              <div className="flex items-center gap-1">
+                <img
+                  src={imagePreviewUrl}
+                  alt={file?.name || '업로드된 이미지'}
+                  className="w-[38px] h-[38px] object-cover rounded"
+                />
+                <button
+                  onClick={handleFileDelete}
+                  className="flex items-center justify-center shrink-0"
+                  aria-label="파일 삭제"
+                >
+                  <Icon name="delete" size={20} className="text-gray-600" />
+                </button>
+              </div>
             ) : (
               file && !imagePreviewUrl && (
-                <span className="text-sm text-gray-600 underline leading-[1.4] truncate flex-1">
-                  {file.name}
-                </span>
+                <div className="flex items-center gap-1 flex-1">
+                  <span className="text-sm text-gray-600 underline leading-[1.4] truncate">
+                    {file.name}
+                  </span>
+                  <button
+                    onClick={handleFileDelete}
+                    className="flex items-center justify-center shrink-0"
+                    aria-label="파일 삭제"
+                  >
+                    <Icon name="delete" size={20} className="text-gray-600" />
+                  </button>
+                </div>
               )
             )}
           </div>
