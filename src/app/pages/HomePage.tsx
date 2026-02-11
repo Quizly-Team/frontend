@@ -376,23 +376,37 @@ const HomePage = () => {
               <div className="flex items-center gap-3">
                 <Icon name="search" size={32} className="text-gray-600" />
 
-                <textarea
-                  ref={webTextareaRef}
-                  value={file ? file.name : searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
-                  disabled={!!file}
-                  rows={1}
-                  className="flex-1 text-body2-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent disabled:text-gray-600 disabled:cursor-not-allowed resize-none overflow-hidden"
-                />
+                {file ? (
+                  <div className="flex items-center gap-1 flex-1">
+                    <span className="text-body2-regular text-gray-600">
+                      {file.name}
+                    </span>
+                    <button
+                      onClick={handleClearSearch}
+                      className="flex items-center justify-center shrink-0"
+                      aria-label="파일 삭제"
+                    >
+                      <Icon name="delete" size={32} className="text-gray-600" />
+                    </button>
+                  </div>
+                ) : (
+                  <textarea
+                    ref={webTextareaRef}
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
+                    rows={1}
+                    className="flex-1 text-body2-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent resize-none overflow-hidden"
+                  />
+                )}
 
                 {searchText || file ? (
                   <button
-                    onClick={handleClearSearch}
+                    onClick={handleOpenQuizCreateModal}
                     className="flex items-center justify-center shrink-0"
-                    aria-label="입력 내용 지우기"
+                    aria-label="보내기"
                   >
-                    <Icon name="delete" size={32} className="text-gray-600" />
+                    <Icon name="send_black" size={32} />
                   </button>
                 ) : (
                   <div className="relative">
