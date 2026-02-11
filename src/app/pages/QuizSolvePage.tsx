@@ -415,8 +415,9 @@ const QuizSolvePage = ({
                             : 'check_black'
                         }
                         size={24}
+                        className="flex-shrink-0"
                       />
-                      <span className="text-body3-regular text-gray-900">
+                      <span className="text-body3-regular text-gray-900 flex-1 min-w-0 break-words">
                         {option}
                       </span>
                     </button>
@@ -621,8 +622,9 @@ const QuizSolvePage = ({
                             : 'check_black'
                         }
                         size={16}
+                        className="flex-shrink-0"
                       />
-                      <span className="text-tint-regular text-gray-900">
+                      <span className="text-tint-regular text-gray-900 flex-1 min-w-0 break-words">
                         {option}
                       </span>
                     </button>
