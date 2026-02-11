@@ -452,7 +452,7 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
           <div className="flex justify-end">
             <button
               onClick={handleSubmit}
-              className="px-8 py-2 rounded-md bg-primary text-white text-sm max-lg:text-sm font-normal hover:bg-primary-dark leading-[1.4]"
+              className="w-[84px] h-[36px] max-lg:w-[96px] max-lg:h-[44px] rounded-md bg-primary text-white text-sm max-lg:text-sm font-normal hover:bg-primary-dark leading-[1.4] flex items-center justify-center"
             >
               저장하기
             </button>
