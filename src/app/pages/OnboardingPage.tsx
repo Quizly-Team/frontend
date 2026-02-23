@@ -24,7 +24,7 @@ const OnboardingPage = () => {
 
   const userTypes = [
     { id: 'highschool' as const, label: '고등학생', character: '/characters/character1.png' },
-    { id: 'university' as const, label: '대학생', character: '/characters/character2.png' },
+    { id: 'university' as const, label: '대학(원)생', character: '/characters/character2.png' },
     { id: 'jobseeker' as const, label: '취준생', character: '/characters/character3.png' },
     { id: 'general' as const, label: '일반 학습자', character: '/characters/character4.png' },
   ];
