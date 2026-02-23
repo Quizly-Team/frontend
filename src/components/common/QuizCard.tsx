@@ -21,7 +21,14 @@ const QuizCard = ({ quiz, questionNumber }: QuizCardProps) => {
           {quiz.text}
         </p>
         <p className="text-body2-medium text-gray-600 max-md:text-tint-regular">
-          정답 : {quiz.answer}
+          정답 :{' '}
+          {quiz.type === 'TRUE_FALSE'
+            ? quiz.answer === 'TRUE'
+              ? 'O'
+              : quiz.answer === 'FALSE'
+                ? 'X'
+                : quiz.answer
+            : quiz.answer}
         </p>
       </div>
 
