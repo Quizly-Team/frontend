@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Header, UnauthorizedPage, Icon, Modal } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getQuizGroups, updateQuizzesTopic } from '@/api/quiz';
-import type { QuizGroupResponse, QuizGroup, QuizHistoryDetail } from '@/types/quiz';
+import type { QuizGroup } from '@/types/quiz';
 
 const GROUP_TYPE_OPTIONS: Array<{ label: string; value: 'date' | 'topic' }> = [
   { label: '날짜순', value: 'date' },
@@ -14,6 +14,21 @@ const GROUP_TYPE_OPTIONS: Array<{ label: string; value: 'date' | 'topic' }> = [
 const GROUP_TYPE_LABEL: Record<'date' | 'topic', string> = {
   date: '날짜순',
   topic: '주제순',
+};
+
+const PAGE_SIZE = 12;
+
+const getPageNumbers = (currentPage: number, totalPages: number): (number | '...')[] => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, '...', totalPages];
+  }
+  if (currentPage >= totalPages - 3) {
+    return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
 };
 
 const QuizListPage = () => {
@@ -34,10 +49,11 @@ const QuizListPage = () => {
     text: string;
   } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isTopicEdited, setIsTopicEdited] = useState(false);
   const [quizGroups, setQuizGroups] = useState<QuizGroup[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleDateClick = useCallback(
     (date: string) => {
@@ -55,15 +71,13 @@ const QuizListPage = () => {
       setError(null);
 
       try {
-        const response = await getQuizGroups(groupType);
+        const response = await getQuizGroups(groupType, currentPage, PAGE_SIZE);
 
         if (response.success && response.quizGroupList) {
-          let groups = response.quizGroupList;
-          // 날짜순일 때 최신순 정렬 적용
-          if (groupType === 'date') {
-            groups = [...groups].sort((a, b) => b.group.localeCompare(a.group));
+          setQuizGroups(response.quizGroupList);
+          if (response.pagination) {
+            setTotalPages(response.pagination.totalPages);
           }
-          setQuizGroups(groups);
         } else {
           setError(response.errorCode || '데이터를 불러오는데 실패했습니다.');
         }
@@ -83,7 +97,7 @@ const QuizListPage = () => {
     };
 
     fetchQuizGroups();
-  }, [isAuthenticated, groupType, navigate]);
+  }, [isAuthenticated, groupType, currentPage, navigate]);
 
   useEffect(() => {
     if (!isDropdownOpen) return;
@@ -121,6 +135,7 @@ const QuizListPage = () => {
 
   const handleGroupTypeChange = useCallback((value: 'date' | 'topic') => {
     setGroupType(value);
+    setCurrentPage(1);
     setIsDropdownOpen(false);
     setActiveMenuGroup(null);
   }, []);
@@ -132,7 +147,6 @@ const QuizListPage = () => {
   const handleTopicInputChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       setTopicInput(event.target.value);
-      setIsTopicEdited(true);
       if (formMessage) {
         setFormMessage(null);
       }
@@ -146,7 +160,6 @@ const QuizListPage = () => {
     setFormMessage(null);
     setIsEditModalOpen(true);
     setActiveMenuGroup(null);
-    setIsTopicEdited(false);
   }, []);
 
   const handleCloseEditModal = useCallback(() => {
@@ -155,7 +168,6 @@ const QuizListPage = () => {
     setTopicInput('');
     setFormMessage(null);
     setIsSubmitting(false);
-    setIsTopicEdited(false);
   }, []);
 
   const targetQuizCount = targetGroup?.quizHistoryDetailList.length ?? 0;
@@ -193,15 +205,14 @@ const QuizListPage = () => {
         quizIdList: targetGroup.quizHistoryDetailList.map((quiz) => quiz.quizId),
       });
       setFormMessage({ type: 'success', text: '주제를 수정했어요!' });
-      
+
       // 데이터 다시 불러오기
-      const response = await getQuizGroups(groupType);
+      const response = await getQuizGroups(groupType, currentPage, PAGE_SIZE);
       if (response.success && response.quizGroupList) {
-        let groups = response.quizGroupList;
-        if (groupType === 'date') {
-          groups = [...groups].sort((a, b) => b.group.localeCompare(a.group));
+        setQuizGroups(response.quizGroupList);
+        if (response.pagination) {
+          setTotalPages(response.pagination.totalPages);
         }
-        setQuizGroups(groups);
       }
 
       setTimeout(() => {
@@ -224,10 +235,72 @@ const QuizListPage = () => {
     targetQuizCount,
     trimmedTopicInput,
     groupType,
+    currentPage,
   ]);
 
   const cardBaseClass =
     'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto';
+
+  const pageNumbers = useMemo(
+    () => getPageNumbers(currentPage, totalPages),
+    [currentPage, totalPages]
+  );
+
+  const renderPagination = () => {
+    if (isLoading || error || !quizGroups.length) return null;
+
+    return (
+      <div className="flex items-center justify-center gap-1 mt-10">
+        <button
+          type="button"
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          disabled={currentPage === 1}
+          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          aria-label="이전 페이지"
+        >
+          <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+            <path d="M6 1L1 6L6 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+        {pageNumbers.map((page, idx) =>
+          page === '...' ? (
+            <span
+              key={`ellipsis-${idx}`}
+              className="flex h-9 w-9 items-center justify-center text-body3-medium text-gray-400"
+            >
+              ···
+            </span>
+          ) : (
+            <button
+              key={page}
+              type="button"
+              onClick={() => setCurrentPage(page)}
+              className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-body3-medium transition-colors ${
+                page === currentPage
+                  ? 'bg-primary text-white'
+                  : 'text-gray-700 hover:text-primary'
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
+
+        <button
+          type="button"
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          disabled={currentPage === totalPages}
+          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          aria-label="다음 페이지"
+        >
+          <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+            <path d="M1 1L6 6L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+    );
+  };
 
   const renderContent = (gridClassName: string) => {
     if (isLoading) {
@@ -275,11 +348,13 @@ const QuizListPage = () => {
           {quizGroups.map((group) => {
             const quizCount = group.quizHistoryDetailList.length;
             return (
-              <button
+              <div
                 key={`${group.group}-topic`}
-                type="button"
+                role="button"
+                tabIndex={0}
                 onClick={() => handleDateClick(group.group)}
-                className={cardBaseClass}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleDateClick(group.group); }}
+                className={`${cardBaseClass} cursor-pointer`}
               >
                 <button
                   type="button"
@@ -336,7 +411,7 @@ const QuizListPage = () => {
                     </div>
                   </div>
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -447,6 +522,7 @@ const QuizListPage = () => {
 
           <div className="mt-5">
             {renderContent('grid grid-cols-3 gap-[20px]')}
+            {renderPagination()}
           </div>
         </div>
       </main>
@@ -517,6 +593,7 @@ const QuizListPage = () => {
 
         <div className="w-full">
           {renderContent('grid grid-cols-1 gap-3 w-full')}
+          {renderPagination()}
         </div>
       </main>
 
