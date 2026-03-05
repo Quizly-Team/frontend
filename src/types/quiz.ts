@@ -34,6 +34,17 @@ export type SubmitAnswerResponse = {
   correct: boolean;
 };
 
+// 페이지네이션 타입
+export type QuizPagination = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalElements: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  lastPage: boolean;
+};
+
 // 문제 모아보기 API 타입
 export type QuizHistoryDetail = {
   quizId: number;
@@ -55,6 +66,7 @@ export type QuizGroupResponse = {
   success: boolean;
   errorCode: string | null;
   quizGroupList: QuizGroup[];
+  pagination?: QuizPagination;
 };
 
 // 틀린 문제 조회 API 타입
@@ -76,6 +88,7 @@ export type WrongQuizGroup = {
 
 export type WrongQuizGroupResponse = {
   quizGroupList: WrongQuizGroup[];
+  pagination?: QuizPagination;
 };
 
 export type UpdateQuizzesTopicRequest = {
