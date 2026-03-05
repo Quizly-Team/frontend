@@ -9,6 +9,7 @@ import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage';
 import MockExamPage from '@/app/pages/MockExamPage';
 import AnalyticsPage from '@/app/pages/AnalyticsPage';
 import OnboardingPage from '@/app/pages/OnboardingPage';
+import AdminPage from '@/app/pages/AdminPage';
 
 export const router = createBrowserRouter([
   {
@@ -50,5 +51,9 @@ export const router = createBrowserRouter([
   {
     path: '/onboarding',
     element: <OnboardingPage />,
+  },
+  {
+    path: '/admin',
+    element: <AdminPage />,
   },
 ]);
