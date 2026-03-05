@@ -37,6 +37,7 @@ const AnalyticsPage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isAuthenticated = authUtils.isAuthenticated();
+  const isAdmin = userInfo?.role === 'ADMIN';
 
   // 대시보드 통계 조회
   const { data: dashboardData, isLoading: isDashboardLoading, error: dashboardError } = useDashboardStats();
@@ -436,7 +437,18 @@ const AnalyticsPage = () => {
             </div>
 
                 {/* 저장 및 로그아웃 버튼 */}
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col items-center gap-4">
+                  {isAdmin && (
+                    <Button
+                      variant="primary"
+                      size="medium"
+                      onClick={() => navigate('/admin')}
+                      className="w-[244px] h-[46px] rounded-md"
+                    >
+                      관리자 대시보드
+                    </Button>
+                  )}
+                  <div className="flex justify-center gap-4">
                   <Button
                     variant="secondary"
                     size="medium"
@@ -454,6 +466,7 @@ const AnalyticsPage = () => {
                   >
                     {isSaving ? '저장 중...' : '변경사항 저장'}
                   </Button>
+                  </div>
                 </div>
               </>
             )}
