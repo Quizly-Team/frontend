@@ -1,13 +1,9 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Header, Icon } from '@/components';
 import { authUtils } from '@/lib/auth';
 import { getWrongQuizzes } from '@/api/quiz';
-import type {
-  WrongQuizGroupResponse,
-  WrongQuizHistoryDetail,
-} from '@/types/quiz';
+import type { WrongQuizGroup, WrongQuizHistoryDetail } from '@/types/quiz';
 
 const GROUP_TYPE_OPTIONS: Array<{ label: string; value: 'date' | 'topic' }> = [
   { label: '날짜순', value: 'date' },
@@ -19,6 +15,21 @@ const GROUP_TYPE_LABEL: Record<'date' | 'topic', string> = {
   topic: '주제순',
 };
 
+const PAGE_SIZE = 12;
+
+const getPageNumbers = (currentPage: number, totalPages: number): (number | '...')[] => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, '...', totalPages];
+  }
+  if (currentPage >= totalPages - 3) {
+    return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+};
+
 const WrongQuizPage = () => {
   const navigate = useNavigate();
   const [groupType, setGroupType] = useState<'date' | 'topic'>('date');
@@ -28,45 +39,46 @@ const WrongQuizPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const desktopDropdownRef = useRef<HTMLDivElement | null>(null);
   const mobileDropdownRef = useRef<HTMLDivElement | null>(null);
+  const [quizGroups, setQuizGroups] = useState<WrongQuizGroup[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const handleLoginClick = useCallback(() => {
     navigate('/login');
   }, [navigate]);
 
-  const {
-    data,
-    isLoading,
-    error,
-    refetch,
-  } = useQuery<WrongQuizGroupResponse, Error>({
-    queryKey: ['wrong-quizzes', groupType],
-    queryFn: () => getWrongQuizzes(groupType),
-    enabled: isAuthenticated,
-    staleTime: 1000 * 60 * 5,
-    refetchOnMount: 'always',
-  });
-
-  const quizGroups = useMemo(() => {
-    const groups = data?.quizGroupList ?? [];
-    // 날짜순일 때 최신순 정렬 적용
-    if (groupType === 'date') {
-      return [...groups].sort((a, b) => b.group.localeCompare(a.group));
-    }
-    return groups;
-  }, [data, groupType]);
-  const cardBaseClass =
-    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto';
-
   useEffect(() => {
-    if (!error) return;
-    const isAuthError =
-      error.message.includes('로그인이 필요') || error.message.includes('인증');
-    if (isAuthError) {
-      authUtils.logout();
-      setIsAuthenticated(false);
-      navigate('/login');
-    }
-  }, [error, navigate]);
+    if (!isAuthenticated) return;
+
+    const fetchWrongQuizzes = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await getWrongQuizzes(groupType, currentPage, PAGE_SIZE);
+        setQuizGroups(response.quizGroupList ?? []);
+        if (response.pagination) {
+          setTotalPages(response.pagination.totalPages);
+        }
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
+        setError(errorMessage);
+        const isAuthError =
+          errorMessage.includes('로그인이 필요') || errorMessage.includes('인증');
+        if (isAuthError) {
+          authUtils.logout();
+          setIsAuthenticated(false);
+          navigate('/login');
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWrongQuizzes();
+  }, [isAuthenticated, groupType, currentPage, navigate]);
 
   useEffect(() => {
     if (!isDropdownOpen) return;
@@ -89,9 +101,9 @@ const WrongQuizPage = () => {
     };
   }, [isDropdownOpen]);
 
-
   const handleGroupTypeChange = useCallback((value: 'date' | 'topic') => {
     setGroupType(value);
+    setCurrentPage(1);
     setIsDropdownOpen(false);
   }, []);
 
@@ -109,6 +121,70 @@ const WrongQuizPage = () => {
     [navigate]
   );
 
+  const cardBaseClass =
+    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto';
+
+  const pageNumbers = useMemo(
+    () => getPageNumbers(currentPage, totalPages),
+    [currentPage, totalPages]
+  );
+
+  const renderPagination = () => {
+    if (isLoading || error || !quizGroups.length) return null;
+
+    return (
+      <div className="flex items-center justify-center gap-1 mt-10">
+        <button
+          type="button"
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          disabled={currentPage === 1}
+          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          aria-label="이전 페이지"
+        >
+          <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+            <path d="M6 1L1 6L6 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+
+        {pageNumbers.map((page, idx) =>
+          page === '...' ? (
+            <span
+              key={`ellipsis-${idx}`}
+              className="flex h-9 w-9 items-center justify-center text-body3-medium text-gray-400"
+            >
+              ···
+            </span>
+          ) : (
+            <button
+              key={page}
+              type="button"
+              onClick={() => setCurrentPage(page)}
+              className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-body3-medium transition-colors ${
+                page === currentPage
+                  ? 'bg-primary text-white'
+                  : 'text-gray-700 hover:text-primary'
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
+
+        <button
+          type="button"
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          disabled={currentPage === totalPages}
+          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          aria-label="다음 페이지"
+        >
+          <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+            <path d="M1 1L6 6L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+    );
+  };
+
   const renderContent = (gridClassName: string) => {
     if (isLoading) {
       return (
@@ -123,11 +199,11 @@ const WrongQuizPage = () => {
       return (
         <div className="flex flex-col items-center justify-center py-20">
           <p className="text-body1-medium text-error mb-4">
-            {error.message || '데이터를 불러오는 중 오류가 발생했어요.'}
+            {error || '데이터를 불러오는 중 오류가 발생했어요.'}
           </p>
           <button
             type="button"
-            onClick={() => refetch()}
+            onClick={() => setCurrentPage(currentPage)}
             className="bg-primary text-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
           >
             다시 시도
@@ -384,6 +460,7 @@ const WrongQuizPage = () => {
 
           <div className="mt-5">
             {renderContent('grid grid-cols-3 gap-[20px]')}
+            {renderPagination()}
           </div>
         </div>
       </main>
@@ -452,6 +529,7 @@ const WrongQuizPage = () => {
 
         <div className="w-full">
           {renderContent('grid grid-cols-1 gap-3 w-full')}
+          {renderPagination()}
         </div>
       </main>
     </div>
