@@ -417,9 +417,13 @@ export const submitAnswerRetry = async (
  * 문제 모아보기 조회 (회원)
  * @param groupType - 그룹화 기준 (예: 'date')
  */
-export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGroupResponse> => {
+export const getQuizGroups = async (
+  groupType: string = 'date',
+  page: number = 1,
+  pageSize: number = 10
+): Promise<QuizGroupResponse> => {
   const response = await authenticatedFetch(
-    `${API_BASE_URL}/quizzes?groupType=${groupType}`,
+    `${API_BASE_URL}/quizzes?page=${page}&pageSize=${pageSize}&groupType=${groupType}&default=0`,
     {
       method: 'GET',
     }
@@ -448,10 +452,12 @@ export const getQuizGroups = async (groupType: string = 'date'): Promise<QuizGro
  * @param groupType - 그룹화 기준 (date | topic)
  */
 export const getWrongQuizzes = async (
-  groupType: 'date' | 'topic' = 'date'
+  groupType: 'date' | 'topic' = 'date',
+  page: number = 1,
+  pageSize: number = 12
 ): Promise<WrongQuizGroupResponse> => {
   const response = await authenticatedFetch(
-    `${API_BASE_URL}/quizzes/wrong?groupType=${groupType}`,
+    `${API_BASE_URL}/quizzes/wrong?page=${page}&pageSize=${pageSize}&groupType=${groupType}&default=0`,
     {
       method: 'GET',
     }
