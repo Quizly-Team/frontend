@@ -181,6 +181,7 @@ export type ReadUserInfoResponse = {
   email: string;
   profileImageUrl: string | null;
   onboardingCompleted: boolean;
+  role?: string;
 };
 
 /**

@@ -8,6 +8,15 @@ import {
   getAdminInquiries,
   type AdminInquiryRaw,
 } from '@/api/admin';
+import {
+  getFaqs,
+  flattenFaqGroups,
+  deleteAdminFaq,
+  FAQ_CATEGORIES,
+  type FaqCategory,
+  type FlatFaqItem,
+} from '@/api/faq';
+import FaqCreateModal from '@/components/modal/FaqCreateModal';
 
 type AdminSectionKey = 'qna' | 'faq';
 
@@ -41,26 +50,12 @@ type QnaItem = {
   answer: string;
 };
 
-type FaqItem = {
-  id: number;
-  category: string;
-  question: string;
-  updatedAt: string;
-  isVisible: boolean;
-};
-
 const DEFAULT_REPLY_TEMPLATE = `안녕하세요.
 항상 퀴즐리 서비스를 이용해주셔서 감사합니다.
 
 [문의 내용에 대한 답변을 작성해주세요]
 
 또 다른 문의 사항이 있으면 언제든지 문의해주세요.`;
-
-const FAQ_MOCK_DATA: FaqItem[] = [
-  { id: 91, category: '계정', question: '닉네임은 어디서 변경하나요?', updatedAt: '2026-03-04', isVisible: true },
-  { id: 90, category: '결제', question: '환불은 어떻게 신청하나요?', updatedAt: '2026-03-03', isVisible: true },
-  { id: 89, category: '학습', question: '오답노트는 자동으로 저장되나요?', updatedAt: '2026-03-02', isVisible: false },
-];
 
 const toDisplayDate = (value?: string): string => {
   if (!value) {
@@ -187,6 +182,39 @@ const AdminPage = () => {
   const [answerDraft, setAnswerDraft] = useState('');
   const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false);
   const [showUnansweredOnly, setShowUnansweredOnly] = useState(false);
+  const [faqList, setFaqList] = useState<FlatFaqItem[]>([]);
+  const [isFaqLoading, setIsFaqLoading] = useState(false);
+  const [faqError, setFaqError] = useState<string | null>(null);
+  const [faqCategoryFilter, setFaqCategoryFilter] = useState<FaqCategory | 'all'>('all');
+  const [showFaqCreateModal, setShowFaqCreateModal] = useState(false);
+  const [isDeletingFaq, setIsDeletingFaq] = useState<number | null>(null);
+  const [expandedFaqId, setExpandedFaqId] = useState<number | null>(null);
+
+  const fetchFaqs = async () => {
+    try {
+      setIsFaqLoading(true);
+      setFaqError(null);
+      const response = await getFaqs();
+      setFaqList(flattenFaqGroups(response));
+    } catch (err) {
+      setFaqError(err instanceof Error ? err.message : 'FAQ 조회에 실패했습니다.');
+    } finally {
+      setIsFaqLoading(false);
+    }
+  };
+
+  const handleDeleteFaq = async (faqId: number) => {
+    if (!confirm('해당 FAQ를 삭제하시겠습니까?')) return;
+    try {
+      setIsDeletingFaq(faqId);
+      await deleteAdminFaq(faqId);
+      await fetchFaqs();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'FAQ 삭제에 실패했습니다.');
+    } finally {
+      setIsDeletingFaq(null);
+    }
+  };
 
   const fetchInquiries = async () => {
     try {
@@ -228,7 +256,7 @@ const AdminPage = () => {
           return;
         }
 
-        await fetchInquiries();
+        await Promise.all([fetchInquiries(), fetchFaqs()]);
       } catch (err) {
         setError(err instanceof Error ? err.message : '관리자 정보를 확인할 수 없습니다.');
       } finally {
@@ -248,7 +276,16 @@ const AdminPage = () => {
   const selectedInquiry = displayedQnaList.find((item) => item.id === selectedInquiryId) ?? null;
   const unansweredCount = qnaList.filter((item) => item.status === '미답변').length;
   const answeredCount = qnaList.filter((item) => item.status === '답변완료').length;
-  const visibleFaqCount = FAQ_MOCK_DATA.filter((item) => item.isVisible).length;
+  const displayedFaqList = faqCategoryFilter === 'all'
+    ? faqList
+    : faqList.filter((item) => item.category === faqCategoryFilter);
+  const faqCategoryCounts = (Object.keys(FAQ_CATEGORIES) as FaqCategory[]).reduce(
+    (acc, key) => {
+      acc[key] = faqList.filter((item) => item.category === key).length;
+      return acc;
+    },
+    {} as Record<FaqCategory, number>
+  );
 
   const handleSelectInquiry = (item: QnaItem) => {
     setSelectedInquiryId(item.id);
@@ -360,7 +397,7 @@ const AdminPage = () => {
                           {section.key === 'qna' ? (
                             <span className="text-[12px] text-gray-500">{unansweredCount} 미답변</span>
                           ) : (
-                            <span className="text-[12px] text-gray-500">{visibleFaqCount} 노출중</span>
+                            <span className="text-[12px] text-gray-500">{faqList.length}개 등록</span>
                           )}
                         </div>
                       </button>
@@ -392,6 +429,7 @@ const AdminPage = () => {
                       <Button
                         variant="primary"
                         size="medium"
+                        onClick={() => setShowFaqCreateModal(true)}
                         className="w-[140px] h-[42px] rounded-md"
                       >
                         FAQ 등록
@@ -399,7 +437,7 @@ const AdminPage = () => {
                     )}
                   </div>
 
-                  <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className={`mt-6 grid grid-cols-2 gap-3 ${activeSection === 'qna' ? 'md:grid-cols-3' : 'md:grid-cols-5'}`}>
                     {activeSection === 'qna' ? (
                       <>
                         <div className="rounded-xl border border-gray-200 p-4">
@@ -419,18 +457,14 @@ const AdminPage = () => {
                       <>
                         <div className="rounded-xl border border-gray-200 p-4">
                           <p className="text-[13px] text-gray-500">전체 FAQ</p>
-                          <p className="text-[24px] font-bold text-gray-900 mt-1">{FAQ_MOCK_DATA.length}개</p>
+                          <p className="text-[24px] font-bold text-gray-900 mt-1">{faqList.length}개</p>
                         </div>
-                        <div className="rounded-xl border border-gray-200 p-4">
-                          <p className="text-[13px] text-gray-500">노출중</p>
-                          <p className="text-[24px] font-bold text-primary mt-1">{visibleFaqCount}개</p>
-                        </div>
-                        <div className="rounded-xl border border-gray-200 p-4">
-                          <p className="text-[13px] text-gray-500">비노출</p>
-                          <p className="text-[24px] font-bold text-gray-600 mt-1">
-                            {FAQ_MOCK_DATA.length - visibleFaqCount}개
-                          </p>
-                        </div>
+                        {(Object.entries(FAQ_CATEGORIES) as [FaqCategory, string][]).map(([key, label]) => (
+                          <div key={key} className="rounded-xl border border-gray-200 p-4">
+                            <p className="text-[13px] text-gray-500">{label}</p>
+                            <p className="text-[24px] font-bold text-primary mt-1">{faqCategoryCounts[key]}개</p>
+                          </div>
+                        ))}
                       </>
                     )}
                   </div>
@@ -541,29 +575,89 @@ const AdminPage = () => {
                       </div>
                     </>
                   ) : (
-                    <div className="mt-6 rounded-xl border border-gray-200 overflow-hidden">
-                      <div className="grid grid-cols-[80px_140px_minmax(0,1fr)_120px_100px] bg-gray-50 px-4 py-3 text-[13px] font-medium text-gray-600">
-                        <span>No</span>
-                        <span>카테고리</span>
-                        <span>질문</span>
-                        <span>수정일</span>
-                        <span>노출</span>
-                      </div>
-                      {FAQ_MOCK_DATA.map((item) => (
-                        <div
-                          key={item.id}
-                          className="grid grid-cols-[80px_140px_minmax(0,1fr)_120px_100px] px-4 py-3 text-[14px] text-gray-800 border-t border-gray-100"
+                    <>
+                      <div className="mt-6 flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setFaqCategoryFilter('all')}
+                          className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                            faqCategoryFilter === 'all'
+                              ? 'bg-[#f0fdf4] border-primary text-primary'
+                              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                          }`}
                         >
-                          <span>{item.id}</span>
-                          <span>{item.category}</span>
-                          <span className="truncate pr-2">{item.question}</span>
-                          <span>{item.updatedAt}</span>
-                          <span className={item.isVisible ? 'text-primary font-medium' : 'text-gray-500'}>
-                            {item.isVisible ? '노출' : '숨김'}
-                          </span>
+                          전체
+                        </button>
+                        {(Object.entries(FAQ_CATEGORIES) as [FaqCategory, string][]).map(([key, label]) => (
+                          <button
+                            key={key}
+                            type="button"
+                            onClick={() => setFaqCategoryFilter(key)}
+                            className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                              faqCategoryFilter === key
+                                ? 'bg-[#f0fdf4] border-primary text-primary'
+                                : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                            }`}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+
+                      <div className="mt-6 rounded-xl border border-gray-200 overflow-hidden">
+                        <div className="grid grid-cols-[60px_120px_minmax(0,1fr)_80px] bg-gray-50 px-4 py-3 text-[13px] font-medium text-gray-600">
+                          <span>No</span>
+                          <span>카테고리</span>
+                          <span>질문</span>
+                          <span>삭제</span>
                         </div>
-                      ))}
-                    </div>
+                        {isFaqLoading ? (
+                          <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
+                            FAQ 목록을 불러오는 중입니다...
+                          </div>
+                        ) : faqError ? (
+                          <div className="px-4 py-8 text-[14px] text-red-500 text-center">
+                            {faqError}
+                          </div>
+                        ) : displayedFaqList.length === 0 ? (
+                          <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
+                            {faqCategoryFilter === 'all'
+                              ? '등록된 FAQ가 없습니다.'
+                              : `${FAQ_CATEGORIES[faqCategoryFilter]} 카테고리에 등록된 FAQ가 없습니다.`}
+                          </div>
+                        ) : (
+                          displayedFaqList.map((item, index) => (
+                            <div key={item.id} className="border-t border-gray-100">
+                              <button
+                                type="button"
+                                onClick={() => setExpandedFaqId(expandedFaqId === item.id ? null : item.id)}
+                                className="w-full grid grid-cols-[60px_120px_minmax(0,1fr)_80px] px-4 py-3 text-[14px] text-gray-800 text-left hover:bg-gray-50"
+                              >
+                                <span>{index + 1}</span>
+                                <span>{item.categoryDescription}</span>
+                                <span className="truncate pr-2">{item.question}</span>
+                                <span
+                                  className="text-[13px] text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteFaq(item.id);
+                                  }}
+                                >
+                                  {isDeletingFaq === item.id ? '삭제중' : '삭제'}
+                                </span>
+                              </button>
+                              {expandedFaqId === item.id && (
+                                <div className="px-4 pb-4 pt-1">
+                                  <div className="rounded-lg bg-gray-50 p-4 text-[14px] text-gray-700 whitespace-pre-wrap">
+                                    {item.answer}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </>
                   )}
                 </div>
               </section>
@@ -571,6 +665,11 @@ const AdminPage = () => {
           )}
         </div>
       </main>
+      <FaqCreateModal
+        isOpen={showFaqCreateModal}
+        onClose={() => setShowFaqCreateModal(false)}
+        onSuccess={fetchFaqs}
+      />
       <Footer />
     </div>
   );
