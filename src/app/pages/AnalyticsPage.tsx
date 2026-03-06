@@ -323,7 +323,7 @@ const AnalyticsPage = () => {
         )}
 
         {activeTab === 'account' && (
-          <div className="bg-white rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
+          <div className="relative bg-white rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
             <h2 className="text-[20px] font-medium leading-[28px] mb-[30px] max-md:mb-[20px] text-gray-900">
               프로필 정보
             </h2>
@@ -437,18 +437,7 @@ const AnalyticsPage = () => {
             </div>
 
                 {/* 저장 및 로그아웃 버튼 */}
-                <div className="flex flex-col items-center gap-4">
-                  {isAdmin && (
-                    <Button
-                      variant="primary"
-                      size="medium"
-                      onClick={() => navigate('/admin')}
-                      className="w-[244px] h-[46px] rounded-md"
-                    >
-                      관리자 대시보드
-                    </Button>
-                  )}
-                  <div className="flex justify-center gap-4">
+                <div className="flex items-center justify-center gap-4">
                   <Button
                     variant="secondary"
                     size="medium"
@@ -466,7 +455,15 @@ const AnalyticsPage = () => {
                   >
                     {isSaving ? '저장 중...' : '변경사항 저장'}
                   </Button>
-                  </div>
+                  {isAdmin && (
+                    <button
+                      type="button"
+                      onClick={() => navigate('/admin')}
+                      className="absolute right-6 md:right-8 text-[13px] text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      관리자 대시보드
+                    </button>
+                  )}
                 </div>
               </>
             )}
