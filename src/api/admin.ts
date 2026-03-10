@@ -150,3 +150,27 @@ export const answerAdminInquiry = async (
     );
   }
 };
+
+/**
+ * 관리자 배치 수동 실행 (일별 유저 통계 집계)
+ */
+export const runAggregateSummaryBatch = async (targetDate: string): Promise<void> => {
+  const response = await authenticatedFetch(`${API_BASE_URL}/admin/batch/aggregate-summary`, {
+    method: 'POST',
+    body: JSON.stringify({ targetDate }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    let errorData;
+    try {
+      errorData = JSON.parse(errorText);
+    } catch {
+      errorData = { message: errorText };
+    }
+
+    throw new Error(
+      errorData.message || `배치 실행 실패: ${response.status} ${response.statusText}`
+    );
+  }
+};

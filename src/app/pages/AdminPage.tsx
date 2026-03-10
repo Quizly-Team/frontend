@@ -6,6 +6,7 @@ import { getUserInfo } from '@/api/account';
 import {
   answerAdminInquiry,
   getAdminInquiries,
+  runAggregateSummaryBatch,
   type AdminInquiryRaw,
 } from '@/api/admin';
 import {
@@ -18,7 +19,7 @@ import {
 } from '@/api/faq';
 import FaqCreateModal from '@/components/modal/FaqCreateModal';
 
-type AdminSectionKey = 'qna' | 'faq';
+type AdminSectionKey = 'qna' | 'faq' | 'batch';
 
 type AdminSection = {
   key: AdminSectionKey;
@@ -36,6 +37,11 @@ const ADMIN_SECTIONS: AdminSection[] = [
     key: 'faq',
     title: 'FAQ 관리',
     description: 'FAQ를 조회하고 등록/수정하여 사용자 안내를 관리합니다.',
+  },
+  {
+    key: 'batch',
+    title: '배치 관리',
+    description: '일별 유저 통계 배치를 수동으로 실행합니다.',
   },
 ];
 
@@ -189,6 +195,9 @@ const AdminPage = () => {
   const [showFaqCreateModal, setShowFaqCreateModal] = useState(false);
   const [isDeletingFaq, setIsDeletingFaq] = useState<number | null>(null);
   const [expandedFaqId, setExpandedFaqId] = useState<number | null>(null);
+  const [batchTargetDate, setBatchTargetDate] = useState('');
+  const [isBatchRunning, setIsBatchRunning] = useState(false);
+  const [batchResult, setBatchResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
   const fetchFaqs = async () => {
     try {
@@ -333,6 +342,29 @@ const AdminPage = () => {
     }
   };
 
+  const handleRunBatch = async () => {
+    if (!batchTargetDate) {
+      alert('집계 대상 날짜를 선택해주세요.');
+      return;
+    }
+    if (!confirm(`${batchTargetDate} 날짜의 통계 배치를 실행하시겠습니까?`)) return;
+
+    try {
+      setIsBatchRunning(true);
+      setBatchResult(null);
+      await runAggregateSummaryBatch(batchTargetDate);
+      setBatchResult({ type: 'success', message: `${batchTargetDate} 배치가 정상적으로 실행 요청되었습니다.` });
+    } catch (err) {
+      setBatchResult({ type: 'error', message: err instanceof Error ? err.message : '배치 실행에 실패했습니다.' });
+    } finally {
+      setIsBatchRunning(false);
+    }
+  };
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const maxDate = yesterday.toISOString().slice(0, 10);
+
   return (
     <div className="min-h-screen w-full bg-bg-home flex flex-col">
       <Header />
@@ -396,8 +428,10 @@ const AdminPage = () => {
                           <span>{section.title}</span>
                           {section.key === 'qna' ? (
                             <span className="text-[12px] text-gray-500">{unansweredCount} 미답변</span>
-                          ) : (
+                          ) : section.key === 'faq' ? (
                             <span className="text-[12px] text-gray-500">{faqList.length}개 등록</span>
+                          ) : (
+                            <span className="text-[12px] text-gray-500">배치 실행</span>
                           )}
                         </div>
                       </button>
@@ -425,7 +459,7 @@ const AdminPage = () => {
                       >
                         {isSubmittingAnswer ? '등록 중...' : '답변 등록'}
                       </Button>
-                    ) : (
+                    ) : activeSection === 'faq' ? (
                       <Button
                         variant="primary"
                         size="medium"
@@ -434,9 +468,20 @@ const AdminPage = () => {
                       >
                         FAQ 등록
                       </Button>
+                    ) : (
+                      <Button
+                        variant="primary"
+                        size="medium"
+                        onClick={handleRunBatch}
+                        disabled={isBatchRunning}
+                        className="w-[140px] h-[42px] rounded-md"
+                      >
+                        {isBatchRunning ? '실행 중...' : '배치 실행'}
+                      </Button>
                     )}
                   </div>
 
+                  {activeSection !== 'batch' && (
                   <div className={`mt-6 grid grid-cols-2 gap-3 ${activeSection === 'qna' ? 'md:grid-cols-3' : 'md:grid-cols-5'}`}>
                     {activeSection === 'qna' ? (
                       <>
@@ -468,8 +513,44 @@ const AdminPage = () => {
                       </>
                     )}
                   </div>
+                  )}
 
-                  {activeSection === 'qna' ? (
+                  {activeSection === 'batch' ? (
+                    <>
+                      <div className="mt-6 rounded-xl border border-gray-200 p-4">
+                        <p className="text-[15px] text-gray-700">
+                          전날 유저 통계를 집계하는 배치가 실패한 경우, 특정 날짜를 지정하여 수동으로 배치를 실행할 수 있습니다.
+                        </p>
+                        <p className="text-[13px] text-gray-500 mt-2">
+                          당일 포함 미래 날짜는 선택할 수 없습니다.
+                        </p>
+                      </div>
+
+                      <div className="mt-4 rounded-xl border border-gray-200 p-4">
+                        <p className="text-[16px] font-semibold text-gray-900 mb-3">집계 대상 날짜 선택</p>
+                        <input
+                          type="date"
+                          value={batchTargetDate}
+                          max={maxDate}
+                          onChange={(e) => setBatchTargetDate(e.target.value)}
+                          className="w-full max-w-[240px] rounded-lg border border-gray-300 px-3 py-2 text-[14px] text-gray-900 outline-none focus:border-primary"
+                        />
+                      </div>
+
+                      {batchResult && (
+                        <div
+                          className={`mt-4 rounded-xl border p-4 ${
+                            batchResult.type === 'success'
+                              ? 'border-green-200 bg-[#f0fdf4] text-green-800'
+                              : 'border-red-200 bg-[#fef2f2] text-red-800'
+                          }`}
+                        >
+                          <p className="text-[14px] font-medium">{batchResult.type === 'success' ? '실행 성공' : '실행 실패'}</p>
+                          <p className="text-[13px] mt-1">{batchResult.message}</p>
+                        </div>
+                      )}
+                    </>
+                  ) : activeSection === 'qna' ? (
                     <>
                       <div className="mt-6 flex items-center gap-2">
                         <button
