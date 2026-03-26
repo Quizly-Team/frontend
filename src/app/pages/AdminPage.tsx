@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header, Footer, Button } from '@/components';
 import { authUtils } from '@/lib/auth';
@@ -54,6 +54,21 @@ type QnaItem = {
   status: QnaStatus;
   content: string;
   answer: string;
+};
+
+type QnaStatusFilter = 'all' | 'WAITING' | 'COMPLETED';
+
+const getPageNumbers = (currentPage: number, totalPages: number): (number | '...')[] => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, '...', totalPages];
+  }
+  if (currentPage >= totalPages - 3) {
+    return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
 };
 
 const DEFAULT_REPLY_TEMPLATE = `안녕하세요.
@@ -187,7 +202,10 @@ const AdminPage = () => {
   const [selectedInquiryId, setSelectedInquiryId] = useState<number | null>(null);
   const [answerDraft, setAnswerDraft] = useState('');
   const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false);
-  const [showUnansweredOnly, setShowUnansweredOnly] = useState(false);
+  const [qnaStatusFilter, setQnaStatusFilter] = useState<QnaStatusFilter>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalElements, setTotalElements] = useState(0);
   const [faqList, setFaqList] = useState<FlatFaqItem[]>([]);
   const [isFaqLoading, setIsFaqLoading] = useState(false);
   const [faqError, setFaqError] = useState<string | null>(null);
@@ -225,17 +243,22 @@ const AdminPage = () => {
     }
   };
 
-  const fetchInquiries = async () => {
+  const fetchInquiries = async (page = currentPage, status = qnaStatusFilter) => {
     try {
       setIsQnaLoading(true);
       setQnaError(null);
-      const inquiries = await getAdminInquiries();
-      const mapped = inquiries
+      const { inquiryList, pagination } = await getAdminInquiries({
+        page,
+        status: status === 'all' ? undefined : status,
+      });
+      const mapped = inquiryList
         .map(mapInquiryToQnaItem)
-        .filter((item): item is QnaItem => item !== null)
-        .sort((a, b) => b.id - a.id);
+        .filter((item): item is QnaItem => item !== null);
 
       setQnaList(mapped);
+      setTotalPages(pagination.totalPages);
+      setTotalElements(pagination.totalElements);
+      setCurrentPage(pagination.page);
       setSelectedInquiryId((prevId) => {
         if (prevId && mapped.some((item) => item.id === prevId)) {
           return prevId;
@@ -279,12 +302,13 @@ const AdminPage = () => {
   const currentSection = ADMIN_SECTIONS.find(
     (section) => section.key === activeSection
   ) ?? ADMIN_SECTIONS[0];
-  const displayedQnaList = showUnansweredOnly
-    ? qnaList.filter((item) => item.status === '미답변')
-    : qnaList;
-  const selectedInquiry = displayedQnaList.find((item) => item.id === selectedInquiryId) ?? null;
+  const selectedInquiry = qnaList.find((item) => item.id === selectedInquiryId) ?? null;
   const unansweredCount = qnaList.filter((item) => item.status === '미답변').length;
   const answeredCount = qnaList.filter((item) => item.status === '답변완료').length;
+  const pageNumbers = useMemo(
+    () => getPageNumbers(currentPage, totalPages),
+    [currentPage, totalPages]
+  );
   const displayedFaqList = faqCategoryFilter === 'all'
     ? faqList
     : faqList.filter((item) => item.category === faqCategoryFilter);
@@ -306,15 +330,15 @@ const AdminPage = () => {
       return;
     }
 
-    if (displayedQnaList.length === 0) {
+    if (qnaList.length === 0) {
       setSelectedInquiryId(null);
       return;
     }
 
-    if (!selectedInquiryId || !displayedQnaList.some((item) => item.id === selectedInquiryId)) {
-      setSelectedInquiryId(displayedQnaList[0].id);
+    if (!selectedInquiryId || !qnaList.some((item) => item.id === selectedInquiryId)) {
+      setSelectedInquiryId(qnaList[0].id);
     }
-  }, [activeSection, displayedQnaList, selectedInquiryId]);
+  }, [activeSection, qnaList, selectedInquiryId]);
 
   useEffect(() => {
     setAnswerDraft(getInitialReplyDraft(selectedInquiry));
@@ -487,7 +511,7 @@ const AdminPage = () => {
                       <>
                         <div className="rounded-xl border border-gray-200 p-4">
                           <p className="text-[13px] text-gray-500">전체 문의</p>
-                          <p className="text-[24px] font-bold text-gray-900 mt-1">{qnaList.length}건</p>
+                          <p className="text-[24px] font-bold text-gray-900 mt-1">{totalElements}건</p>
                         </div>
                         <div className="rounded-xl border border-gray-200 p-4">
                           <p className="text-[13px] text-gray-500">미답변</p>
@@ -555,9 +579,13 @@ const AdminPage = () => {
                       <div className="mt-6 flex items-center gap-2">
                         <button
                           type="button"
-                          onClick={() => setShowUnansweredOnly(false)}
+                          onClick={() => {
+                            setQnaStatusFilter('all');
+                            setCurrentPage(1);
+                            fetchInquiries(1, 'all');
+                          }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
-                            !showUnansweredOnly
+                            qnaStatusFilter === 'all'
                               ? 'bg-[#f0fdf4] border-primary text-primary'
                               : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
                           }`}
@@ -566,14 +594,33 @@ const AdminPage = () => {
                         </button>
                         <button
                           type="button"
-                          onClick={() => setShowUnansweredOnly(true)}
+                          onClick={() => {
+                            setQnaStatusFilter('WAITING');
+                            setCurrentPage(1);
+                            fetchInquiries(1, 'WAITING');
+                          }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
-                            showUnansweredOnly
+                            qnaStatusFilter === 'WAITING'
                               ? 'bg-[#fef2f2] border-red-300 text-red-500'
                               : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
                           }`}
                         >
-                          미답변만
+                          미답변
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setQnaStatusFilter('COMPLETED');
+                            setCurrentPage(1);
+                            fetchInquiries(1, 'COMPLETED');
+                          }}
+                          className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                            qnaStatusFilter === 'COMPLETED'
+                              ? 'bg-[#f0fdf4] border-primary text-primary'
+                              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          답변완료
                         </button>
                       </div>
 
@@ -593,14 +640,16 @@ const AdminPage = () => {
                           <div className="px-4 py-8 text-[14px] text-red-500 text-center">
                             {qnaError}
                           </div>
-                        ) : displayedQnaList.length === 0 ? (
+                        ) : qnaList.length === 0 ? (
                           <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
-                            {showUnansweredOnly
+                            {qnaStatusFilter === 'WAITING'
                               ? '미답변 문의가 없습니다.'
-                              : '등록된 문의가 없습니다.'}
+                              : qnaStatusFilter === 'COMPLETED'
+                                ? '답변완료 문의가 없습니다.'
+                                : '등록된 문의가 없습니다.'}
                           </div>
                         ) : (
-                          displayedQnaList.map((item) => (
+                          qnaList.map((item) => (
                             <button
                               key={item.id}
                               type="button"
@@ -628,6 +677,69 @@ const AdminPage = () => {
                           ))
                         )}
                       </div>
+
+                      {totalPages > 1 && !isQnaLoading && !qnaError && (
+                        <div className="flex items-center justify-center gap-1 mt-6">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const prevPage = Math.max(1, currentPage - 1);
+                              setCurrentPage(prevPage);
+                              fetchInquiries(prevPage);
+                            }}
+                            disabled={currentPage === 1}
+                            className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            aria-label="이전 페이지"
+                          >
+                            <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                              <path d="M6 1L1 6L6 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </button>
+
+                          {pageNumbers.map((page, idx) =>
+                            page === '...' ? (
+                              <span
+                                key={`ellipsis-${idx}`}
+                                className="flex h-9 w-9 items-center justify-center text-[14px] text-gray-400"
+                              >
+                                ···
+                              </span>
+                            ) : (
+                              <button
+                                key={page}
+                                type="button"
+                                onClick={() => {
+                                  setCurrentPage(page);
+                                  fetchInquiries(page);
+                                }}
+                                className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-[14px] transition-colors ${
+                                  page === currentPage
+                                    ? 'bg-primary text-white'
+                                    : 'text-gray-700 hover:text-primary'
+                                }`}
+                              >
+                                {page}
+                              </button>
+                            )
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const nextPage = Math.min(totalPages, currentPage + 1);
+                              setCurrentPage(nextPage);
+                              fetchInquiries(nextPage);
+                            }}
+                            disabled={currentPage === totalPages}
+                            className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            aria-label="다음 페이지"
+                          >
+                            <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                              <path d="M1 1L6 6L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </button>
+                        </div>
+                      )}
 
                       <div className="mt-4 rounded-xl border border-gray-200 p-4">
                         <p className="text-[16px] font-semibold text-gray-900 mb-3">답변 작성</p>
