@@ -2,6 +2,25 @@ import { authenticatedFetch } from './account';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 
+type InquiryStatus = 'WAITING' | 'COMPLETED';
+
+type PaginationInfo = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalElements: number;
+};
+
+type GetAdminInquiriesParams = {
+  page?: number;
+  status?: InquiryStatus;
+};
+
+type GetAdminInquiriesResponse = {
+  inquiryList: AdminInquiryRaw[];
+  pagination: PaginationInfo;
+};
+
 export type AdminInquiryRaw = {
   inquiryId?: number;
   id?: number;
@@ -96,8 +115,23 @@ const extractInquiryArray = (payload: InquiriesResponseShape): AdminInquiryRaw[]
 /**
  * 관리자 문의 목록 조회
  */
-export const getAdminInquiries = async (): Promise<AdminInquiryRaw[]> => {
-  const response = await authenticatedFetch(`${API_BASE_URL}/admin/inquiries`, {
+export const getAdminInquiries = async (
+  params?: GetAdminInquiriesParams
+): Promise<GetAdminInquiriesResponse> => {
+  const searchParams = new URLSearchParams();
+
+  if (params?.page) {
+    searchParams.set('page', String(params.page));
+  }
+
+  if (params?.status) {
+    searchParams.set('status', params.status);
+  }
+
+  const queryString = searchParams.toString();
+  const url = `${API_BASE_URL}/admin/inquiries${queryString ? `?${queryString}` : ''}`;
+
+  const response = await authenticatedFetch(url, {
     method: 'GET',
   });
 
@@ -115,9 +149,16 @@ export const getAdminInquiries = async (): Promise<AdminInquiryRaw[]> => {
     );
   }
 
-  const payload: InquiriesResponseShape = await response.json();
+  const payload = await response.json();
+  const inquiryList = extractInquiryArray(payload as InquiriesResponseShape);
+  const pagination: PaginationInfo = payload.pagination ?? {
+    page: 1,
+    pageSize: 10,
+    totalPages: 1,
+    totalElements: inquiryList.length,
+  };
 
-  return extractInquiryArray(payload);
+  return { inquiryList, pagination };
 };
 
 export type AnswerInquiryRequest = {
