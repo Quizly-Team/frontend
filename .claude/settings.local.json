@@ -3,7 +3,11 @@
     "allow": [
       "mcp__figma__get_design_context",
       "mcp__figma__get_screenshot",
-      "mcp__figma__get_metadata"
+      "mcp__figma__get_metadata",
+      "Bash(mkdir -p .claude/agents .claude/hooks .claude/skills/quizly-dev-workflow)",
+      "Bash(mkdir -p docs/ai/domain docs/ai/research docs/ai/plan docs/ai/review docs/ai/qa)",
+      "Bash(chmod +x .claude/hooks/log-session.sh)",
+      "Bash(python3 __TRACKED_VAR__/scripts/quick_validate.py .claude/skills/quizly-frontend-conventions)"
     ],
     "deny": [],
     "ask": []
