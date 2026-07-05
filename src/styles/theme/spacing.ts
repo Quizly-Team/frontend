@@ -1,15 +1,15 @@
 export const spacing = {
   // Spacing values from Figma Spacing Guide
   0: '0px',
-  'xxxs': '2px',   // Spacing-xxxs
-  'xxs': '4px',    // Spacing-xxs
-  'xs': '8px',     // Spacing-xs
-  's': '12px',     // Spacing-s
-  'm': '16px',     // Spacing-m
-  'l': '20px',     // Spacing-l
-  'xl': '24px',    // Spacing-xl
-  'xxl': '32px',   // Spacing-xxl
-  'xxxl': '40px',  // Spacing-xxxl
+  xxxs: '2px', // Spacing-xxxs
+  xxs: '4px', // Spacing-xxs
+  xs: '8px', // Spacing-xs
+  s: '12px', // Spacing-s
+  m: '16px', // Spacing-m
+  l: '20px', // Spacing-l
+  xl: '24px', // Spacing-xl
+  xxl: '32px', // Spacing-xxl
+  xxxl: '40px', // Spacing-xxxl
 
   // Numeric aliases for Tailwind
   0.5: '2px',
@@ -21,5 +21,5 @@ export const spacing = {
   6: '24px',
   8: '32px',
   10: '40px',
-  15: '60px',  // Tablet margin
-} as const;
+  15: '60px', // Tablet margin
+} as const

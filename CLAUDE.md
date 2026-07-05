@@ -21,17 +21,17 @@ There is **no unit-test runner** configured. Verification = `npm run build` (typ
 
 ### 도메인 맵 (기능 영역)
 
-| 도메인 | 라우트 | 페이지 | API 모듈 | 훅 |
-|---|---|---|---|---|
-| 문제 생성 | `/` | `HomePage` | `api/quiz` (`createQuiz`) | `useCreateQuiz` |
-| 문제 풀이·이력 | `/my-quizzes`, `/my-quizzes/:date` | `QuizListPage`, `QuizDetailPage` | `api/quiz` (`getQuizGroups`, `submitAnswerMember`) | inline |
-| 오답 | `/wrong-quizzes`, `/wrong-quizzes/solve` | `WrongQuizPage`, `WrongQuizSolvePage` | `api/quiz` (`getWrongQuizzes`, `submitAnswerRetry`) | inline |
-| 모의고사 | `/mock-exam` | `MockExamPage` | `api/quiz` (`createMockExam*`) | `useMockExam` |
-| 대시보드/통계 | `/analytics` | `AnalyticsPage` | `api/dashboard`, `api/account` | `useDashboard` |
-| 인증(OAuth2) | `/login`, `/login/oauth2/code/:provider` | `LoginPage`, `AuthCallback` | `api/auth`, `lib/auth`·`lib/oauth` | — |
-| 온보딩 | `/onboarding` | `OnboardingPage` | `api/account` (`saveOnboarding`, tempAccessToken) | — |
-| 계정 | (전용 라우트 없음) | — | `api/account` (`getUserInfo` 등) | `UserContext`가 소비 |
-| 관리자 | `/admin` | `AdminPage` | `api/admin`, `api/faq` | inline |
+| 도메인         | 라우트                                   | 페이지                                | API 모듈                                            | 훅                   |
+| -------------- | ---------------------------------------- | ------------------------------------- | --------------------------------------------------- | -------------------- |
+| 문제 생성      | `/`                                      | `HomePage`                            | `api/quiz` (`createQuiz`)                           | `useCreateQuiz`      |
+| 문제 풀이·이력 | `/my-quizzes`, `/my-quizzes/:date`       | `QuizListPage`, `QuizDetailPage`      | `api/quiz` (`getQuizGroups`, `submitAnswerMember`)  | inline               |
+| 오답           | `/wrong-quizzes`, `/wrong-quizzes/solve` | `WrongQuizPage`, `WrongQuizSolvePage` | `api/quiz` (`getWrongQuizzes`, `submitAnswerRetry`) | inline               |
+| 모의고사       | `/mock-exam`                             | `MockExamPage`                        | `api/quiz` (`createMockExam*`)                      | `useMockExam`        |
+| 대시보드/통계  | `/analytics`                             | `AnalyticsPage`                       | `api/dashboard`, `api/account`                      | `useDashboard`       |
+| 인증(OAuth2)   | `/login`, `/login/oauth2/code/:provider` | `LoginPage`, `AuthCallback`           | `api/auth`, `lib/auth`·`lib/oauth`                  | —                    |
+| 온보딩         | `/onboarding`                            | `OnboardingPage`                      | `api/account` (`saveOnboarding`, tempAccessToken)   | —                    |
+| 계정           | (전용 라우트 없음)                       | —                                     | `api/account` (`getUserInfo` 등)                    | `UserContext`가 소비 |
+| 관리자         | `/admin`                                 | `AdminPage`                           | `api/admin`, `api/faq`                              | inline               |
 
 ### 레이어
 
@@ -68,9 +68,10 @@ Conventional commits referencing the issue, Korean description: `<type>(#NNN): <
 **스킬 인지:** 파이프라인은 best-practice 스킬을 능동 참조한다 — researcher가 적용 스킬 열거(§9) → planner가 파일별 명시(§3) → builder가 구현 전 정독 → reviewer가 준수 검증. 기본 참조 스킬은 `quizly-frontend-conventions`(프로젝트 컨벤션), UI는 `frontend-design`. 새 best-practice 스킬은 researcher 열거 목록에 추가하면 파이프라인 전체에 전파된다.
 
 **변경 이력:**
-| 날짜 | 변경 내용 | 대상 | 사유 |
-|------|----------|------|------|
-| 2026-06-30 | 초기 구성 (6역할 파이프라인: domain-analyst·researcher·planner·builder·reviewer·integration-qa + 로깅 훅) | 전체 | harness 신규 구축 (cinelab 패턴 기반, quizly 스택 적응) |
-| 2026-06-30 | skill-aware 배선 + `quizly-frontend-conventions` 스킬 신규 | researcher·planner·builder·reviewer·orchestrator·skills/quizly-frontend-conventions | 워크플로우가 구현 시 best-practice 스킬을 참조하지 않던 문제 해결 (skill-creator 방법론으로 제작) |
-| 2026-06-30 | 구현 단계를 에이전트 팀으로 전환 (하이브리드) — 레이어 전문가 3인 신규 | agents/{data-engineer,page-integrator,ui-engineer}·orchestrator | 도메인 분석 결과 quizly의 지배적 버그가 레이어 경계면 불일치 → 실시간 SendMessage 협업으로 발생 지점 차단. builder는 솔로 폴백으로 잔존 |
-| 2026-07-02 | 도메인 재검증 후 문서·설정 현행화 (drift 7건 수정: Zustand 미사용·Tailwind 우세·recharts 단독·apiClient 중복 현실·QuizSolve 고아·죽은 deps·도메인 맵 추가) + 하네스 설정 버그 수정 | CLAUDE.md·skills/quizly-frontend-conventions·settings.local.json | 문서-코드 불일치로 하네스 에이전트가 틀린 전제로 판단하는 문제. zustand 제거 결정(필요 시 재도입). 소스 코드 무변경 |
+
+| 날짜       | 변경 내용                                                                                                                                                                          | 대상                                                                                | 사유                                                                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-06-30 | 초기 구성 (6역할 파이프라인: domain-analyst·researcher·planner·builder·reviewer·integration-qa + 로깅 훅)                                                                          | 전체                                                                                | harness 신규 구축 (cinelab 패턴 기반, quizly 스택 적응)                                                                                 |
+| 2026-06-30 | skill-aware 배선 + `quizly-frontend-conventions` 스킬 신규                                                                                                                         | researcher·planner·builder·reviewer·orchestrator·skills/quizly-frontend-conventions | 워크플로우가 구현 시 best-practice 스킬을 참조하지 않던 문제 해결 (skill-creator 방법론으로 제작)                                       |
+| 2026-06-30 | 구현 단계를 에이전트 팀으로 전환 (하이브리드) — 레이어 전문가 3인 신규                                                                                                             | agents/{data-engineer,page-integrator,ui-engineer}·orchestrator                     | 도메인 분석 결과 quizly의 지배적 버그가 레이어 경계면 불일치 → 실시간 SendMessage 협업으로 발생 지점 차단. builder는 솔로 폴백으로 잔존 |
+| 2026-07-02 | 도메인 재검증 후 문서·설정 현행화 (drift 7건 수정: Zustand 미사용·Tailwind 우세·recharts 단독·apiClient 중복 현실·QuizSolve 고아·죽은 deps·도메인 맵 추가) + 하네스 설정 버그 수정 | CLAUDE.md·skills/quizly-frontend-conventions·settings.local.json                    | 문서-코드 불일치로 하네스 에이전트가 틀린 전제로 판단하는 문제. zustand 제거 결정(필요 시 재도입). 소스 코드 무변경                     |

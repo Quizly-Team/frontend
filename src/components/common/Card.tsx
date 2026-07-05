@@ -1,10 +1,10 @@
 type QuizCardProps = {
-  questionNumber: number;
-  question: string;
-  answer: string;
-  explanation: string;
-  className?: string;
-};
+  questionNumber: number
+  question: string
+  answer: string
+  explanation: string
+  className?: string
+}
 
 const QuizCard = ({
   questionNumber,
@@ -14,7 +14,9 @@ const QuizCard = ({
   className = '',
 }: QuizCardProps) => {
   return (
-    <div className={`bg-white border border-gray-300 rounded-[12px] p-8 flex flex-col gap-l ${className}`}>
+    <div
+      className={`bg-white border border-gray-300 rounded-[12px] p-8 flex flex-col gap-l ${className}`}
+    >
       {/* Question Section */}
       <div className="flex flex-col gap-xs">
         <p className="text-body2-medium leading-[1.4]">
@@ -36,9 +38,9 @@ const QuizCard = ({
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-QuizCard.displayName = 'QuizCard';
+QuizCard.displayName = 'QuizCard'
 
-export default QuizCard;
+export default QuizCard

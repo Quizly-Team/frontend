@@ -1,4 +1,4 @@
-import type { QuizDetail } from '@/types/quiz';
+import type { QuizDetail } from '@/types/quiz'
 
 export const mockQuizData: QuizDetail[] = [
   {
@@ -61,4 +61,4 @@ export const mockQuizData: QuizDetail[] = [
       'useState는 React Hooks 중 하나로, 함수 컴포넌트에서만 사용할 수 있습니다. 클래스 컴포넌트에서는 this.state를 사용합니다.',
     topic: '프로그래밍',
   },
-];
+]

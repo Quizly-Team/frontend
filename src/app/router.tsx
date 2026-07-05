@@ -1,15 +1,15 @@
-import { createBrowserRouter } from 'react-router-dom';
-import HomePage from '@/app/pages/HomePage';
-import AuthCallback from '@/app/pages/AuthCallback';
-import LoginPage from '@/app/pages/LoginPage';
-import QuizListPage from '@/app/pages/QuizListPage';
-import QuizDetailPage from '@/app/pages/QuizDetailPage';
-import WrongQuizPage from '@/app/pages/WrongQuizPage';
-import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage';
-import MockExamPage from '@/app/pages/MockExamPage';
-import AnalyticsPage from '@/app/pages/AnalyticsPage';
-import OnboardingPage from '@/app/pages/OnboardingPage';
-import AdminPage from '@/app/pages/AdminPage';
+import { createBrowserRouter } from 'react-router-dom'
+import AdminPage from '@/app/pages/AdminPage'
+import AnalyticsPage from '@/app/pages/AnalyticsPage'
+import AuthCallback from '@/app/pages/AuthCallback'
+import HomePage from '@/app/pages/HomePage'
+import LoginPage from '@/app/pages/LoginPage'
+import MockExamPage from '@/app/pages/MockExamPage'
+import OnboardingPage from '@/app/pages/OnboardingPage'
+import QuizDetailPage from '@/app/pages/QuizDetailPage'
+import QuizListPage from '@/app/pages/QuizListPage'
+import WrongQuizPage from '@/app/pages/WrongQuizPage'
+import WrongQuizSolvePage from '@/app/pages/WrongQuizSolvePage'
 
 export const router = createBrowserRouter([
   {
@@ -56,4 +56,4 @@ export const router = createBrowserRouter([
     path: '/admin',
     element: <AdminPage />,
   },
-]);
+])

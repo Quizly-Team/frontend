@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   /* Primary Colors */
@@ -40,8 +40,8 @@
   --color-bg-home: #f8f9fa;
 
   /* Font Family */
-  --font-sans: "Pretendard", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: 'Pretendard', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
   /* Font Size - Headers */
   --font-size-header1-bold: 32px;

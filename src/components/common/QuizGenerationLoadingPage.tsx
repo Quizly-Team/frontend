@@ -1,72 +1,72 @@
-import { useState, useEffect } from "react";
-import LoadingStageCard from "./LoadingStageCard";
+import { useState, useEffect } from 'react'
+import LoadingStageCard from './LoadingStageCard'
 
-type LoadingStage = "analyzing" | "generating" | "complete";
+type LoadingStage = 'analyzing' | 'generating' | 'complete'
 
 type QuizGenerationLoadingPageProps = {
-  isLoading: boolean;
-  onComplete: () => void;
-};
+  isLoading: boolean
+  onComplete: () => void
+}
 
 const QuizGenerationLoadingPage = ({
   isLoading,
   onComplete,
 }: QuizGenerationLoadingPageProps) => {
-  const [stage, setStage] = useState<LoadingStage>("analyzing");
+  const [stage, setStage] = useState<LoadingStage>('analyzing')
   const [completedStages, setCompletedStages] = useState<Set<LoadingStage>>(
-    new Set()
-  );
+    new Set(),
+  )
 
   useEffect(() => {
-    if (!isLoading) return;
+    if (!isLoading) return
 
     // Stage 1: 입력 텍스트 분석 (2초)
     const stage1Timer = setTimeout(() => {
-      setCompletedStages((prev) => new Set(prev).add("analyzing"));
-      setStage("generating");
-    }, 2000);
+      setCompletedStages((prev) => new Set(prev).add('analyzing'))
+      setStage('generating')
+    }, 2000)
 
     return () => {
-      clearTimeout(stage1Timer);
-    };
-  }, [isLoading]);
+      clearTimeout(stage1Timer)
+    }
+  }, [isLoading])
 
   // API 응답 완료 시 (isLoading이 false가 될 때)
   useEffect(() => {
-    if (!isLoading && stage === "generating") {
-      setCompletedStages((prev) => new Set(prev).add("generating"));
-      setStage("complete");
+    if (!isLoading && stage === 'generating') {
+      setCompletedStages((prev) => new Set(prev).add('generating'))
+      setStage('complete')
     }
-  }, [isLoading, stage]);
+  }, [isLoading, stage])
 
   // Stage 3: 완료 처리
   useEffect(() => {
-    if (stage === "complete") {
+    if (stage === 'complete') {
       // 1초 후 체크 표시하고 완료
       const completeTimer = setTimeout(() => {
-        setCompletedStages((prev) => new Set(prev).add("complete"));
+        setCompletedStages((prev) => new Set(prev).add('complete'))
 
         // 체크 표시 후 바로 완료 콜백 호출
-        onComplete();
-      }, 1500);
+        onComplete()
+      }, 1500)
 
       return () => {
-        clearTimeout(completeTimer);
-      };
+        clearTimeout(completeTimer)
+      }
     }
-  }, [stage, onComplete]);
+  }, [stage, onComplete])
 
   // 컴포넌트가 언마운트될 때 상태 초기화
   useEffect(() => {
     return () => {
-      setStage("analyzing");
-      setCompletedStages(new Set());
-    };
-  }, []);
+      setStage('analyzing')
+      setCompletedStages(new Set())
+    }
+  }, [])
 
   // 로딩 중이거나 complete 단계일 때만 표시
-  if (!isLoading && stage !== "complete" && !completedStages.has("complete")) {
-    return null;
+  if (!isLoading && stage !== 'complete' && !completedStages.has('complete')) {
+    return null
   }
 
   return (
@@ -86,20 +86,20 @@ const QuizGenerationLoadingPage = ({
         <div className="flex gap-l max-md:hidden justify-center w-full">
           <LoadingStageCard
             label="입력 텍스트 분석..."
-            isCompleted={completedStages.has("analyzing")}
-            isActive={stage === "analyzing"}
+            isCompleted={completedStages.has('analyzing')}
+            isActive={stage === 'analyzing'}
             responsive
           />
           <LoadingStageCard
             label="문제 생성 중..."
-            isCompleted={completedStages.has("generating")}
-            isActive={stage === "generating"}
+            isCompleted={completedStages.has('generating')}
+            isActive={stage === 'generating'}
             responsive
           />
           <LoadingStageCard
             label="문제 생성 완료!"
-            isCompleted={completedStages.has("complete")}
-            isActive={stage === "complete"}
+            isCompleted={completedStages.has('complete')}
+            isActive={stage === 'complete'}
             showExclamation
             responsive
           />
@@ -109,26 +109,26 @@ const QuizGenerationLoadingPage = ({
         <div className="hidden max-md:flex flex-col gap-3">
           <LoadingStageCard
             label="입력 텍스트 분석..."
-            isCompleted={completedStages.has("analyzing")}
-            isActive={stage === "analyzing"}
+            isCompleted={completedStages.has('analyzing')}
+            isActive={stage === 'analyzing'}
           />
           <LoadingStageCard
             label="문제 생성 중..."
-            isCompleted={completedStages.has("generating")}
-            isActive={stage === "generating"}
+            isCompleted={completedStages.has('generating')}
+            isActive={stage === 'generating'}
           />
           <LoadingStageCard
             label="문제 생성 완료!"
-            isCompleted={completedStages.has("complete")}
-            isActive={stage === "complete"}
+            isCompleted={completedStages.has('complete')}
+            isActive={stage === 'complete'}
             showExclamation
           />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-QuizGenerationLoadingPage.displayName = "QuizGenerationLoadingPage";
+QuizGenerationLoadingPage.displayName = 'QuizGenerationLoadingPage'
 
-export default QuizGenerationLoadingPage;
+export default QuizGenerationLoadingPage

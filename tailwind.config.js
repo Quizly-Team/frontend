@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-import { colors } from './src/styles/theme/colors';
-import { typography } from './src/styles/theme/typography';
-import { spacing } from './src/styles/theme/spacing';
-import plugin from 'tailwindcss/plugin';
+import plugin from 'tailwindcss/plugin'
+import { colors } from './src/styles/theme/colors'
+import { spacing } from './src/styles/theme/spacing'
+import { typography } from './src/styles/theme/typography'
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -147,7 +147,7 @@ export default {
             fontSize: '14px',
           },
         },
-      });
+      })
     }),
   ],
-};
+}

@@ -1,23 +1,27 @@
-import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components";
-import { authUtils } from "@/lib/auth";
-import { useUser } from "@/contexts/UserContext";
-import { logout, getTodaySummary } from "@/api/account";
+import { useState, useEffect, useCallback } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { logout, getTodaySummary } from '@/api/account'
+import { Button } from '@/components'
+import { useUser } from '@/contexts/UserContext'
+import { authUtils } from '@/lib/auth'
 
 type HeaderProps = {
-  logoUrl?: string;
-  onMockExamClick?: () => void;
-  isMockExamModalOpen?: boolean;
-};
+  logoUrl?: string
+  onMockExamClick?: () => void
+  isMockExamModalOpen?: boolean
+}
 
-const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = false }: HeaderProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { userInfo, isLoading: isUserInfoLoading } = useUser();
-  const navigate = useNavigate();
-  const location = useLocation();
+const Header = ({
+  logoUrl = '/logo.svg',
+  onMockExamClick,
+  isMockExamModalOpen = false,
+}: HeaderProps) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { userInfo, isLoading: isUserInfoLoading } = useUser()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   // 오늘의 학습 요약 조회 (로그인 상태일 때만)
   const { data: todaySummaryData } = useQuery({
@@ -26,68 +30,71 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
     enabled: isAuthenticated,
     staleTime: 1000 * 60, // 1분
     refetchOnWindowFocus: true, // 문제 풀고 돌아왔을 때 자동 갱신
-  });
+  })
 
   useEffect(() => {
-    setIsAuthenticated(authUtils.isAuthenticated());
-    
+    setIsAuthenticated(authUtils.isAuthenticated())
+
     // 인증 상태 변경 감지
     const handleAuthStateChange = () => {
-      setIsAuthenticated(authUtils.isAuthenticated());
-    };
-    
-    window.addEventListener('authStateChanged', handleAuthStateChange);
-    window.addEventListener('storage', handleAuthStateChange);
-    
+      setIsAuthenticated(authUtils.isAuthenticated())
+    }
+
+    window.addEventListener('authStateChanged', handleAuthStateChange)
+    window.addEventListener('storage', handleAuthStateChange)
+
     return () => {
-      window.removeEventListener('authStateChanged', handleAuthStateChange);
-      window.removeEventListener('storage', handleAuthStateChange);
-    };
-  }, []);
+      window.removeEventListener('authStateChanged', handleAuthStateChange)
+      window.removeEventListener('storage', handleAuthStateChange)
+    }
+  }, [])
 
   const handleLoginClick = useCallback(() => {
-    navigate("/login");
-  }, [navigate]);
+    navigate('/login')
+  }, [navigate])
 
   const handleProfileClick = useCallback(() => {
-    navigate("/analytics");
-  }, [navigate]);
+    navigate('/analytics')
+  }, [navigate])
 
   const handleMockExamClick = useCallback(() => {
     if (onMockExamClick) {
-      onMockExamClick();
+      onMockExamClick()
     } else {
-      window.location.href = "/";
+      window.location.href = '/'
     }
-  }, [onMockExamClick]);
+  }, [onMockExamClick])
 
   const handleMobileMenuToggle = useCallback(() => {
-    setIsMobileMenuOpen((prev) => !prev);
-  }, []);
+    setIsMobileMenuOpen((prev) => !prev)
+  }, [])
 
   const handleMobileMenuClose = useCallback(() => {
-    setIsMobileMenuOpen(false);
-  }, []);
+    setIsMobileMenuOpen(false)
+  }, [])
 
   const handleLogout = useCallback(async () => {
     try {
-      await logout();
-      setIsMobileMenuOpen(false);
-      navigate("/", { replace: true });
-      window.location.reload();
-    } catch (err) {
+      await logout()
+      setIsMobileMenuOpen(false)
+      navigate('/', { replace: true })
+      window.location.reload()
+    } catch {
       // API 호출 실패해도 클라이언트 측 토큰은 제거하고 로그아웃 처리
-      authUtils.removeAllTokens();
-      setIsMobileMenuOpen(false);
-      navigate("/", { replace: true });
-      window.location.reload();
+      authUtils.removeAllTokens()
+      setIsMobileMenuOpen(false)
+      navigate('/', { replace: true })
+      window.location.reload()
     }
-  }, [navigate]);
+  }, [navigate])
 
-  const handleMobileNavClick = useCallback((href: string) => {
-    setIsMobileMenuOpen(false);
-    navigate(href);
-  }, [navigate]);
+  const handleMobileNavClick = useCallback(
+    (href: string) => {
+      setIsMobileMenuOpen(false)
+      navigate(href)
+    },
+    [navigate],
+  )
 
   return (
     <header className="w-full bg-bg-home">
@@ -106,7 +113,9 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             <a
               href="/"
               className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 hover:text-primary transition-colors ${
-                location.pathname === "/" && !isMockExamModalOpen ? "text-primary" : "text-gray-900"
+                location.pathname === '/' && !isMockExamModalOpen
+                  ? 'text-primary'
+                  : 'text-gray-900'
               }`}
             >
               문제 만들기
@@ -114,7 +123,9 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             <button
               onClick={handleMockExamClick}
               className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
-                location.pathname === "/mock-exam" || isMockExamModalOpen ? "text-primary" : "text-gray-900"
+                location.pathname === '/mock-exam' || isMockExamModalOpen
+                  ? 'text-primary'
+                  : 'text-gray-900'
               }`}
             >
               실전 모의고사
@@ -122,7 +133,9 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             <a
               href="/my-quizzes"
               className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
-                location.pathname === "/my-quizzes" ? "text-primary" : "text-gray-900"
+                location.pathname === '/my-quizzes'
+                  ? 'text-primary'
+                  : 'text-gray-900'
               }`}
             >
               문제 모아보기
@@ -130,7 +143,9 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
             <a
               href="/wrong-quizzes"
               className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
-                location.pathname === "/wrong-quizzes" ? "text-primary" : "text-gray-900"
+                location.pathname === '/wrong-quizzes'
+                  ? 'text-primary'
+                  : 'text-gray-900'
               }`}
             >
               틀린문제 풀어보기
@@ -154,10 +169,16 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                         alt="프로필"
                         className={`w-full h-full rounded-full ${userInfo.profileImageUrl && !userInfo.profileImageUrl.includes('/icon/default.svg') ? 'object-cover' : 'object-contain'}`}
                         onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          if (target.src !== `${window.location.origin}/icon/default.svg`) {
-                            target.src = '/icon/default.svg';
-                            target.className = target.className.replace('object-cover', 'object-contain');
+                          const target = e.target as HTMLImageElement
+                          if (
+                            target.src !==
+                            `${window.location.origin}/icon/default.svg`
+                          ) {
+                            target.src = '/icon/default.svg'
+                            target.className = target.className.replace(
+                              'object-cover',
+                              'object-contain',
+                            )
                           }
                         }}
                       />
@@ -197,14 +218,18 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
       <div className="hidden max-md:block relative">
         <div className="flex items-center justify-between h-[46px] px-5 py-3">
           <a href="/" className="flex items-center">
-            <img src={logoUrl} alt="Quizly Logo" className="h-[22px] w-[84px]" />
+            <img
+              src={logoUrl}
+              alt="Quizly Logo"
+              className="h-[22px] w-[84px]"
+            />
           </a>
 
           <button
             type="button"
             onClick={handleMobileMenuToggle}
             className="relative w-[26px] h-[26px] z-[30]"
-            aria-label={isMobileMenuOpen ? "메뉴 닫기" : "메뉴 열기"}
+            aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
           >
             <span className="absolute top-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-black rounded-[100px]" />
             <span className="absolute top-[46.88%] left-[9.38%] right-[9.38%] h-[6.25%] bg-black rounded-[100px]" />
@@ -235,7 +260,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                           <div className="flex items-center justify-between mb-3">
                             <div>
                               <h3 className="text-[20px] font-medium text-gray-900 leading-[28px] mb-2">
-                                {userInfo.nickName || "사용자"}
+                                {userInfo.nickName || '사용자'}
                               </h3>
                               <button
                                 onClick={handleLogout}
@@ -273,24 +298,32 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                               {/* 내부 원: 57x57 (60 - 3px border), fill #efefef */}
                               <div className="w-[57px] h-[57px] rounded-full bg-[#efefef] overflow-hidden">
                                 <img
-                                  src={userInfo.profileImageUrl || '/icon/default.svg'}
+                                  src={
+                                    userInfo.profileImageUrl ||
+                                    '/icon/default.svg'
+                                  }
                                   alt="프로필"
                                   className="w-full h-full rounded-full object-cover"
                                   onError={(e) => {
-                                    const target = e.target as HTMLImageElement;
-                                    if (target.src !== `${window.location.origin}/icon/default.svg`) {
-                                      target.src = '/icon/default.svg';
+                                    const target = e.target as HTMLImageElement
+                                    if (
+                                      target.src !==
+                                      `${window.location.origin}/icon/default.svg`
+                                    ) {
+                                      target.src = '/icon/default.svg'
                                     }
                                   }}
                                 />
                               </div>
                             </button>
                           </div>
-                          
+
                           {/* 배너 - 로그아웃 버튼 아래 */}
                           <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
                             <p className="text-[14px] text-primary leading-[1.4] whitespace-nowrap">
-                              오늘 {todaySummaryData?.todaySummary.solvedCount ?? 0}개의 문제 풀이를 진행했어요!
+                              오늘{' '}
+                              {todaySummaryData?.todaySummary.solvedCount ?? 0}
+                              개의 문제 풀이를 진행했어요!
                             </p>
                           </div>
                         </>
@@ -309,7 +342,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                               로그인 해주세요
                             </h3>
                             <button
-                              onClick={() => handleMobileNavClick("/login")}
+                              onClick={() => handleMobileNavClick('/login')}
                               className="flex items-center gap-1"
                             >
                               <span className="text-[14px] text-[#777777] leading-[19.6px]">
@@ -342,7 +375,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                             />
                           </div>
                         </div>
-                        
+
                         {/* 배너 - 로그인 버튼 아래, 구분선 위 */}
                         <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
                           <p className="text-[14px] text-primary leading-[1.4] whitespace-nowrap">
@@ -351,7 +384,7 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                         </div>
                       </>
                     )}
-                    
+
                     {/* 구분선 */}
                     <div className="h-[1px] bg-[#ededed] -mx-5" />
                   </div>
@@ -359,28 +392,28 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
                   {/* Navigation Links */}
                   <nav className="flex flex-col px-5 pt-4">
                     <button
-                      onClick={() => handleMobileNavClick("/")}
+                      onClick={() => handleMobileNavClick('/')}
                       className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
                     >
                       문제 만들기
                     </button>
                     <button
                       onClick={() => {
-                        handleMobileMenuClose();
-                        handleMockExamClick();
+                        handleMobileMenuClose()
+                        handleMockExamClick()
                       }}
                       className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
                     >
                       실전 모의고사
                     </button>
                     <button
-                      onClick={() => handleMobileNavClick("/my-quizzes")}
+                      onClick={() => handleMobileNavClick('/my-quizzes')}
                       className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
                     >
                       문제 모아보기
                     </button>
                     <button
-                      onClick={() => handleMobileNavClick("/wrong-quizzes")}
+                      onClick={() => handleMobileNavClick('/wrong-quizzes')}
                       className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
                     >
                       틀린문제 풀어보기
@@ -393,9 +426,9 @@ const Header = ({ logoUrl = "/logo.svg", onMockExamClick, isMockExamModalOpen = 
         )}
       </div>
     </header>
-  );
-};
+  )
+}
 
-Header.displayName = "Header";
+Header.displayName = 'Header'
 
-export default Header;
+export default Header

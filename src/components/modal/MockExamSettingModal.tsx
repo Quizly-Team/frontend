@@ -1,153 +1,177 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import type { ChangeEvent } from 'react';
-import Tooltip from '@/components/common/Tooltip';
-import Icon from '@/components/common/Icon';
-import { validateFileType } from '@/lib/pdfUtils';
+import { useState, useCallback, useRef, useEffect } from 'react'
+import type { ChangeEvent } from 'react'
+import Icon from '@/components/common/Icon'
+import Tooltip from '@/components/common/Tooltip'
+import { validateFileType } from '@/lib/pdfUtils'
 
-type MockExamType = 'TRUE_FALSE' | 'FIND_CORRECT' | 'SHORT_ANSWER' | 'ESSAY';
-type MockExamCharacteristic = 'FIND_CORRECT' | 'FIND_INCORRECT' | 'FIND_MATCH';
+type MockExamType = 'TRUE_FALSE' | 'FIND_CORRECT' | 'SHORT_ANSWER' | 'ESSAY'
+type MockExamCharacteristic = 'FIND_CORRECT' | 'FIND_INCORRECT' | 'FIND_MATCH'
 
 type MockExamSettingModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: MockExamSettingData) => void;
-};
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (data: MockExamSettingData) => void
+}
 
 export type MockExamSettingData = {
-  plainText?: string;
-  file?: File;
-  mockExamTypeList: string[];
-};
+  plainText?: string
+  file?: File
+  mockExamTypeList: string[]
+}
 
 const EXAM_TYPES = [
   { id: 'TRUE_FALSE', label: 'OX 퀴즈' },
   { id: 'FIND_CORRECT', label: '객관식 문제' },
   { id: 'SHORT_ANSWER', label: '주관식 문제' },
   { id: 'ESSAY', label: '서술형 문제' },
-] as const;
+] as const
 
 const EXAM_CHARACTERISTICS = [
   { id: 'FIND_CORRECT', label: '정답 찾기' },
   { id: 'FIND_INCORRECT', label: '옳지 않은 것 찾기' },
   { id: 'FIND_MATCH', label: '보기 문항 찾기' },
-] as const;
+] as const
 
-const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModalProps) => {
-  const [selectedTypes, setSelectedTypes] = useState<MockExamType[]>([]);
-  const [selectedCharacteristics, setSelectedCharacteristics] = useState<MockExamCharacteristic[]>([]);
-  const [plainText, setPlainText] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
-  const [showTooltip, setShowTooltip] = useState(false);
-  const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+const MockExamSettingModal = ({
+  isOpen,
+  onClose,
+  onSubmit,
+}: MockExamSettingModalProps) => {
+  const [selectedTypes, setSelectedTypes] = useState<MockExamType[]>([])
+  const [selectedCharacteristics, setSelectedCharacteristics] = useState<
+    MockExamCharacteristic[]
+  >([])
+  const [plainText, setPlainText] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  const [showTooltip, setShowTooltip] = useState(false)
+  const tooltipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleTypeToggle = useCallback((type: MockExamType) => {
     setSelectedTypes((prev) => {
-      const isRemoving = prev.includes(type);
+      const isRemoving = prev.includes(type)
 
       // 객관식 문제를 선택 해제하면 특성 선택도 초기화
       if (isRemoving && type === 'FIND_CORRECT') {
-        setSelectedCharacteristics([]);
+        setSelectedCharacteristics([])
       }
 
-      return isRemoving ? prev.filter((t) => t !== type) : [...prev, type];
-    });
-  }, []);
+      return isRemoving ? prev.filter((t) => t !== type) : [...prev, type]
+    })
+  }, [])
 
-  const handleCharacteristicToggle = useCallback((characteristic: MockExamCharacteristic) => {
-    setSelectedCharacteristics((prev) => {
-      const isRemoving = prev.includes(characteristic);
-      const newCharacteristics = isRemoving
-        ? prev.filter((c) => c !== characteristic)
-        : [...prev, characteristic];
+  const handleCharacteristicToggle = useCallback(
+    (characteristic: MockExamCharacteristic) => {
+      setSelectedCharacteristics((prev) => {
+        const isRemoving = prev.includes(characteristic)
+        const newCharacteristics = isRemoving
+          ? prev.filter((c) => c !== characteristic)
+          : [...prev, characteristic]
 
-      // FIND_MATCH를 선택하면 FIND_CORRECT를 selectedTypes에서 제거
-      if (characteristic === 'FIND_MATCH' && !isRemoving) {
-        setSelectedTypes((prevTypes) => prevTypes.filter((t) => t !== 'FIND_CORRECT'));
+        // FIND_MATCH를 선택하면 FIND_CORRECT를 selectedTypes에서 제거
+        if (characteristic === 'FIND_MATCH' && !isRemoving) {
+          setSelectedTypes((prevTypes) =>
+            prevTypes.filter((t) => t !== 'FIND_CORRECT'),
+          )
+        }
+
+        return newCharacteristics
+      })
+    },
+    [],
+  )
+
+  const handleTextChange = useCallback(
+    (e: ChangeEvent<HTMLTextAreaElement>) => {
+      setPlainText(e.target.value)
+      if (e.target.value) {
+        setFile(null)
+        setImagePreviewUrl(null)
       }
-
-      return newCharacteristics;
-    });
-  }, []);
-
-  const handleTextChange = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
-    setPlainText(e.target.value);
-    if (e.target.value) {
-      setFile(null);
-      setImagePreviewUrl(null);
-    }
-  }, []);
+    },
+    [],
+  )
 
   const handleFileUpload = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = e.target.files?.[0];
-    if (!uploadedFile) return;
+    const uploadedFile = e.target.files?.[0]
+    if (!uploadedFile) return
 
     // 지원하는 파일 형식 체크
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-    const typeValidation = validateFileType(uploadedFile, allowedTypes);
+    const allowedTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'application/pdf',
+    ]
+    const typeValidation = validateFileType(uploadedFile, allowedTypes)
 
     if (!typeValidation.isValid) {
-      alert(typeValidation.error);
-      e.target.value = '';
-      return;
+      alert(typeValidation.error)
+      e.target.value = ''
+      return
     }
 
-    setFile(uploadedFile);
-    setPlainText(''); // 파일 업로드 시 텍스트 초기화
-  }, []);
+    setFile(uploadedFile)
+    setPlainText('') // 파일 업로드 시 텍스트 초기화
+  }, [])
 
   const handleFileButtonClick = useCallback(() => {
-    fileInputRef.current?.click();
-  }, []);
+    fileInputRef.current?.click()
+  }, [])
 
   const handleFileDelete = useCallback(() => {
-    setFile(null);
-    setImagePreviewUrl(null);
+    setFile(null)
+    setImagePreviewUrl(null)
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = ''
     }
-  }, []);
+  }, [])
 
   const handleTooltipMouseEnter = useCallback(() => {
-    setShowTooltip(true);
+    setShowTooltip(true)
     if (tooltipTimerRef.current) {
-      clearTimeout(tooltipTimerRef.current);
+      clearTimeout(tooltipTimerRef.current)
     }
-  }, []);
+  }, [])
 
   const handleTooltipMouseLeave = useCallback(() => {
-    setShowTooltip(false);
-  }, []);
+    setShowTooltip(false)
+  }, [])
 
   const handleSubmit = useCallback(() => {
     // 객관식 문제가 선택되었는데 특성이 선택되지 않았으면 에러
-    if (selectedTypes.includes('FIND_CORRECT') && selectedCharacteristics.length === 0) {
-      alert('객관식 문제의 출제 특성을 선택해주세요.');
-      return;
+    if (
+      selectedTypes.includes('FIND_CORRECT') &&
+      selectedCharacteristics.length === 0
+    ) {
+      alert('객관식 문제의 출제 특성을 선택해주세요.')
+      return
     }
 
     // FIND_MATCH가 선택되어 있으면 FIND_CORRECT를 제외
-    let finalTypes = [...selectedTypes];
+    let finalTypes = [...selectedTypes]
     if (selectedCharacteristics.includes('FIND_MATCH')) {
-      finalTypes = finalTypes.filter((t) => t !== 'FIND_CORRECT');
+      finalTypes = finalTypes.filter((t) => t !== 'FIND_CORRECT')
     }
-    
+
     // FIND_CORRECT는 selectedTypes에서 제거하고, selectedCharacteristics만 사용
-    finalTypes = finalTypes.filter((t) => t !== 'FIND_CORRECT');
-    
+    finalTypes = finalTypes.filter((t) => t !== 'FIND_CORRECT')
+
     // 최종적으로는 selectedCharacteristics만 전달 (다른 타입들도 포함)
-    const allSelectedTypes = [...new Set([...finalTypes, ...selectedCharacteristics])];
+    const allSelectedTypes = [
+      ...new Set([...finalTypes, ...selectedCharacteristics]),
+    ]
 
     if (allSelectedTypes.length === 0) {
-      alert('최소 1개 이상의 문제 유형을 선택해주세요.');
-      return;
+      alert('최소 1개 이상의 문제 유형을 선택해주세요.')
+      return
     }
 
     // 파일과 텍스트 둘 다 없는 경우
     if (!file && !plainText.trim()) {
-      alert('문제 내용을 입력하거나 파일을 업로드해주세요.');
-      return;
+      alert('문제 내용을 입력하거나 파일을 업로드해주세요.')
+      return
     }
 
     // 파일이 있는 경우 파일로 전송
@@ -155,59 +179,56 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
       onSubmit({
         file,
         mockExamTypeList: allSelectedTypes,
-      });
+      })
     } else {
       // 텍스트만 있는 경우
       onSubmit({
         plainText: plainText.trim(),
         mockExamTypeList: allSelectedTypes,
-      });
+      })
     }
-  }, [selectedTypes, selectedCharacteristics, plainText, file, onSubmit]);
+  }, [selectedTypes, selectedCharacteristics, plainText, file, onSubmit])
 
   const handleClose = useCallback(() => {
-    setSelectedTypes([]);
-    setSelectedCharacteristics([]);
-    setPlainText('');
-    setFile(null);
-    setImagePreviewUrl(null);
-    setShowTooltip(false);
+    setSelectedTypes([])
+    setSelectedCharacteristics([])
+    setPlainText('')
+    setFile(null)
+    setImagePreviewUrl(null)
+    setShowTooltip(false)
     if (tooltipTimerRef.current) {
-      clearTimeout(tooltipTimerRef.current);
+      clearTimeout(tooltipTimerRef.current)
     }
-    onClose();
-  }, [onClose]);
+    onClose()
+  }, [onClose])
 
   // 이미지 파일 업로드 시 미리보기 URL 생성
   useEffect(() => {
     if (!file || !file.type.startsWith('image/')) {
-      setImagePreviewUrl(null);
-      return;
+      setImagePreviewUrl(null)
+      return
     }
 
-    const url = URL.createObjectURL(file);
-    setImagePreviewUrl(url);
+    const url = URL.createObjectURL(file)
+    setImagePreviewUrl(url)
 
     return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [file]);
+      URL.revokeObjectURL(url)
+    }
+  }, [file])
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center max-md:items-end">
       {/* Dim background - 반투명으로 메인 페이지 보이게 */}
-      <div
-        className="absolute inset-0 bg-black/50"
-        onClick={handleClose}
-      />
+      <div className="absolute inset-0 bg-black/50" onClick={handleClose} />
 
       {/* Modal - 모바일에서는 하단에서 올라오는 Bottom Sheet */}
-      <div 
+      <div
         className={`relative bg-white border border-[#ededed] rounded-[24px] max-md:rounded-t-[24px] max-md:rounded-b-none shadow-lg w-[520px] max-lg:w-[520px] max-md:w-full max-lg:mx-4 max-md:mx-0 max-h-[90vh] overflow-hidden flex flex-col ${
-          selectedTypes.includes('FIND_CORRECT') 
-            ? 'max-md:h-[758px]' 
+          selectedTypes.includes('FIND_CORRECT')
+            ? 'max-md:h-[758px]'
             : 'max-md:h-[670px]'
         }`}
       >
@@ -229,7 +250,9 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
 
         {/* Mobile header */}
         <div className="hidden max-md:flex items-center justify-center h-16 border-b border-[#ededed]">
-          <h2 className="text-lg font-semibold text-[#222222]">실전 모의고사 맞춤 설정</h2>
+          <h2 className="text-lg font-semibold text-[#222222]">
+            실전 모의고사 맞춤 설정
+          </h2>
         </div>
 
         {/* Content */}
@@ -257,10 +280,18 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
             <div className="flex flex-wrap gap-[5px] max-md:gap-1">
               {EXAM_TYPES.map((type) => {
                 // FIND_CORRECT의 경우 selectedTypes에 있거나 selectedCharacteristics에 객관식 관련 특성이 있으면 활성화
-                const isActive = type.id === 'FIND_CORRECT'
-                  ? selectedTypes.includes(type.id) || selectedCharacteristics.some(c => ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c))
-                  : selectedTypes.includes(type.id);
-                
+                const isActive =
+                  type.id === 'FIND_CORRECT'
+                    ? selectedTypes.includes(type.id) ||
+                      selectedCharacteristics.some((c) =>
+                        [
+                          'FIND_CORRECT',
+                          'FIND_INCORRECT',
+                          'FIND_MATCH',
+                        ].includes(c),
+                      )
+                    : selectedTypes.includes(type.id)
+
                 return (
                   <button
                     key={type.id}
@@ -273,14 +304,16 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                   >
                     {type.label}
                   </button>
-                );
+                )
               })}
             </div>
           </div>
 
           {/* Question 2: 출제 특성 선택 - 객관식 문제 선택 시에만 표시 */}
-          {(selectedTypes.includes('FIND_CORRECT') || 
-            selectedCharacteristics.some(c => ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c))) && (
+          {(selectedTypes.includes('FIND_CORRECT') ||
+            selectedCharacteristics.some((c) =>
+              ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c),
+            )) && (
             <div className="mb-6 max-lg:mb-6 max-md:mb-[30px]">
               <h3 className="text-base max-lg:text-lg max-md:text-base font-medium text-[#222222] mb-3 max-lg:mb-3 max-md:mb-3 leading-[1.4]">
                 문항을 어떤 특성으로 출제할까요?(복수 선택 가능)
@@ -315,13 +348,15 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                 onMouseLeave={handleTooltipMouseLeave}
                 aria-label="도움말"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                >
-                  <circle cx="8" cy="8" r="7" stroke="#999999" strokeWidth="1" fill="none" />
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <circle
+                    cx="8"
+                    cy="8"
+                    r="7"
+                    stroke="#999999"
+                    strokeWidth="1"
+                    fill="none"
+                  />
                   <text
                     x="8"
                     y="12"
@@ -335,7 +370,9 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                 </svg>
                 {showTooltip && (
                   <Tooltip className="w-[286px] max-lg:w-[310px] max-md:w-[286px]">
-                    <p className="mb-0">최소 2000자 이상의 내용을 작성해주시면</p>
+                    <p className="mb-0">
+                      최소 2000자 이상의 내용을 작성해주시면
+                    </p>
                     <p className="mb-0">중복 없이 문제를 만들 수 있습니다.</p>
                     <p>내용 또는 파일 업로드 둘 중 하나만 선택 가능합니다.</p>
                   </Tooltip>
@@ -385,7 +422,8 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                 </button>
               </div>
             ) : (
-              file && !imagePreviewUrl && (
+              file &&
+              !imagePreviewUrl && (
                 <div className="flex items-center gap-1">
                   <span className="text-sm text-gray-600 underline leading-[1.4]">
                     {file.name}
@@ -429,7 +467,8 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
                 </button>
               </div>
             ) : (
-              file && !imagePreviewUrl && (
+              file &&
+              !imagePreviewUrl && (
                 <div className="flex items-center gap-1 flex-1">
                   <span className="text-sm text-gray-600 underline leading-[1.4] truncate">
                     {file.name}
@@ -470,9 +509,9 @@ const MockExamSettingModal = ({ isOpen, onClose, onSubmit }: MockExamSettingModa
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-MockExamSettingModal.displayName = 'MockExamSettingModal';
+MockExamSettingModal.displayName = 'MockExamSettingModal'
 
-export default MockExamSettingModal;
+export default MockExamSettingModal

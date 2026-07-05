@@ -41,4 +41,4 @@ export const colors = {
   'bg-tertiary': '#efefef',
   'bg-footer': '#f2f2f2',
   'bg-home': '#f8f9fa',
-} as const;
+} as const

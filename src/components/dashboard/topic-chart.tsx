@@ -1,16 +1,16 @@
-import { useMemo } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import type { TopicSummary } from '@/api/dashboard';
+import { useMemo } from 'react'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
+import type { TopicSummary } from '@/api/dashboard'
 
 type Props = {
-  data: TopicSummary[];
-};
+  data: TopicSummary[]
+}
 
 export default function TopicChart({ data }: Props) {
   const currentMonth = useMemo(() => {
-    const now = new Date();
-    return `${now.getMonth() + 1}월`;
-  }, []);
+    const now = new Date()
+    return `${now.getMonth() + 1}월`
+  }, [])
 
   if (!data || data.length === 0) {
     return (
@@ -22,16 +22,20 @@ export default function TopicChart({ data }: Props) {
           <p className="text-[#777]">주제별 데이터가 없습니다.</p>
         </div>
       </div>
-    );
+    )
   }
 
   const chartData = data.slice(0, 6).map((item) => ({
-    name: item.topic.length > 5 ? item.topic.substring(0, 5) + '...' : item.topic,
+    name:
+      item.topic.length > 5 ? item.topic.substring(0, 5) + '...' : item.topic,
     fullName: item.topic,
-    value: item.solvedCount > 0 ? Math.round((item.correctCount / item.solvedCount) * 100) : 0,
-  }));
+    value:
+      item.solvedCount > 0
+        ? Math.round((item.correctCount / item.solvedCount) * 100)
+        : 0,
+  }))
 
-  const yAxisTicks = [0, 25, 50, 75, 100];
+  const yAxisTicks = [0, 25, 50, 75, 100]
 
   return (
     <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
@@ -53,7 +57,11 @@ export default function TopicChart({ data }: Props) {
               <stop offset="100%" stopColor="#ff6078" stopOpacity={0.8} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="0" stroke="#dedede" vertical={false} />
+          <CartesianGrid
+            strokeDasharray="0"
+            stroke="#dedede"
+            vertical={false}
+          />
           <XAxis
             dataKey="name"
             axisLine={{ stroke: '#222', strokeWidth: 1 }}
@@ -88,8 +96,13 @@ export default function TopicChart({ data }: Props) {
               color: '#222',
               fontSize: '14px',
             }}
-            formatter={(value: number | undefined) => [`${value ?? 0}%`, '정답률']}
-            labelFormatter={(label) => chartData.find((item) => item.name === label)?.fullName || label}
+            formatter={(value: number | undefined) => [
+              `${value ?? 0}%`,
+              '정답률',
+            ]}
+            labelFormatter={(label) =>
+              chartData.find((item) => item.name === label)?.fullName || label
+            }
           />
           <Bar
             dataKey="value"
@@ -106,7 +119,7 @@ export default function TopicChart({ data }: Props) {
         </p>
       </div>
     </div>
-  );
+  )
 }
 
-TopicChart.displayName = 'TopicChart';
+TopicChart.displayName = 'TopicChart'

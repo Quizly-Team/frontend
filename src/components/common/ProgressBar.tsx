@@ -1,27 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 
 type ProgressBarProps = {
-  current: number;
-  total: number;
-  className?: string;
-  isCompleted?: boolean;
-};
+  current: number
+  total: number
+  className?: string
+  isCompleted?: boolean
+}
 
-const ProgressBar = ({ current, total, className = '', isCompleted = false }: ProgressBarProps) => {
-  const percentage = isCompleted ? 100 : Math.round((current / total) * 100);
-  const progressWidth = `${percentage}%`;
-  const [isMobile, setIsMobile] = useState(false);
+const ProgressBar = ({
+  current,
+  total,
+  className = '',
+  isCompleted = false,
+}: ProgressBarProps) => {
+  const percentage = isCompleted ? 100 : Math.round((current / total) * 100)
+  const progressWidth = `${percentage}%`
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+      setIsMobile(window.innerWidth < 768)
+    }
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
 
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <div className={`relative ${className}`}>
@@ -63,9 +68,9 @@ const ProgressBar = ({ current, total, className = '', isCompleted = false }: Pr
         {percentage}%
       </div>
     </div>
-  );
-};
+  )
+}
 
-ProgressBar.displayName = 'ProgressBar';
+ProgressBar.displayName = 'ProgressBar'
 
-export default ProgressBar;
+export default ProgressBar

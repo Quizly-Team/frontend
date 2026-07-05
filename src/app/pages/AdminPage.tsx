@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Header, Footer, Button } from '@/components';
-import { authUtils } from '@/lib/auth';
-import { getUserInfo } from '@/api/account';
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getUserInfo } from '@/api/account'
 import {
   answerAdminInquiry,
   getAdminInquiries,
   runAggregateSummaryBatch,
   type AdminInquiryRaw,
-} from '@/api/admin';
+} from '@/api/admin'
 import {
   getFaqs,
   flattenFaqGroups,
@@ -16,16 +14,18 @@ import {
   FAQ_CATEGORIES,
   type FaqCategory,
   type FlatFaqItem,
-} from '@/api/faq';
-import FaqCreateModal from '@/components/modal/FaqCreateModal';
+} from '@/api/faq'
+import { Header, Footer, Button } from '@/components'
+import FaqCreateModal from '@/components/modal/FaqCreateModal'
+import { authUtils } from '@/lib/auth'
 
-type AdminSectionKey = 'qna' | 'faq' | 'batch';
+type AdminSectionKey = 'qna' | 'faq' | 'batch'
 
 type AdminSection = {
-  key: AdminSectionKey;
-  title: string;
-  description: string;
-};
+  key: AdminSectionKey
+  title: string
+  description: string
+}
 
 const ADMIN_SECTIONS: AdminSection[] = [
   {
@@ -43,62 +43,81 @@ const ADMIN_SECTIONS: AdminSection[] = [
     title: '배치 관리',
     description: '일별 유저 통계 배치를 수동으로 실행합니다.',
   },
-];
+]
 
-type QnaStatus = '미답변' | '답변완료' | '보류';
+type QnaStatus = '미답변' | '답변완료' | '보류'
 type QnaItem = {
-  id: number;
-  title: string;
-  writer: string;
-  createdAt: string;
-  status: QnaStatus;
-  content: string;
-  answer: string;
-};
+  id: number
+  title: string
+  writer: string
+  createdAt: string
+  status: QnaStatus
+  content: string
+  answer: string
+}
 
-type QnaStatusFilter = 'all' | 'WAITING' | 'COMPLETED';
+type QnaStatusFilter = 'all' | 'WAITING' | 'COMPLETED'
 
-const getPageNumbers = (currentPage: number, totalPages: number): (number | '...')[] => {
+const getPageNumbers = (
+  currentPage: number,
+  totalPages: number,
+): (number | '...')[] => {
   if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+    return Array.from({ length: totalPages }, (_, i) => i + 1)
   }
   if (currentPage <= 4) {
-    return [1, 2, 3, 4, 5, '...', totalPages];
+    return [1, 2, 3, 4, 5, '...', totalPages]
   }
   if (currentPage >= totalPages - 3) {
-    return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    return [
+      1,
+      '...',
+      totalPages - 4,
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ]
   }
-  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
-};
+  return [
+    1,
+    '...',
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    '...',
+    totalPages,
+  ]
+}
 
 const DEFAULT_REPLY_TEMPLATE = `안녕하세요.
 항상 퀴즐리 서비스를 이용해주셔서 감사합니다.
 
 [문의 내용에 대한 답변을 작성해주세요]
 
-또 다른 문의 사항이 있으면 언제든지 문의해주세요.`;
+또 다른 문의 사항이 있으면 언제든지 문의해주세요.`
 
 const toDisplayDate = (value?: string): string => {
   if (!value) {
-    return '-';
+    return '-'
   }
 
-  const parsed = new Date(value);
+  const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) {
-    return value.slice(0, 10);
+    return value.slice(0, 10)
   }
 
-  return parsed.toISOString().slice(0, 10);
-};
+  return parsed.toISOString().slice(0, 10)
+}
 
 const toQnaStatus = (rawStatus?: string, answer?: string): QnaStatus => {
-  const normalized = (rawStatus || '').toUpperCase();
+  const normalized = (rawStatus || '').toUpperCase()
   if (
     normalized.includes('HOLD') ||
     normalized.includes('PENDING_REVIEW') ||
     normalized.includes('PENDING')
   ) {
-    return '보류';
+    return '보류'
   }
   if (
     normalized.includes('ANSWER') ||
@@ -106,50 +125,50 @@ const toQnaStatus = (rawStatus?: string, answer?: string): QnaStatus => {
     normalized.includes('DONE') ||
     normalized.includes('REPLIED')
   ) {
-    return '답변완료';
+    return '답변완료'
   }
   if (normalized.includes('WAIT') || normalized.includes('NEW')) {
-    return '미답변';
+    return '미답변'
   }
   if (answer && answer.trim() !== '') {
-    return '답변완료';
+    return '답변완료'
   }
-  return '미답변';
-};
+  return '미답변'
+}
 
 const toNumberId = (value: unknown): number | null => {
   if (typeof value === 'number' && Number.isFinite(value)) {
-    return value;
+    return value
   }
   if (typeof value === 'string') {
-    const parsed = Number(value);
+    const parsed = Number(value)
     if (Number.isFinite(parsed)) {
-      return parsed;
+      return parsed
     }
   }
-  return null;
-};
+  return null
+}
 
 const pickFirstText = (...candidates: Array<unknown>): string | null => {
   for (const candidate of candidates) {
     if (typeof candidate === 'string' && candidate.trim() !== '') {
-      return candidate.trim();
+      return candidate.trim()
     }
   }
-  return null;
-};
+  return null
+}
 
 const mapInquiryToQnaItem = (item: AdminInquiryRaw): QnaItem | null => {
   const id =
     toNumberId(item.id) ??
     toNumberId(item.inquiryId) ??
-    toNumberId(item.inquiryID);
+    toNumberId(item.inquiryID)
 
   if (id === null) {
-    return null;
+    return null
   }
 
-  const answer = item.reply ?? item.answer ?? item.answerContent ?? '';
+  const answer = item.reply ?? item.answer ?? item.answerContent ?? ''
   const writer =
     pickFirstText(
       item.writerName,
@@ -165,8 +184,8 @@ const mapInquiryToQnaItem = (item: AdminInquiryRaw): QnaItem | null => {
       item.name,
       item.writer,
       item.memberNickname,
-      item.memberName
-    ) ?? '사용자';
+      item.memberName,
+    ) ?? '사용자'
 
   return {
     id,
@@ -176,218 +195,257 @@ const mapInquiryToQnaItem = (item: AdminInquiryRaw): QnaItem | null => {
     status: toQnaStatus(item.status ?? item.inquiryStatus, answer),
     content: item.content ?? item.inquiryContent ?? item.question ?? '',
     answer,
-  };
-};
+  }
+}
 
 const getInitialReplyDraft = (inquiry: QnaItem | null): string => {
   if (!inquiry) {
-    return '';
+    return ''
   }
 
   if (inquiry.answer.trim() !== '') {
-    return inquiry.answer;
+    return inquiry.answer
   }
 
-  return DEFAULT_REPLY_TEMPLATE;
-};
+  return DEFAULT_REPLY_TEMPLATE
+}
 
 const AdminPage = () => {
-  const navigate = useNavigate();
-  const [isChecking, setIsChecking] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState<AdminSectionKey>('qna');
-  const [qnaList, setQnaList] = useState<QnaItem[]>([]);
-  const [isQnaLoading, setIsQnaLoading] = useState(false);
-  const [qnaError, setQnaError] = useState<string | null>(null);
-  const [selectedInquiryId, setSelectedInquiryId] = useState<number | null>(null);
-  const [answerDraft, setAnswerDraft] = useState('');
-  const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false);
-  const [qnaStatusFilter, setQnaStatusFilter] = useState<QnaStatusFilter>('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalElements, setTotalElements] = useState(0);
-  const [faqList, setFaqList] = useState<FlatFaqItem[]>([]);
-  const [isFaqLoading, setIsFaqLoading] = useState(false);
-  const [faqError, setFaqError] = useState<string | null>(null);
-  const [faqCategoryFilter, setFaqCategoryFilter] = useState<FaqCategory | 'all'>('all');
-  const [showFaqCreateModal, setShowFaqCreateModal] = useState(false);
-  const [isDeletingFaq, setIsDeletingFaq] = useState<number | null>(null);
-  const [expandedFaqId, setExpandedFaqId] = useState<number | null>(null);
-  const [batchTargetDate, setBatchTargetDate] = useState('');
-  const [isBatchRunning, setIsBatchRunning] = useState(false);
-  const [batchResult, setBatchResult] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const navigate = useNavigate()
+  const [isChecking, setIsChecking] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [activeSection, setActiveSection] = useState<AdminSectionKey>('qna')
+  const [qnaList, setQnaList] = useState<QnaItem[]>([])
+  const [isQnaLoading, setIsQnaLoading] = useState(false)
+  const [qnaError, setQnaError] = useState<string | null>(null)
+  const [selectedInquiryId, setSelectedInquiryId] = useState<number | null>(
+    null,
+  )
+  const [answerDraft, setAnswerDraft] = useState('')
+  const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false)
+  const [qnaStatusFilter, setQnaStatusFilter] = useState<QnaStatusFilter>('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [totalElements, setTotalElements] = useState(0)
+  const [faqList, setFaqList] = useState<FlatFaqItem[]>([])
+  const [isFaqLoading, setIsFaqLoading] = useState(false)
+  const [faqError, setFaqError] = useState<string | null>(null)
+  const [faqCategoryFilter, setFaqCategoryFilter] = useState<
+    FaqCategory | 'all'
+  >('all')
+  const [showFaqCreateModal, setShowFaqCreateModal] = useState(false)
+  const [isDeletingFaq, setIsDeletingFaq] = useState<number | null>(null)
+  const [expandedFaqId, setExpandedFaqId] = useState<number | null>(null)
+  const [batchTargetDate, setBatchTargetDate] = useState('')
+  const [isBatchRunning, setIsBatchRunning] = useState(false)
+  const [batchResult, setBatchResult] = useState<{
+    type: 'success' | 'error'
+    message: string
+  } | null>(null)
 
   const fetchFaqs = async () => {
     try {
-      setIsFaqLoading(true);
-      setFaqError(null);
-      const response = await getFaqs();
-      setFaqList(flattenFaqGroups(response));
+      setIsFaqLoading(true)
+      setFaqError(null)
+      const response = await getFaqs()
+      setFaqList(flattenFaqGroups(response))
     } catch (err) {
-      setFaqError(err instanceof Error ? err.message : 'FAQ 조회에 실패했습니다.');
+      setFaqError(
+        err instanceof Error ? err.message : 'FAQ 조회에 실패했습니다.',
+      )
     } finally {
-      setIsFaqLoading(false);
+      setIsFaqLoading(false)
     }
-  };
+  }
 
   const handleDeleteFaq = async (faqId: number) => {
-    if (!confirm('해당 FAQ를 삭제하시겠습니까?')) return;
+    if (!confirm('해당 FAQ를 삭제하시겠습니까?')) return
     try {
-      setIsDeletingFaq(faqId);
-      await deleteAdminFaq(faqId);
-      await fetchFaqs();
+      setIsDeletingFaq(faqId)
+      await deleteAdminFaq(faqId)
+      await fetchFaqs()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'FAQ 삭제에 실패했습니다.');
+      alert(err instanceof Error ? err.message : 'FAQ 삭제에 실패했습니다.')
     } finally {
-      setIsDeletingFaq(null);
+      setIsDeletingFaq(null)
     }
-  };
+  }
 
-  const fetchInquiries = async (page = currentPage, status = qnaStatusFilter) => {
+  const fetchInquiries = async (
+    page = currentPage,
+    status = qnaStatusFilter,
+  ) => {
     try {
-      setIsQnaLoading(true);
-      setQnaError(null);
+      setIsQnaLoading(true)
+      setQnaError(null)
       const { inquiryList, pagination } = await getAdminInquiries({
         page,
         status: status === 'all' ? undefined : status,
-      });
+      })
       const mapped = inquiryList
         .map(mapInquiryToQnaItem)
-        .filter((item): item is QnaItem => item !== null);
+        .filter((item): item is QnaItem => item !== null)
 
-      setQnaList(mapped);
-      setTotalPages(pagination.totalPages);
-      setTotalElements(pagination.totalElements);
-      setCurrentPage(pagination.page);
+      setQnaList(mapped)
+      setTotalPages(pagination.totalPages)
+      setTotalElements(pagination.totalElements)
+      setCurrentPage(pagination.page)
       setSelectedInquiryId((prevId) => {
         if (prevId && mapped.some((item) => item.id === prevId)) {
-          return prevId;
+          return prevId
         }
-        return mapped.length > 0 ? mapped[0].id : null;
-      });
+        return mapped.length > 0 ? mapped[0].id : null
+      })
     } catch (err) {
-      setQnaError(err instanceof Error ? err.message : '문의 목록 조회에 실패했습니다.');
+      setQnaError(
+        err instanceof Error ? err.message : '문의 목록 조회에 실패했습니다.',
+      )
     } finally {
-      setIsQnaLoading(false);
+      setIsQnaLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
     const verifyAdmin = async () => {
       if (!authUtils.isAuthenticated()) {
-        navigate('/login', { replace: true });
-        return;
+        navigate('/login', { replace: true })
+        return
       }
 
       try {
-        const userInfo = await getUserInfo();
-        const userRole = (userInfo as { role?: string }).role;
+        const userInfo = await getUserInfo()
+        const userRole = (userInfo as { role?: string }).role
         if (userRole !== 'ADMIN') {
-          alert('관리자 권한이 필요합니다.');
-          navigate('/analytics', { replace: true });
-          return;
+          alert('관리자 권한이 필요합니다.')
+          navigate('/analytics', { replace: true })
+          return
         }
 
-        await Promise.all([fetchInquiries(), fetchFaqs()]);
+        await Promise.all([fetchInquiries(), fetchFaqs()])
       } catch (err) {
-        setError(err instanceof Error ? err.message : '관리자 정보를 확인할 수 없습니다.');
+        setError(
+          err instanceof Error
+            ? err.message
+            : '관리자 정보를 확인할 수 없습니다.',
+        )
       } finally {
-        setIsChecking(false);
+        setIsChecking(false)
       }
-    };
+    }
 
-    verifyAdmin();
-  }, [navigate]);
+    verifyAdmin()
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 마운트 시 1회만 관리자 검증 및 초기 데이터 로드를 실행하려는 의도. fetchInquiries를 deps에 넣으면 렌더마다 재발화되어 동작이 달라짐
+  }, [navigate])
 
-  const currentSection = ADMIN_SECTIONS.find(
-    (section) => section.key === activeSection
-  ) ?? ADMIN_SECTIONS[0];
-  const selectedInquiry = qnaList.find((item) => item.id === selectedInquiryId) ?? null;
-  const unansweredCount = qnaList.filter((item) => item.status === '미답변').length;
-  const answeredCount = qnaList.filter((item) => item.status === '답변완료').length;
+  const currentSection =
+    ADMIN_SECTIONS.find((section) => section.key === activeSection) ??
+    ADMIN_SECTIONS[0]
+  const selectedInquiry =
+    qnaList.find((item) => item.id === selectedInquiryId) ?? null
+  const unansweredCount = qnaList.filter(
+    (item) => item.status === '미답변',
+  ).length
+  const answeredCount = qnaList.filter(
+    (item) => item.status === '답변완료',
+  ).length
   const pageNumbers = useMemo(
     () => getPageNumbers(currentPage, totalPages),
-    [currentPage, totalPages]
-  );
-  const displayedFaqList = faqCategoryFilter === 'all'
-    ? faqList
-    : faqList.filter((item) => item.category === faqCategoryFilter);
-  const faqCategoryCounts = (Object.keys(FAQ_CATEGORIES) as FaqCategory[]).reduce(
+    [currentPage, totalPages],
+  )
+  const displayedFaqList =
+    faqCategoryFilter === 'all'
+      ? faqList
+      : faqList.filter((item) => item.category === faqCategoryFilter)
+  const faqCategoryCounts = (
+    Object.keys(FAQ_CATEGORIES) as FaqCategory[]
+  ).reduce(
     (acc, key) => {
-      acc[key] = faqList.filter((item) => item.category === key).length;
-      return acc;
+      acc[key] = faqList.filter((item) => item.category === key).length
+      return acc
     },
-    {} as Record<FaqCategory, number>
-  );
+    {} as Record<FaqCategory, number>,
+  )
 
   const handleSelectInquiry = (item: QnaItem) => {
-    setSelectedInquiryId(item.id);
-    setAnswerDraft(getInitialReplyDraft(item));
-  };
+    setSelectedInquiryId(item.id)
+    setAnswerDraft(getInitialReplyDraft(item))
+  }
 
   useEffect(() => {
     if (activeSection !== 'qna') {
-      return;
+      return
     }
 
     if (qnaList.length === 0) {
-      setSelectedInquiryId(null);
-      return;
+      setSelectedInquiryId(null)
+      return
     }
 
-    if (!selectedInquiryId || !qnaList.some((item) => item.id === selectedInquiryId)) {
-      setSelectedInquiryId(qnaList[0].id);
+    if (
+      !selectedInquiryId ||
+      !qnaList.some((item) => item.id === selectedInquiryId)
+    ) {
+      setSelectedInquiryId(qnaList[0].id)
     }
-  }, [activeSection, qnaList, selectedInquiryId]);
+  }, [activeSection, qnaList, selectedInquiryId])
 
   useEffect(() => {
-    setAnswerDraft(getInitialReplyDraft(selectedInquiry));
-  }, [selectedInquiryId, selectedInquiry?.answer]);
+    setAnswerDraft(getInitialReplyDraft(selectedInquiry))
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 선택 문의 id 또는 answer가 바뀔 때만 초안을 재설정하려는 의도. selectedInquiry 객체 전체를 deps에 넣으면 참조 변동으로 발화 시점이 달라져 동작이 바뀜
+  }, [selectedInquiryId, selectedInquiry?.answer])
 
   const handleSubmitAnswer = async () => {
     if (!selectedInquiryId) {
-      alert('답변할 문의를 선택해주세요.');
-      return;
+      alert('답변할 문의를 선택해주세요.')
+      return
     }
     if (!answerDraft.trim()) {
-      alert('답변 내용을 입력해주세요.');
-      return;
+      alert('답변 내용을 입력해주세요.')
+      return
     }
 
     try {
-      setIsSubmittingAnswer(true);
-      await answerAdminInquiry(selectedInquiryId, { reply: answerDraft.trim() });
-      await fetchInquiries();
-      alert('답변이 등록되었습니다.');
+      setIsSubmittingAnswer(true)
+      await answerAdminInquiry(selectedInquiryId, { reply: answerDraft.trim() })
+      await fetchInquiries()
+      alert('답변이 등록되었습니다.')
     } catch (err) {
-      alert(err instanceof Error ? err.message : '답변 등록에 실패했습니다.');
+      alert(err instanceof Error ? err.message : '답변 등록에 실패했습니다.')
     } finally {
-      setIsSubmittingAnswer(false);
+      setIsSubmittingAnswer(false)
     }
-  };
+  }
 
   const handleRunBatch = async () => {
     if (!batchTargetDate) {
-      alert('집계 대상 날짜를 선택해주세요.');
-      return;
+      alert('집계 대상 날짜를 선택해주세요.')
+      return
     }
-    if (!confirm(`${batchTargetDate} 날짜의 통계 배치를 실행하시겠습니까?`)) return;
+    if (!confirm(`${batchTargetDate} 날짜의 통계 배치를 실행하시겠습니까?`))
+      return
 
     try {
-      setIsBatchRunning(true);
-      setBatchResult(null);
-      await runAggregateSummaryBatch(batchTargetDate);
-      setBatchResult({ type: 'success', message: `${batchTargetDate} 배치가 정상적으로 실행 요청되었습니다.` });
+      setIsBatchRunning(true)
+      setBatchResult(null)
+      await runAggregateSummaryBatch(batchTargetDate)
+      setBatchResult({
+        type: 'success',
+        message: `${batchTargetDate} 배치가 정상적으로 실행 요청되었습니다.`,
+      })
     } catch (err) {
-      setBatchResult({ type: 'error', message: err instanceof Error ? err.message : '배치 실행에 실패했습니다.' });
+      setBatchResult({
+        type: 'error',
+        message:
+          err instanceof Error ? err.message : '배치 실행에 실패했습니다.',
+      })
     } finally {
-      setIsBatchRunning(false);
+      setIsBatchRunning(false)
     }
-  };
+  }
 
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const maxDate = yesterday.toISOString().slice(0, 10);
+  const yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+  const maxDate = yesterday.toISOString().slice(0, 10)
 
   return (
     <div className="min-h-screen w-full bg-bg-home flex flex-col">
@@ -419,7 +477,8 @@ const AdminPage = () => {
                       관리자 운영센터
                     </h1>
                     <p className="text-[15px] md:text-[16px] text-gray-600 mt-2">
-                      사용자 문의 답변, FAQ 등록/수정 등 운영 업무를 처리하는 공간입니다.
+                      사용자 문의 답변, FAQ 등록/수정 등 운영 업무를 처리하는
+                      공간입니다.
                     </p>
                   </div>
                   <Button
@@ -435,7 +494,9 @@ const AdminPage = () => {
 
               <section className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-5">
                 <aside className="bg-white rounded-2xl border border-gray-300 p-4">
-                  <h2 className="text-[18px] font-semibold text-gray-900 mb-3">관리 메뉴</h2>
+                  <h2 className="text-[18px] font-semibold text-gray-900 mb-3">
+                    관리 메뉴
+                  </h2>
                   <div className="flex flex-col gap-2">
                     {ADMIN_SECTIONS.map((section) => (
                       <button
@@ -451,11 +512,17 @@ const AdminPage = () => {
                         <div className="flex items-center justify-between">
                           <span>{section.title}</span>
                           {section.key === 'qna' ? (
-                            <span className="text-[12px] text-gray-500">{unansweredCount} 미답변</span>
+                            <span className="text-[12px] text-gray-500">
+                              {unansweredCount} 미답변
+                            </span>
                           ) : section.key === 'faq' ? (
-                            <span className="text-[12px] text-gray-500">{faqList.length}개 등록</span>
+                            <span className="text-[12px] text-gray-500">
+                              {faqList.length}개 등록
+                            </span>
                           ) : (
-                            <span className="text-[12px] text-gray-500">배치 실행</span>
+                            <span className="text-[12px] text-gray-500">
+                              배치 실행
+                            </span>
                           )}
                         </div>
                       </button>
@@ -506,44 +573,73 @@ const AdminPage = () => {
                   </div>
 
                   {activeSection !== 'batch' && (
-                  <div className={`mt-6 grid grid-cols-2 gap-3 ${activeSection === 'qna' ? 'md:grid-cols-3' : 'md:grid-cols-5'}`}>
-                    {activeSection === 'qna' ? (
-                      <>
-                        <div className="rounded-xl border border-gray-200 p-4">
-                          <p className="text-[13px] text-gray-500">전체 문의</p>
-                          <p className="text-[24px] font-bold text-gray-900 mt-1">{totalElements}건</p>
-                        </div>
-                        <div className="rounded-xl border border-gray-200 p-4">
-                          <p className="text-[13px] text-gray-500">미답변</p>
-                          <p className="text-[24px] font-bold text-red-500 mt-1">{unansweredCount}건</p>
-                        </div>
-                        <div className="rounded-xl border border-gray-200 p-4">
-                          <p className="text-[13px] text-gray-500">답변완료</p>
-                          <p className="text-[24px] font-bold text-primary mt-1">{answeredCount}건</p>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="rounded-xl border border-gray-200 p-4">
-                          <p className="text-[13px] text-gray-500">전체 FAQ</p>
-                          <p className="text-[24px] font-bold text-gray-900 mt-1">{faqList.length}개</p>
-                        </div>
-                        {(Object.entries(FAQ_CATEGORIES) as [FaqCategory, string][]).map(([key, label]) => (
-                          <div key={key} className="rounded-xl border border-gray-200 p-4">
-                            <p className="text-[13px] text-gray-500">{label}</p>
-                            <p className="text-[24px] font-bold text-primary mt-1">{faqCategoryCounts[key]}개</p>
+                    <div
+                      className={`mt-6 grid grid-cols-2 gap-3 ${activeSection === 'qna' ? 'md:grid-cols-3' : 'md:grid-cols-5'}`}
+                    >
+                      {activeSection === 'qna' ? (
+                        <>
+                          <div className="rounded-xl border border-gray-200 p-4">
+                            <p className="text-[13px] text-gray-500">
+                              전체 문의
+                            </p>
+                            <p className="text-[24px] font-bold text-gray-900 mt-1">
+                              {totalElements}건
+                            </p>
                           </div>
-                        ))}
-                      </>
-                    )}
-                  </div>
+                          <div className="rounded-xl border border-gray-200 p-4">
+                            <p className="text-[13px] text-gray-500">미답변</p>
+                            <p className="text-[24px] font-bold text-red-500 mt-1">
+                              {unansweredCount}건
+                            </p>
+                          </div>
+                          <div className="rounded-xl border border-gray-200 p-4">
+                            <p className="text-[13px] text-gray-500">
+                              답변완료
+                            </p>
+                            <p className="text-[24px] font-bold text-primary mt-1">
+                              {answeredCount}건
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="rounded-xl border border-gray-200 p-4">
+                            <p className="text-[13px] text-gray-500">
+                              전체 FAQ
+                            </p>
+                            <p className="text-[24px] font-bold text-gray-900 mt-1">
+                              {faqList.length}개
+                            </p>
+                          </div>
+                          {(
+                            Object.entries(FAQ_CATEGORIES) as [
+                              FaqCategory,
+                              string,
+                            ][]
+                          ).map(([key, label]) => (
+                            <div
+                              key={key}
+                              className="rounded-xl border border-gray-200 p-4"
+                            >
+                              <p className="text-[13px] text-gray-500">
+                                {label}
+                              </p>
+                              <p className="text-[24px] font-bold text-primary mt-1">
+                                {faqCategoryCounts[key]}개
+                              </p>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
                   )}
 
                   {activeSection === 'batch' ? (
                     <>
                       <div className="mt-6 rounded-xl border border-gray-200 p-4">
                         <p className="text-[15px] text-gray-700">
-                          전날 유저 통계를 집계하는 배치가 실패한 경우, 특정 날짜를 지정하여 수동으로 배치를 실행할 수 있습니다.
+                          전날 유저 통계를 집계하는 배치가 실패한 경우, 특정
+                          날짜를 지정하여 수동으로 배치를 실행할 수 있습니다.
                         </p>
                         <p className="text-[13px] text-gray-500 mt-2">
                           당일 포함 미래 날짜는 선택할 수 없습니다.
@@ -551,7 +647,9 @@ const AdminPage = () => {
                       </div>
 
                       <div className="mt-4 rounded-xl border border-gray-200 p-4">
-                        <p className="text-[16px] font-semibold text-gray-900 mb-3">집계 대상 날짜 선택</p>
+                        <p className="text-[16px] font-semibold text-gray-900 mb-3">
+                          집계 대상 날짜 선택
+                        </p>
                         <input
                           type="date"
                           value={batchTargetDate}
@@ -569,8 +667,14 @@ const AdminPage = () => {
                               : 'border-red-200 bg-[#fef2f2] text-red-800'
                           }`}
                         >
-                          <p className="text-[14px] font-medium">{batchResult.type === 'success' ? '실행 성공' : '실행 실패'}</p>
-                          <p className="text-[13px] mt-1">{batchResult.message}</p>
+                          <p className="text-[14px] font-medium">
+                            {batchResult.type === 'success'
+                              ? '실행 성공'
+                              : '실행 실패'}
+                          </p>
+                          <p className="text-[13px] mt-1">
+                            {batchResult.message}
+                          </p>
                         </div>
                       )}
                     </>
@@ -580,9 +684,9 @@ const AdminPage = () => {
                         <button
                           type="button"
                           onClick={() => {
-                            setQnaStatusFilter('all');
-                            setCurrentPage(1);
-                            fetchInquiries(1, 'all');
+                            setQnaStatusFilter('all')
+                            setCurrentPage(1)
+                            fetchInquiries(1, 'all')
                           }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             qnaStatusFilter === 'all'
@@ -595,9 +699,9 @@ const AdminPage = () => {
                         <button
                           type="button"
                           onClick={() => {
-                            setQnaStatusFilter('WAITING');
-                            setCurrentPage(1);
-                            fetchInquiries(1, 'WAITING');
+                            setQnaStatusFilter('WAITING')
+                            setCurrentPage(1)
+                            fetchInquiries(1, 'WAITING')
                           }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             qnaStatusFilter === 'WAITING'
@@ -610,9 +714,9 @@ const AdminPage = () => {
                         <button
                           type="button"
                           onClick={() => {
-                            setQnaStatusFilter('COMPLETED');
-                            setCurrentPage(1);
-                            fetchInquiries(1, 'COMPLETED');
+                            setQnaStatusFilter('COMPLETED')
+                            setCurrentPage(1)
+                            fetchInquiries(1, 'COMPLETED')
                           }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             qnaStatusFilter === 'COMPLETED'
@@ -655,11 +759,15 @@ const AdminPage = () => {
                               type="button"
                               onClick={() => handleSelectInquiry(item)}
                               className={`w-full grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] px-4 py-3 text-[14px] text-gray-800 border-t border-gray-100 text-left ${
-                                selectedInquiryId === item.id ? 'bg-[#f9fcf8]' : 'bg-white hover:bg-gray-50'
+                                selectedInquiryId === item.id
+                                  ? 'bg-[#f9fcf8]'
+                                  : 'bg-white hover:bg-gray-50'
                               }`}
                             >
                               <span>{item.id}</span>
-                              <span className="truncate pr-2">{item.title}</span>
+                              <span className="truncate pr-2">
+                                {item.title}
+                              </span>
                               <span>{item.writer}</span>
                               <span>{item.createdAt}</span>
                               <span
@@ -683,16 +791,27 @@ const AdminPage = () => {
                           <button
                             type="button"
                             onClick={() => {
-                              const prevPage = Math.max(1, currentPage - 1);
-                              setCurrentPage(prevPage);
-                              fetchInquiries(prevPage);
+                              const prevPage = Math.max(1, currentPage - 1)
+                              setCurrentPage(prevPage)
+                              fetchInquiries(prevPage)
                             }}
                             disabled={currentPage === 1}
                             className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                             aria-label="이전 페이지"
                           >
-                            <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-                              <path d="M6 1L1 6L6 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <svg
+                              width="7"
+                              height="12"
+                              viewBox="0 0 7 12"
+                              fill="none"
+                            >
+                              <path
+                                d="M6 1L1 6L6 11"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                             </svg>
                           </button>
 
@@ -709,8 +828,8 @@ const AdminPage = () => {
                                 key={page}
                                 type="button"
                                 onClick={() => {
-                                  setCurrentPage(page);
-                                  fetchInquiries(page);
+                                  setCurrentPage(page)
+                                  fetchInquiries(page)
                                 }}
                                 className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-[14px] transition-colors ${
                                   page === currentPage
@@ -720,33 +839,52 @@ const AdminPage = () => {
                               >
                                 {page}
                               </button>
-                            )
+                            ),
                           )}
 
                           <button
                             type="button"
                             onClick={() => {
-                              const nextPage = Math.min(totalPages, currentPage + 1);
-                              setCurrentPage(nextPage);
-                              fetchInquiries(nextPage);
+                              const nextPage = Math.min(
+                                totalPages,
+                                currentPage + 1,
+                              )
+                              setCurrentPage(nextPage)
+                              fetchInquiries(nextPage)
                             }}
                             disabled={currentPage === totalPages}
                             className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                             aria-label="다음 페이지"
                           >
-                            <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-                              <path d="M1 1L6 6L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <svg
+                              width="7"
+                              height="12"
+                              viewBox="0 0 7 12"
+                              fill="none"
+                            >
+                              <path
+                                d="M1 1L6 6L1 11"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                             </svg>
                           </button>
                         </div>
                       )}
 
                       <div className="mt-4 rounded-xl border border-gray-200 p-4">
-                        <p className="text-[16px] font-semibold text-gray-900 mb-3">답변 작성</p>
+                        <p className="text-[16px] font-semibold text-gray-900 mb-3">
+                          답변 작성
+                        </p>
                         {selectedInquiry ? (
                           <>
                             <p className="text-[14px] text-gray-700 mb-2">
-                              선택 문의: <span className="font-medium">{selectedInquiry.title}</span>
+                              선택 문의:{' '}
+                              <span className="font-medium">
+                                {selectedInquiry.title}
+                              </span>
                             </p>
                             {selectedInquiry.content ? (
                               <p className="text-[13px] text-gray-500 mb-3">
@@ -781,7 +919,12 @@ const AdminPage = () => {
                         >
                           전체
                         </button>
-                        {(Object.entries(FAQ_CATEGORIES) as [FaqCategory, string][]).map(([key, label]) => (
+                        {(
+                          Object.entries(FAQ_CATEGORIES) as [
+                            FaqCategory,
+                            string,
+                          ][]
+                        ).map(([key, label]) => (
                           <button
                             key={key}
                             type="button"
@@ -820,23 +963,34 @@ const AdminPage = () => {
                           </div>
                         ) : (
                           displayedFaqList.map((item, index) => (
-                            <div key={item.id} className="border-t border-gray-100">
+                            <div
+                              key={item.id}
+                              className="border-t border-gray-100"
+                            >
                               <button
                                 type="button"
-                                onClick={() => setExpandedFaqId(expandedFaqId === item.id ? null : item.id)}
+                                onClick={() =>
+                                  setExpandedFaqId(
+                                    expandedFaqId === item.id ? null : item.id,
+                                  )
+                                }
                                 className="w-full grid grid-cols-[60px_120px_minmax(0,1fr)_80px] px-4 py-3 text-[14px] text-gray-800 text-left hover:bg-gray-50"
                               >
                                 <span>{index + 1}</span>
                                 <span>{item.categoryDescription}</span>
-                                <span className="truncate pr-2">{item.question}</span>
+                                <span className="truncate pr-2">
+                                  {item.question}
+                                </span>
                                 <span
                                   className="text-[13px] text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
                                   onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteFaq(item.id);
+                                    e.stopPropagation()
+                                    handleDeleteFaq(item.id)
                                   }}
                                 >
-                                  {isDeletingFaq === item.id ? '삭제중' : '삭제'}
+                                  {isDeletingFaq === item.id
+                                    ? '삭제중'
+                                    : '삭제'}
                                 </span>
                               </button>
                               {expandedFaqId === item.id && (
@@ -865,7 +1019,7 @@ const AdminPage = () => {
       />
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default AdminPage;
+export default AdminPage

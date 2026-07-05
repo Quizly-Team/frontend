@@ -1,14 +1,14 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
 type ButtonProps = {
-  variant?: 'primary' | 'secondary' | 'outline';
-  size?: 'small' | 'medium' | 'large';
-  children: ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  type?: 'button' | 'submit' | 'reset';
-  className?: string;
-};
+  variant?: 'primary' | 'secondary' | 'outline'
+  size?: 'small' | 'medium' | 'large'
+  children: ReactNode
+  onClick?: () => void
+  disabled?: boolean
+  type?: 'button' | 'submit' | 'reset'
+  className?: string
+}
 
 const Button = ({
   variant = 'primary',
@@ -20,23 +20,24 @@ const Button = ({
   className = '',
 }: ButtonProps) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-normal transition-colors outline-none';
+    'inline-flex items-center justify-center font-normal transition-colors outline-none'
 
   const variantStyles = {
-    primary: 'bg-primary text-white hover:bg-primary/90 disabled:bg-gray-500 rounded-[200px]',
+    primary:
+      'bg-primary text-white hover:bg-primary/90 disabled:bg-gray-500 rounded-[200px]',
     secondary:
       'bg-secondary text-primary hover:bg-secondary/80 disabled:bg-gray-200 rounded-[200px]',
     outline:
       'bg-white border border-gray-300 text-gray-900 hover:border-gray-400 disabled:border-gray-200 disabled:text-gray-400 rounded-[12px]',
-  };
+  }
 
   const sizeStyles = {
     small: 'px-xs py-[10px] text-tint-regular',
     medium: 'px-l py-s text-body3-regular',
     large: 'px-xxl py-m text-body3-regular',
-  };
+  }
 
-  const cursorStyles = disabled ? 'cursor-not-allowed' : 'cursor-pointer';
+  const cursorStyles = disabled ? 'cursor-not-allowed' : 'cursor-pointer'
 
   return (
     <button
@@ -47,9 +48,9 @@ const Button = ({
     >
       {children}
     </button>
-  );
-};
+  )
+}
 
-Button.displayName = 'Button';
+Button.displayName = 'Button'
 
-export default Button;
+export default Button
