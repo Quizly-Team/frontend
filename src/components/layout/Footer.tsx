@@ -44,8 +44,8 @@ const Footer = () => {
             >
               이용약관
             </a>
-            <a 
-              href="https://www.notion.so/2480d810a51980b8831edc3dbb13333d" 
+            <a
+              href="https://www.notion.so/2480d810a51980b8831edc3dbb13333d"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[14px] text-gray-600 leading-[19.6px] px-s py-xs h-[36px] flex items-center"
@@ -72,9 +72,9 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-Footer.displayName = 'Footer';
+Footer.displayName = 'Footer'
 
-export default Footer;
+export default Footer

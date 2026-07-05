@@ -1,59 +1,59 @@
-import type { ReactElement } from "react";
+import type { ReactElement } from 'react'
 
 type IconName =
-  | "search"
-  | "light"
-  | "write"
-  | "book"
-  | "close"
-  | "calendar"
-  | "delete"
-  | "upload"
-  | "note"
-  | "checkbox"
-  | "memo"
-  | "menu"
-  | "arrow"
-  | "send_black"
-  | "correct"
-  | "error"
-  | "correct_black"
-  | "error_black"
-  | "correct_red"
-  | "correct_blue"
-  | "error_red"
-  | "error_blue"
-  | "check"
-  | "check_black"
-  | "check_blue"
-  | "check_red"
-  | "check_green"
-  | "check_white"
-  | "icn_checkbox"
-  | "icn_check_fill"
-  | "icn_check_fill_in"
-  | "icn_note"
-  | "dashboard_check"
-  | "dashboard_up"
-  | "dashboard_delete"
-  | "dashboard_i"
-  | "dashboard_fire"
-  | "dashboard_book"
-  | "dashboard_chart"
-  | "dashboard_fire_white"
-  | "dashboard_3d_fire"
-  | "dashboard_3d_calendar"
-  | "dashboard_3d_clock"
-  | "dashboard_3d_lightbulb";
+  | 'search'
+  | 'light'
+  | 'write'
+  | 'book'
+  | 'close'
+  | 'calendar'
+  | 'delete'
+  | 'upload'
+  | 'note'
+  | 'checkbox'
+  | 'memo'
+  | 'menu'
+  | 'arrow'
+  | 'send_black'
+  | 'correct'
+  | 'error'
+  | 'correct_black'
+  | 'error_black'
+  | 'correct_red'
+  | 'correct_blue'
+  | 'error_red'
+  | 'error_blue'
+  | 'check'
+  | 'check_black'
+  | 'check_blue'
+  | 'check_red'
+  | 'check_green'
+  | 'check_white'
+  | 'icn_checkbox'
+  | 'icn_check_fill'
+  | 'icn_check_fill_in'
+  | 'icn_note'
+  | 'dashboard_check'
+  | 'dashboard_up'
+  | 'dashboard_delete'
+  | 'dashboard_i'
+  | 'dashboard_fire'
+  | 'dashboard_book'
+  | 'dashboard_chart'
+  | 'dashboard_fire_white'
+  | 'dashboard_3d_fire'
+  | 'dashboard_3d_calendar'
+  | 'dashboard_3d_clock'
+  | 'dashboard_3d_lightbulb'
 
 type IconProps = {
-  name: IconName;
-  size?: number;
-  className?: string;
-  onClick?: () => void;
-};
+  name: IconName
+  size?: number
+  className?: string
+  onClick?: () => void
+}
 
-const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
+const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
   const getIconMap = (): Record<IconName, ReactElement> => ({
     search: (
       <img
@@ -548,26 +548,26 @@ const Icon = ({ name, size = 28, className = "", onClick }: IconProps) => {
         className={className}
       />
     ),
-  });
+  })
 
-  const iconMap = getIconMap();
+  const iconMap = getIconMap()
 
   const containerStyles = onClick
     ? `inline-flex items-center justify-center cursor-pointer ${className}`
-    : `inline-flex items-center justify-center ${className}`;
+    : `inline-flex items-center justify-center ${className}`
 
   return (
     <div
       className={containerStyles}
       onClick={onClick}
-      role={onClick ? "button" : undefined}
+      role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
       {iconMap[name]}
     </div>
-  );
-};
+  )
+}
 
-Icon.displayName = "Icon";
+Icon.displayName = 'Icon'
 
-export default Icon;
+export default Icon

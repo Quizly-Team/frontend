@@ -1,105 +1,105 @@
-export type QuizType = 'MULTIPLE_CHOICE' | 'TRUE_FALSE';
+export type QuizType = 'MULTIPLE_CHOICE' | 'TRUE_FALSE'
 
 export type QuizDetail = {
-  quizId: number;
-  text: string;
-  type: QuizType;
-  options: string[];
-  answer: string;
-  explanation: string;
-  topic: string;
-};
+  quizId: number
+  text: string
+  type: QuizType
+  options: string[]
+  answer: string
+  explanation: string
+  topic: string
+}
 
 export type QuizResponse = {
-  success: boolean;
-  quizDetailList: QuizDetail[];
-};
+  success: boolean
+  quizDetailList: QuizDetail[]
+}
 
 export type UserAnswer = {
-  quizId: number;
-  selectedAnswer: string;
-  solveTime?: number;
-};
+  quizId: number
+  selectedAnswer: string
+  solveTime?: number
+}
 
 export type SubmitAnswerRequest = {
-  userAnswer: string;
-  solveTime: number;
-};
+  userAnswer: string
+  solveTime: number
+}
 
 export type SubmitAnswerResponse = {
-  success: boolean;
-  quizId: number;
-  answer: string;
-  explanation: string;
-  correct: boolean;
-};
+  success: boolean
+  quizId: number
+  answer: string
+  explanation: string
+  correct: boolean
+}
 
 // 페이지네이션 타입
 export type QuizPagination = {
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  totalElements: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  lastPage: boolean;
-};
+  page: number
+  pageSize: number
+  totalPages: number
+  totalElements: number
+  hasPrevious: boolean
+  hasNext: boolean
+  lastPage: boolean
+}
 
 // 문제 모아보기 API 타입
 export type QuizHistoryDetail = {
-  quizId: number;
-  text: string;
-  type: QuizType;
-  options: string[];
-  answer: string;
-  explanation: string;
-  topic: string;
-  isLastSolveCorrect: boolean;
-};
+  quizId: number
+  text: string
+  type: QuizType
+  options: string[]
+  answer: string
+  explanation: string
+  topic: string
+  isLastSolveCorrect: boolean
+}
 
 export type QuizGroup = {
-  group: string;
-  quizHistoryDetailList: QuizHistoryDetail[];
-};
+  group: string
+  quizHistoryDetailList: QuizHistoryDetail[]
+}
 
 export type QuizGroupResponse = {
-  success: boolean;
-  errorCode: string | null;
-  quizGroupList: QuizGroup[];
-  pagination?: QuizPagination;
-};
+  success: boolean
+  errorCode: string | null
+  quizGroupList: QuizGroup[]
+  pagination?: QuizPagination
+}
 
 // 틀린 문제 조회 API 타입
 export type WrongQuizHistoryDetail = {
-  quizId: number;
-  text: string;
-  type: QuizType;
-  options: string[];
-  answer: string;
-  explanation: string;
-  topic: string;
-  isCorrect: boolean;
-};
+  quizId: number
+  text: string
+  type: QuizType
+  options: string[]
+  answer: string
+  explanation: string
+  topic: string
+  isCorrect: boolean
+}
 
 export type WrongQuizGroup = {
-  group: string;
-  quizHistoryDetailList: WrongQuizHistoryDetail[];
-};
+  group: string
+  quizHistoryDetailList: WrongQuizHistoryDetail[]
+}
 
 export type WrongQuizGroupResponse = {
-  quizGroupList: WrongQuizGroup[];
-  pagination?: QuizPagination;
-};
+  quizGroupList: WrongQuizGroup[]
+  pagination?: QuizPagination
+}
 
 export type UpdateQuizzesTopicRequest = {
-  topic: string;
-  quizIdList: number[];
-};
+  topic: string
+  quizIdList: number[]
+}
 
 export type UpdateQuizzesTopicResponse = {
-  success: boolean;
-  errorCode?: string | null;
-};
+  success: boolean
+  errorCode?: string | null
+}
 
 // 모의고사 API 타입
 export type MockExamType =
@@ -108,21 +108,21 @@ export type MockExamType =
   | 'FIND_MATCH'
   | 'ESSAY'
   | 'SHORT_ANSWER'
-  | 'TRUE_FALSE';
+  | 'TRUE_FALSE'
 
 export type MockExamDetail = {
-  text: string;
-  type: MockExamType;
-  options: string[];
-  answer: string;
-  explanation: string;
-};
+  text: string
+  type: MockExamType
+  options: string[]
+  answer: string
+  explanation: string
+}
 
 export type CreateMockExamRequest = {
-  plainText: string;
-  mockExamTypeList: string[];
-};
+  plainText: string
+  mockExamTypeList: string[]
+}
 
 export type MockExamResponse = {
-  mockExamDetailList: MockExamDetail[];
-};
+  mockExamDetailList: MockExamDetail[]
+}

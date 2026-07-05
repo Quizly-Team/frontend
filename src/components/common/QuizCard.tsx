@@ -1,12 +1,12 @@
-import type { QuizHistoryDetail } from '@/types/quiz';
+import type { QuizHistoryDetail } from '@/types/quiz'
 
 type QuizCardProps = {
-  quiz: QuizHistoryDetail;
-  questionNumber: number;
-};
+  quiz: QuizHistoryDetail
+  questionNumber: number
+}
 
 const QuizCard = ({ quiz, questionNumber }: QuizCardProps) => {
-  const isWrong = !quiz.isLastSolveCorrect;
+  const isWrong = !quiz.isLastSolveCorrect
 
   return (
     <div
@@ -42,9 +42,9 @@ const QuizCard = ({ quiz, questionNumber }: QuizCardProps) => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-QuizCard.displayName = 'QuizCard';
+QuizCard.displayName = 'QuizCard'
 
-export default QuizCard;
+export default QuizCard

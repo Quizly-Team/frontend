@@ -1,60 +1,71 @@
-import { useState } from 'react';
-import { FAQ_CATEGORIES, createAdminFaq, type FaqCategory } from '@/api/faq';
+import { useState } from 'react'
+import { FAQ_CATEGORIES, createAdminFaq, type FaqCategory } from '@/api/faq'
 
 type FaqCreateModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-};
+  isOpen: boolean
+  onClose: () => void
+  onSuccess: () => void
+}
 
-const CATEGORY_OPTIONS = Object.entries(FAQ_CATEGORIES) as [FaqCategory, string][];
+const CATEGORY_OPTIONS = Object.entries(FAQ_CATEGORIES) as [
+  FaqCategory,
+  string,
+][]
 
-const FaqCreateModal = ({ isOpen, onClose, onSuccess }: FaqCreateModalProps) => {
-  const [category, setCategory] = useState<FaqCategory | ''>('');
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const FaqCreateModal = ({
+  isOpen,
+  onClose,
+  onSuccess,
+}: FaqCreateModalProps) => {
+  const [category, setCategory] = useState<FaqCategory | ''>('')
+  const [question, setQuestion] = useState('')
+  const [answer, setAnswer] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const resetForm = () => {
-    setCategory('');
-    setQuestion('');
-    setAnswer('');
-  };
+    setCategory('')
+    setQuestion('')
+    setAnswer('')
+  }
 
   const handleClose = () => {
-    resetForm();
-    onClose();
-  };
+    resetForm()
+    onClose()
+  }
 
   const handleSubmit = async () => {
     if (!category) {
-      alert('카테고리를 선택해주세요.');
-      return;
+      alert('카테고리를 선택해주세요.')
+      return
     }
     if (!question.trim()) {
-      alert('질문을 입력해주세요.');
-      return;
+      alert('질문을 입력해주세요.')
+      return
     }
     if (!answer.trim()) {
-      alert('답변을 입력해주세요.');
-      return;
+      alert('답변을 입력해주세요.')
+      return
     }
 
     try {
-      setIsSubmitting(true);
-      await createAdminFaq({ category, question: question.trim(), answer: answer.trim() });
-      alert('FAQ가 등록되었습니다.');
-      resetForm();
-      onSuccess();
-      onClose();
+      setIsSubmitting(true)
+      await createAdminFaq({
+        category,
+        question: question.trim(),
+        answer: answer.trim(),
+      })
+      alert('FAQ가 등록되었습니다.')
+      resetForm()
+      onSuccess()
+      onClose()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'FAQ 등록에 실패했습니다.');
+      alert(err instanceof Error ? err.message : 'FAQ 등록에 실패했습니다.')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
-  if (!isOpen) return null;
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -64,7 +75,9 @@ const FaqCreateModal = ({ isOpen, onClose, onSuccess }: FaqCreateModalProps) => 
 
         <div className="flex flex-col gap-4">
           <div>
-            <label className="block text-[14px] font-medium text-gray-700 mb-1.5">카테고리</label>
+            <label className="block text-[14px] font-medium text-gray-700 mb-1.5">
+              카테고리
+            </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as FaqCategory)}
@@ -72,13 +85,17 @@ const FaqCreateModal = ({ isOpen, onClose, onSuccess }: FaqCreateModalProps) => 
             >
               <option value="">카테고리를 선택하세요</option>
               {CATEGORY_OPTIONS.map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
+                <option key={key} value={key}>
+                  {label}
+                </option>
               ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-[14px] font-medium text-gray-700 mb-1.5">질문</label>
+            <label className="block text-[14px] font-medium text-gray-700 mb-1.5">
+              질문
+            </label>
             <input
               type="text"
               value={question}
@@ -89,7 +106,9 @@ const FaqCreateModal = ({ isOpen, onClose, onSuccess }: FaqCreateModalProps) => 
           </div>
 
           <div>
-            <label className="block text-[14px] font-medium text-gray-700 mb-1.5">답변</label>
+            <label className="block text-[14px] font-medium text-gray-700 mb-1.5">
+              답변
+            </label>
             <textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
@@ -119,7 +138,7 @@ const FaqCreateModal = ({ isOpen, onClose, onSuccess }: FaqCreateModalProps) => 
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FaqCreateModal;
+export default FaqCreateModal

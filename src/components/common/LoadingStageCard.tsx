@@ -1,12 +1,12 @@
-import { Icon } from '@/components';
+import { Icon } from '@/components'
 
 type LoadingStageCardProps = {
-  label: string;
-  isCompleted: boolean;
-  isActive: boolean;
-  showExclamation?: boolean;
-  responsive?: boolean;
-};
+  label: string
+  isCompleted: boolean
+  isActive: boolean
+  showExclamation?: boolean
+  responsive?: boolean
+}
 
 const LoadingStageCard = ({
   label,
@@ -17,11 +17,11 @@ const LoadingStageCard = ({
 }: LoadingStageCardProps) => {
   const cardClasses = responsive
     ? 'bg-white rounded-[12px] px-[26px] py-6 w-[250px] max-lg:w-[220px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)] shrink-0'
-    : 'bg-white rounded-[12px] px-[26px] py-6 w-[250px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]';
+    : 'bg-white rounded-[12px] px-[26px] py-6 w-[250px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]'
 
   const textClasses = responsive
     ? 'text-body2-medium text-gray-900 max-lg:text-body3-medium'
-    : 'text-body2-medium text-gray-900';
+    : 'text-body2-medium text-gray-900'
 
   return (
     <div className={cardClasses}>
@@ -43,9 +43,9 @@ const LoadingStageCard = ({
         </span>
       </div>
     </div>
-  );
-};
+  )
+}
 
-LoadingStageCard.displayName = 'LoadingStageCard';
+LoadingStageCard.displayName = 'LoadingStageCard'
 
-export default LoadingStageCard;
+export default LoadingStageCard
