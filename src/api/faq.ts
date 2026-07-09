@@ -18,7 +18,10 @@ export type FaqCategoryGroup = {
   description: string
   faqDetailList: FaqDetail[]
 }
-export type GetFaqsResponse = { faqCategoryGroupList: FaqCategoryGroup[] }
+export type GetFaqsResponse = {
+  success?: boolean // 스웨거 ReadFaqResponse 봉투 정합. 화면은 faqCategoryGroupList만 읽음
+  faqCategoryGroupList: FaqCategoryGroup[]
+}
 export type CreateFaqRequest = {
   category: FaqCategory
   question: string
