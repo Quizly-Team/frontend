@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 
-type IconName =
+export type IconName =
   | 'search'
   | 'light'
   | 'write'
@@ -45,6 +45,10 @@ type IconName =
   | 'dashboard_3d_calendar'
   | 'dashboard_3d_clock'
   | 'dashboard_3d_lightbulb'
+  | 'faq_service'
+  | 'faq_quiz'
+  | 'faq_wrong'
+  | 'faq_support'
 
 type IconProps = {
   name: IconName
@@ -543,6 +547,42 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
       <img
         src="/icon/dashboard_3d_lightbulb.svg"
         alt="dashboard_3d_lightbulb"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    faq_service: (
+      <img
+        src="/icon/faq_service.svg"
+        alt="faq_service"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    faq_quiz: (
+      <img
+        src="/icon/faq_quiz.svg"
+        alt="faq_quiz"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    faq_wrong: (
+      <img
+        src="/icon/faq_wrong.svg"
+        alt="faq_wrong"
+        width={size}
+        height={size}
+        className={className}
+      />
+    ),
+    faq_support: (
+      <img
+        src="/icon/faq_support.svg"
+        alt="faq_support"
         width={size}
         height={size}
         className={className}

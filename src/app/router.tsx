@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import AdminPage from '@/app/pages/AdminPage'
 import AnalyticsPage from '@/app/pages/AnalyticsPage'
 import AuthCallback from '@/app/pages/AuthCallback'
+import FaqPage from '@/app/pages/FaqPage'
 import HomePage from '@/app/pages/HomePage'
 import LoginPage from '@/app/pages/LoginPage'
 import MockExamPage from '@/app/pages/MockExamPage'
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
   {
     path: '/mock-exam',
     element: <MockExamPage />,
+  },
+  {
+    path: '/faq',
+    element: <FaqPage />,
   },
   {
     path: '/login',

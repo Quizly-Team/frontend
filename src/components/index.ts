@@ -20,6 +20,10 @@ export { default as MemberOnlyPage } from './common/MemberOnlyPage'
 export { default as QuizGenerationLoadingPage } from './common/QuizGenerationLoadingPage'
 export { default as LoadingStageCard } from './common/LoadingStageCard'
 export { default as Tooltip } from './common/Tooltip'
+export { default as FaqAccordionItem } from './common/FaqAccordionItem'
+
+// Domain Components
+export { default as FaqCategorySection } from './domain/FaqCategorySection'
 
 // Modal Components
 export { default as MockExamSettingModal } from './modal/MockExamSettingModal'
