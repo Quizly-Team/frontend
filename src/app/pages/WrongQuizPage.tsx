@@ -336,7 +336,7 @@ const WrongQuizPage = () => {
   // 비회원인 경우 - 로그인 요구 페이지 표시
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-bg-home flex flex-col">
+      <div className="flex-1 bg-bg-home flex flex-col">
         <Header logoUrl="/logo.svg" />
 
         {/* Main Content - Web/Tablet */}
@@ -436,7 +436,7 @@ const WrongQuizPage = () => {
 
   // 회원인 경우 - 틀린문제 목록 표시
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}

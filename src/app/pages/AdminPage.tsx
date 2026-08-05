@@ -15,7 +15,7 @@ import {
   type FaqCategory,
   type FlatFaqItem,
 } from '@/api/faq'
-import { Header, Footer, Button } from '@/components'
+import { Header, Button } from '@/components'
 import FaqCreateModal from '@/components/modal/FaqCreateModal'
 import { authUtils } from '@/lib/auth'
 
@@ -448,7 +448,7 @@ const AdminPage = () => {
   const maxDate = yesterday.toISOString().slice(0, 10)
 
   return (
-    <div className="min-h-screen w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-bg-home flex flex-col">
       <Header />
       <main className="flex-1 px-5 py-10 md:px-10 md:py-14">
         <div className="w-full max-w-[1160px] mx-auto">
@@ -1017,7 +1017,6 @@ const AdminPage = () => {
         onClose={() => setShowFaqCreateModal(false)}
         onSuccess={fetchFaqs}
       />
-      <Footer />
     </div>
   )
 }

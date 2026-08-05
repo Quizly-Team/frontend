@@ -223,7 +223,7 @@ const MockExamPage = () => {
 
   if (!state || mockExamList.length === 0) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="flex-1 bg-white">
         <Header />
         <div className="flex items-center justify-center h-[calc(100vh-90px)] max-lg:h-[calc(100vh-72px)] max-md:h-[calc(100vh-46px)]">
           <div className="text-center">
@@ -243,7 +243,7 @@ const MockExamPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-home max-md:pb-20">
+    <div className="flex-1 bg-bg-home max-md:pb-20">
       <Header />
 
       {/* 모바일 안내 문구 - 상단 */}
