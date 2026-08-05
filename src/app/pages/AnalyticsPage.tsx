@@ -7,7 +7,7 @@ import {
   logout,
   type ReadUserInfoResponse,
 } from '@/api/account'
-import { Header, Footer, Button } from '@/components'
+import { Header, Button } from '@/components'
 import CumulativeSummary from '@/components/dashboard/cumulative-summary'
 import HourlyChart from '@/components/dashboard/hourly-chart'
 import LearningStats from '@/components/dashboard/learning-stats'
@@ -208,7 +208,7 @@ const AnalyticsPage = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-bg-home flex flex-col">
       <Header />
 
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
@@ -526,8 +526,6 @@ const AnalyticsPage = () => {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }

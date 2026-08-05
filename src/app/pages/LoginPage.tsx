@@ -40,7 +40,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex flex-col">
+    <div className="flex-1 bg-[#f8f9fa] flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content */}

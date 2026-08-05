@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Header, Footer, FaqCategorySection } from '@/components'
+import { Header, FaqCategorySection } from '@/components'
 import { useFaqs } from '@/hooks/useFaqs'
 
 const CONTACT_EMAIL = 'duwn1010@gmail.com'
@@ -10,7 +10,7 @@ const FaqPage = () => {
   const groups = data?.faqCategoryGroupList ?? []
 
   return (
-    <div className="min-h-screen w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-bg-home flex flex-col">
       <Header />
 
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
@@ -84,8 +84,6 @@ const FaqPage = () => {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }

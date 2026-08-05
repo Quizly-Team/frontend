@@ -117,7 +117,7 @@ const OnboardingPage = () => {
   // 로딩 화면 표시
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bg-home">
+      <div className="flex-1 flex items-center justify-center bg-bg-home">
         <div className="text-center">
           <h2 className="text-header3-bold text-gray-900 mb-4">
             로그인 처리 중...
