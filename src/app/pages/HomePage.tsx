@@ -320,7 +320,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       {/* Header */}
       <Header
         logoUrl="/logo.svg"

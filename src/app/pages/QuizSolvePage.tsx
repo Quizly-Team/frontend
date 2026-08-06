@@ -251,7 +251,7 @@ const QuizSolvePage = ({
   }
 
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       {/* Header - Web/Tablet Only */}
       <div className="max-md:hidden" onClickCapture={handleHeaderClick}>
         <Header logoUrl="/logo.svg" />

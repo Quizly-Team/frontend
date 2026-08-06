@@ -210,7 +210,7 @@ const AnalyticsPage = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-bg-home flex flex-col">
       <Header />
 
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
@@ -509,8 +509,6 @@ const AnalyticsPage = () => {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }

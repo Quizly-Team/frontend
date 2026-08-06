@@ -75,7 +75,7 @@ const QuizDetailPage = () => {
 
   // 회원인 경우
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
