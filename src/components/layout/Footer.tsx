@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const Footer = () => {
   return (
     <footer className="w-full bg-bg-footer h-[80px] max-md:h-[128px]">
@@ -18,6 +20,13 @@ const Footer = () => {
           >
             개인정보처리방침
           </a>
+
+          <Link
+            to="/faq"
+            className="text-[14px] max-lg:text-[clamp(12px,1.5vw,14px)] text-gray-600 px-s py-xs leading-[1.4] shrink-0"
+          >
+            자주 묻는 질문
+          </Link>
 
           <p className="text-[14px] max-lg:text-[clamp(12px,1.5vw,14px)] text-gray-600 px-s py-xs leading-[1.4] shrink-0">
             Team. 에스F레소
@@ -44,14 +53,20 @@ const Footer = () => {
             >
               이용약관
             </a>
-            <a 
-              href="https://www.notion.so/2480d810a51980b8831edc3dbb13333d" 
+            <a
+              href="https://www.notion.so/2480d810a51980b8831edc3dbb13333d"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[14px] text-gray-600 leading-[19.6px] px-s py-xs h-[36px] flex items-center"
             >
               개인정보처리방침
             </a>
+            <Link
+              to="/faq"
+              className="text-[14px] text-gray-600 leading-[19.6px] px-s py-xs h-[36px] flex items-center"
+            >
+              자주 묻는 질문
+            </Link>
           </div>
 
           <div className="flex items-center gap-2">
@@ -72,9 +87,9 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-Footer.displayName = 'Footer';
+Footer.displayName = 'Footer'
 
-export default Footer;
+export default Footer

@@ -1,75 +1,81 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Header, UnauthorizedPage, QuizCard } from '@/components';
-import { authUtils } from '@/lib/auth';
-import { getQuizGroups } from '@/api/quiz';
-import type { QuizHistoryDetail } from '@/types/quiz';
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { getQuizGroups } from '@/api/quiz'
+import { Header, UnauthorizedPage, QuizCard } from '@/components'
+import { authUtils } from '@/lib/auth'
+import type { QuizHistoryDetail } from '@/types/quiz'
 
 const QuizDetailPage = () => {
-  const { date } = useParams<{ date: string }>();
-  const [quizzes, setQuizzes] = useState<QuizHistoryDetail[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const isAuthenticated = authUtils.isAuthenticated();
+  const { date } = useParams<{ date: string }>()
+  const [quizzes, setQuizzes] = useState<QuizHistoryDetail[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const isAuthenticated = authUtils.isAuthenticated()
 
   // 특정 날짜 또는 주제의 문제 목록 로드
   useEffect(() => {
-    if (!isAuthenticated || !date) return;
+    if (!isAuthenticated || !date) return
 
     const fetchQuizzes = async () => {
-      setIsLoading(true);
-      setError(null);
+      setIsLoading(true)
+      setError(null)
 
       try {
         // 먼저 날짜순으로 조회
-        const dateResponse = await getQuizGroups('date');
+        const dateResponse = await getQuizGroups('date')
 
         if (dateResponse.success && dateResponse.quizGroupList) {
           const targetGroup = dateResponse.quizGroupList.find(
-            (group) => group.group === date
-          );
+            (group) => group.group === date,
+          )
 
           if (targetGroup) {
-            setQuizzes(targetGroup.quizHistoryDetailList);
-            setIsLoading(false);
-            return;
+            setQuizzes(targetGroup.quizHistoryDetailList)
+            setIsLoading(false)
+            return
           }
         }
 
         // 날짜순에서 찾지 못하면 주제순으로 조회
-        const topicResponse = await getQuizGroups('topic');
+        const topicResponse = await getQuizGroups('topic')
 
         if (topicResponse.success && topicResponse.quizGroupList) {
           const targetGroup = topicResponse.quizGroupList.find(
-            (group) => group.group === date
-          );
+            (group) => group.group === date,
+          )
 
           if (targetGroup) {
-            setQuizzes(targetGroup.quizHistoryDetailList);
+            setQuizzes(targetGroup.quizHistoryDetailList)
           } else {
-            setQuizzes([]);
+            setQuizzes([])
           }
         } else {
-          setError(topicResponse.errorCode || '데이터를 불러오는데 실패했습니다.');
+          setError(
+            topicResponse.errorCode || '데이터를 불러오는데 실패했습니다.',
+          )
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
+        setError(
+          err instanceof Error
+            ? err.message
+            : '알 수 없는 오류가 발생했습니다.',
+        )
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchQuizzes();
-  }, [isAuthenticated, date]);
+    fetchQuizzes()
+  }, [isAuthenticated, date])
 
   // 비회원은 접근 불가
   if (!isAuthenticated) {
-    return <UnauthorizedPage variant="simple" />;
+    return <UnauthorizedPage variant="simple" />
   }
 
   // 회원인 경우
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
@@ -109,7 +115,11 @@ const QuizDetailPage = () => {
                 {quizzes
                   .filter((_, index) => index % 2 === 0)
                   .map((quiz, index) => (
-                    <QuizCard key={quiz.quizId} quiz={quiz} questionNumber={index * 2 + 1} />
+                    <QuizCard
+                      key={quiz.quizId}
+                      quiz={quiz}
+                      questionNumber={index * 2 + 1}
+                    />
                   ))}
               </div>
               {/* Right Column */}
@@ -117,7 +127,11 @@ const QuizDetailPage = () => {
                 {quizzes
                   .filter((_, index) => index % 2 === 1)
                   .map((quiz, index) => (
-                    <QuizCard key={quiz.quizId} quiz={quiz} questionNumber={index * 2 + 2} />
+                    <QuizCard
+                      key={quiz.quizId}
+                      quiz={quiz}
+                      questionNumber={index * 2 + 2}
+                    />
                   ))}
               </div>
             </div>
@@ -157,7 +171,11 @@ const QuizDetailPage = () => {
         ) : (
           <div className="flex flex-col gap-3">
             {quizzes.map((quiz, index) => (
-              <QuizCard key={quiz.quizId} quiz={quiz} questionNumber={index + 1} />
+              <QuizCard
+                key={quiz.quizId}
+                quiz={quiz}
+                questionNumber={index + 1}
+              />
             ))}
           </div>
         )}
@@ -166,9 +184,9 @@ const QuizDetailPage = () => {
       {/* Home Indicator - Mobile Only */}
       <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
     </div>
-  );
-};
+  )
+}
 
-QuizDetailPage.displayName = 'QuizDetailPage';
+QuizDetailPage.displayName = 'QuizDetailPage'
 
-export default QuizDetailPage;
+export default QuizDetailPage

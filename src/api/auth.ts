@@ -1,4 +1,5 @@
-const AUTH_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const AUTH_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
 
 export const OAUTH_ENDPOINTS = {
   NAVER: `${AUTH_BASE_URL}/oauth2/authorization/naver`,
@@ -6,14 +7,14 @@ export const OAUTH_ENDPOINTS = {
   CALLBACK: `${AUTH_BASE_URL}/login/oauth2/code`,
   REISSUE: `${AUTH_BASE_URL}/auth/reissue`,
   LOGOUT: `${AUTH_BASE_URL}/auth/logout`,
-} as const;
+} as const
 
-export type OAuthProvider = 'naver' | 'kakao';
+export type OAuthProvider = 'naver' | 'kakao'
 
 export type AuthResponse = {
-  accessToken: string;
-};
+  accessToken: string
+}
 
 export type TokenReissueResponse = {
-  accessToken: string;
-};
+  accessToken: string
+}

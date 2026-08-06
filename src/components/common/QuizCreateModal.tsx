@@ -1,15 +1,15 @@
-import { Modal as MuiModal } from '@mui/material';
-import { useCallback, useState } from 'react';
-import { Icon, Tooltip } from '@/components';
+import { useCallback, useState } from 'react'
+import { Modal as MuiModal } from '@mui/material'
+import { Icon, Tooltip } from '@/components'
 
-type QuizType = 'multiple' | 'ox';
+type QuizType = 'multiple' | 'ox'
 
 type QuizCreateModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onSelectQuizType: (type: QuizType) => void;
-  isLoggedIn?: boolean;
-};
+  isOpen: boolean
+  onClose: () => void
+  onSelectQuizType: (type: QuizType) => void
+  isLoggedIn?: boolean
+}
 
 const QuizCreateModal = ({
   isOpen,
@@ -17,18 +17,18 @@ const QuizCreateModal = ({
   onSelectQuizType,
   isLoggedIn = false,
 }: QuizCreateModalProps) => {
-  const [showMultipleTooltip, setShowMultipleTooltip] = useState(false);
+  const [showMultipleTooltip, setShowMultipleTooltip] = useState(false)
 
   const handleMultipleChoice = useCallback(() => {
-    if (!isLoggedIn) return;
-    onSelectQuizType('multiple');
-    onClose();
-  }, [isLoggedIn, onSelectQuizType, onClose]);
+    if (!isLoggedIn) return
+    onSelectQuizType('multiple')
+    onClose()
+  }, [isLoggedIn, onSelectQuizType, onClose])
 
   const handleOXQuiz = useCallback(() => {
-    onSelectQuizType('ox');
-    onClose();
-  }, [onSelectQuizType, onClose]);
+    onSelectQuizType('ox')
+    onClose()
+  }, [onSelectQuizType, onClose])
 
   return (
     <MuiModal
@@ -146,9 +146,9 @@ const QuizCreateModal = ({
         </div>
       </div>
     </MuiModal>
-  );
-};
+  )
+}
 
-QuizCreateModal.displayName = 'QuizCreateModal';
+QuizCreateModal.displayName = 'QuizCreateModal'
 
-export default QuizCreateModal;
+export default QuizCreateModal

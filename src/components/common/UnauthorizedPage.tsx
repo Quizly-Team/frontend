@@ -1,18 +1,16 @@
-import { Header } from '@/components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import { Header } from '@/components'
 
 type UnauthorizedPageProps = {
-  variant?: 'full' | 'simple';
-};
+  variant?: 'full' | 'simple'
+}
 
-const UnauthorizedPage = ({
-  variant = 'full',
-}: UnauthorizedPageProps) => {
-  const navigate = useNavigate();
+const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
+  const navigate = useNavigate()
 
   const handleLoginClick = () => {
-    navigate('/login');
-  };
+    navigate('/login')
+  }
   if (variant === 'simple') {
     return (
       <div className="min-h-screen bg-bg-home flex flex-col">
@@ -33,7 +31,7 @@ const UnauthorizedPage = ({
           </button>
         </main>
       </div>
-    );
+    )
   }
 
   // Full variant with characters
@@ -132,11 +130,10 @@ const UnauthorizedPage = ({
           지금 가입하기
         </button>
       </main>
-
     </div>
-  );
-};
+  )
+}
 
-UnauthorizedPage.displayName = 'UnauthorizedPage';
+UnauthorizedPage.displayName = 'UnauthorizedPage'
 
-export default UnauthorizedPage;
+export default UnauthorizedPage

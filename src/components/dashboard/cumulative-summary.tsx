@@ -1,21 +1,21 @@
-import { useMemo } from 'react';
-import type { CumulativeSummary as CumulativeSummaryType } from '@/api/dashboard';
-import Icon from '@/components/common/Icon';
+import { useMemo } from 'react'
+import type { CumulativeSummary as CumulativeSummaryType } from '@/api/dashboard'
+import Icon from '@/components/common/Icon'
 
 type Props = {
-  data: CumulativeSummaryType;
-};
+  data: CumulativeSummaryType
+}
 
 export default function CumulativeSummary({ data }: Props) {
   const accuracyRate =
     data.solvedCount > 0
       ? ((data.correctCount / data.solvedCount) * 100).toFixed(1)
-      : '0.0';
+      : '0.0'
 
   const currentMonth = useMemo(() => {
-    const now = new Date();
-    return `${now.getMonth() + 1}월`;
-  }, []);
+    const now = new Date()
+    return `${now.getMonth() + 1}월`
+  }, [])
 
   return (
     <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] max-md:p-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:flex max-md:flex-col">
@@ -73,7 +73,7 @@ export default function CumulativeSummary({ data }: Props) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-CumulativeSummary.displayName = 'CumulativeSummary';
+CumulativeSummary.displayName = 'CumulativeSummary'

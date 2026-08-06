@@ -1,12 +1,10 @@
-import { Header } from '@/components';
+import { Header } from '@/components'
 
 type MemberOnlyPageProps = {
-  variant?: 'full' | 'simple';
-};
+  variant?: 'full' | 'simple'
+}
 
-const MemberOnlyPage = ({
-  variant = 'full',
-}: MemberOnlyPageProps) => {
+const MemberOnlyPage = ({ variant = 'full' }: MemberOnlyPageProps) => {
   if (variant === 'simple') {
     return (
       <div className="min-h-screen bg-bg-home flex flex-col">
@@ -29,7 +27,7 @@ const MemberOnlyPage = ({
           </button>
         </main>
       </div>
-    );
+    )
   }
 
   // Full variant with characters
@@ -131,13 +129,9 @@ const MemberOnlyPage = ({
         </button>
       </main>
     </div>
-  );
-};
+  )
+}
 
-MemberOnlyPage.displayName = 'MemberOnlyPage';
+MemberOnlyPage.displayName = 'MemberOnlyPage'
 
-export default MemberOnlyPage;
-
-
-
-
+export default MemberOnlyPage

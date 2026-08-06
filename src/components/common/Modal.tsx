@@ -1,12 +1,12 @@
-import { Modal as MuiModal } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
+import { Modal as MuiModal } from '@mui/material'
 
 type ModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  children: ReactNode;
-  className?: string;
-};
+  isOpen: boolean
+  onClose: () => void
+  children: ReactNode
+  className?: string
+}
 
 const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps) => {
   return (
@@ -15,23 +15,25 @@ const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps) => {
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className={`bg-white rounded-[24px] pt-[60px] px-8 pb-8 w-[430px] min-h-[324px] mx-m outline-none ${className}`}>
+      <div
+        className={`bg-white rounded-[24px] pt-[60px] px-8 pb-8 w-[430px] min-h-[324px] mx-m outline-none ${className}`}
+      >
         {children}
       </div>
     </MuiModal>
-  );
-};
+  )
+}
 
-Modal.displayName = 'Modal';
+Modal.displayName = 'Modal'
 
 type QuizResultModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  correctCount: number;
-  totalCount: number;
-  onViewAll: () => void;
-  onCreateMore: () => void;
-};
+  isOpen: boolean
+  onClose: () => void
+  correctCount: number
+  totalCount: number
+  onViewAll: () => void
+  onCreateMore: () => void
+}
 
 export const QuizResultModal = ({
   isOpen,
@@ -41,7 +43,7 @@ export const QuizResultModal = ({
   onViewAll,
   onCreateMore,
 }: QuizResultModalProps) => {
-  const wrongCount = totalCount - correctCount;
+  const wrongCount = totalCount - correctCount
 
   return (
     <MuiModal
@@ -89,7 +91,9 @@ export const QuizResultModal = ({
           </p>
 
           <div className="flex flex-col items-center mt-4 max-md:!mt-3">
-            <h2 className="text-header3-bold text-gray-900 max-md:!text-[20px] max-md:!font-bold max-md:!leading-[1.4]">문제 정답 결과</h2>
+            <h2 className="text-header3-bold text-gray-900 max-md:!text-[20px] max-md:!font-bold max-md:!leading-[1.4]">
+              문제 정답 결과
+            </h2>
             <p className="text-body2-medium text-gray-900 mt-1 max-md:!text-[16px] max-md:!font-medium max-md:!leading-[1.4] max-md:!mt-1">
               {correctCount} / {totalCount}문제{' '}
               <span className="text-gray-600">
@@ -115,16 +119,16 @@ export const QuizResultModal = ({
         </div>
       </div>
     </MuiModal>
-  );
-};
+  )
+}
 
-QuizResultModal.displayName = 'QuizResultModal';
+QuizResultModal.displayName = 'QuizResultModal'
 
 type QuizExitConfirmModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirmExit: () => void;
-};
+  isOpen: boolean
+  onClose: () => void
+  onConfirmExit: () => void
+}
 
 export const QuizExitConfirmModal = ({
   isOpen,
@@ -150,7 +154,9 @@ export const QuizExitConfirmModal = ({
                 멈추고 나가시겠어요?
               </h2>
               <p className="text-body3-regular text-gray-600 text-center">
-                풀이가 종료되면 생성된 문제는<br />전부 오답처리 됩니다.
+                풀이가 종료되면 생성된 문제는
+                <br />
+                전부 오답처리 됩니다.
               </p>
             </div>
           </div>
@@ -173,9 +179,9 @@ export const QuizExitConfirmModal = ({
         </div>
       </div>
     </MuiModal>
-  );
-};
+  )
+}
 
-QuizExitConfirmModal.displayName = 'QuizExitConfirmModal';
+QuizExitConfirmModal.displayName = 'QuizExitConfirmModal'
 
-export default Modal;
+export default Modal

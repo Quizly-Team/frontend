@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import type { ChangeEvent, KeyboardEvent } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react'
+import type { ChangeEvent, KeyboardEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Header,
   Icon,
@@ -7,104 +8,112 @@ import {
   QuizGenerationLoadingPage,
   Tooltip,
   MockExamSettingModal,
-} from '@/components';
-import { authUtils } from '@/lib/auth';
-import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils';
-import { useCreateQuiz } from '@/hooks/useCreateQuiz';
-import { useCreateMockExam, useCreateMockExamByFile } from '@/hooks/useMockExam';
-import { useNavigate } from 'react-router-dom';
-import QuizSolvePage from './QuizSolvePage';
-import type { QuizDetail, UserAnswer } from '@/types/quiz';
-import type { MockExamSettingData } from '@/components/modal/MockExamSettingModal';
+} from '@/components'
+import type { MockExamSettingData } from '@/components/modal/MockExamSettingModal'
+import { useCreateQuiz } from '@/hooks/useCreateQuiz'
+import { useCreateMockExam, useCreateMockExamByFile } from '@/hooks/useMockExam'
+import { authUtils } from '@/lib/auth'
+import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils'
+import type { QuizDetail, MockExamResponse } from '@/types/quiz'
+import QuizSolvePage from './QuizSolvePage'
 
-type QuizType = 'multiple' | 'ox';
+type QuizType = 'multiple' | 'ox'
 
 const HomePage = () => {
-  const [searchText, setSearchText] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false);
-  const [isMockExamModalOpen, setIsMockExamModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated());
-  const [quizData, setQuizData] = useState<QuizDetail[] | null>(null);
-  const [isLoadingComplete, setIsLoadingComplete] = useState(false);
-  const [showPdfTooltip, setShowPdfTooltip] = useState(false);
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const webTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const mobileTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const [searchText, setSearchText] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+  const [isQuizCreateModalOpen, setIsQuizCreateModalOpen] = useState(false)
+  const [isMockExamModalOpen, setIsMockExamModalOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(authUtils.isAuthenticated())
+  const [quizData, setQuizData] = useState<QuizDetail[] | null>(null)
+  const [isLoadingComplete, setIsLoadingComplete] = useState(false)
+  const [showPdfTooltip, setShowPdfTooltip] = useState(false)
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(true)
+  const webTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const mobileTextareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const heroTexts = [
     '(퀴즐리)로 문제 생성부터 오답정리까지 한 번에!',
     '자격증 대비 (요점 정리)를 검색창에 입력해보세요.',
     '오늘 배운 과목의 (필기 내용)을 입력해보세요.',
-    '전공 (시험 대비)를 위한 범위를 입력해보세요.'
-  ];
+    '전공 (시험 대비)를 위한 범위를 입력해보세요.',
+  ]
 
   const heroTextsMobile = [
     '(퀴즐리)로 문제 생성부터\n오답정리까지 한 번에!',
     '자격증 대비 (요점 정리)를\n검색창에 입력해보세요.',
     '오늘 배운 과목의 (필기 내용)을\n입력해보세요.',
-    '전공 (시험 대비)를 위한\n범위를 입력해보세요.'
-  ];
-  const { mutate: createQuiz, isPending } = useCreateQuiz();
-  const { mutate: createMockExam, isPending: isMockExamPending } = useCreateMockExam();
-  const { mutate: createMockExamByFile, isPending: isMockExamFilePending } = useCreateMockExamByFile();
+    '전공 (시험 대비)를 위한\n범위를 입력해보세요.',
+  ]
+  const { mutate: createQuiz, isPending } = useCreateQuiz()
+  const { mutate: createMockExam, isPending: isMockExamPending } =
+    useCreateMockExam()
+  const { mutate: createMockExamByFile, isPending: isMockExamFilePending } =
+    useCreateMockExamByFile()
 
-  const handleFileUpload = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = e.target.files?.[0];
-    if (!uploadedFile) return;
+  const handleFileUpload = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      const uploadedFile = e.target.files?.[0]
+      if (!uploadedFile) return
 
-    // 지원하는 파일 형식 체크
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-    const typeValidation = validateFileType(uploadedFile, allowedTypes);
+      // 지원하는 파일 형식 체크
+      const allowedTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'application/pdf',
+      ]
+      const typeValidation = validateFileType(uploadedFile, allowedTypes)
 
-    if (!typeValidation.isValid) {
-      alert(typeValidation.error);
-      e.target.value = '';
-      return;
-    }
-
-    // PDF 파일인 경우 페이지 수 체크
-    if (uploadedFile.type === 'application/pdf') {
-      const pdfValidation = await validatePdfPageCount(uploadedFile, 10);
-
-      if (!pdfValidation.isValid) {
-        alert(pdfValidation.error);
-        e.target.value = '';
-        return;
+      if (!typeValidation.isValid) {
+        alert(typeValidation.error)
+        e.target.value = ''
+        return
       }
-    }
 
-    setFile(uploadedFile);
-    setSearchText('');
-  }, []);
+      // PDF 파일인 경우 페이지 수 체크
+      if (uploadedFile.type === 'application/pdf') {
+        const pdfValidation = await validatePdfPageCount(uploadedFile, 10)
+
+        if (!pdfValidation.isValid) {
+          alert(pdfValidation.error)
+          e.target.value = ''
+          return
+        }
+      }
+
+      setFile(uploadedFile)
+      setSearchText('')
+    },
+    [],
+  )
 
   const handleClearSearch = useCallback(() => {
-    setSearchText('');
-    setFile(null);
-  }, []);
-
+    setSearchText('')
+    setFile(null)
+  }, [])
 
   const handleOpenQuizCreateModal = useCallback(() => {
-    if (!searchText && !file) return; // 입력이 없으면 모달 열지 않음
-    setIsQuizCreateModalOpen(true);
-  }, [searchText, file]);
+    if (!searchText && !file) return // 입력이 없으면 모달 열지 않음
+    setIsQuizCreateModalOpen(true)
+  }, [searchText, file])
 
   const handleCloseQuizCreateModal = useCallback(() => {
-    setIsQuizCreateModalOpen(false);
-  }, []);
+    setIsQuizCreateModalOpen(false)
+  }, [])
 
   const handleSelectQuizType = useCallback(
     (type: QuizType) => {
-      const content = file || searchText;
-      if (!content) return;
+      const content = file || searchText
+      if (!content) return
 
       // QuizType 매핑 (multiple -> MULTIPLE_CHOICE, ox -> TRUE_FALSE)
-      const apiType = type === 'multiple' ? 'MULTIPLE_CHOICE' : 'TRUE_FALSE';
+      const apiType = type === 'multiple' ? 'MULTIPLE_CHOICE' : 'TRUE_FALSE'
 
-      setIsLoadingComplete(false);
+      setIsLoadingComplete(false)
 
       createQuiz(
         {
@@ -115,159 +124,166 @@ const HomePage = () => {
         {
           onSuccess: (response) => {
             if (response.success && response.quizDetailList.length > 0) {
-              setQuizData(response.quizDetailList);
-              setIsQuizCreateModalOpen(false);
-              setSearchText('');
-              setFile(null);
+              setQuizData(response.quizDetailList)
+              setIsQuizCreateModalOpen(false)
+              setSearchText('')
+              setFile(null)
             } else {
-              alert('문제 생성에 실패했습니다. 다시 시도해주세요.');
-              setIsLoadingComplete(true);
+              alert('문제 생성에 실패했습니다. 다시 시도해주세요.')
+              setIsLoadingComplete(true)
             }
           },
           onError: (error) => {
             alert(
-              error.message || '문제 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
-            );
-            setIsLoadingComplete(true);
+              error.message ||
+                '문제 생성 중 오류가 발생했습니다. 다시 시도해주세요.',
+            )
+            setIsLoadingComplete(true)
           },
-        }
-      );
+        },
+      )
     },
-    [searchText, file, isLoggedIn, createQuiz]
-  );
+    [searchText, file, isLoggedIn, createQuiz],
+  )
 
-  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement | HTMLDivElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey && (searchText || file)) {
-      e.preventDefault();
-      handleOpenQuizCreateModal();
-    }
-  }, [searchText, file, handleOpenQuizCreateModal]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement | HTMLDivElement>) => {
+      if (e.key === 'Enter' && !e.shiftKey && (searchText || file)) {
+        e.preventDefault()
+        handleOpenQuizCreateModal()
+      }
+    },
+    [searchText, file, handleOpenQuizCreateModal],
+  )
 
   // Textarea 자동 높이 조절 (웹/태블릿: 최대 2줄)
   const adjustWebTextareaHeight = useCallback(() => {
-    const textarea = webTextareaRef.current;
-    if (!textarea) return;
+    const textarea = webTextareaRef.current
+    if (!textarea) return
 
     // Reset height to recalculate
-    textarea.style.height = 'auto';
+    textarea.style.height = 'auto'
 
-    const lineHeight = 28; // body2-regular의 line-height (20px * 1.4)
-    const maxHeight = lineHeight * 2; // 2줄 최대
-    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    const lineHeight = 28 // body2-regular의 line-height (20px * 1.4)
+    const maxHeight = lineHeight * 2 // 2줄 최대
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight)
 
-    textarea.style.height = `${newHeight}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
-  }, []);
+    textarea.style.height = `${newHeight}px`
+    textarea.style.overflowY =
+      textarea.scrollHeight > maxHeight ? 'auto' : 'hidden'
+  }, [])
 
   // Textarea 자동 높이 조절 (모바일: 최대 6줄)
   const adjustMobileTextareaHeight = useCallback(() => {
-    const textarea = mobileTextareaRef.current;
-    if (!textarea) return;
+    const textarea = mobileTextareaRef.current
+    if (!textarea) return
 
     // Reset height to recalculate
-    textarea.style.height = 'auto';
+    textarea.style.height = 'auto'
 
-    const lineHeight = 22.4; // body3-regular의 line-height (16px * 1.4)
-    const maxHeight = lineHeight * 6; // 6줄 최대
-    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    const lineHeight = 22.4 // body3-regular의 line-height (16px * 1.4)
+    const maxHeight = lineHeight * 6 // 6줄 최대
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight)
 
-    textarea.style.height = `${newHeight}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
-  }, []);
+    textarea.style.height = `${newHeight}px`
+    textarea.style.overflowY =
+      textarea.scrollHeight > maxHeight ? 'auto' : 'hidden'
+  }, [])
 
   // searchText 변경 시 textarea 높이 조절
   useEffect(() => {
-    adjustWebTextareaHeight();
-    adjustMobileTextareaHeight();
-  }, [searchText, adjustWebTextareaHeight, adjustMobileTextareaHeight]);
+    adjustWebTextareaHeight()
+    adjustMobileTextareaHeight()
+  }, [searchText, adjustWebTextareaHeight, adjustMobileTextareaHeight])
 
   // 텍스트 무한 슬라이드 애니메이션
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsTransitioning(true);
-      setCurrentTextIndex((prev) => prev + 1);
-    }, 3000);
+      setIsTransitioning(true)
+      setCurrentTextIndex((prev) => prev + 1)
+    }, 3000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   // 인덱스가 마지막에 도달하면 첫 번째로 리셋
   useEffect(() => {
     if (currentTextIndex === heroTexts.length) {
       const timeout = setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentTextIndex(0);
-      }, 700);
+        setIsTransitioning(false)
+        setCurrentTextIndex(0)
+      }, 700)
 
-      return () => clearTimeout(timeout);
+      return () => clearTimeout(timeout)
     }
-  }, [currentTextIndex, heroTexts.length]);
+  }, [currentTextIndex, heroTexts.length])
 
   // 로그인 상태 체크 (컴포넌트 마운트 시 및 storage 이벤트 감지)
   useEffect(() => {
     const checkAuthStatus = () => {
-      setIsLoggedIn(authUtils.isAuthenticated());
-    };
+      setIsLoggedIn(authUtils.isAuthenticated())
+    }
 
     // 초기 체크
-    checkAuthStatus();
+    checkAuthStatus()
 
     // storage 이벤트 리스너 (다른 탭에서 로그인/로그아웃 시)
-    window.addEventListener('storage', checkAuthStatus);
+    window.addEventListener('storage', checkAuthStatus)
 
     // 주기적 체크 (같은 탭에서의 변경 감지)
-    const interval = setInterval(checkAuthStatus, 1000);
+    const interval = setInterval(checkAuthStatus, 1000)
 
     return () => {
-      window.removeEventListener('storage', checkAuthStatus);
-      clearInterval(interval);
-    };
-  }, []);
+      window.removeEventListener('storage', checkAuthStatus)
+      clearInterval(interval)
+    }
+  }, [])
 
-  const handleQuizComplete = useCallback((answers: UserAnswer[]) => {
+  const handleQuizComplete = useCallback(() => {
     // TODO: 채점 API 호출
-    setQuizData(null); // 홈으로 돌아가기
-    setIsLoadingComplete(false);
-  }, []);
+    setQuizData(null) // 홈으로 돌아가기
+    setIsLoadingComplete(false)
+  }, [])
 
   const handleQuizExit = useCallback(() => {
-    setQuizData(null); // 홈으로 돌아가기
-    setIsLoadingComplete(false);
-  }, []);
+    setQuizData(null) // 홈으로 돌아가기
+    setIsLoadingComplete(false)
+  }, [])
 
   const handleLoadingComplete = useCallback(() => {
-    setIsLoadingComplete(true);
-  }, []);
+    setIsLoadingComplete(true)
+  }, [])
 
   const handleOpenMockExamModal = useCallback(() => {
     if (!isLoggedIn) {
-      alert('로그인이 필요합니다.');
-      navigate('/login');
-      return;
+      alert('로그인이 필요합니다.')
+      navigate('/login')
+      return
     }
-    setIsMockExamModalOpen(true);
-  }, [isLoggedIn, navigate]);
+    setIsMockExamModalOpen(true)
+  }, [isLoggedIn, navigate])
 
   const handleCloseMockExamModal = useCallback(() => {
-    setIsMockExamModalOpen(false);
-  }, []);
+    setIsMockExamModalOpen(false)
+  }, [])
 
   const handleMockExamSubmit = useCallback(
     (data: MockExamSettingData) => {
-      const onSuccess = (response: any) => {
-        setIsMockExamModalOpen(false);
+      const onSuccess = (response: MockExamResponse) => {
+        setIsMockExamModalOpen(false)
         navigate('/mock-exam', {
           state: {
             mockExamDetailList: response.mockExamDetailList,
           },
-        });
-      };
+        })
+      }
 
       const onError = (error: Error) => {
         alert(
-          error.message || '모의고사 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
-        );
-      };
+          error.message ||
+            '모의고사 생성 중 오류가 발생했습니다. 다시 시도해주세요.',
+        )
+      }
 
       // 파일이 있는 경우 OCR API 호출
       if (data.file) {
@@ -276,8 +292,8 @@ const HomePage = () => {
             file: data.file,
             mockExamTypeList: data.mockExamTypeList,
           },
-          { onSuccess, onError }
-        );
+          { onSuccess, onError },
+        )
       } else if (data.plainText) {
         // 텍스트만 있는 경우 기존 API 호출
         createMockExam(
@@ -285,12 +301,12 @@ const HomePage = () => {
             plainText: data.plainText,
             mockExamTypeList: data.mockExamTypeList,
           },
-          { onSuccess, onError }
-        );
+          { onSuccess, onError },
+        )
       }
     },
-    [createMockExam, createMockExamByFile, navigate]
-  );
+    [createMockExam, createMockExamByFile, navigate],
+  )
 
   // 문제 풀이 페이지 표시 (로딩 완료 후에만)
   if (quizData && isLoadingComplete) {
@@ -300,13 +316,17 @@ const HomePage = () => {
         onComplete={handleQuizComplete}
         onExit={handleQuizExit}
       />
-    );
+    )
   }
 
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       {/* Header */}
-      <Header logoUrl="/logo.svg" onMockExamClick={handleOpenMockExamModal} isMockExamModalOpen={isMockExamModalOpen} />
+      <Header
+        logoUrl="/logo.svg"
+        onMockExamClick={handleOpenMockExamModal}
+        isMockExamModalOpen={isMockExamModalOpen}
+      />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
@@ -341,7 +361,11 @@ const HomePage = () => {
           {/* Title - 무한 슬라이드 애니메이션 */}
           <div className="h-[84px] mb-8 overflow-hidden relative">
             <div
-              className={isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}
+              className={
+                isTransitioning
+                  ? 'transition-transform duration-700 ease-in-out'
+                  : ''
+              }
               style={{ transform: `translateY(-${currentTextIndex * 84}px)` }}
             >
               {[...heroTexts, heroTexts[0]].map((text, index) => (
@@ -351,15 +375,15 @@ const HomePage = () => {
                   style={{ lineHeight: '1.4' }}
                 >
                   {text.split(/(\([^)]+\))/).map((part, partIndex) => {
-                    if (!part) return null;
+                    if (!part) return null
                     if (part.match(/^\([^)]+\)$/)) {
                       return (
                         <span key={partIndex} className="text-primary">
                           {part.slice(1, -1)}
                         </span>
-                      );
+                      )
                     }
-                    return part;
+                    return part
                   })}
                 </h1>
               ))}
@@ -492,27 +516,36 @@ const HomePage = () => {
         {/* Title - Mobile - 무한 슬라이드 애니메이션 */}
         <div className="h-[96px] mb-2 overflow-hidden relative">
           <div
-            className={isTransitioning ? 'transition-transform duration-700 ease-in-out' : ''}
+            className={
+              isTransitioning
+                ? 'transition-transform duration-700 ease-in-out'
+                : ''
+            }
             style={{ transform: `translateY(-${currentTextIndex * 96}px)` }}
           >
             {[...heroTextsMobile, heroTextsMobile[0]].map((text, index) => (
               <h1
                 key={index}
                 className="text-header3-bold text-gray-900 text-center h-[96px] px-4"
-                style={{ lineHeight: '1.4', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
+                style={{
+                  lineHeight: '1.4',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
               >
                 {text.split('\n').map((line, lineIndex) => (
                   <div key={lineIndex}>
                     {line.split(/(\([^)]+\))/).map((part, partIndex) => {
-                      if (!part) return null;
+                      if (!part) return null
                       if (part.match(/^\([^)]+\)$/)) {
                         return (
                           <span key={partIndex} className="text-primary">
                             {part.slice(1, -1)}
                           </span>
-                        );
+                        )
                       }
-                      return part;
+                      return part
                     })}
                   </div>
                 ))}
@@ -527,11 +560,11 @@ const HomePage = () => {
             href="/my-quizzes"
             className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
           >
-              <Icon name="book" size={24} />
-              <span className="text-tint-regular text-gray-900">
-                문제 모아보기
-              </span>
-            </a>
+            <Icon name="book" size={24} />
+            <span className="text-tint-regular text-gray-900">
+              문제 모아보기
+            </span>
+          </a>
 
           <a
             href="/wrong-quizzes"
@@ -629,9 +662,9 @@ const HomePage = () => {
         onComplete={handleLoadingComplete}
       />
     </div>
-  );
-};
+  )
+}
 
-HomePage.displayName = 'HomePage';
+HomePage.displayName = 'HomePage'
 
-export default HomePage;
+export default HomePage

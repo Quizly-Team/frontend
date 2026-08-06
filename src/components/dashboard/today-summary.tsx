@@ -1,57 +1,68 @@
-import { useMemo } from 'react';
-import type { TodaySummary as TodaySummaryType, DailySummary } from '@/api/dashboard';
-import Icon from '@/components/common/Icon';
+import { useMemo } from 'react'
+import type {
+  TodaySummary as TodaySummaryType,
+  DailySummary,
+} from '@/api/dashboard'
+import Icon from '@/components/common/Icon'
 
 type Props = {
-  data: TodaySummaryType;
-  dailyData: DailySummary[];
-};
+  data: TodaySummaryType
+  dailyData: DailySummary[]
+}
 
 export default function TodaySummary({ data, dailyData }: Props) {
   const longestStreak = useMemo(() => {
-    if (!dailyData || dailyData.length === 0) return 0;
+    if (!dailyData || dailyData.length === 0) return 0
 
-    const sortedData = [...dailyData].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const sortedData = [...dailyData].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    )
 
-    let maxStreak = 0;
-    let currentStreak = 0;
+    let maxStreak = 0
+    let currentStreak = 0
 
     for (let i = 0; i < sortedData.length; i++) {
       if (sortedData[i].solvedCount === 0) {
-        currentStreak = 0;
-        continue;
+        currentStreak = 0
+        continue
       }
 
-      const isConsecutive = i > 0 && sortedData[i - 1].solvedCount > 0 &&
-        new Date(sortedData[i].date).getTime() - new Date(sortedData[i - 1].date).getTime() === 24 * 60 * 60 * 1000;
+      const isConsecutive =
+        i > 0 &&
+        sortedData[i - 1].solvedCount > 0 &&
+        new Date(sortedData[i].date).getTime() -
+          new Date(sortedData[i - 1].date).getTime() ===
+          24 * 60 * 60 * 1000
 
       if (!isConsecutive && sortedData[i].solvedCount > 0) {
-        currentStreak = 1;
+        currentStreak = 1
       } else if (isConsecutive) {
-        currentStreak++;
+        currentStreak++
       }
 
-      maxStreak = Math.max(maxStreak, currentStreak);
+      maxStreak = Math.max(maxStreak, currentStreak)
     }
 
-    return maxStreak;
-  }, [dailyData]);
+    return maxStreak
+  }, [dailyData])
 
   const accuracyRate = useMemo(() => {
-    if (data.solvedCount === 0) return 0;
-    return Math.round((data.correctCount / data.solvedCount) * 100);
-  }, [data]);
+    if (data.solvedCount === 0) return 0
+    return Math.round((data.correctCount / data.solvedCount) * 100)
+  }, [data])
 
   const currentMonth = useMemo(() => {
-    const now = new Date();
-    return `${now.getMonth() + 1}월`;
-  }, []);
+    const now = new Date()
+    return `${now.getMonth() + 1}월`
+  }, [])
 
   return (
     <div className="bg-[#30a10e] rounded-[16px] px-[30px] pt-[30px] pb-[60px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:px-[20px] max-md:pt-[20px] max-md:pb-[20px] max-md:flex max-md:flex-col">
       <h3 className="text-[20px] max-md:text-[20px] font-medium text-white mb-[50px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
         <span className="max-md:hidden">오늘의 학습 요약</span>
-        <span className="hidden max-md:inline">{currentMonth} 학습 문제 기록</span>
+        <span className="hidden max-md:inline">
+          {currentMonth} 학습 문제 기록
+        </span>
       </h3>
 
       <div className="flex justify-center gap-[180px] max-lg:gap-[100px] max-md:flex-col max-md:gap-[16px] max-md:items-start max-md:flex-1 max-md:justify-center">
@@ -62,7 +73,9 @@ export default function TodaySummary({ data, dailyData }: Props) {
           </div>
           <div>
             <p className="text-[14px] text-white mb-[0px]">풀이 문제</p>
-            <p className="text-[24px] font-bold text-white">{data.solvedCount}</p>
+            <p className="text-[24px] font-bold text-white">
+              {data.solvedCount}
+            </p>
           </div>
         </div>
 
@@ -84,12 +97,14 @@ export default function TodaySummary({ data, dailyData }: Props) {
           </div>
           <div>
             <p className="text-[14px] text-white mb-[0px]">연속 학습</p>
-            <p className="text-[24px] font-bold text-white">{longestStreak}일</p>
+            <p className="text-[24px] font-bold text-white">
+              {longestStreak}일
+            </p>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-TodaySummary.displayName = 'TodaySummary';
+TodaySummary.displayName = 'TodaySummary'

@@ -1,136 +1,161 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Header, Icon } from '@/components';
-import { authUtils } from '@/lib/auth';
-import { getWrongQuizzes } from '@/api/quiz';
-import type { WrongQuizGroup, WrongQuizHistoryDetail } from '@/types/quiz';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getWrongQuizzes } from '@/api/quiz'
+import { Header, Icon } from '@/components'
+import { authUtils } from '@/lib/auth'
+import type { WrongQuizGroup, WrongQuizHistoryDetail } from '@/types/quiz'
 
 const GROUP_TYPE_OPTIONS: Array<{ label: string; value: 'date' | 'topic' }> = [
   { label: '날짜순', value: 'date' },
   { label: '주제순', value: 'topic' },
-];
+]
 
 const GROUP_TYPE_LABEL: Record<'date' | 'topic', string> = {
   date: '날짜순',
   topic: '주제순',
-};
+}
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 12
 
-const getPageNumbers = (currentPage: number, totalPages: number): (number | '...')[] => {
+const getPageNumbers = (
+  currentPage: number,
+  totalPages: number,
+): (number | '...')[] => {
   if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+    return Array.from({ length: totalPages }, (_, i) => i + 1)
   }
   if (currentPage <= 4) {
-    return [1, 2, 3, 4, 5, '...', totalPages];
+    return [1, 2, 3, 4, 5, '...', totalPages]
   }
   if (currentPage >= totalPages - 3) {
-    return [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    return [
+      1,
+      '...',
+      totalPages - 4,
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ]
   }
-  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
-};
+  return [
+    1,
+    '...',
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    '...',
+    totalPages,
+  ]
+}
 
 const WrongQuizPage = () => {
-  const navigate = useNavigate();
-  const [groupType, setGroupType] = useState<'date' | 'topic'>('date');
+  const navigate = useNavigate()
+  const [groupType, setGroupType] = useState<'date' | 'topic'>('date')
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() =>
-    authUtils.isAuthenticated()
-  );
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const desktopDropdownRef = useRef<HTMLDivElement | null>(null);
-  const mobileDropdownRef = useRef<HTMLDivElement | null>(null);
-  const [quizGroups, setQuizGroups] = useState<WrongQuizGroup[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+    authUtils.isAuthenticated(),
+  )
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const desktopDropdownRef = useRef<HTMLDivElement | null>(null)
+  const mobileDropdownRef = useRef<HTMLDivElement | null>(null)
+  const [quizGroups, setQuizGroups] = useState<WrongQuizGroup[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
   const handleLoginClick = useCallback(() => {
-    navigate('/login');
-  }, [navigate]);
+    navigate('/login')
+  }, [navigate])
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) return
 
     const fetchWrongQuizzes = async () => {
-      setIsLoading(true);
-      setError(null);
+      setIsLoading(true)
+      setError(null)
 
       try {
-        const response = await getWrongQuizzes(groupType, currentPage, PAGE_SIZE);
-        setQuizGroups(response.quizGroupList ?? []);
+        const response = await getWrongQuizzes(
+          groupType,
+          currentPage,
+          PAGE_SIZE,
+        )
+        setQuizGroups(response.quizGroupList ?? [])
         if (response.pagination) {
-          setTotalPages(response.pagination.totalPages);
+          setTotalPages(response.pagination.totalPages)
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
-        setError(errorMessage);
+        const errorMessage =
+          err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.'
+        setError(errorMessage)
         const isAuthError =
-          errorMessage.includes('로그인이 필요') || errorMessage.includes('인증');
+          errorMessage.includes('로그인이 필요') ||
+          errorMessage.includes('인증')
         if (isAuthError) {
-          authUtils.logout();
-          setIsAuthenticated(false);
-          navigate('/login');
+          authUtils.logout()
+          setIsAuthenticated(false)
+          navigate('/login')
         }
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchWrongQuizzes();
-  }, [isAuthenticated, groupType, currentPage, navigate]);
+    fetchWrongQuizzes()
+  }, [isAuthenticated, groupType, currentPage, navigate])
 
   useEffect(() => {
-    if (!isDropdownOpen) return;
-    if (typeof document === 'undefined') return;
+    if (!isDropdownOpen) return
+    if (typeof document === 'undefined') return
 
     const handleClickOutside = (event: MouseEvent) => {
-      const refs = [desktopDropdownRef, mobileDropdownRef];
+      const refs = [desktopDropdownRef, mobileDropdownRef]
       const shouldClose = refs.every(
-        (ref) => !ref.current || !ref.current.contains(event.target as Node)
-      );
+        (ref) => !ref.current || !ref.current.contains(event.target as Node),
+      )
 
       if (shouldClose) {
-        setIsDropdownOpen(false);
+        setIsDropdownOpen(false)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isDropdownOpen]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isDropdownOpen])
 
   const handleGroupTypeChange = useCallback((value: 'date' | 'topic') => {
-    setGroupType(value);
-    setCurrentPage(1);
-    setIsDropdownOpen(false);
-  }, []);
+    setGroupType(value)
+    setCurrentPage(1)
+    setIsDropdownOpen(false)
+  }, [])
 
   const handleDropdownToggle = useCallback(() => {
-    setIsDropdownOpen((prev) => !prev);
-  }, []);
+    setIsDropdownOpen((prev) => !prev)
+  }, [])
 
   const handleCardClick = useCallback(
     (quizzes: WrongQuizHistoryDetail[]) => {
-      if (!quizzes.length) return;
+      if (!quizzes.length) return
       navigate('/wrong-quizzes/solve', {
         state: { quizzes },
-      });
+      })
     },
-    [navigate]
-  );
+    [navigate],
+  )
 
   const cardBaseClass =
-    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto';
+    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto'
 
   const pageNumbers = useMemo(
     () => getPageNumbers(currentPage, totalPages),
-    [currentPage, totalPages]
-  );
+    [currentPage, totalPages],
+  )
 
   const renderPagination = () => {
-    if (isLoading || error || !quizGroups.length) return null;
+    if (isLoading || error || !quizGroups.length) return null
 
     return (
       <div className="flex items-center justify-center gap-1 mt-10">
@@ -142,7 +167,13 @@ const WrongQuizPage = () => {
           aria-label="이전 페이지"
         >
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-            <path d="M6 1L1 6L6 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M6 1L1 6L6 11"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
 
@@ -167,7 +198,7 @@ const WrongQuizPage = () => {
             >
               {page}
             </button>
-          )
+          ),
         )}
 
         <button
@@ -178,12 +209,18 @@ const WrongQuizPage = () => {
           aria-label="다음 페이지"
         >
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
-            <path d="M1 1L6 6L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M1 1L6 6L1 11"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
       </div>
-    );
-  };
+    )
+  }
 
   const renderContent = (gridClassName: string) => {
     if (isLoading) {
@@ -192,7 +229,7 @@ const WrongQuizPage = () => {
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-body1-medium text-gray-600">로딩 중...</p>
         </div>
-      );
+      )
     }
 
     if (error) {
@@ -209,7 +246,7 @@ const WrongQuizPage = () => {
             다시 시도
           </button>
         </div>
-      );
+      )
     }
 
     if (!quizGroups.length) {
@@ -222,14 +259,14 @@ const WrongQuizPage = () => {
             문제를 풀고 다시 도전할 틀린 문제를 모아볼 수 있어요.
           </p>
         </div>
-      );
+      )
     }
 
     if (groupType === 'topic') {
       return (
         <div className={gridClassName}>
           {quizGroups.map((group) => {
-            const quizCount = group.quizHistoryDetailList.length;
+            const quizCount = group.quizHistoryDetailList.length
             return (
               <button
                 key={`${group.group}-topic`}
@@ -239,7 +276,10 @@ const WrongQuizPage = () => {
               >
                 <div className="flex flex-col gap-[24px] items-center w-full max-lg:gap-[20px]">
                   <div className="flex items-center justify-center gap-1 w-full">
-                    <Icon name="icn_note" className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]" />
+                    <Icon
+                      name="icn_note"
+                      className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]"
+                    />
                     <span className="text-[20px] font-medium text-gray-900 truncate max-w-[200px] max-md:text-[18px]">
                       {group.group}
                     </span>
@@ -254,10 +294,10 @@ const WrongQuizPage = () => {
                   </div>
                 </div>
               </button>
-            );
+            )
           })}
         </div>
-      );
+      )
     }
 
     return (
@@ -271,7 +311,10 @@ const WrongQuizPage = () => {
           >
             <div className="flex flex-col gap-[24px] items-center w-full max-lg:gap-[20px]">
               <div className="flex items-center justify-center gap-1 w-full">
-                <Icon name="calendar" className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]" />
+                <Icon
+                  name="calendar"
+                  className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]"
+                />
                 <span className="text-[20px] font-medium text-gray-900 max-md:text-[18px]">
                   {group.group}
                 </span>
@@ -287,13 +330,13 @@ const WrongQuizPage = () => {
           </button>
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   // 비회원인 경우 - 로그인 요구 페이지 표시
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-bg-home flex flex-col">
+      <div className="flex-1 bg-bg-home flex flex-col">
         <Header logoUrl="/logo.svg" />
 
         {/* Main Content - Web/Tablet */}
@@ -388,12 +431,12 @@ const WrongQuizPage = () => {
           </button>
         </main>
       </div>
-    );
+    )
   }
 
   // 회원인 경우 - 틀린문제 목록 표시
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
@@ -402,7 +445,8 @@ const WrongQuizPage = () => {
           <div className="flex flex-col gap-6 mb-12">
             <div className="flex items-center justify-center gap-3 text-center">
               <h1 className="text-header1-bold text-gray-900">
-                <span className="text-primary">틀린문제</span> 다시 한번 풀어봐요
+                <span className="text-primary">틀린문제</span> 다시 한번
+                풀어봐요
               </h1>
               <Icon name="icn_checkbox" size={40} />
             </div>
@@ -533,9 +577,9 @@ const WrongQuizPage = () => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-WrongQuizPage.displayName = 'WrongQuizPage';
+WrongQuizPage.displayName = 'WrongQuizPage'
 
-export default WrongQuizPage;
+export default WrongQuizPage

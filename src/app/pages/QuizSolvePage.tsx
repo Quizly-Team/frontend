@@ -1,18 +1,23 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Header, Icon, QuizResultModal, QuizExitConfirmModal } from '@/components';
-import ProgressBar from '@/components/common/ProgressBar';
-import type { QuizDetail, UserAnswer } from '@/types/quiz';
-import { submitAnswerMember, submitAnswerRetry } from '@/api/quiz';
-import { authUtils } from '@/lib/auth';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { submitAnswerMember, submitAnswerRetry } from '@/api/quiz'
+import {
+  Header,
+  Icon,
+  QuizResultModal,
+  QuizExitConfirmModal,
+} from '@/components'
+import ProgressBar from '@/components/common/ProgressBar'
+import { authUtils } from '@/lib/auth'
+import type { QuizDetail, UserAnswer } from '@/types/quiz'
 
 type QuizSolvePageProps = {
-  quizDetailList: QuizDetail[];
-  isRetryMode?: boolean;
-  onComplete?: (answers: UserAnswer[]) => void;
-  onExit?: () => void;
-  onViewAll?: (answers: UserAnswer[]) => void;
-};
+  quizDetailList: QuizDetail[]
+  isRetryMode?: boolean
+  onComplete?: (answers: UserAnswer[]) => void
+  onExit?: () => void
+  onViewAll?: (answers: UserAnswer[]) => void
+}
 
 const QuizSolvePage = ({
   quizDetailList,
@@ -21,80 +26,78 @@ const QuizSolvePage = ({
   onExit,
   onViewAll,
 }: QuizSolvePageProps) => {
-  const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string>('');
-  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
-  const [showResult, setShowResult] = useState(false);
-  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
-  const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([]);
-  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
-  const [pendingNavigation, setPendingNavigation] = useState<(() => void) | null>(null);
-  const startTimeRef = useRef<number | null>(null);
-  const solveTimeRef = useRef(0);
+  const navigate = useNavigate()
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState<string>('')
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([])
+  const [showResult, setShowResult] = useState(false)
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false)
+  const [finalAnswers, setFinalAnswers] = useState<UserAnswer[]>([])
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false)
+  const [pendingNavigation, setPendingNavigation] = useState<
+    (() => void) | null
+  >(null)
+  const startTimeRef = useRef<number | null>(null)
+  const solveTimeRef = useRef(0)
 
-  const currentQuiz = quizDetailList[currentIndex];
-  const isLastQuestion = currentIndex === quizDetailList.length - 1;
-  const questionNumber = currentIndex + 1;
-  const isAuthenticated = authUtils.isAuthenticated();
+  const currentQuiz = quizDetailList[currentIndex]
+  const isLastQuestion = currentIndex === quizDetailList.length - 1
+  const questionNumber = currentIndex + 1
+  const isAuthenticated = authUtils.isAuthenticated()
 
   useEffect(() => {
-    if (typeof performance === 'undefined') return;
-    startTimeRef.current = performance.now();
-    solveTimeRef.current = 0;
-  }, [currentIndex]);
-
+    if (typeof performance === 'undefined') return
+    startTimeRef.current = performance.now()
+    solveTimeRef.current = 0
+  }, [currentIndex])
 
   const calculateSolveTime = useCallback(() => {
     if (typeof performance === 'undefined' || startTimeRef.current === null) {
-      return 0;
+      return 0
     }
-    const raw = (performance.now() - startTimeRef.current) / 1000;
-    return Number(raw.toFixed(2));
-  }, []);
+    const raw = (performance.now() - startTimeRef.current) / 1000
+    return Number(raw.toFixed(2))
+  }, [])
 
   // 정답 여부 확인 (TRUE/FALSE를 O/X로 변환하여 비교)
   const normalizeAnswer = (answer: string) => {
-    if (answer === 'TRUE') return 'O';
-    if (answer === 'FALSE') return 'X';
-    return answer;
-  };
+    if (answer === 'TRUE') return 'O'
+    if (answer === 'FALSE') return 'X'
+    return answer
+  }
 
   const correctCount = useMemo(() => {
-    if (!finalAnswers.length) return 0;
+    if (!finalAnswers.length) return 0
 
     return finalAnswers.reduce((count, answer) => {
-      const quiz = quizDetailList.find(
-        (quiz) => quiz.quizId === answer.quizId
-      );
+      const quiz = quizDetailList.find((quiz) => quiz.quizId === answer.quizId)
 
-      if (!quiz) return count;
+      if (!quiz) return count
 
       return normalizeAnswer(answer.selectedAnswer) ===
         normalizeAnswer(quiz.answer)
         ? count + 1
-        : count;
-    }, 0);
-  }, [finalAnswers, quizDetailList]);
+        : count
+    }, 0)
+  }, [finalAnswers, quizDetailList])
 
   const isCorrect =
-    normalizeAnswer(selectedAnswer) === normalizeAnswer(currentQuiz.answer);
+    normalizeAnswer(selectedAnswer) === normalizeAnswer(currentQuiz.answer)
 
   // const displayedElapsedSeconds = showResult
   //   ? solveTimeRef.current
   //   : Number((elapsedMs / 1000).toFixed(2));
   // const formattedElapsedSeconds = displayedElapsedSeconds.toFixed(2);
 
-
   const handleSelectAnswer = useCallback(
     async (answer: string) => {
-      if (showResult) return;
+      if (showResult) return
 
-      setSelectedAnswer(answer);
+      setSelectedAnswer(answer)
 
       // 답 선택 즉시 채점 실행
-      const solveTimeSeconds = calculateSolveTime();
-      solveTimeRef.current = solveTimeSeconds;
+      const solveTimeSeconds = calculateSolveTime()
+      solveTimeRef.current = solveTimeSeconds
 
       // 회원인 경우 API 호출
       if (isAuthenticated) {
@@ -104,148 +107,151 @@ const QuizSolvePage = ({
             await submitAnswerRetry(
               currentQuiz.quizId,
               answer,
-              solveTimeSeconds
-            );
+              solveTimeSeconds,
+            )
           } else {
             await submitAnswerMember(
               currentQuiz.quizId,
               answer,
-              solveTimeSeconds
-            );
+              solveTimeSeconds,
+            )
           }
-        } catch (error) {
+        } catch {
           // 에러가 발생해도 UI 흐름은 유지 (사용자 경험 보호)
         }
       }
 
-      setShowResult(true);
+      setShowResult(true)
     },
-    [showResult, calculateSolveTime, isAuthenticated, isRetryMode, currentQuiz.quizId]
-  );
+    [
+      showResult,
+      calculateSolveTime,
+      isAuthenticated,
+      isRetryMode,
+      currentQuiz.quizId,
+    ],
+  )
 
   const handleNextQuestion = useCallback(() => {
-    if (!selectedAnswer || !showResult) return;
+    if (!selectedAnswer || !showResult) return
 
     // 현재 답안 저장
     const newAnswer: UserAnswer = {
       quizId: currentQuiz.quizId,
       selectedAnswer,
       solveTime: solveTimeRef.current,
-    };
-    const updatedAnswers = [...userAnswers, newAnswer];
-    setUserAnswers(updatedAnswers);
+    }
+    const updatedAnswers = [...userAnswers, newAnswer]
+    setUserAnswers(updatedAnswers)
 
     if (isLastQuestion) {
-      setFinalAnswers(updatedAnswers);
-      setIsResultModalOpen(true);
-      return;
+      setFinalAnswers(updatedAnswers)
+      setIsResultModalOpen(true)
+      return
     }
 
-    setCurrentIndex((prev) => prev + 1);
-    setSelectedAnswer('');
-    setShowResult(false);
-  }, [
-    selectedAnswer,
-    currentQuiz,
-    userAnswers,
-    isLastQuestion,
-    showResult,
-  ]);
+    setCurrentIndex((prev) => prev + 1)
+    setSelectedAnswer('')
+    setShowResult(false)
+  }, [selectedAnswer, currentQuiz, userAnswers, isLastQuestion, showResult])
 
   const handleResultClose = useCallback(() => {
-    if (!finalAnswers.length) return;
-    setIsResultModalOpen(false);
-    onComplete?.(finalAnswers);
-  }, [finalAnswers, onComplete]);
+    if (!finalAnswers.length) return
+    setIsResultModalOpen(false)
+    onComplete?.(finalAnswers)
+  }, [finalAnswers, onComplete])
 
   const handleViewAllClick = useCallback(() => {
-    if (!finalAnswers.length) return;
-    setIsResultModalOpen(false);
+    if (!finalAnswers.length) return
+    setIsResultModalOpen(false)
     if (onViewAll) {
-      onViewAll(finalAnswers);
-      return;
+      onViewAll(finalAnswers)
+      return
     }
     // 문제 모아보기 페이지로 이동
-    navigate('/my-quizzes');
-  }, [finalAnswers, onViewAll, navigate]);
+    navigate('/my-quizzes')
+  }, [finalAnswers, onViewAll, navigate])
 
   const handleCreateMore = useCallback(() => {
-    setIsResultModalOpen(false);
+    setIsResultModalOpen(false)
     if (onExit) {
-      onExit();
-      return;
+      onExit()
+      return
     }
     if (finalAnswers.length) {
-      onComplete?.(finalAnswers);
+      onComplete?.(finalAnswers)
     }
-  }, [finalAnswers, onComplete, onExit]);
+  }, [finalAnswers, onComplete, onExit])
 
-  const handleHeaderClick = useCallback((e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const link = target.closest('a, button, img');
+  const handleHeaderClick = useCallback(
+    (e: React.MouseEvent) => {
+      const target = e.target as HTMLElement
+      const link = target.closest('a, button, img')
 
-    if (!link) return;
+      if (!link) return
 
-    e.preventDefault();
-    e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
+      e.preventDefault()
+      e.stopPropagation()
+      e.nativeEvent.stopImmediatePropagation()
 
-    if (link.tagName === 'A') {
-      const href = (link as HTMLAnchorElement).href;
-      setPendingNavigation(() => () => {
-        window.location.href = href;
-      });
-    } else if (link.tagName === 'BUTTON') {
-      setPendingNavigation(() => () => {
-        if (onExit) {
-          onExit();
-        } else {
-          window.location.href = '/';
-        }
-      });
-    } else if (link.tagName === 'IMG') {
-      const parentLink = link.closest('a');
-      if (parentLink) {
-        const href = (parentLink as HTMLAnchorElement).href;
+      if (link.tagName === 'A') {
+        const href = (link as HTMLAnchorElement).href
         setPendingNavigation(() => () => {
-          window.location.href = href;
-        });
+          window.location.href = href
+        })
+      } else if (link.tagName === 'BUTTON') {
+        setPendingNavigation(() => () => {
+          if (onExit) {
+            onExit()
+          } else {
+            window.location.href = '/'
+          }
+        })
+      } else if (link.tagName === 'IMG') {
+        const parentLink = link.closest('a')
+        if (parentLink) {
+          const href = (parentLink as HTMLAnchorElement).href
+          setPendingNavigation(() => () => {
+            window.location.href = href
+          })
+        }
       }
-    }
 
-    setIsExitModalOpen(true);
-  }, [onExit]);
+      setIsExitModalOpen(true)
+    },
+    [onExit],
+  )
 
   const handleMobileExitClick = useCallback(() => {
     setPendingNavigation(() => () => {
       if (onExit) {
-        onExit();
+        onExit()
       } else {
-        navigate(-1);
+        navigate(-1)
       }
-    });
-    setIsExitModalOpen(true);
-  }, [onExit, navigate]);
+    })
+    setIsExitModalOpen(true)
+  }, [onExit, navigate])
 
   const handleExitModalClose = useCallback(() => {
-    setIsExitModalOpen(false);
-    setPendingNavigation(null);
-  }, []);
+    setIsExitModalOpen(false)
+    setPendingNavigation(null)
+  }, [])
 
   const handleConfirmExit = useCallback(() => {
-    setIsExitModalOpen(false);
+    setIsExitModalOpen(false)
     if (pendingNavigation) {
-      pendingNavigation();
+      pendingNavigation()
     }
-    setPendingNavigation(null);
-  }, [pendingNavigation]);
+    setPendingNavigation(null)
+  }, [pendingNavigation])
 
   if (!currentQuiz) {
-    return <div>로딩 중...</div>;
+    return <div>로딩 중...</div>
   }
 
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="flex-1 bg-bg-home flex flex-col">
       {/* Header - Web/Tablet Only */}
       <div className="max-md:hidden" onClickCapture={handleHeaderClick}>
         <Header logoUrl="/logo.svg" />
@@ -334,8 +340,8 @@ const QuizSolvePage = ({
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'O'
-                          ? 'bg-primary/10 border-primary'
-                          : 'border-gray-300'
+                            ? 'bg-primary/10 border-primary'
+                            : 'border-gray-300'
                       }
                     `}
                   >
@@ -362,8 +368,8 @@ const QuizSolvePage = ({
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'X'
-                          ? 'bg-primary/10 border-primary'
-                          : 'border-gray-300'
+                            ? 'bg-primary/10 border-primary'
+                            : 'border-gray-300'
                       }
                     `}
                   >
@@ -382,8 +388,8 @@ const QuizSolvePage = ({
               ) : (
                 // 객관식 문제
                 currentQuiz.options.map((option, index) => {
-                  const isSelected = selectedAnswer === option;
-                  const isCorrectAnswer = option === currentQuiz.answer;
+                  const isSelected = selectedAnswer === option
+                  const isCorrectAnswer = option === currentQuiz.answer
 
                   return (
                     <button
@@ -399,8 +405,8 @@ const QuizSolvePage = ({
                                 : 'bg-white border-error'
                               : 'bg-white border-gray-300'
                             : isSelected
-                            ? 'bg-primary/10 border-primary'
-                            : 'bg-white border-gray-300'
+                              ? 'bg-primary/10 border-primary'
+                              : 'bg-white border-gray-300'
                         }
                       `}
                     >
@@ -411,8 +417,8 @@ const QuizSolvePage = ({
                               ? 'check_blue'
                               : 'check_red'
                             : isSelected
-                            ? 'check_black'
-                            : 'check_black'
+                              ? 'check_black'
+                              : 'check_black'
                         }
                         size={24}
                         className="flex-shrink-0"
@@ -421,7 +427,7 @@ const QuizSolvePage = ({
                         {option}
                       </span>
                     </button>
-                  );
+                  )
                 })
               )}
             </div>
@@ -457,8 +463,8 @@ const QuizSolvePage = ({
                     ? currentQuiz.answer === 'TRUE'
                       ? 'O'
                       : currentQuiz.answer === 'FALSE'
-                      ? 'X'
-                      : currentQuiz.answer
+                        ? 'X'
+                        : currentQuiz.answer
                     : currentQuiz.answer}
                 </p>
               </div>
@@ -541,8 +547,8 @@ const QuizSolvePage = ({
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'O'
-                          ? 'bg-primary/10 border-primary'
-                          : 'bg-white hover:bg-gray-50 border-gray-300'
+                            ? 'bg-primary/10 border-primary'
+                            : 'bg-white hover:bg-gray-50 border-gray-300'
                       }
                     `}
                   >
@@ -569,8 +575,8 @@ const QuizSolvePage = ({
                               : 'bg-white border-error'
                             : 'bg-white border-gray-300'
                           : selectedAnswer === 'X'
-                          ? 'bg-primary/10 border-primary'
-                          : 'bg-white hover:bg-gray-50 border-gray-300'
+                            ? 'bg-primary/10 border-primary'
+                            : 'bg-white hover:bg-gray-50 border-gray-300'
                       }
                     `}
                   >
@@ -589,8 +595,8 @@ const QuizSolvePage = ({
               ) : (
                 // 객관식 문제
                 currentQuiz.options.map((option, index) => {
-                  const isSelected = selectedAnswer === option;
-                  const isCorrectAnswer = option === currentQuiz.answer;
+                  const isSelected = selectedAnswer === option
+                  const isCorrectAnswer = option === currentQuiz.answer
 
                   return (
                     <button
@@ -606,8 +612,8 @@ const QuizSolvePage = ({
                                 : 'bg-white border-error'
                               : 'bg-white border-gray-300'
                             : isSelected
-                            ? 'bg-primary/10 border-primary'
-                            : 'bg-white hover:bg-gray-50 border-gray-300'
+                              ? 'bg-primary/10 border-primary'
+                              : 'bg-white hover:bg-gray-50 border-gray-300'
                         }
                       `}
                     >
@@ -618,8 +624,8 @@ const QuizSolvePage = ({
                               ? 'check_blue'
                               : 'check_red'
                             : isSelected
-                            ? 'check_black'
-                            : 'check_black'
+                              ? 'check_black'
+                              : 'check_black'
                         }
                         size={16}
                         className="flex-shrink-0"
@@ -628,7 +634,7 @@ const QuizSolvePage = ({
                         {option}
                       </span>
                     </button>
-                  );
+                  )
                 })
               )}
             </div>
@@ -646,8 +652,8 @@ const QuizSolvePage = ({
                     ? currentQuiz.answer === 'TRUE'
                       ? 'O'
                       : currentQuiz.answer === 'FALSE'
-                      ? 'X'
-                      : currentQuiz.answer
+                        ? 'X'
+                        : currentQuiz.answer
                     : currentQuiz.answer}
                 </p>
               </div>
@@ -680,7 +686,6 @@ const QuizSolvePage = ({
             {isLastQuestion ? '결과보기' : '다음 문제'}
           </button>
         </div>
-        
       </div>
 
       <QuizResultModal
@@ -698,9 +703,9 @@ const QuizSolvePage = ({
         onConfirmExit={handleConfirmExit}
       />
     </div>
-  );
-};
+  )
+}
 
-QuizSolvePage.displayName = 'QuizSolvePage';
+QuizSolvePage.displayName = 'QuizSolvePage'
 
-export default QuizSolvePage;
+export default QuizSolvePage
