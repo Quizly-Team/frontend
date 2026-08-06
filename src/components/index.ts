@@ -24,6 +24,8 @@ export { default as FaqAccordionItem } from './common/FaqAccordionItem'
 
 // Domain Components
 export { default as FaqCategorySection } from './domain/FaqCategorySection'
+export { default as MyPageTabs } from './domain/MyPageTabs'
+export type { MyPageTab } from './domain/MyPageTabs'
 
 // Modal Components
 export { default as MockExamSettingModal } from './modal/MockExamSettingModal'

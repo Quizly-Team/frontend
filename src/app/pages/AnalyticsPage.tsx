@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   getUserInfo,
   updateNickname,
@@ -7,7 +7,7 @@ import {
   logout,
   type ReadUserInfoResponse,
 } from '@/api/account'
-import { Header, Button } from '@/components'
+import { Header, Footer, Button, MyPageTabs } from '@/components'
 import CumulativeSummary from '@/components/dashboard/cumulative-summary'
 import HourlyChart from '@/components/dashboard/hourly-chart'
 import LearningStats from '@/components/dashboard/learning-stats'
@@ -22,8 +22,10 @@ type TabType = 'analytics' | 'account'
 
 const AnalyticsPage = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { userInfo: contextUserInfo, refreshUserInfo } = useUser()
-  const [activeTab, setActiveTab] = useState<TabType>('analytics')
+  const activeTab: TabType =
+    searchParams.get('tab') === 'account' ? 'account' : 'analytics'
   const [userInfo, setUserInfo] = useState<ReadUserInfoResponse | null>(null)
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
@@ -214,29 +216,10 @@ const AnalyticsPage = () => {
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
         <div className="w-full max-w-[1024px] max-lg:max-w-full max-md:max-w-full">
           {/* 탭 헤더 */}
-          <div className="mb-[30px] max-md:mb-[31px]">
-            <div className="flex items-center gap-6 max-lg:gap-4 max-md:gap-4 mb-[6px] max-md:mb-5">
-              <button
-                onClick={() => setActiveTab('analytics')}
-                className={`text-[32px] max-lg:text-[28px] max-md:text-[24px] font-bold leading-[44.8px] max-lg:leading-[39.2px] max-md:leading-[33.6px] ${
-                  activeTab === 'analytics' ? 'text-gray-900' : 'text-gray-300'
-                }`}
-              >
-                학습분석
-              </button>
-              <button
-                onClick={() => setActiveTab('account')}
-                className={`text-[32px] max-lg:text-[28px] max-md:text-[24px] font-bold leading-[44.8px] max-lg:leading-[39.2px] max-md:leading-[33.6px] ${
-                  activeTab === 'account' ? 'text-gray-900' : 'text-gray-300'
-                }`}
-              >
-                계정관리
-              </button>
-            </div>
-            <p className="text-[20px] max-lg:text-[18px] max-md:text-[16px] leading-[28px] max-lg:leading-[25.2px] max-md:leading-[22.4px] text-gray-600">
-              학습 현황을 확인하고 계정을 관리하세요
-            </p>
-          </div>
+          <MyPageTabs
+            active={activeTab}
+            description="학습 현황을 확인하고 계정을 관리하세요"
+          />
 
           {activeTab === 'analytics' && (
             <div className="flex flex-col gap-5 max-md:gap-[20px]">
