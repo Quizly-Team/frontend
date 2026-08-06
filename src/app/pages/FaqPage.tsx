@@ -1,11 +1,9 @@
-import { useNavigate } from 'react-router-dom'
-import { Header, Footer, FaqCategorySection } from '@/components'
+import { Header, Footer, FaqCategorySection, MyPageTabs } from '@/components'
 import { useFaqs } from '@/hooks/useFaqs'
 
 const CONTACT_EMAIL = 'duwn1010@gmail.com'
 
 const FaqPage = () => {
-  const navigate = useNavigate()
   const { data, isLoading, isError } = useFaqs()
   const groups = data?.faqCategoryGroupList ?? []
 
@@ -16,28 +14,10 @@ const FaqPage = () => {
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
         <div className="w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
           {/* 상단 탭 */}
-          <div className="mb-[30px]">
-            <div className="flex items-center gap-6 max-md:gap-4 mb-[6px]">
-              <button
-                onClick={() => navigate('/analytics')}
-                className="text-header1-bold max-lg:text-[32px] max-md:text-header3-bold text-gray-300"
-              >
-                학습분석
-              </button>
-              <span className="text-header1-bold max-lg:text-[32px] max-md:text-header3-bold text-gray-900">
-                FAQ
-              </span>
-              <button
-                onClick={() => navigate('/analytics')}
-                className="text-header1-bold max-lg:text-[32px] max-md:text-header3-bold text-gray-300"
-              >
-                계정관리
-              </button>
-            </div>
-            <p className="text-[20px] max-md:text-[16px] leading-[1.4] text-gray-600">
-              Quizly에 대해 궁금한 점을 빠르게 찾아보세요
-            </p>
-          </div>
+          <MyPageTabs
+            active="faq"
+            description="Quizly에 대해 궁금한 점을 빠르게 찾아보세요"
+          />
 
           {/* 본문: 로딩 / 에러 / 빈 / 데이터주도 렌더 */}
           {isLoading ? (
