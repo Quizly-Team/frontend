@@ -2,6 +2,7 @@ import { createBrowserRouter, Outlet } from 'react-router-dom'
 import AdminPage from '@/app/pages/AdminPage'
 import AnalyticsPage from '@/app/pages/AnalyticsPage'
 import AuthCallback from '@/app/pages/AuthCallback'
+import DailyQuizPage from '@/app/pages/DailyQuizPage'
 import FaqPage from '@/app/pages/FaqPage'
 import HomePage from '@/app/pages/HomePage'
 import LoginPage from '@/app/pages/LoginPage'
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: '/faq',
         element: <FaqPage />,
+      },
+      {
+        path: '/daily-quiz',
+        element: <DailyQuizPage />,
       },
       {
         path: '/login',

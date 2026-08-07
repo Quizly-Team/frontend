@@ -24,6 +24,10 @@ export { default as FaqAccordionItem } from './common/FaqAccordionItem'
 
 // Domain Components
 export { default as FaqCategorySection } from './domain/FaqCategorySection'
+export { default as DailyQuizEntryCard } from './domain/DailyQuizEntryCard'
+export { default as DailyQuizSourcePanel } from './domain/DailyQuizSourcePanel'
+export { default as DailyQuizQuestionCard } from './domain/DailyQuizQuestionCard'
+export { default as DailyQuizResult } from './domain/DailyQuizResult'
 
 // Modal Components
 export { default as MockExamSettingModal } from './modal/MockExamSettingModal'

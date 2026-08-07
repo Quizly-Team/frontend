@@ -83,6 +83,23 @@
   --breakpoint-lg: 1024px;
 }
 
+/* 통통통 3회 뛰고 1박자 쉬는 반복 바운스. Tailwind 내장 bounce는 연속 반복이라 정지 구간을 표현할 수 없다.
+   진폭(-25%)과 ease-in-out은 홈 히어로 캐릭터(HomePage)의 bounce와 같은 값이라 시각 언어가 통일된다. (#116) */
+@keyframes quiz-bounce {
+  0%,
+  25%,
+  50%,
+  75%,
+  100% {
+    transform: translateY(0);
+  }
+  12.5%,
+  37.5%,
+  62.5% {
+    transform: translateY(-25%);
+  }
+}
+
 @layer base {
   * {
     margin: 0;

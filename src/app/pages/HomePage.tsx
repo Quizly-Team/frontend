@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import type { ChangeEvent, KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
+  DailyQuizEntryCard,
   Header,
   Icon,
   QuizCreateModal,
@@ -13,6 +14,7 @@ import type { MockExamSettingData } from '@/components/modal/MockExamSettingModa
 import { useCreateQuiz } from '@/hooks/useCreateQuiz'
 import { useCreateMockExam, useCreateMockExamByFile } from '@/hooks/useMockExam'
 import { authUtils } from '@/lib/auth'
+import { isDailyQuizCompletedToday } from '@/lib/dailyQuizCompletion'
 import { validatePdfPageCount, validateFileType } from '@/lib/pdfUtils'
 import type { QuizDetail, MockExamResponse } from '@/types/quiz'
 import QuizSolvePage from './QuizSolvePage'
@@ -28,6 +30,8 @@ const HomePage = () => {
   const [quizData, setQuizData] = useState<QuizDetail[] | null>(null)
   const [isLoadingComplete, setIsLoadingComplete] = useState(false)
   const [showPdfTooltip, setShowPdfTooltip] = useState(false)
+  // 마운트 시 1회 평가. 결과 화면에서 홈으로 돌아오면 라우트 전환으로 재마운트되어 갱신된다.
+  const [isDailyQuizDone] = useState(isDailyQuizCompletedToday)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(true)
   const webTextareaRef = useRef<HTMLTextAreaElement>(null)
@@ -459,27 +463,31 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* Action Buttons - Web/Tablet */}
-          <div className="flex gap-4">
-            <a
-              href="/my-quizzes"
-              className="bg-white px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
-            >
-              <Icon name="book" size={28} />
-              <span className="text-body1-medium text-gray-900">
-                문제 모아보기
-              </span>
-            </a>
+          {/* Entry Cards - Web/Tablet */}
+          <div className="flex gap-xl">
+            <DailyQuizEntryCard
+              icon="dashboard_3d_lightbulb"
+              iconBoxClassName="bg-[#f6fbf4]"
+              title="Quizly 가이드"
+              badge={{ label: '필독', className: 'bg-[#f6fbf4] text-primary' }}
+              description="퀴즐리의 모든 기능을 파악"
+              className="w-[300px] max-lg:w-[280px]"
+            />
 
-            <a
-              href="/wrong-quizzes"
-              className="bg-white px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
-            >
-              <Icon name="write" size={28} />
-              <span className="text-body1-medium text-gray-900">
-                틀린문제 풀어보기
-              </span>
-            </a>
+            <DailyQuizEntryCard
+              icon="dashboard_3d_clock"
+              iconBoxClassName="bg-[#eff6ff]"
+              title="5분 상식 퀴즈"
+              badge={{ label: 'NEW', className: 'bg-[#eff6ff] text-[#0053e2]' }}
+              description="AI가 출제하는 오늘의 상식 문제"
+              to="/daily-quiz"
+              completed={isDailyQuizDone}
+              className={
+                isDailyQuizDone
+                  ? 'w-[300px] max-lg:w-[280px]'
+                  : 'w-[248px] max-lg:w-[280px]'
+              }
+            />
           </div>
         </div>
       </main>
@@ -554,27 +562,27 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Action Buttons - Mobile */}
-        <div className="flex gap-3">
-          <a
-            href="/my-quizzes"
-            className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
-          >
-            <Icon name="book" size={24} />
-            <span className="text-tint-regular text-gray-900">
-              문제 모아보기
-            </span>
-          </a>
+        {/* Entry Cards - Mobile */}
+        <div className="mt-[22px] w-full max-w-[335px] flex flex-col gap-[10px]">
+          <DailyQuizEntryCard
+            icon="dashboard_3d_lightbulb"
+            iconBoxClassName="bg-[#f6fbf4]"
+            title="Quizly 가이드"
+            badge={{ label: '필독', className: 'bg-[#f6fbf4] text-primary' }}
+            description="퀴즐리의 모든 기능을 파악"
+            className="h-16"
+          />
 
-          <a
-            href="/wrong-quizzes"
-            className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
-          >
-            <Icon name="write" size={24} />
-            <span className="text-tint-regular text-gray-900">
-              틀린문제 풀어보기
-            </span>
-          </a>
+          <DailyQuizEntryCard
+            icon="dashboard_3d_clock"
+            iconBoxClassName="bg-[#eff6ff]"
+            title="5분 상식 퀴즈"
+            badge={{ label: 'NEW', className: 'bg-[#eff6ff] text-[#0053e2]' }}
+            description="AI가 출제하는 오늘의 상식 문제"
+            to="/daily-quiz"
+            completed={isDailyQuizDone}
+            className="h-16"
+          />
         </div>
       </main>
 
