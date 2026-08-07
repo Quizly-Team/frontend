@@ -1,10 +1,4 @@
-import type { DailyQuizSource, DailyQuizTextSpan } from '@/types/dailyQuiz'
-
-const ACCENT_CLASS = {
-  primary: 'text-primary',
-  info: 'text-info',
-  error: 'text-error',
-} as const
+import type { DailyQuizSource } from '@/types/dailyQuiz'
 
 const TRAFFIC_LIGHT_CLASS = ['bg-[#ff5f57]', 'bg-[#febc2e]', 'bg-[#28c840]']
 
@@ -40,21 +34,16 @@ const DailyQuizSourcePanel = ({
               />
             ))}
           </div>
-          <span className="text-body3-regular text-gray-400 truncate">
-            {source.fileName}
-          </span>
+          {source.label && (
+            <span className="text-body3-regular text-gray-400 truncate">
+              {source.label}
+            </span>
+          )}
         </div>
 
         <div className="bg-white border border-[#dedede] rounded-b-[20px] p-xl max-h-[420px] max-lg:max-h-none overflow-y-auto">
           <p className="text-body3-regular text-gray-900 whitespace-pre-wrap">
-            {source.body.map((span: DailyQuizTextSpan, index) => (
-              <span
-                key={index}
-                className={span.accent ? ACCENT_CLASS[span.accent] : undefined}
-              >
-                {span.text}
-              </span>
-            ))}
+            {source.body}
           </p>
         </div>
       </div>

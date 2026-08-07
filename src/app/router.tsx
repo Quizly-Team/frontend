@@ -53,10 +53,6 @@ export const router = createBrowserRouter([
         element: <FaqPage />,
       },
       {
-        path: '/daily-quiz',
-        element: <DailyQuizPage />,
-      },
-      {
         path: '/login',
         element: <LoginPage />,
       },
@@ -71,6 +67,20 @@ export const router = createBrowserRouter([
       {
         path: '/admin',
         element: <AdminPage />,
+      },
+    ],
+  },
+  // 푸터 없는 레이아웃. 자식 페이지 루트가 flex-1을 쓰므로 flex 컨테이너는 유지한다.
+  {
+    element: (
+      <div className="min-h-screen flex flex-col">
+        <Outlet />
+      </div>
+    ),
+    children: [
+      {
+        path: '/daily-quiz',
+        element: <DailyQuizPage />,
       },
     ],
   },

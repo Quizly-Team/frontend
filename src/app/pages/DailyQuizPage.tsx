@@ -6,28 +6,9 @@ import {
   DailyQuizSourcePanel,
   Header,
 } from '@/components'
+import { useDailyQuizSet } from '@/hooks/useDailyQuizSet'
 import { markDailyQuizCompleted } from '@/lib/dailyQuizCompletion'
-import { mockDailyQuizSet } from '@/mocks/dailyQuizData'
-import type { DailyQuizChoice, DailyQuizTextSpan } from '@/types/dailyQuiz'
-
-// TODO(#116): 백엔드 스펙 확정 시 이 한 줄만 useDailyQuizSet() 훅 호출로 교체한다.
-const quizSet = mockDailyQuizSet
-
-const ACCENT_CLASS = {
-  primary: 'text-primary',
-  info: 'text-info',
-  error: 'text-error',
-} as const
-
-const renderSpans = (spans: DailyQuizTextSpan[]) =>
-  spans.map((span, index) => (
-    <span
-      key={index}
-      className={span.accent ? ACCENT_CLASS[span.accent] : undefined}
-    >
-      {span.text}
-    </span>
-  ))
+import type { DailyQuizChoice } from '@/types/dailyQuiz'
 
 type Phase = 'intro' | 'solving' | 'result'
 
@@ -36,32 +17,38 @@ type Pane = 'source' | 'question'
 
 const DailyQuizPage = () => {
   const navigate = useNavigate()
+  const { data: quizSet, isLoading, isError } = useDailyQuizSet()
   const [phase, setPhase] = useState<Phase>('intro')
   const [index, setIndex] = useState(0)
-  const [answers, setAnswers] = useState<(DailyQuizChoice | null)[]>(() =>
-    quizSet.questions.map(() => null),
-  )
+  const [answers, setAnswers] = useState<(DailyQuizChoice | null)[]>([])
   const [pane, setPane] = useState<Pane>('source')
 
-  const currentQuestion = quizSet.questions[index]
-  const selected = answers[index]
-  const isFirst = index === 0
-  const isLast = index === quizSet.questions.length - 1
+  const questions = useMemo(() => quizSet?.questions ?? [], [quizSet])
+
+  // 세트가 바뀌어 문항 수가 줄어도 인덱스가 배열 밖으로 나가지 않게 고정한다
+  const currentIndex = Math.min(index, Math.max(0, questions.length - 1))
+  const currentQuestion = questions[currentIndex]
+  const selected = answers[currentIndex] ?? null
+  const isFirst = currentIndex === 0
+  const isLast = currentIndex === questions.length - 1
 
   const handleStart = () => {
     setPhase('solving')
     setIndex(0)
+    setAnswers([])
     setPane('source')
   }
 
   const handleSelect = (choice: DailyQuizChoice) => {
-    setAnswers((prev) =>
-      prev.map((answer, order) => (order === index ? choice : answer)),
-    )
+    setAnswers((prev) => {
+      const next = [...prev]
+      next[currentIndex] = choice
+      return next
+    })
   }
 
   const handlePrev = () => {
-    setIndex((prev) => Math.max(0, prev - 1))
+    setIndex(Math.max(0, currentIndex - 1))
   }
 
   const handleNext = () => {
@@ -70,7 +57,7 @@ const DailyQuizPage = () => {
       markDailyQuizCompleted()
       return
     }
-    setIndex((prev) => prev + 1)
+    setIndex(currentIndex + 1)
   }
 
   const handleMobilePrev = () => {
@@ -94,16 +81,42 @@ const DailyQuizPage = () => {
   }
 
   const score = useMemo(() => {
-    const correctCount = answers.filter(
-      (answer, order) => answer === quizSet.questions[order].answer,
+    const correctCount = questions.filter(
+      (question, order) => answers[order] === question.answer,
     ).length
-    const total = quizSet.questions.length
+    const total = questions.length
     return {
       correctCount,
       wrongCount: total - correctCount,
       accuracy: total === 0 ? 0 : Math.floor((correctCount / total) * 100),
     }
-  }, [answers])
+  }, [answers, questions])
+
+  if (isLoading || isError || !quizSet || questions.length === 0) {
+    const statusMessage = isLoading
+      ? '오늘의 퀴즈를 불러오는 중입니다...'
+      : isError
+        ? '오늘의 퀴즈를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.'
+        : '아직 공개된 오늘의 퀴즈가 없습니다. 내일 다시 확인해 주세요.'
+
+    return (
+      <div className="flex-1 w-full bg-bg-home flex flex-col">
+        <Header />
+
+        <main className="flex-1 flex flex-col items-center justify-center pt-20 pb-24 px-15 max-md:pt-10 max-md:px-xl">
+          <div className="w-full max-w-[670px] bg-white border border-[#dedede] rounded-[16px] px-xl py-20 flex justify-center">
+            <p
+              className={`text-body3-regular text-center ${
+                isError ? 'text-error' : 'text-gray-600'
+              }`}
+            >
+              {statusMessage}
+            </p>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   const solvingLayoutClass =
     phase === 'result'
@@ -147,7 +160,7 @@ const DailyQuizPage = () => {
 
               <div className="border border-[#9bf081] rounded-[20px] px-xxl py-3xl max-md:p-xl bg-[linear-gradient(130.77deg,#f5fff1_1%,#e9f5fe_100%)]">
                 <p className="text-body1-medium max-md:text-[16px]! text-gray-900 whitespace-pre-wrap">
-                  {renderSpans(quizSet.intro.description)}
+                  {quizSet.intro.description}
                 </p>
               </div>
             </div>
@@ -193,7 +206,7 @@ const DailyQuizPage = () => {
 
             <DailyQuizQuestionCard
               question={currentQuestion}
-              order={index + 1}
+              order={currentIndex + 1}
               selected={selected}
               onSelect={handleSelect}
               onPrev={handlePrev}
