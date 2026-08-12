@@ -1,4 +1,4 @@
-import { Header, Footer, FaqCategorySection, MyPageTabs } from '@/components'
+import { Header, FaqCategorySection, MyPageTabs } from '@/components'
 import { useFaqs } from '@/hooks/useFaqs'
 
 const CONTACT_EMAIL = 'duwn1010@gmail.com'

@@ -5,9 +5,10 @@ import {
   updateNickname,
   updateProfileImage,
   logout,
+  deleteAccount,
   type ReadUserInfoResponse,
 } from '@/api/account'
-import { Header, Footer, Button, MyPageTabs } from '@/components'
+import { Header, Button, MyPageTabs } from '@/components'
 import CumulativeSummary from '@/components/dashboard/cumulative-summary'
 import HourlyChart from '@/components/dashboard/hourly-chart'
 import LearningStats from '@/components/dashboard/learning-stats'
@@ -33,13 +34,13 @@ const AnalyticsPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+  const [isWithdrawing, setIsWithdrawing] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const isAuthenticated = authUtils.isAuthenticated()
-  const isAdmin = userInfo?.role === 'ADMIN'
 
   // 대시보드 통계 조회
   const {
@@ -206,6 +207,35 @@ const AnalyticsPage = () => {
       authUtils.removeAllTokens()
       navigate('/', { replace: true })
       window.location.reload()
+    }
+  }
+
+  const handleWithdraw = async () => {
+    if (
+      !confirm(
+        '정말 탈퇴하시겠습니까?\n지금 탈퇴하면 모든 퀴즈 기록이 초기화됩니다.',
+      )
+    ) {
+      return
+    }
+
+    setIsWithdrawing(true)
+
+    try {
+      await deleteAccount()
+      alert('탈퇴가 완료되었습니다. 그동안 이용해 주셔서 감사합니다.')
+      navigate('/', { replace: true })
+      window.location.reload()
+    } catch (err) {
+      // 로그아웃과 달리 여기서는 토큰을 지우지 않는다. 지우면 탈퇴되지 않았는데도
+      // 탈퇴된 것처럼 보인다. 단, 401로 재발급까지 실패한 경우는 authenticatedFetch가
+      // 이 catch에 닿기 전에 토큰을 지우고 홈으로 보낸다(앱 전역 세션 만료 동작).
+      alert(
+        err instanceof Error
+          ? err.message
+          : '회원 탈퇴에 실패했습니다. 다시 시도해주세요.',
+      )
+      setIsWithdrawing(false)
     }
   }
 
@@ -493,16 +523,17 @@ const AnalyticsPage = () => {
                     >
                       {isSaving ? '저장 중...' : '변경사항 저장'}
                     </Button>
-                    {isAdmin && (
-                      <button
-                        type="button"
-                        onClick={() => navigate('/admin')}
-                        className="absolute right-6 md:right-8 text-[13px] text-gray-400 hover:text-gray-600 transition-colors"
-                      >
-                        관리자 대시보드
-                      </button>
-                    )}
                   </div>
+
+                  {/* 회원탈퇴 - 데스크톱은 카드 우측, 모바일은 저장 버튼과 겹치므로 아래 별도 줄 */}
+                  <button
+                    type="button"
+                    onClick={handleWithdraw}
+                    disabled={isWithdrawing}
+                    className="mt-4 w-full text-center text-[13px] text-gray-400 transition-colors hover:text-gray-600 disabled:opacity-50 md:absolute md:right-8 md:mt-0 md:w-auto"
+                  >
+                    {isWithdrawing ? '탈퇴 처리 중...' : '회원탈퇴'}
+                  </button>
                 </>
               )}
             </div>

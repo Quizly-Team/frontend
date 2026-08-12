@@ -329,6 +329,42 @@ export const logout = async (): Promise<void> => {
 }
 
 /**
+ * 회원 탈퇴 API
+ *
+ * 개인정보가 즉시 파기(익명화)되며 복구할 수 없다. 같은 소셜 계정으로 다시
+ * 로그인하면 신규 회원으로 가입된다.
+ *
+ * accessToken(Bearer)만으로는 탈퇴되지 않고 refreshToken 쿠키까지 함께 검증한다.
+ * 쿠키는 `authenticatedFetch`의 `credentials: 'include'`로 자동 전송된다.
+ */
+export const deleteAccount = async (): Promise<void> => {
+  const response = await authenticatedFetch(`${API_BASE_URL}/account`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+
+    let errorData
+    try {
+      errorData = JSON.parse(errorText)
+    } catch {
+      errorData = { message: errorText }
+    }
+
+    // 서버 오류 응답은 { error: { message }, code } 형태다.
+    throw new Error(
+      errorData.error?.message ||
+        errorData.message ||
+        `회원 탈퇴 실패: ${response.status} ${response.statusText}`,
+    )
+  }
+
+  // 탈퇴 성공 시 클라이언트 측 토큰도 제거
+  authUtils.removeAllTokens()
+}
+
+/**
  * 오늘의 학습 요약 조회 API
  */
 export const getTodaySummary = async (): Promise<{
