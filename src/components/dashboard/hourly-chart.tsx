@@ -73,8 +73,8 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
   const yAxisTicks = [0, 25, 50, 75, 100]
 
   return (
-    <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] w-full">
-      <h3 className="text-[20px] font-medium text-[#222] mb-[35px]">
+    <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] w-full">
+      <h3 className="text-[20px] font-medium text-gray-normal mb-[35px]">
         {currentMonth} 시간대별 학습 패턴
       </h3>
 
@@ -150,8 +150,10 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-[#eff6ff] rounded-[4px] px-[12px] py-[10px] mt-[16px]">
-        <p className="text-[14px] text-[#0053e2]">{peakTimeMessage}</p>
+      <div className="bg-status-informative-subtle rounded-[4px] px-[12px] py-[10px] mt-[16px]">
+        <p className="text-[14px] text-status-informative-strong">
+          {peakTimeMessage}
+        </p>
       </div>
     </div>
   )

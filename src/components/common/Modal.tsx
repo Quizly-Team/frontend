@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps) => {
       className="flex items-center justify-center"
     >
       <div
-        className={`bg-white rounded-[24px] pt-[60px] px-8 pb-8 w-[430px] min-h-[324px] mx-m outline-none ${className}`}
+        className={`bg-background-elevated rounded-[24px] pt-[60px] px-8 pb-8 w-[430px] min-h-[324px] mx-m outline-none ${className}`}
       >
         {children}
       </div>
@@ -51,7 +51,7 @@ export const QuizResultModal = ({
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-white rounded-[24px] p-8 max-w-[450px] w-full mx-m outline-none relative max-lg:max-w-[440px] max-lg:pt-10 max-lg:pb-10 max-md:max-w-[300px] max-md:h-[270px] max-md:pt-[30px] max-md:px-[38px] max-md:pb-[30px]">
+      <div className="bg-background-elevated rounded-[24px] p-8 max-w-[450px] w-full mx-m outline-none relative max-lg:max-w-[440px] max-lg:pt-10 max-lg:pb-10 max-md:max-w-[300px] max-md:h-[270px] max-md:pt-[30px] max-md:px-[38px] max-md:pb-[30px]">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -86,17 +86,17 @@ export const QuizResultModal = ({
             />
           </div>
 
-          <p className="text-body3-medium text-primary mt-4 max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4] max-md:!mt-3">
+          <p className="text-body3-medium text-primary-normal mt-4 max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4] max-md:!mt-3">
             모든 문제를 다 풀었어요!
           </p>
 
           <div className="flex flex-col items-center mt-4 max-md:!mt-3">
-            <h2 className="text-header3-bold text-gray-900 max-md:!text-[20px] max-md:!font-bold max-md:!leading-[1.4]">
+            <h2 className="text-header3-bold text-gray-normal max-md:!text-[20px] max-md:!font-bold max-md:!leading-[1.4]">
               문제 정답 결과
             </h2>
-            <p className="text-body2-medium text-gray-900 mt-1 max-md:!text-[16px] max-md:!font-medium max-md:!leading-[1.4] max-md:!mt-1">
+            <p className="text-body2-medium text-gray-normal mt-1 max-md:!text-[16px] max-md:!font-medium max-md:!leading-[1.4] max-md:!mt-1">
               {correctCount} / {totalCount}문제{' '}
-              <span className="text-gray-600">
+              <span className="text-gray-alternative">
                 (정답{correctCount}, 오답{wrongCount})
               </span>
             </p>
@@ -105,13 +105,13 @@ export const QuizResultModal = ({
           <div className="flex gap-4 mt-6 max-md:gap-3 max-md:!mt-4">
             <button
               onClick={onViewAll}
-              className="bg-secondary text-primary text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-secondary/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
+              className="bg-primary-subtle text-primary-normal text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-subtle/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
             >
               문제 모아보기
             </button>
             <button
               onClick={onCreateMore}
-              className="bg-primary text-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
+              className="bg-primary-normal text-static-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-normal/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
             >
               문제 더 만들기
             </button>
@@ -141,19 +141,19 @@ export const QuizExitConfirmModal = ({
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-white rounded-[24px] px-6 py-[30px] w-[380px] mx-m outline-none max-md:w-[300px]">
+      <div className="bg-background-elevated rounded-[24px] px-6 py-[30px] w-[380px] mx-m outline-none max-md:w-[300px]">
         {/* Content */}
         <div className="flex flex-col items-center gap-6">
           {/* Text Content */}
           <div className="flex flex-col items-center gap-2">
-            <p className="text-tint-regular text-primary text-center">
+            <p className="text-tint-regular text-primary-normal text-center">
               아직 문제를 다 풀지 못했어요!
             </p>
             <div className="flex flex-col items-center gap-3">
-              <h2 className="text-[20px] font-bold text-gray-900 leading-[1.4] text-center">
+              <h2 className="text-[20px] font-bold text-gray-normal leading-[1.4] text-center">
                 멈추고 나가시겠어요?
               </h2>
-              <p className="text-body3-regular text-gray-600 text-center">
+              <p className="text-body3-regular text-gray-alternative text-center">
                 풀이가 종료되면 생성된 문제는
                 <br />
                 전부 오답처리 됩니다.
@@ -165,13 +165,13 @@ export const QuizExitConfirmModal = ({
           <div className="flex gap-3 justify-center">
             <button
               onClick={onClose}
-              className="bg-gray-200 text-gray-900 text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-gray-300 transition-colors"
+              className="bg-fill-alternative text-gray-normal text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-fill-alternative transition-colors"
             >
               취소
             </button>
             <button
               onClick={onConfirmExit}
-              className="bg-primary text-white text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-primary/90 transition-colors"
+              className="bg-primary-normal text-static-white text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-primary-normal/90 transition-colors"
             >
               나가기
             </button>

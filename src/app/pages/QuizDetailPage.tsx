@@ -75,36 +75,40 @@ const QuizDetailPage = () => {
 
   // 회원인 경우
   return (
-    <div className="flex-1 bg-bg-home flex flex-col">
+    <div className="flex-1 bg-background-alternative flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-md:hidden">
         <div className="w-full max-w-[1024px]">
           {/* Title */}
-          <h1 className="text-header1-bold text-gray-900 text-center mb-[60px]">
+          <h1 className="text-header1-bold text-gray-normal text-center mb-[60px]">
             {date}
           </h1>
 
           {/* Quiz Cards Grid */}
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="text-body1-medium text-gray-600">로딩 중...</p>
+              <div className="w-12 h-12 border-4 border-primary-normal border-t-transparent rounded-full animate-spin mb-4" />
+              <p className="text-body1-medium text-gray-alternative">
+                로딩 중...
+              </p>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <p className="text-body1-medium text-error mb-4">{error}</p>
+              <p className="text-body1-medium text-status-negative-normal mb-4">
+                {error}
+              </p>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-primary text-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+                className="bg-primary-normal text-static-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
               >
                 다시 시도
               </button>
             </div>
           ) : quizzes.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <p className="text-body1-medium text-gray-600">
+              <p className="text-body1-medium text-gray-alternative">
                 해당 항목에 풀어본 문제가 없습니다.
               </p>
             </div>
@@ -142,29 +146,33 @@ const QuizDetailPage = () => {
       {/* Main Content - Mobile */}
       <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[100px] px-5">
         {/* Title */}
-        <h1 className="text-header3-bold text-gray-900 text-center mb-12">
+        <h1 className="text-header3-bold text-gray-normal text-center mb-12">
           {date}
         </h1>
 
         {/* Quiz Cards List (single column) */}
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-body3-medium text-gray-600">로딩 중...</p>
+            <div className="w-12 h-12 border-4 border-primary-normal border-t-transparent rounded-full animate-spin mb-4" />
+            <p className="text-body3-medium text-gray-alternative">
+              로딩 중...
+            </p>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <p className="text-body3-medium text-error mb-4">{error}</p>
+            <p className="text-body3-medium text-status-negative-normal mb-4">
+              {error}
+            </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-primary text-white text-tint-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+              className="bg-primary-normal text-static-white text-tint-regular px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
             >
               다시 시도
             </button>
           </div>
         ) : quizzes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <p className="text-body3-medium text-gray-600">
+            <p className="text-body3-medium text-gray-alternative">
               해당 항목에 풀어본 문제가 없습니다.
             </p>
           </div>
@@ -182,7 +190,7 @@ const QuizDetailPage = () => {
       </main>
 
       {/* Home Indicator - Mobile Only */}
-      <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
+      <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-static-black rounded-[100px]" />
     </div>
   )
 }

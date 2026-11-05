@@ -8,7 +8,7 @@ const FaqPage = () => {
   const groups = data?.faqCategoryGroupList ?? []
 
   return (
-    <div className="flex-1 w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-background-alternative flex flex-col">
       <Header />
 
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
@@ -21,16 +21,18 @@ const FaqPage = () => {
 
           {/* 본문: 로딩 / 에러 / 빈 / 데이터주도 렌더 */}
           {isLoading ? (
-            <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
-              <p className="text-gray-600">로딩 중...</p>
+            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
+              <p className="text-gray-alternative">로딩 중...</p>
             </div>
           ) : isError ? (
-            <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
-              <p className="text-red-500">데이터를 불러오는데 실패했습니다.</p>
+            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
+              <p className="text-status-negative-normal">
+                데이터를 불러오는데 실패했습니다.
+              </p>
             </div>
           ) : groups.length === 0 ? (
-            <div className="bg-white border border-[#dedede] rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
-              <p className="text-gray-600">등록된 FAQ가 없습니다.</p>
+            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
+              <p className="text-gray-alternative">등록된 FAQ가 없습니다.</p>
             </div>
           ) : (
             <div className="flex flex-col gap-5 max-md:gap-[20px]">
@@ -44,18 +46,18 @@ const FaqPage = () => {
               ))}
 
               {/* 하단 CTA */}
-              <div className="bg-primary rounded-[16px] flex flex-col items-center py-[40px] gap-[24px] max-md:py-[32px] max-md:gap-[16px]">
+              <div className="bg-primary-normal rounded-[16px] flex flex-col items-center py-[40px] gap-[24px] max-md:py-[32px] max-md:gap-[16px]">
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <p className="text-header3-bold text-white max-md:text-body1-medium">
+                  <p className="text-header3-bold text-static-white max-md:text-body1-medium">
                     원하는 답변을 찾지 못하셨나요?
                   </p>
-                  <p className="text-body2-regular text-white max-md:text-body3-regular">
+                  <p className="text-body2-regular text-static-white max-md:text-body3-regular">
                     이메일로 문의해 주시면 빠르게 답변드리겠습니다
                   </p>
                 </div>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="bg-white rounded-[6px] px-[16px] py-[12px] text-primary text-body3-medium"
+                  className="bg-background-elevated rounded-[6px] px-[16px] py-[12px] text-primary-normal text-body3-medium"
                 >
                   이메일로 문의하기
                 </a>
