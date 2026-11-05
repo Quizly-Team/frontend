@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "tokens:build": "node scripts/build-tokens.mjs && prettier --write src/styles/tokens.css"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -36,6 +37,7 @@
     "@commitlint/config-conventional": "^21.2.0",
     "@eslint/js": "^9.36.0",
     "@tailwindcss/postcss": "^4.1.16",
+    "@tokens-studio/sd-transforms": "^2.0.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
@@ -50,6 +52,7 @@
     "husky": "^8.0.3",
     "postcss": "^8.5.6",
     "prettier": "^3.9.4",
+    "style-dictionary": "^5.8.0",
     "tailwindcss": "^4.1.16",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
