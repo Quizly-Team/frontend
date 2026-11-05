@@ -485,7 +485,7 @@ const AnalyticsPage = () => {
                       variant="secondary"
                       size="medium"
                       onClick={handleLogout}
-                      className="w-[120px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-primary-subtle"
+                      className="w-[120px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
                     >
                       로그아웃
                     </Button>

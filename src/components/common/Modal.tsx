@@ -165,7 +165,7 @@ export const QuizExitConfirmModal = ({
           <div className="flex gap-3 justify-center">
             <button
               onClick={onClose}
-              className="bg-fill-alternative text-gray-normal text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-fill-alternative transition-colors"
+              className="bg-fill-alternative text-gray-normal text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-interaction-neutral-pressed transition-colors"
             >
               취소
             </button>

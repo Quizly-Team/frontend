@@ -463,7 +463,7 @@ const AdminPage = () => {
                 variant="secondary"
                 size="medium"
                 onClick={() => navigate('/analytics')}
-                className="w-[180px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-primary-subtle"
+                className="w-[180px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
               >
                 계정관리로 돌아가기
               </Button>
@@ -485,7 +485,7 @@ const AdminPage = () => {
                     variant="secondary"
                     size="medium"
                     onClick={() => navigate('/analytics')}
-                    className="w-[180px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-primary-subtle"
+                    className="w-[180px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
                   >
                     계정관리로 돌아가기
                   </Button>

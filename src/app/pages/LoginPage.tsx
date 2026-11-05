@@ -100,7 +100,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
               <div className="relative w-full flex justify-center">
                 <button
                   onClick={handleKakaoLogin}
-                  className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-status-cautionary-normal hover:bg-status-cautionary-normal transition-colors rounded-[6px] flex items-center justify-center gap-2"
+                  className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-[6px] flex items-center justify-center gap-2"
                 >
                   <img src="/icon/kakao.svg" alt="Kakao" className="w-6 h-6" />
                   <span className="text-[16px] font-normal text-gray-normal leading-[19.09px]">
