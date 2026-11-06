@@ -1,0 +1,71 @@
+name: Design tokens
+
+# 디자이너가 Figma Tokens Studio 에서 Push 하면 design-tokens 브랜치에 tokens.json 이
+# 올라온다. 그걸 CSS 로 변환해 같은 브랜치에 커밋하고 dev 로 PR 을 연다.
+on:
+  push:
+    branches: [design-tokens]
+    paths: ['tokens/tokens.json']
+  workflow_dispatch:
+
+concurrency:
+  group: design-tokens
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  HUSKY: 0 # CI 커밋에서 pre-commit 훅(prettier --write .)이 돌지 않게 한다
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run tokens:build
+
+      - name: 변환 결과 커밋
+        id: commit
+        run: |
+          if git diff --quiet -- src/styles/tokens.css; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "토큰 CSS 변경 없음"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/styles/tokens.css
+          git commit -m "chore: 디자인 토큰 CSS 재생성"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: PR 생성
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 이미 열린 PR 이 있으면 커밋만 얹히므로 새로 만들지 않는다
+          if [ -n "$(gh pr list --head design-tokens --base dev --state open --json number --jq '.[0].number')" ]; then
+            echo "기존 PR 에 반영됨"
+            exit 0
+          fi
+          printf '%s\n' \
+            '디자이너가 Figma 에서 Push 한 토큰을 CSS 로 변환했습니다.' \
+            '' \
+            '- 입력: `tokens/tokens.json`' \
+            '- 출력: `src/styles/tokens.css`' \
+            '' \
+            '`src/styles/tokens.css` diff 로 어떤 색이 어떻게 바뀌었는지 확인하고 머지하세요.' > /tmp/pr-body.md
+          gh pr create --base dev --head design-tokens \
+            --title "chore: 디자인 토큰 변경분 반영" \
+            --body-file /tmp/pr-body.md
