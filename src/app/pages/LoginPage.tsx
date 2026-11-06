@@ -58,12 +58,12 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
             </div>
 
             {/* Title */}
-            <h1 className="text-[24px] max-md:text-[20px] font-bold max-md:font-semibold text-gray-normal text-center mb-[16px] leading-[33.6px] max-md:leading-[28px]">
+            <h1 className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center mb-[16px]">
               학습을 더 쉽고 재미있게
             </h1>
 
             {/* Description */}
-            <p className="text-[16px] font-normal text-gray-alternative text-center mb-[56px] max-md:mb-[32px] leading-[22.4px]">
+            <p className="text-1rg-regular text-gray-alternative text-center mb-[56px] max-md:mb-[32px]">
               로그인하고 문제를 더 많이 만들어보세요!
             </p>
 
@@ -80,14 +80,14 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
                     alt="Naver"
                     className="w-[18px] h-[18px]"
                   />
-                  <span className="text-[16px] font-normal text-static-white leading-[19.09px]">
+                  <span className="text-1rg-regular text-static-white">
                     Naver로 계속하기
                   </span>
                 </button>
                 {/* Recent Login Badge for Naver */}
                 {lastLoginProvider === 'naver' && (
                   <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-gray-neutral rounded-[4px] flex items-center justify-center z-10">
-                    <p className="text-[14px] font-normal text-static-white text-center leading-[19.6px]">
+                    <p className="text-2sm-regular text-static-white text-center">
                       최근 로그인
                     </p>
                     {/* 삼각형 포인터 */}
@@ -103,14 +103,14 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
                   className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-[6px] flex items-center justify-center gap-2"
                 >
                   <img src="/icon/kakao.svg" alt="Kakao" className="w-6 h-6" />
-                  <span className="text-[16px] font-normal text-gray-normal leading-[19.09px]">
+                  <span className="text-1rg-regular text-gray-normal">
                     Kakao로 계속하기
                   </span>
                 </button>
                 {/* Recent Login Badge for Kakao */}
                 {lastLoginProvider === 'kakao' && (
                   <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-gray-neutral rounded-[4px] flex items-center justify-center z-10">
-                    <p className="text-[14px] font-normal text-static-white text-center leading-[19.6px]">
+                    <p className="text-2sm-regular text-static-white text-center">
                       최근 로그인
                     </p>
                     {/* 삼각형 포인터 */}
@@ -121,7 +121,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
             </div>
 
             {/* Terms Notice */}
-            <p className="text-[14px] font-normal text-gray-alternative text-center leading-[19.6px]">
+            <p className="text-2sm-regular text-gray-alternative text-center">
               로그인을 진행할시{' '}
               <a
                 href={defaultTermsUrl}
@@ -145,7 +145,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
 
             {/* Recent Login Badge (Optional - can be shown conditionally) */}
             {/* <div className="mt-4 bg-gray-neutral rounded-[4px] px-3 py-2">
-            <p className="text-[14px] font-normal text-static-white text-center leading-[19.6px]">
+            <p className="text-2sm-regular text-static-white text-center">
               최근에 로그인한 수단입니다.
             </p>
           </div> */}

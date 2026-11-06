@@ -15,7 +15,7 @@ export default function TopicChart({ data }: Props) {
   if (!data || data.length === 0) {
     return (
       <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
-        <h3 className="text-[20px] font-medium text-gray-normal mb-[30px]">
+        <h3 className="text-2md-medium text-gray-normal mb-[30px]">
           {currentMonth} 주제별 정답률 비교
         </h3>
         <div className="h-[240px] flex items-center justify-center">
@@ -39,7 +39,7 @@ export default function TopicChart({ data }: Props) {
 
   return (
     <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
-      <h3 className="text-[20px] font-medium text-gray-normal mb-[35px]">
+      <h3 className="text-2md-medium text-gray-normal mb-[35px]">
         {currentMonth} 주제별 정답률 비교
       </h3>
 
@@ -114,7 +114,7 @@ export default function TopicChart({ data }: Props) {
       </div>
 
       <div className="bg-status-negative-subtle rounded-[4px] px-[12px] py-[10px] mt-[16px]">
-        <p className="text-[14px] text-status-negative-normal">
+        <p className="text-2sm-regular text-status-negative-normal">
           최근에 생성한 주제 6개만 노출됩니다.
         </p>
       </div>

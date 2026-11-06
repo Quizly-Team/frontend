@@ -111,10 +111,10 @@ const AuthCallback = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background-alternative">
         <div className="text-center">
-          <h2 className="text-header3-bold text-gray-normal mb-4">
+          <h2 className="text-2lg-bold text-gray-normal mb-4">
             로그인 처리 중...
           </h2>
-          <p className="text-body3-regular text-gray-alternative">
+          <p className="text-1rg-regular text-gray-alternative">
             잠시만 기다려주세요.
           </p>
         </div>

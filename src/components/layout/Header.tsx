@@ -112,7 +112,7 @@ const Header = ({
           <nav className="flex items-center whitespace-nowrap">
             <a
               href="/"
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 hover:text-primary-normal transition-colors ${
+              className={`text-1rg-medium max-lg:text-3sm-medium px-3 py-2 shrink-0 hover:text-primary-normal transition-colors ${
                 location.pathname === '/' && !isMockExamModalOpen
                   ? 'text-primary-normal'
                   : 'text-gray-normal'
@@ -122,7 +122,7 @@ const Header = ({
             </a>
             <button
               onClick={handleMockExamClick}
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
+              className={`text-1rg-medium max-lg:text-3sm-medium px-3 py-2 shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
                 location.pathname === '/mock-exam' || isMockExamModalOpen
                   ? 'text-primary-normal'
                   : 'text-gray-normal'
@@ -132,7 +132,7 @@ const Header = ({
             </button>
             <a
               href="/my-quizzes"
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
+              className={`text-1rg-medium max-lg:text-3sm-medium px-3 py-2 shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
                 location.pathname === '/my-quizzes'
                   ? 'text-primary-normal'
                   : 'text-gray-normal'
@@ -142,7 +142,7 @@ const Header = ({
             </a>
             <a
               href="/wrong-quizzes"
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
+              className={`text-1rg-medium max-lg:text-3sm-medium px-3 py-2 shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
                 location.pathname === '/wrong-quizzes'
                   ? 'text-primary-normal'
                   : 'text-gray-normal'
@@ -186,12 +186,12 @@ const Header = ({
                   </div>
                   {/* 닉네임 텍스트 - 프로필 이미지가 없어도 닉네임은 항상 표시 */}
                   {userInfo.nickName ? (
-                    <span className="text-[14px] max-lg:text-[13px] text-primary-normal font-normal leading-[1.4]">
+                    <span className="text-2sm-regular max-lg:text-1sm-regular text-primary-normal">
                       {userInfo.nickName}
                     </span>
                   ) : (
                     // 닉네임이 없을 경우 기본값 표시 (필요시)
-                    <span className="text-[14px] max-lg:text-[13px] text-primary-normal font-normal leading-[1.4]">
+                    <span className="text-2sm-regular max-lg:text-1sm-regular text-primary-normal">
                       사용자
                     </span>
                   )}
@@ -205,7 +205,7 @@ const Header = ({
                 variant="primary"
                 size="small"
                 onClick={handleLoginClick}
-                className="ml-10 max-lg:ml-6 w-[70px] max-lg:w-16 whitespace-nowrap text-tint-regular max-lg:text-xs shrink-0"
+                className="text-2sm-regular max-lg:text-2xs-regular ml-10 max-lg:ml-6 w-[70px] max-lg:w-16 whitespace-nowrap shrink-0"
               >
                 로그인
               </Button>
@@ -259,14 +259,14 @@ const Header = ({
                           {/* 닉네임과 프로필 */}
                           <div className="flex items-center justify-between mb-3">
                             <div>
-                              <h3 className="text-[20px] font-medium text-gray-normal leading-[28px] mb-2">
+                              <h3 className="text-2md-medium text-gray-normal mb-2">
                                 {userInfo.nickName || '사용자'}
                               </h3>
                               <button
                                 onClick={handleLogout}
                                 className="flex items-center gap-1"
                               >
-                                <span className="text-[14px] text-gray-alternative leading-[19.6px]">
+                                <span className="text-2sm-regular text-gray-alternative">
                                   로그아웃
                                 </span>
                                 <svg
@@ -320,7 +320,7 @@ const Header = ({
 
                           {/* 배너 - 로그아웃 버튼 아래 */}
                           <div className="bg-primary-subtle rounded-[4px] px-3 py-2.5 mb-3">
-                            <p className="text-[14px] text-primary-normal leading-[1.4] whitespace-nowrap">
+                            <p className="text-2sm-regular text-primary-normal whitespace-nowrap">
                               오늘{' '}
                               {todaySummaryData?.todaySummary.solvedCount ?? 0}
                               개의 문제 풀이를 진행했어요!
@@ -338,14 +338,14 @@ const Header = ({
                         {/* 로그인 해주세요와 로그인 버튼 */}
                         <div className="flex items-center justify-between mb-3">
                           <div>
-                            <h3 className="text-[20px] font-medium text-gray-normal leading-[28px] mb-2">
+                            <h3 className="text-2md-medium text-gray-normal mb-2">
                               로그인 해주세요
                             </h3>
                             <button
                               onClick={() => handleMobileNavClick('/login')}
                               className="flex items-center gap-1"
                             >
-                              <span className="text-[14px] text-gray-alternative leading-[19.6px]">
+                              <span className="text-2sm-regular text-gray-alternative">
                                 로그인
                               </span>
                               <svg
@@ -378,7 +378,7 @@ const Header = ({
 
                         {/* 배너 - 로그인 버튼 아래, 구분선 위 */}
                         <div className="bg-primary-subtle rounded-[4px] px-3 py-2.5 mb-3">
-                          <p className="text-[14px] text-primary-normal leading-[1.4] whitespace-nowrap">
+                          <p className="text-2sm-regular text-primary-normal whitespace-nowrap">
                             회원가입하면 다양한 문제 제작이 가능해요!
                           </p>
                         </div>
@@ -393,7 +393,7 @@ const Header = ({
                   <nav className="flex flex-col px-5 pt-4">
                     <button
                       onClick={() => handleMobileNavClick('/')}
-                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
+                      className="text-1md-medium text-left py-3 text-gray-normal hover:bg-background-alternative"
                     >
                       문제 만들기
                     </button>
@@ -402,19 +402,19 @@ const Header = ({
                         handleMobileMenuClose()
                         handleMockExamClick()
                       }}
-                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
+                      className="text-1md-medium text-left py-3 text-gray-normal hover:bg-background-alternative"
                     >
                       실전 모의고사
                     </button>
                     <button
                       onClick={() => handleMobileNavClick('/my-quizzes')}
-                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
+                      className="text-1md-medium text-left py-3 text-gray-normal hover:bg-background-alternative"
                     >
                       문제 모아보기
                     </button>
                     <button
                       onClick={() => handleMobileNavClick('/wrong-quizzes')}
-                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
+                      className="text-1md-medium text-left py-3 text-gray-normal hover:bg-background-alternative"
                     >
                       틀린문제 풀어보기
                     </button>

@@ -105,7 +105,7 @@ export default function DailyHeatmap({ data }: Props) {
 
   return (
     <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[20px] max-md:p-[20px] w-full max-md:h-[335px] max-md:flex max-md:flex-col aspect-square max-md:aspect-auto">
-      <h3 className="text-[16px] max-md:text-[20px] font-medium text-gray-normal mb-[20px] max-md:mb-[20px] max-md:flex-shrink-0">
+      <h3 className="text-1rg-medium max-md:text-2md-medium text-gray-normal mb-[20px] max-md:mb-[20px] max-md:flex-shrink-0">
         {currentMonth} 학습 문제 기록
       </h3>
 
@@ -114,7 +114,7 @@ export default function DailyHeatmap({ data }: Props) {
         <div className="grid grid-cols-7 gap-[6px] max-md:gap-[6px] mb-[6px] w-full max-w-[396px] max-lg:max-w-[362px] max-md:max-w-[271px]">
           {WEEKDAYS.map((day) => (
             <div key={day} className="flex items-center justify-center">
-              <p className="text-[12px] max-md:text-[16px] text-gray-alternative">
+              <p className="text-2xs-regular max-md:text-1rg-regular text-gray-alternative">
                 {day}
               </p>
             </div>

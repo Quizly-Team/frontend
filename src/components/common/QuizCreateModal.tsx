@@ -62,10 +62,10 @@ const QuizCreateModal = ({
 
               {/* 텍스트 */}
               <div className="flex flex-col items-center gap-1">
-                <h3 className="text-header3-bold text-gray-normal">
+                <h3 className="text-2lg-bold text-gray-normal">
                   객관식 문제 만들기
                 </h3>
-                <p className="text-body3-regular text-gray-alternative text-center whitespace-pre-wrap">
+                <p className="text-1rg-regular text-gray-alternative text-center whitespace-pre-wrap">
                   {'사지선다형의 객관식 문제를\n만들어 드립니다.'}
                 </p>
               </div>
@@ -93,10 +93,8 @@ const QuizCreateModal = ({
 
             {/* 텍스트 */}
             <div className="flex flex-col items-center gap-1">
-              <h3 className="text-header3-bold text-gray-normal">
-                OX 문제 만들기
-              </h3>
-              <p className="text-body3-regular text-gray-alternative text-center whitespace-pre-wrap">
+              <h3 className="text-2lg-bold text-gray-normal">OX 문제 만들기</h3>
+              <p className="text-1rg-regular text-gray-alternative text-center whitespace-pre-wrap">
                 {'간단한 OX 형식의 문제를\n만들어 드립니다.'}
               </p>
             </div>
@@ -122,9 +120,7 @@ const QuizCreateModal = ({
             </div>
 
             {/* 텍스트 */}
-            <h3 className="text-[20px] font-bold leading-[28px] text-gray-normal">
-              객관식 문제
-            </h3>
+            <h3 className="text-2md-semibold text-gray-normal">객관식 문제</h3>
           </button>
 
           {/* OX 문제 카드 */}
@@ -139,9 +135,7 @@ const QuizCreateModal = ({
             </div>
 
             {/* 텍스트 */}
-            <h3 className="text-[20px] font-bold leading-[28px] text-gray-normal">
-              OX 문제
-            </h3>
+            <h3 className="text-2md-semibold text-gray-normal">OX 문제</h3>
           </button>
         </div>
       </div>

@@ -19,7 +19,7 @@ export default function CumulativeSummary({ data }: Props) {
 
   return (
     <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:flex max-md:flex-col">
-      <h3 className="text-[20px] max-md:text-[20px] font-medium text-gray-normal mb-[44px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
+      <h3 className="text-2md-medium max-md:text-2md-medium text-gray-normal mb-[44px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
         {currentMonth} 누적 학습 통계
       </h3>
 
@@ -30,10 +30,10 @@ export default function CumulativeSummary({ data }: Props) {
             <Icon name="dashboard_check" size={24} />
           </div>
           <div className="w-[62px]">
-            <p className="text-[14px] text-gray-alternative mb-[0px]">
+            <p className="text-2sm-regular text-gray-alternative mb-[0px]">
               풀이 개수
             </p>
-            <p className="text-[24px] font-bold text-gray-normal">
+            <p className="text-2lg-bold text-gray-normal">
               {data.solvedCount.toLocaleString()}
             </p>
           </div>
@@ -45,12 +45,10 @@ export default function CumulativeSummary({ data }: Props) {
             <Icon name="dashboard_up" size={24} />
           </div>
           <div>
-            <p className="text-[14px] text-gray-alternative mb-[0px] whitespace-nowrap">
+            <p className="text-2sm-regular text-gray-alternative mb-[0px] whitespace-nowrap">
               전체 정답률
             </p>
-            <p className="text-[24px] font-bold text-gray-normal">
-              {accuracyRate}%
-            </p>
+            <p className="text-2lg-bold text-gray-normal">{accuracyRate}%</p>
           </div>
         </div>
 
@@ -60,10 +58,10 @@ export default function CumulativeSummary({ data }: Props) {
             <Icon name="dashboard_delete" size={24} />
           </div>
           <div className="w-[62px]">
-            <p className="text-[14px] text-gray-alternative mb-[0px]">
+            <p className="text-2sm-regular text-gray-alternative mb-[0px]">
               오답 개수
             </p>
-            <p className="text-[24px] font-bold text-gray-normal">
+            <p className="text-2lg-bold text-gray-normal">
               {data.wrongCount.toLocaleString()}
             </p>
           </div>
@@ -73,7 +71,7 @@ export default function CumulativeSummary({ data }: Props) {
       <div className="border-t border-line-normal pt-[20px] -mx-[30px] px-[30px] max-md:hidden">
         <div className="flex items-center justify-center gap-[6px]">
           <Icon name="dashboard_i" size={20} />
-          <p className="text-[16px] text-gray-alternative">
+          <p className="text-1rg-regular text-gray-alternative">
             다시 푼 문제는 통계에 들어가지 않습니다
           </p>
         </div>

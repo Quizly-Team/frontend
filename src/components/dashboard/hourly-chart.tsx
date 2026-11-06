@@ -74,7 +74,7 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
 
   return (
     <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] w-full">
-      <h3 className="text-[20px] font-medium text-gray-normal mb-[35px]">
+      <h3 className="text-2md-medium text-gray-normal mb-[35px]">
         {currentMonth} 시간대별 학습 패턴
       </h3>
 
@@ -151,7 +151,7 @@ export default function HourlyChart({ data, nickname = '사용자' }: Props) {
       </div>
 
       <div className="bg-status-informative-subtle rounded-[4px] px-[12px] py-[10px] mt-[16px]">
-        <p className="text-[14px] text-status-informative-strong">
+        <p className="text-2sm-regular text-status-informative-strong">
           {peakTimeMessage}
         </p>
       </div>

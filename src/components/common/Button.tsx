@@ -32,9 +32,9 @@ const Button = ({
   }
 
   const sizeStyles = {
-    small: 'px-xs py-[10px] text-tint-regular',
-    medium: 'px-l py-s text-body3-regular',
-    large: 'px-xxl py-m text-body3-regular',
+    small: 'text-2sm-regular px-xs py-[10px]',
+    medium: 'text-1rg-regular px-l py-s',
+    large: 'text-1rg-regular px-xxl py-m',
   }
 
   const cursorStyles = disabled ? 'cursor-not-allowed' : 'cursor-pointer'

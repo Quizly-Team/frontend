@@ -17,7 +17,7 @@ const DateCard = ({ date, onClick }: DateCardProps) => {
           size={28}
           className="text-status-negative-normal max-md:!w-6 max-md:!h-6"
         />
-        <span className="text-body1-medium text-gray-normal max-md:!text-[16px] max-md:!font-medium max-md:!leading-[1.4]">
+        <span className="max-md:!text-1rg-medium text-2md-medium text-gray-normal">
           {date}
         </span>
       </div>

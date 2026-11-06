@@ -301,7 +301,7 @@ const AnalyticsPage = () => {
                           />
                         </svg>
                       </div>
-                      <h3 className="text-[20px] max-md:text-[18px] font-medium text-status-informative-strong">
+                      <h3 className="text-2md-medium max-md:text-1md-medium text-status-informative-strong">
                         <span className="max-md:hidden">
                           체험판 AI 학습 분석
                         </span>
@@ -310,7 +310,7 @@ const AnalyticsPage = () => {
                         </span>
                       </h3>
                     </div>
-                    <p className="text-[16px] max-md:text-[14px] leading-[22.4px] max-md:leading-[19.6px] text-status-informative-strong">
+                    <p className="text-1rg-regular max-md:text-2sm-regular text-status-informative-strong">
                       {(() => {
                         const aiResult = dashboardData.aiAnalysisResult
                         if (aiResult === undefined || aiResult === null) {
@@ -364,7 +364,7 @@ const AnalyticsPage = () => {
 
           {activeTab === 'account' && (
             <div className="relative bg-background-elevated rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
-              <h2 className="text-[20px] font-medium leading-[28px] mb-[30px] max-md:mb-[20px] text-gray-normal">
+              <h2 className="text-2md-medium mb-[30px] max-md:mb-[20px] text-gray-normal">
                 프로필 정보
               </h2>
 
@@ -431,7 +431,7 @@ const AnalyticsPage = () => {
                   {/* 닉네임 입력 */}
                   <div className="mb-[20px] max-md:mb-[20px] flex flex-col items-center">
                     <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
-                      <label className="text-[16px] font-medium text-gray-alternative mb-1">
+                      <label className="text-1rg-medium text-gray-alternative mb-1">
                         닉네임
                       </label>
                       <div className="border-b border-line-normal flex items-center w-full py-2">
@@ -448,11 +448,11 @@ const AnalyticsPage = () => {
                           }}
                           maxLength={6}
                           disabled={isSaving}
-                          className="flex-1 text-[16px] text-gray-normal outline-none bg-transparent disabled:text-gray-assistive"
+                          className="text-1rg-regular flex-1 text-gray-normal outline-none bg-transparent disabled:text-gray-assistive"
                         />
                       </div>
                       {saveError && (
-                        <p className="mt-1 text-[14px] text-status-negative-normal">
+                        <p className="text-2sm-regular mt-1 text-status-negative-normal">
                           {saveError}
                         </p>
                       )}
@@ -462,7 +462,7 @@ const AnalyticsPage = () => {
                   {/* 이메일 입력 (비활성화) */}
                   <div className="mb-[30px] max-md:mb-[20px] flex flex-col items-center">
                     <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
-                      <label className="text-[16px] font-medium text-gray-alternative mb-1">
+                      <label className="text-1rg-medium text-gray-alternative mb-1">
                         이메일
                       </label>
                       <div className="border-b border-line-normal flex items-center w-full py-2">
@@ -470,10 +470,10 @@ const AnalyticsPage = () => {
                           type="text"
                           value={email}
                           disabled
-                          className="flex-1 text-[16px] text-gray-normal outline-none bg-transparent disabled:text-gray-assistive"
+                          className="text-1rg-regular flex-1 text-gray-normal outline-none bg-transparent disabled:text-gray-assistive"
                         />
                       </div>
-                      <p className="mt-1 text-[14px] text-status-negative-normal">
+                      <p className="text-2sm-regular mt-1 text-status-negative-normal">
                         이메일은 변경할 수 없습니다.
                       </p>
                     </div>
@@ -502,7 +502,7 @@ const AnalyticsPage = () => {
                       <button
                         type="button"
                         onClick={() => navigate('/admin')}
-                        className="absolute right-6 md:right-8 text-[13px] text-gray-disable hover:text-gray-alternative transition-colors"
+                        className="text-1sm-regular absolute right-6 md:right-8 text-gray-disable hover:text-gray-alternative transition-colors"
                       >
                         관리자 대시보드
                       </button>

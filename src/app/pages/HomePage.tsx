@@ -371,7 +371,7 @@ const HomePage = () => {
               {[...heroTexts, heroTexts[0]].map((text, index) => (
                 <h1
                   key={index}
-                  className="text-header1-bold text-gray-normal text-center h-[84px] flex items-center justify-center whitespace-pre-wrap"
+                  className="text-1xl-bold text-gray-normal text-center h-[84px] flex items-center justify-center whitespace-pre-wrap"
                   style={{ lineHeight: '1.4' }}
                 >
                   {text.split(/(\([^)]+\))/).map((part, partIndex) => {
@@ -406,7 +406,7 @@ const HomePage = () => {
 
                 {file ? (
                   <div className="flex items-center gap-1 flex-1">
-                    <span className="text-body2-regular text-gray-alternative">
+                    <span className="text-1md-regular text-gray-alternative">
                       {file.name}
                     </span>
                     <button
@@ -428,7 +428,7 @@ const HomePage = () => {
                     onChange={(e) => setSearchText(e.target.value)}
                     placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
                     rows={1}
-                    className="flex-1 text-body2-regular text-gray-normal placeholder:text-gray-alternative outline-none bg-transparent resize-none overflow-hidden"
+                    className="text-1md-regular flex-1 text-gray-normal placeholder:text-gray-alternative outline-none bg-transparent resize-none overflow-hidden"
                   />
                 )}
 
@@ -478,7 +478,7 @@ const HomePage = () => {
               className="bg-background-elevated px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
             >
               <Icon name="book" size={28} />
-              <span className="text-body1-medium text-gray-normal">
+              <span className="text-2md-medium text-gray-normal">
                 문제 모아보기
               </span>
             </a>
@@ -488,7 +488,7 @@ const HomePage = () => {
               className="bg-background-elevated px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
             >
               <Icon name="write" size={28} />
-              <span className="text-body1-medium text-gray-normal">
+              <span className="text-2md-medium text-gray-normal">
                 틀린문제 풀어보기
               </span>
             </a>
@@ -538,7 +538,7 @@ const HomePage = () => {
             {[...heroTextsMobile, heroTextsMobile[0]].map((text, index) => (
               <h1
                 key={index}
-                className="text-header3-bold text-gray-normal text-center h-[96px] px-4"
+                className="text-2lg-bold text-gray-normal text-center h-[96px] px-4"
                 style={{
                   lineHeight: '1.4',
                   display: 'flex',
@@ -573,7 +573,7 @@ const HomePage = () => {
             className="bg-background-elevated px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
           >
             <Icon name="book" size={24} />
-            <span className="text-tint-regular text-gray-normal">
+            <span className="text-2sm-regular text-gray-normal">
               문제 모아보기
             </span>
           </a>
@@ -583,7 +583,7 @@ const HomePage = () => {
             className="bg-background-elevated px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
           >
             <Icon name="write" size={24} />
-            <span className="text-tint-regular text-gray-normal">
+            <span className="text-2sm-regular text-gray-normal">
               틀린문제 풀어보기
             </span>
           </a>
@@ -599,7 +599,7 @@ const HomePage = () => {
         <div className="pt-6 px-5 pb-6 flex flex-col">
           {file ? (
             <div className="flex items-start gap-1 min-h-[67.2px]">
-              <span className="text-body3-regular text-gray-alternative">
+              <span className="text-1rg-regular text-gray-alternative">
                 {file.name}
               </span>
               <button
@@ -621,7 +621,7 @@ const HomePage = () => {
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
               rows={3}
-              className="w-full text-body3-regular text-gray-normal placeholder:text-gray-alternative outline-none bg-transparent resize-none overflow-y-hidden min-h-[67.2px]"
+              className="text-1rg-regular w-full text-gray-normal placeholder:text-gray-alternative outline-none bg-transparent resize-none overflow-y-hidden min-h-[67.2px]"
             />
           )}
 

@@ -26,7 +26,7 @@ const Tooltip = ({
       {/* 삼각형 화살표 */}
       <div className={arrowStyles} />
       {/* 툴팁 내용 */}
-      <div className="bg-gray-neutral text-static-white px-3 py-2 rounded text-center text-sm font-normal leading-[1.4] min-w-max">
+      <div className="text-2sm-regular bg-gray-neutral text-static-white px-3 py-2 rounded text-center min-w-max">
         {children}
       </div>
     </div>

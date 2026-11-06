@@ -262,7 +262,7 @@ const QuizSolvePage = ({
         <div className="w-full max-w-[1024px] max-lg:max-w-[904px]">
           {/* Title */}
           <div className="flex items-center gap-3 mb-[38px]">
-            <h1 className="text-header1-bold text-gray-normal text-center">
+            <h1 className="text-1xl-bold text-gray-normal text-center">
               지금부터 본격{' '}
               <span className="text-primary-normal">문제 타임!</span> 집중해서
               풀어봐요
@@ -292,7 +292,7 @@ const QuizSolvePage = ({
             {/* Question */}
             <div className="flex items-start justify-between gap-4 mb-8">
               <h2
-                className={`text-body1-medium ${
+                className={`text-2md-medium ${
                   showResult
                     ? isCorrect
                       ? 'text-status-informative-normal'
@@ -323,7 +323,7 @@ const QuizSolvePage = ({
                   {currentQuiz.text}
                 </span>
               </h2>
-              {/* <span className="text-sm text-gray-assistive font-medium whitespace-nowrap">
+              {/* <span className="text-2sm-medium text-gray-assistive whitespace-nowrap">
                 풀이 {formattedElapsedSeconds}초
               </span> */}
             </div>
@@ -428,7 +428,7 @@ const QuizSolvePage = ({
                         size={24}
                         className="flex-shrink-0"
                       />
-                      <span className="text-body3-regular text-gray-normal flex-1 min-w-0 break-words">
+                      <span className="text-1rg-regular text-gray-normal flex-1 min-w-0 break-words">
                         {option}
                       </span>
                     </button>
@@ -444,7 +444,7 @@ const QuizSolvePage = ({
               onClick={handleNextQuestion}
               disabled={!showResult}
               className={`
-                px-4 py-3 rounded-[6px] text-body3-regular text-static-white transition-colors
+                text-1rg-regular px-4 py-3 rounded-[6px] text-static-white transition-colors
                 ${
                   showResult
                     ? 'bg-primary-normal hover:bg-primary-normal/90'
@@ -459,10 +459,10 @@ const QuizSolvePage = ({
           {/* 해설 영역 - 웹/태블릿 */}
           {showResult && (
             <div className="bg-background-elevated border border-line-normal rounded-[16px] p-10 mt-8">
-              <h3 className="text-body1-medium text-primary-normal mb-6">
+              <h3 className="text-2md-medium text-primary-normal mb-6">
                 해설 요약
               </h3>
-              <div className="text-body2-medium text-gray-normal">
+              <div className="text-1md-medium text-gray-normal">
                 <p className="mb-0">{currentQuiz.explanation}</p>
                 <p className="text-gray-alternative mt-2">
                   정답 :{' '}
@@ -505,7 +505,7 @@ const QuizSolvePage = ({
             {/* Question */}
             <div className="flex items-start justify-between gap-3 mb-l">
               <h2
-                className={`text-body3-medium ${
+                className={`text-1rg-medium ${
                   showResult
                     ? isCorrect
                       ? 'text-status-informative-normal'
@@ -536,7 +536,7 @@ const QuizSolvePage = ({
                   {currentQuiz.text}
                 </span>
               </h2>
-              {/* <span className="text-xs text-gray-assistive font-medium whitespace-nowrap">
+              {/* <span className="text-2xs-medium text-gray-assistive whitespace-nowrap">
                 풀이 {formattedElapsedSeconds}초
               </span> */}
             </div>
@@ -641,7 +641,7 @@ const QuizSolvePage = ({
                         size={16}
                         className="flex-shrink-0"
                       />
-                      <span className="text-tint-regular text-gray-normal flex-1 min-w-0 break-words">
+                      <span className="text-2sm-regular text-gray-normal flex-1 min-w-0 break-words">
                         {option}
                       </span>
                     </button>
@@ -654,10 +654,10 @@ const QuizSolvePage = ({
           {/* 해설 영역 - 모바일 */}
           {showResult && (
             <div className="bg-background-elevated border border-line-normal rounded-[16px] p-l">
-              <h3 className="text-body3-medium text-primary-normal mb-l">
+              <h3 className="text-1rg-medium text-primary-normal mb-l">
                 해설 요약
               </h3>
-              <div className="text-body3-medium text-gray-normal">
+              <div className="text-1rg-medium text-gray-normal">
                 <p className="mb-0">{currentQuiz.explanation}</p>
                 <p className="text-gray-alternative mt-2">
                   정답 :{' '}
@@ -680,7 +680,7 @@ const QuizSolvePage = ({
         <div className="flex gap-3">
           <button
             onClick={handleMobileExitClick}
-            className="bg-background-elevated border border-line-normal px-l py-[14px] rounded-[6px] text-body2-regular text-gray-alternative whitespace-nowrap"
+            className="text-1md-regular bg-background-elevated border border-line-normal px-l py-[14px] rounded-[6px] text-gray-alternative whitespace-nowrap"
           >
             나가기
           </button>
@@ -688,7 +688,7 @@ const QuizSolvePage = ({
             onClick={handleNextQuestion}
             disabled={!showResult}
             className={`
-              flex-1 px-l py-[14px] rounded-[6px] text-body2-regular text-static-white transition-colors
+              text-1md-regular flex-1 px-l py-[14px] rounded-[6px] text-static-white transition-colors
               ${
                 showResult
                   ? 'bg-primary-normal hover:bg-primary-normal/90'

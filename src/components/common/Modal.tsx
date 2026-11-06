@@ -86,15 +86,15 @@ export const QuizResultModal = ({
             />
           </div>
 
-          <p className="text-body3-medium text-primary-normal mt-4 max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4] max-md:!mt-3">
+          <p className="max-md:!text-2sm-regular text-1rg-medium text-primary-normal mt-4 max-md:!mt-3">
             모든 문제를 다 풀었어요!
           </p>
 
           <div className="flex flex-col items-center mt-4 max-md:!mt-3">
-            <h2 className="text-header3-bold text-gray-normal max-md:!text-[20px] max-md:!font-bold max-md:!leading-[1.4]">
+            <h2 className="max-md:!text-2md-semibold text-2lg-bold text-gray-normal">
               문제 정답 결과
             </h2>
-            <p className="text-body2-medium text-gray-normal mt-1 max-md:!text-[16px] max-md:!font-medium max-md:!leading-[1.4] max-md:!mt-1">
+            <p className="max-md:!text-1rg-medium text-1md-medium text-gray-normal mt-1 max-md:!mt-1">
               {correctCount} / {totalCount}문제{' '}
               <span className="text-gray-alternative">
                 (정답{correctCount}, 오답{wrongCount})
@@ -105,13 +105,13 @@ export const QuizResultModal = ({
           <div className="flex gap-4 mt-6 max-md:gap-3 max-md:!mt-4">
             <button
               onClick={onViewAll}
-              className="bg-primary-subtle text-primary-normal text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-subtle/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
+              className="max-md:!text-2sm-regular text-1rg-regular bg-primary-subtle text-primary-normal px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-subtle/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-[10px]"
             >
               문제 모아보기
             </button>
             <button
               onClick={onCreateMore}
-              className="bg-primary-normal text-static-white text-body3-regular px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-normal/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-[10px] max-md:!text-[14px] max-md:!font-normal max-md:!leading-[1.4]"
+              className="max-md:!text-2sm-regular text-1rg-regular bg-primary-normal text-static-white px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-normal/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-[10px]"
             >
               문제 더 만들기
             </button>
@@ -146,14 +146,14 @@ export const QuizExitConfirmModal = ({
         <div className="flex flex-col items-center gap-6">
           {/* Text Content */}
           <div className="flex flex-col items-center gap-2">
-            <p className="text-tint-regular text-primary-normal text-center">
+            <p className="text-2sm-regular text-primary-normal text-center">
               아직 문제를 다 풀지 못했어요!
             </p>
             <div className="flex flex-col items-center gap-3">
-              <h2 className="text-[20px] font-bold text-gray-normal leading-[1.4] text-center">
+              <h2 className="text-2md-semibold text-gray-normal text-center">
                 멈추고 나가시겠어요?
               </h2>
-              <p className="text-body3-regular text-gray-alternative text-center">
+              <p className="text-1rg-regular text-gray-alternative text-center">
                 풀이가 종료되면 생성된 문제는
                 <br />
                 전부 오답처리 됩니다.
@@ -165,13 +165,13 @@ export const QuizExitConfirmModal = ({
           <div className="flex gap-3 justify-center">
             <button
               onClick={onClose}
-              className="bg-fill-alternative text-gray-normal text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-interaction-neutral-pressed transition-colors"
+              className="text-2sm-regular bg-fill-alternative text-gray-normal px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-interaction-neutral-pressed transition-colors"
             >
               취소
             </button>
             <button
               onClick={onConfirmExit}
-              className="bg-primary-normal text-static-white text-tint-regular px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-primary-normal/90 transition-colors"
+              className="text-2sm-regular bg-primary-normal text-static-white px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-primary-normal/90 transition-colors"
             >
               나가기
             </button>

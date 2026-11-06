@@ -296,7 +296,7 @@ const QuizListPage = () => {
           page === '...' ? (
             <span
               key={`ellipsis-${idx}`}
-              className="flex h-9 w-9 items-center justify-center text-body3-medium text-gray-disable"
+              className="text-1rg-medium flex h-9 w-9 items-center justify-center text-gray-disable"
             >
               ···
             </span>
@@ -305,7 +305,7 @@ const QuizListPage = () => {
               key={page}
               type="button"
               onClick={() => setCurrentPage(page)}
-              className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-body3-medium transition-colors ${
+              className={`text-1rg-medium flex h-9 w-9 items-center justify-center rounded-[6px] transition-colors ${
                 page === currentPage
                   ? 'bg-primary-normal text-static-white'
                   : 'text-gray-neutral hover:text-primary-normal'
@@ -342,7 +342,7 @@ const QuizListPage = () => {
       return (
         <div className="flex flex-col items-center justify-center py-20">
           <div className="w-12 h-12 border-4 border-primary-normal border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-body1-medium text-gray-alternative">로딩 중...</p>
+          <p className="text-2md-medium text-gray-alternative">로딩 중...</p>
         </div>
       )
     }
@@ -350,13 +350,13 @@ const QuizListPage = () => {
     if (error) {
       return (
         <div className="flex flex-col items-center justify-center py-20">
-          <p className="text-body1-medium text-status-negative-normal mb-4">
+          <p className="text-2md-medium text-status-negative-normal mb-4">
             {error || '데이터를 불러오는 중 오류가 발생했어요.'}
           </p>
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="bg-primary-normal text-static-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+            className="text-1rg-regular bg-primary-normal text-static-white px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
           >
             다시 시도
           </button>
@@ -367,10 +367,10 @@ const QuizListPage = () => {
     if (!quizGroups.length) {
       return (
         <div className="w-full rounded-[12px] border border-line-normal bg-background-elevated px-8 py-10 text-left shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
-          <p className="text-body1-medium text-gray-normal mb-2">
+          <p className="text-2md-medium text-gray-normal mb-2">
             아직 풀어본 문제가 없어요.
           </p>
-          <p className="text-body2-regular text-gray-alternative">
+          <p className="text-1md-regular text-gray-alternative">
             문제를 풀고 다시 복습할 문제를 모아볼 수 있어요.
           </p>
         </div>
@@ -421,7 +421,7 @@ const QuizListPage = () => {
                     <div className="w-[170px] rounded-[10px] border border-line-normal bg-background-elevated p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
                       <button
                         type="button"
-                        className="w-full rounded-[6px] px-3 py-2 text-left text-body3-medium text-gray-normal hover:bg-background-alternative"
+                        className="text-1rg-medium w-full rounded-[6px] px-3 py-2 text-left text-gray-normal hover:bg-background-alternative"
                         onClick={(event) => {
                           event.preventDefault()
                           handleOpenEditModal(group)
@@ -439,14 +439,14 @@ const QuizListPage = () => {
                       name="icn_note"
                       className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]"
                     />
-                    <span className="text-[20px] font-medium text-gray-normal truncate max-w-[200px] max-md:text-[18px]">
+                    <span className="text-2md-medium max-md:text-1md-medium text-gray-normal truncate max-w-[200px]">
                       {group.group}
                     </span>
                   </div>
 
                   <div className="w-full flex justify-end mr-[-44px] max-lg:mr-0">
                     <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-primary-subtle px-3">
-                      <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary-normal">
+                      <span className="text-2sm-regular inline-flex min-w-[81px] h-[20px] items-center justify-center text-primary-normal">
                         문제 {quizCount}개
                       </span>
                     </div>
@@ -474,13 +474,13 @@ const QuizListPage = () => {
                   name="calendar"
                   className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]"
                 />
-                <span className="text-[20px] font-medium text-gray-normal max-md:text-[18px]">
+                <span className="text-2md-medium max-md:text-1md-medium text-gray-normal">
                   {group.group}
                 </span>
               </div>
               <div className="w-full flex justify-end mr-[-48px] max-lg:mr-0">
                 <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-primary-subtle px-3">
-                  <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary-normal">
+                  <span className="text-2sm-regular inline-flex min-w-[81px] h-[20px] items-center justify-center text-primary-normal">
                     문제 {group.quizHistoryDetailList.length}개
                   </span>
                 </div>
@@ -507,7 +507,7 @@ const QuizListPage = () => {
         <div className="w-full max-w-[904px] xl:max-w-[976px]">
           <div className="flex flex-col gap-6 mb-12">
             <div className="flex items-center justify-center gap-3 text-center">
-              <h1 className="text-header1-bold text-gray-normal">
+              <h1 className="text-1xl-bold text-gray-normal">
                 <span className="text-primary-normal">복습</span>하고 싶은 문제
                 다 모아봤어요
               </h1>
@@ -520,7 +520,7 @@ const QuizListPage = () => {
               <button
                 type="button"
                 onClick={handleDropdownToggle}
-                className="flex w-full items-center justify-between rounded-[6px] border border-line-normal bg-background-elevated py-3 px-4 text-left text-body2-regular text-gray-normal hover:border-primary-normal focus:border-primary-normal focus:outline-none focus:ring-2 focus:ring-primary-normal/20"
+                className="text-1md-regular flex w-full items-center justify-between rounded-[6px] border border-line-normal bg-background-elevated py-3 px-4 text-left text-gray-normal hover:border-primary-normal focus:border-primary-normal focus:outline-none focus:ring-2 focus:ring-primary-normal/20"
                 aria-haspopup="listbox"
                 aria-expanded={isDropdownOpen}
               >
@@ -551,7 +551,7 @@ const QuizListPage = () => {
                       key={option.value}
                       type="button"
                       onClick={() => handleGroupTypeChange(option.value)}
-                      className={`w-full px-4 py-3 text-left text-body3-medium transition-colors ${
+                      className={`text-1rg-medium w-full px-4 py-3 text-left transition-colors ${
                         option.value === groupType
                           ? 'text-primary-normal'
                           : 'text-gray-normal hover:bg-background-alternative'
@@ -576,12 +576,12 @@ const QuizListPage = () => {
       <main className="hidden max-md:flex flex-1 flex-col pt-[20px] pb-[120px] px-5">
         <div className="flex flex-col items-center gap-0 mb-[12px]">
           <div className="flex items-center gap-2">
-            <h1 className="text-header3-bold text-gray-normal">
+            <h1 className="text-2lg-bold text-gray-normal">
               <span className="text-primary-normal">복습</span>하고 싶은 문제
             </h1>
             <Icon name="book" size={28} />
           </div>
-          <h1 className="text-header3-bold text-gray-normal">다 모아봤어요</h1>
+          <h1 className="text-2lg-bold text-gray-normal">다 모아봤어요</h1>
         </div>
 
         <div className="flex justify-end mb-[20px]">
@@ -589,7 +589,7 @@ const QuizListPage = () => {
             <button
               type="button"
               onClick={handleDropdownToggle}
-              className="flex w-full items-center justify-between rounded-[6px] border border-line-normal bg-background-elevated py-3 px-4 text-left text-body3-medium text-gray-normal hover:border-primary-normal focus:border-primary-normal focus:outline-none focus:ring-2 focus:ring-primary-normal/20"
+              className="text-1rg-medium flex w-full items-center justify-between rounded-[6px] border border-line-normal bg-background-elevated py-3 px-4 text-left text-gray-normal hover:border-primary-normal focus:border-primary-normal focus:outline-none focus:ring-2 focus:ring-primary-normal/20"
               aria-haspopup="listbox"
               aria-expanded={isDropdownOpen}
             >
@@ -620,7 +620,7 @@ const QuizListPage = () => {
                     key={option.value}
                     type="button"
                     onClick={() => handleGroupTypeChange(option.value)}
-                    className={`w-full px-4 py-3 text-left text-body3-medium transition-colors ${
+                    className={`text-1rg-medium w-full px-4 py-3 text-left transition-colors ${
                       option.value === groupType
                         ? 'text-primary-normal'
                         : 'text-gray-normal hover:bg-background-alternative'
@@ -647,14 +647,14 @@ const QuizListPage = () => {
       >
         <div className="w-full">
           <div className="flex flex-col gap-6 max-md:gap-[24px]">
-            <h2 className="text-center text-header3-bold text-gray-normal max-md:text-[20px]">
+            <h2 className="text-2lg-bold max-md:text-2md-semibold text-center text-gray-normal">
               주제 수정하기
             </h2>
 
             <div className="flex flex-col gap-3">
               <div className="mx-auto w-[350px] max-md:w-full">
                 <div className="flex flex-col items-start w-full">
-                  <label className="text-[16px] font-medium text-gray-alternative mb-2 max-md:text-[14px]">
+                  <label className="text-1rg-medium max-md:text-2sm-medium text-gray-alternative mb-2">
                     새로운 주제
                   </label>
                   <div className="w-full border-b border-line-normal py-[12px]">
@@ -665,14 +665,14 @@ const QuizListPage = () => {
                       placeholder={
                         targetGroup?.group ?? '새로운 주제를 입력하세요'
                       }
-                      className="w-full text-[16px] text-gray-normal placeholder:text-gray-assistive outline-none bg-transparent"
+                      className="text-1rg-regular w-full text-gray-normal placeholder:text-gray-assistive outline-none bg-transparent"
                     />
                   </div>
                 </div>
               </div>
               {formMessage && (
                 <p
-                  className={`text-body3-medium text-center ${
+                  className={`text-1rg-medium text-center ${
                     formMessage.type === 'error'
                       ? 'text-status-negative-normal'
                       : 'text-primary-normal'
@@ -687,7 +687,7 @@ const QuizListPage = () => {
               <button
                 type="button"
                 onClick={handleCloseEditModal}
-                className="h-[46px] w-[120px] rounded-[6px] border border-line-normal bg-fill-alternative text-body3-regular text-gray-normal hover:bg-fill-alternative disabled:opacity-60 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
+                className="text-1rg-regular max-md:text-2sm-regular h-[46px] w-[120px] rounded-[6px] border border-line-normal bg-fill-alternative text-gray-normal hover:bg-fill-alternative disabled:opacity-60 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px]"
                 disabled={isSubmitting}
               >
                 취소
@@ -696,7 +696,7 @@ const QuizListPage = () => {
                 type="button"
                 onClick={handleTopicSubmit}
                 disabled={isSubmitDisabled}
-                className="h-[46px] w-[120px] rounded-[6px] bg-primary-normal text-body3-regular text-static-white transition-colors hover:bg-primary-normal/90 disabled:cursor-not-allowed disabled:opacity-50 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
+                className="text-1rg-regular max-md:text-2sm-regular h-[46px] w-[120px] rounded-[6px] bg-primary-normal text-static-white transition-colors hover:bg-primary-normal/90 disabled:cursor-not-allowed disabled:opacity-50 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px]"
               >
                 {isSubmitting ? '수정 중...' : '수정하기'}
               </button>

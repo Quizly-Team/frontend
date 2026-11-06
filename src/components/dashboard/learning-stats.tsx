@@ -107,10 +107,10 @@ export default function LearningStats({
                   className="w-full h-full"
                 />
               </div>
-              <p className="text-[14px] max-lg:text-[13px] max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
+              <p className="text-2sm-regular max-lg:text-1sm-regular max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
                 총 학습 일
               </p>
-              <p className="text-[24px] max-lg:text-[20px] max-md:text-[clamp(16px,6.4vw,24px)] font-bold text-gray-normal">
+              <p className="text-2lg-bold max-lg:text-2md-semibold max-md:text-[clamp(16px,6.4vw,24px)] text-gray-normal">
                 {stats.totalStudyDays}일
               </p>
             </div>
@@ -126,10 +126,10 @@ export default function LearningStats({
                   className="w-full h-full"
                 />
               </div>
-              <p className="text-[14px] max-lg:text-[13px] max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
+              <p className="text-2sm-regular max-lg:text-1sm-regular max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
                 최장 연속 학습
               </p>
-              <p className="text-[24px] max-lg:text-[20px] max-md:text-[clamp(16px,6.4vw,24px)] font-bold text-gray-normal">
+              <p className="text-2lg-bold max-lg:text-2md-semibold max-md:text-[clamp(16px,6.4vw,24px)] text-gray-normal">
                 {stats.maxStreak}일
               </p>
             </div>
@@ -145,10 +145,10 @@ export default function LearningStats({
                   className="w-full h-full"
                 />
               </div>
-              <p className="text-[14px] max-lg:text-[13px] max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
+              <p className="text-2sm-regular max-lg:text-1sm-regular max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
                 평균 학습 시간대
               </p>
-              <p className="text-[24px] max-lg:text-[20px] max-md:text-[clamp(16px,6.4vw,24px)] font-bold text-gray-normal">
+              <p className="text-2lg-bold max-lg:text-2md-semibold max-md:text-[clamp(16px,6.4vw,24px)] text-gray-normal">
                 {stats.peakTimeRange}
               </p>
             </div>
@@ -164,10 +164,10 @@ export default function LearningStats({
                   className="w-full h-full"
                 />
               </div>
-              <p className="text-[14px] max-lg:text-[13px] max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
+              <p className="text-2sm-regular max-lg:text-1sm-regular max-md:text-[clamp(10px,4vw,14px)] text-gray-alternative mt-[12px] mb-[6px] max-lg:mt-[10px] max-lg:mb-[5px] max-md:mt-[clamp(4px,2vw,8px)] max-md:mb-[clamp(2px,1vw,4px)]">
                 가장 많이 푼 유형
               </p>
-              <p className="text-[24px] max-lg:text-[20px] max-md:text-[clamp(16px,6.4vw,24px)] font-bold text-gray-normal">
+              <p className="text-2lg-bold max-lg:text-2md-semibold max-md:text-[clamp(16px,6.4vw,24px)] text-gray-normal">
                 {stats.mostSolvedTypeName}
               </p>
             </div>

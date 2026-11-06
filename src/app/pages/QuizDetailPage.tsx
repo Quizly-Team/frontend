@@ -82,7 +82,7 @@ const QuizDetailPage = () => {
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-md:hidden">
         <div className="w-full max-w-[1024px]">
           {/* Title */}
-          <h1 className="text-header1-bold text-gray-normal text-center mb-[60px]">
+          <h1 className="text-1xl-bold text-gray-normal text-center mb-[60px]">
             {date}
           </h1>
 
@@ -90,25 +90,25 @@ const QuizDetailPage = () => {
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <div className="w-12 h-12 border-4 border-primary-normal border-t-transparent rounded-full animate-spin mb-4" />
-              <p className="text-body1-medium text-gray-alternative">
+              <p className="text-2md-medium text-gray-alternative">
                 로딩 중...
               </p>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <p className="text-body1-medium text-status-negative-normal mb-4">
+              <p className="text-2md-medium text-status-negative-normal mb-4">
                 {error}
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="bg-primary-normal text-static-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+                className="text-1rg-regular bg-primary-normal text-static-white px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
               >
                 다시 시도
               </button>
             </div>
           ) : quizzes.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <p className="text-body1-medium text-gray-alternative">
+              <p className="text-2md-medium text-gray-alternative">
                 해당 항목에 풀어본 문제가 없습니다.
               </p>
             </div>
@@ -146,7 +146,7 @@ const QuizDetailPage = () => {
       {/* Main Content - Mobile */}
       <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[100px] px-5">
         {/* Title */}
-        <h1 className="text-header3-bold text-gray-normal text-center mb-12">
+        <h1 className="text-2lg-bold text-gray-normal text-center mb-12">
           {date}
         </h1>
 
@@ -154,25 +154,23 @@ const QuizDetailPage = () => {
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="w-12 h-12 border-4 border-primary-normal border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-body3-medium text-gray-alternative">
-              로딩 중...
-            </p>
+            <p className="text-1rg-medium text-gray-alternative">로딩 중...</p>
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <p className="text-body3-medium text-status-negative-normal mb-4">
+            <p className="text-1rg-medium text-status-negative-normal mb-4">
               {error}
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-primary-normal text-static-white text-tint-regular px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+              className="text-2sm-regular bg-primary-normal text-static-white px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
             >
               다시 시도
             </button>
           </div>
         ) : quizzes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <p className="text-body3-medium text-gray-alternative">
+            <p className="text-1rg-medium text-gray-alternative">
               해당 항목에 풀어본 문제가 없습니다.
             </p>
           </div>

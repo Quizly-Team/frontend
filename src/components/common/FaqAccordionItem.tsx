@@ -13,7 +13,7 @@ const FaqAccordionItem = ({ question, answer }: FaqAccordionItemProps) => {
         aria-expanded={open}
         className="flex items-center justify-between w-full text-left"
       >
-        <span className="text-body1-medium text-gray-normal max-md:text-body2-medium">
+        <span className="text-2md-medium max-md:text-1md-medium text-gray-normal">
           {question}
         </span>
         <Icon
@@ -23,7 +23,7 @@ const FaqAccordionItem = ({ question, answer }: FaqAccordionItemProps) => {
         />
       </button>
       {open && (
-        <p className="mt-[20px] w-full text-body3-regular text-gray-alternative max-md:mt-[16px] max-md:text-tint-regular whitespace-pre-line">
+        <p className="text-1rg-regular max-md:text-2sm-regular mt-[20px] w-full text-gray-alternative max-md:mt-[16px] whitespace-pre-line">
           {answer}
         </p>
       )}
