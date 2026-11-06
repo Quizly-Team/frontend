@@ -448,35 +448,35 @@ const AdminPage = () => {
   const maxDate = yesterday.toISOString().slice(0, 10)
 
   return (
-    <div className="flex-1 w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-background-alternative flex flex-col">
       <Header />
       <main className="flex-1 px-5 py-10 md:px-10 md:py-14">
         <div className="w-full max-w-[1160px] mx-auto">
           {isChecking ? (
-            <div className="bg-white rounded-2xl border border-gray-300 p-10 text-center">
-              <p className="text-gray-600">관리자 권한 확인 중...</p>
+            <div className="bg-background-elevated rounded-2xl border border-line-normal p-10 text-center">
+              <p className="text-gray-alternative">관리자 권한 확인 중...</p>
             </div>
           ) : error ? (
-            <div className="bg-white rounded-2xl border border-gray-300 p-10 text-center">
-              <p className="text-red-500 mb-6">{error}</p>
+            <div className="bg-background-elevated rounded-2xl border border-line-normal p-10 text-center">
+              <p className="text-status-negative-normal mb-6">{error}</p>
               <Button
                 variant="secondary"
                 size="medium"
                 onClick={() => navigate('/analytics')}
-                className="w-[180px] h-[46px] rounded-md bg-[#f6fbf4] text-primary hover:bg-[#e8f5e0]"
+                className="w-[180px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
               >
                 계정관리로 돌아가기
               </Button>
             </div>
           ) : (
             <div className="flex flex-col gap-5">
-              <section className="bg-white rounded-2xl border border-gray-300 p-6 md:p-8">
+              <section className="bg-background-elevated rounded-2xl border border-line-normal p-6 md:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h1 className="text-[28px] md:text-[32px] font-bold text-gray-900">
+                    <h1 className="text-[28px] md:text-[32px] font-bold text-gray-normal">
                       관리자 운영센터
                     </h1>
-                    <p className="text-[15px] md:text-[16px] text-gray-600 mt-2">
+                    <p className="text-[15px] md:text-[16px] text-gray-alternative mt-2">
                       사용자 문의 답변, FAQ 등록/수정 등 운영 업무를 처리하는
                       공간입니다.
                     </p>
@@ -485,7 +485,7 @@ const AdminPage = () => {
                     variant="secondary"
                     size="medium"
                     onClick={() => navigate('/analytics')}
-                    className="w-[180px] h-[46px] rounded-md bg-[#f6fbf4] text-primary hover:bg-[#e8f5e0]"
+                    className="w-[180px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
                   >
                     계정관리로 돌아가기
                   </Button>
@@ -493,8 +493,8 @@ const AdminPage = () => {
               </section>
 
               <section className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-5">
-                <aside className="bg-white rounded-2xl border border-gray-300 p-4">
-                  <h2 className="text-[18px] font-semibold text-gray-900 mb-3">
+                <aside className="bg-background-elevated rounded-2xl border border-line-normal p-4">
+                  <h2 className="text-[18px] font-semibold text-gray-normal mb-3">
                     관리 메뉴
                   </h2>
                   <div className="flex flex-col gap-2">
@@ -505,22 +505,22 @@ const AdminPage = () => {
                         onClick={() => setActiveSection(section.key)}
                         className={`w-full text-left rounded-xl px-4 py-3 transition-colors ${
                           activeSection === section.key
-                            ? 'bg-[#f0fdf4] text-primary font-medium'
-                            : 'text-gray-700 hover:bg-gray-50'
+                            ? 'bg-primary-subtle text-primary-normal font-medium'
+                            : 'text-gray-neutral hover:bg-background-alternative'
                         }`}
                       >
                         <div className="flex items-center justify-between">
                           <span>{section.title}</span>
                           {section.key === 'qna' ? (
-                            <span className="text-[12px] text-gray-500">
+                            <span className="text-[12px] text-gray-assistive">
                               {unansweredCount} 미답변
                             </span>
                           ) : section.key === 'faq' ? (
-                            <span className="text-[12px] text-gray-500">
+                            <span className="text-[12px] text-gray-assistive">
                               {faqList.length}개 등록
                             </span>
                           ) : (
-                            <span className="text-[12px] text-gray-500">
+                            <span className="text-[12px] text-gray-assistive">
                               배치 실행
                             </span>
                           )}
@@ -530,13 +530,13 @@ const AdminPage = () => {
                   </div>
                 </aside>
 
-                <div className="bg-white rounded-2xl border border-gray-300 p-6 md:p-7">
+                <div className="bg-background-elevated rounded-2xl border border-line-normal p-6 md:p-7">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <div>
-                      <h3 className="text-[24px] font-bold text-gray-900">
+                      <h3 className="text-[24px] font-bold text-gray-normal">
                         {currentSection.title}
                       </h3>
-                      <p className="text-[15px] text-gray-600 mt-2">
+                      <p className="text-[15px] text-gray-alternative mt-2">
                         {currentSection.description}
                       </p>
                     </div>
@@ -578,36 +578,38 @@ const AdminPage = () => {
                     >
                       {activeSection === 'qna' ? (
                         <>
-                          <div className="rounded-xl border border-gray-200 p-4">
-                            <p className="text-[13px] text-gray-500">
+                          <div className="rounded-xl border border-line-normal p-4">
+                            <p className="text-[13px] text-gray-assistive">
                               전체 문의
                             </p>
-                            <p className="text-[24px] font-bold text-gray-900 mt-1">
+                            <p className="text-[24px] font-bold text-gray-normal mt-1">
                               {totalElements}건
                             </p>
                           </div>
-                          <div className="rounded-xl border border-gray-200 p-4">
-                            <p className="text-[13px] text-gray-500">미답변</p>
-                            <p className="text-[24px] font-bold text-red-500 mt-1">
+                          <div className="rounded-xl border border-line-normal p-4">
+                            <p className="text-[13px] text-gray-assistive">
+                              미답변
+                            </p>
+                            <p className="text-[24px] font-bold text-status-negative-normal mt-1">
                               {unansweredCount}건
                             </p>
                           </div>
-                          <div className="rounded-xl border border-gray-200 p-4">
-                            <p className="text-[13px] text-gray-500">
+                          <div className="rounded-xl border border-line-normal p-4">
+                            <p className="text-[13px] text-gray-assistive">
                               답변완료
                             </p>
-                            <p className="text-[24px] font-bold text-primary mt-1">
+                            <p className="text-[24px] font-bold text-primary-normal mt-1">
                               {answeredCount}건
                             </p>
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className="rounded-xl border border-gray-200 p-4">
-                            <p className="text-[13px] text-gray-500">
+                          <div className="rounded-xl border border-line-normal p-4">
+                            <p className="text-[13px] text-gray-assistive">
                               전체 FAQ
                             </p>
-                            <p className="text-[24px] font-bold text-gray-900 mt-1">
+                            <p className="text-[24px] font-bold text-gray-normal mt-1">
                               {faqList.length}개
                             </p>
                           </div>
@@ -619,12 +621,12 @@ const AdminPage = () => {
                           ).map(([key, label]) => (
                             <div
                               key={key}
-                              className="rounded-xl border border-gray-200 p-4"
+                              className="rounded-xl border border-line-normal p-4"
                             >
-                              <p className="text-[13px] text-gray-500">
+                              <p className="text-[13px] text-gray-assistive">
                                 {label}
                               </p>
-                              <p className="text-[24px] font-bold text-primary mt-1">
+                              <p className="text-[24px] font-bold text-primary-normal mt-1">
                                 {faqCategoryCounts[key]}개
                               </p>
                             </div>
@@ -636,18 +638,18 @@ const AdminPage = () => {
 
                   {activeSection === 'batch' ? (
                     <>
-                      <div className="mt-6 rounded-xl border border-gray-200 p-4">
-                        <p className="text-[15px] text-gray-700">
+                      <div className="mt-6 rounded-xl border border-line-normal p-4">
+                        <p className="text-[15px] text-gray-neutral">
                           전날 유저 통계를 집계하는 배치가 실패한 경우, 특정
                           날짜를 지정하여 수동으로 배치를 실행할 수 있습니다.
                         </p>
-                        <p className="text-[13px] text-gray-500 mt-2">
+                        <p className="text-[13px] text-gray-assistive mt-2">
                           당일 포함 미래 날짜는 선택할 수 없습니다.
                         </p>
                       </div>
 
-                      <div className="mt-4 rounded-xl border border-gray-200 p-4">
-                        <p className="text-[16px] font-semibold text-gray-900 mb-3">
+                      <div className="mt-4 rounded-xl border border-line-normal p-4">
+                        <p className="text-[16px] font-semibold text-gray-normal mb-3">
                           집계 대상 날짜 선택
                         </p>
                         <input
@@ -655,7 +657,7 @@ const AdminPage = () => {
                           value={batchTargetDate}
                           max={maxDate}
                           onChange={(e) => setBatchTargetDate(e.target.value)}
-                          className="w-full max-w-[240px] rounded-lg border border-gray-300 px-3 py-2 text-[14px] text-gray-900 outline-none focus:border-primary"
+                          className="w-full max-w-[240px] rounded-lg border border-line-normal px-3 py-2 text-[14px] text-gray-normal outline-none focus:border-primary-normal"
                         />
                       </div>
 
@@ -663,8 +665,8 @@ const AdminPage = () => {
                         <div
                           className={`mt-4 rounded-xl border p-4 ${
                             batchResult.type === 'success'
-                              ? 'border-green-200 bg-[#f0fdf4] text-green-800'
-                              : 'border-red-200 bg-[#fef2f2] text-red-800'
+                              ? 'border-primary-subtle bg-primary-subtle text-primary-heavy'
+                              : 'border-status-negative-subtle bg-status-negative-subtle text-status-negative-heavy'
                           }`}
                         >
                           <p className="text-[14px] font-medium">
@@ -690,8 +692,8 @@ const AdminPage = () => {
                           }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             qnaStatusFilter === 'all'
-                              ? 'bg-[#f0fdf4] border-primary text-primary'
-                              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                              ? 'bg-primary-subtle border-primary-normal text-primary-normal'
+                              : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
                           }`}
                         >
                           전체
@@ -705,8 +707,8 @@ const AdminPage = () => {
                           }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             qnaStatusFilter === 'WAITING'
-                              ? 'bg-[#fef2f2] border-red-300 text-red-500'
-                              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                              ? 'bg-status-negative-subtle border-status-negative-subtle text-status-negative-normal'
+                              : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
                           }`}
                         >
                           미답변
@@ -720,16 +722,16 @@ const AdminPage = () => {
                           }}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             qnaStatusFilter === 'COMPLETED'
-                              ? 'bg-[#f0fdf4] border-primary text-primary'
-                              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                              ? 'bg-primary-subtle border-primary-normal text-primary-normal'
+                              : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
                           }`}
                         >
                           답변완료
                         </button>
                       </div>
 
-                      <div className="mt-6 rounded-xl border border-gray-200 overflow-hidden">
-                        <div className="grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] bg-gray-50 px-4 py-3 text-[13px] font-medium text-gray-600">
+                      <div className="mt-6 rounded-xl border border-line-normal overflow-hidden">
+                        <div className="grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] bg-background-alternative px-4 py-3 text-[13px] font-medium text-gray-alternative">
                           <span>문의번호</span>
                           <span>문의 제목</span>
                           <span>작성자</span>
@@ -737,15 +739,15 @@ const AdminPage = () => {
                           <span>상태</span>
                         </div>
                         {isQnaLoading ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
+                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
                             문의 목록을 불러오는 중입니다...
                           </div>
                         ) : qnaError ? (
-                          <div className="px-4 py-8 text-[14px] text-red-500 text-center">
+                          <div className="px-4 py-8 text-[14px] text-status-negative-normal text-center">
                             {qnaError}
                           </div>
                         ) : qnaList.length === 0 ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
+                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
                             {qnaStatusFilter === 'WAITING'
                               ? '미답변 문의가 없습니다.'
                               : qnaStatusFilter === 'COMPLETED'
@@ -758,10 +760,10 @@ const AdminPage = () => {
                               key={item.id}
                               type="button"
                               onClick={() => handleSelectInquiry(item)}
-                              className={`w-full grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] px-4 py-3 text-[14px] text-gray-800 border-t border-gray-100 text-left ${
+                              className={`w-full grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] px-4 py-3 text-[14px] text-gray-neutral border-t border-line-normal text-left ${
                                 selectedInquiryId === item.id
-                                  ? 'bg-[#f9fcf8]'
-                                  : 'bg-white hover:bg-gray-50'
+                                  ? 'bg-primary-subtle'
+                                  : 'bg-background-elevated hover:bg-background-alternative'
                               }`}
                             >
                               <span>{item.id}</span>
@@ -773,10 +775,10 @@ const AdminPage = () => {
                               <span
                                 className={
                                   item.status === '미답변'
-                                    ? 'text-red-500 font-medium'
+                                    ? 'text-status-negative-normal font-medium'
                                     : item.status === '답변완료'
-                                      ? 'text-primary font-medium'
-                                      : 'text-gray-500'
+                                      ? 'text-primary-normal font-medium'
+                                      : 'text-gray-assistive'
                                 }
                               >
                                 {item.status}
@@ -796,7 +798,7 @@ const AdminPage = () => {
                               fetchInquiries(prevPage)
                             }}
                             disabled={currentPage === 1}
-                            className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-assistive hover:text-primary-normal disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                             aria-label="이전 페이지"
                           >
                             <svg
@@ -819,7 +821,7 @@ const AdminPage = () => {
                             page === '...' ? (
                               <span
                                 key={`ellipsis-${idx}`}
-                                className="flex h-9 w-9 items-center justify-center text-[14px] text-gray-400"
+                                className="flex h-9 w-9 items-center justify-center text-[14px] text-gray-disable"
                               >
                                 ···
                               </span>
@@ -833,8 +835,8 @@ const AdminPage = () => {
                                 }}
                                 className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-[14px] transition-colors ${
                                   page === currentPage
-                                    ? 'bg-primary text-white'
-                                    : 'text-gray-700 hover:text-primary'
+                                    ? 'bg-primary-normal text-static-white'
+                                    : 'text-gray-neutral hover:text-primary-normal'
                                 }`}
                               >
                                 {page}
@@ -853,7 +855,7 @@ const AdminPage = () => {
                               fetchInquiries(nextPage)
                             }}
                             disabled={currentPage === totalPages}
-                            className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-assistive hover:text-primary-normal disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                             aria-label="다음 페이지"
                           >
                             <svg
@@ -874,20 +876,20 @@ const AdminPage = () => {
                         </div>
                       )}
 
-                      <div className="mt-4 rounded-xl border border-gray-200 p-4">
-                        <p className="text-[16px] font-semibold text-gray-900 mb-3">
+                      <div className="mt-4 rounded-xl border border-line-normal p-4">
+                        <p className="text-[16px] font-semibold text-gray-normal mb-3">
                           답변 작성
                         </p>
                         {selectedInquiry ? (
                           <>
-                            <p className="text-[14px] text-gray-700 mb-2">
+                            <p className="text-[14px] text-gray-neutral mb-2">
                               선택 문의:{' '}
                               <span className="font-medium">
                                 {selectedInquiry.title}
                               </span>
                             </p>
                             {selectedInquiry.content ? (
-                              <p className="text-[13px] text-gray-500 mb-3">
+                              <p className="text-[13px] text-gray-assistive mb-3">
                                 문의 내용: {selectedInquiry.content}
                               </p>
                             ) : null}
@@ -895,11 +897,11 @@ const AdminPage = () => {
                               value={answerDraft}
                               onChange={(e) => setAnswerDraft(e.target.value)}
                               placeholder="문의에 대한 답변을 입력하세요."
-                              className="w-full min-h-[120px] rounded-lg border border-gray-300 px-3 py-2 text-[14px] text-gray-900 outline-none focus:border-primary"
+                              className="w-full min-h-[120px] rounded-lg border border-line-normal px-3 py-2 text-[14px] text-gray-normal outline-none focus:border-primary-normal"
                             />
                           </>
                         ) : (
-                          <p className="text-[14px] text-gray-500">
+                          <p className="text-[14px] text-gray-assistive">
                             답변할 문의를 먼저 선택해주세요.
                           </p>
                         )}
@@ -913,8 +915,8 @@ const AdminPage = () => {
                           onClick={() => setFaqCategoryFilter('all')}
                           className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                             faqCategoryFilter === 'all'
-                              ? 'bg-[#f0fdf4] border-primary text-primary'
-                              : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                              ? 'bg-primary-subtle border-primary-normal text-primary-normal'
+                              : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
                           }`}
                         >
                           전체
@@ -931,8 +933,8 @@ const AdminPage = () => {
                             onClick={() => setFaqCategoryFilter(key)}
                             className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                               faqCategoryFilter === key
-                                ? 'bg-[#f0fdf4] border-primary text-primary'
-                                : 'bg-white border-gray-300 text-gray-600 hover:bg-gray-50'
+                                ? 'bg-primary-subtle border-primary-normal text-primary-normal'
+                                : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
                             }`}
                           >
                             {label}
@@ -940,23 +942,23 @@ const AdminPage = () => {
                         ))}
                       </div>
 
-                      <div className="mt-6 rounded-xl border border-gray-200 overflow-hidden">
-                        <div className="grid grid-cols-[60px_120px_minmax(0,1fr)_80px] bg-gray-50 px-4 py-3 text-[13px] font-medium text-gray-600">
+                      <div className="mt-6 rounded-xl border border-line-normal overflow-hidden">
+                        <div className="grid grid-cols-[60px_120px_minmax(0,1fr)_80px] bg-background-alternative px-4 py-3 text-[13px] font-medium text-gray-alternative">
                           <span>No</span>
                           <span>카테고리</span>
                           <span>질문</span>
                           <span>삭제</span>
                         </div>
                         {isFaqLoading ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
+                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
                             FAQ 목록을 불러오는 중입니다...
                           </div>
                         ) : faqError ? (
-                          <div className="px-4 py-8 text-[14px] text-red-500 text-center">
+                          <div className="px-4 py-8 text-[14px] text-status-negative-normal text-center">
                             {faqError}
                           </div>
                         ) : displayedFaqList.length === 0 ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-500 text-center">
+                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
                             {faqCategoryFilter === 'all'
                               ? '등록된 FAQ가 없습니다.'
                               : `${FAQ_CATEGORIES[faqCategoryFilter]} 카테고리에 등록된 FAQ가 없습니다.`}
@@ -965,7 +967,7 @@ const AdminPage = () => {
                           displayedFaqList.map((item, index) => (
                             <div
                               key={item.id}
-                              className="border-t border-gray-100"
+                              className="border-t border-line-normal"
                             >
                               <button
                                 type="button"
@@ -974,7 +976,7 @@ const AdminPage = () => {
                                     expandedFaqId === item.id ? null : item.id,
                                   )
                                 }
-                                className="w-full grid grid-cols-[60px_120px_minmax(0,1fr)_80px] px-4 py-3 text-[14px] text-gray-800 text-left hover:bg-gray-50"
+                                className="w-full grid grid-cols-[60px_120px_minmax(0,1fr)_80px] px-4 py-3 text-[14px] text-gray-neutral text-left hover:bg-background-alternative"
                               >
                                 <span>{index + 1}</span>
                                 <span>{item.categoryDescription}</span>
@@ -982,7 +984,7 @@ const AdminPage = () => {
                                   {item.question}
                                 </span>
                                 <span
-                                  className="text-[13px] text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
+                                  className="text-[13px] text-status-negative-normal hover:text-status-negative-strong font-medium disabled:opacity-50"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     handleDeleteFaq(item.id)
@@ -995,7 +997,7 @@ const AdminPage = () => {
                               </button>
                               {expandedFaqId === item.id && (
                                 <div className="px-4 pb-4 pt-1">
-                                  <div className="rounded-lg bg-gray-50 p-4 text-[14px] text-gray-700 whitespace-pre-wrap">
+                                  <div className="rounded-lg bg-background-alternative p-4 text-[14px] text-gray-neutral whitespace-pre-wrap">
                                     {item.answer}
                                   </div>
                                 </div>

@@ -262,7 +262,7 @@ const QuizListPage = () => {
   ])
 
   const cardBaseClass =
-    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-[#ededed] bg-white px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto'
+    'relative w-full max-w-[312px] h-[144px] rounded-[12px] border border-line-normal bg-background-elevated px-[40px] pt-[40px] pb-[16px] text-left shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] transition-colors hover:border-primary-normal flex flex-col max-lg:max-w-[288px] max-lg:h-[152px] max-lg:px-[26px] max-lg:pt-[48px] max-lg:pb-[20px] max-md:max-w-[335px] max-md:h-[149px] max-md:mx-auto'
 
   const pageNumbers = useMemo(
     () => getPageNumbers(currentPage, totalPages),
@@ -278,7 +278,7 @@ const QuizListPage = () => {
           type="button"
           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
           disabled={currentPage === 1}
-          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-assistive hover:text-primary-normal disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           aria-label="이전 페이지"
         >
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
@@ -296,7 +296,7 @@ const QuizListPage = () => {
           page === '...' ? (
             <span
               key={`ellipsis-${idx}`}
-              className="flex h-9 w-9 items-center justify-center text-body3-medium text-gray-400"
+              className="flex h-9 w-9 items-center justify-center text-body3-medium text-gray-disable"
             >
               ···
             </span>
@@ -307,8 +307,8 @@ const QuizListPage = () => {
               onClick={() => setCurrentPage(page)}
               className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-body3-medium transition-colors ${
                 page === currentPage
-                  ? 'bg-primary text-white'
-                  : 'text-gray-700 hover:text-primary'
+                  ? 'bg-primary-normal text-static-white'
+                  : 'text-gray-neutral hover:text-primary-normal'
               }`}
             >
               {page}
@@ -320,7 +320,7 @@ const QuizListPage = () => {
           type="button"
           onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
           disabled={currentPage === totalPages}
-          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex h-9 w-9 items-center justify-center rounded-[6px] text-gray-assistive hover:text-primary-normal disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           aria-label="다음 페이지"
         >
           <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
@@ -341,8 +341,8 @@ const QuizListPage = () => {
     if (isLoading) {
       return (
         <div className="flex flex-col items-center justify-center py-20">
-          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-body1-medium text-gray-600">로딩 중...</p>
+          <div className="w-12 h-12 border-4 border-primary-normal border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-body1-medium text-gray-alternative">로딩 중...</p>
         </div>
       )
     }
@@ -350,13 +350,13 @@ const QuizListPage = () => {
     if (error) {
       return (
         <div className="flex flex-col items-center justify-center py-20">
-          <p className="text-body1-medium text-error mb-4">
+          <p className="text-body1-medium text-status-negative-normal mb-4">
             {error || '데이터를 불러오는 중 오류가 발생했어요.'}
           </p>
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="bg-primary text-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary/90 transition-colors"
+            className="bg-primary-normal text-static-white text-body3-regular px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
           >
             다시 시도
           </button>
@@ -366,11 +366,11 @@ const QuizListPage = () => {
 
     if (!quizGroups.length) {
       return (
-        <div className="w-full rounded-[12px] border border-[#dedede] bg-white px-8 py-10 text-left shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
-          <p className="text-body1-medium text-gray-900 mb-2">
+        <div className="w-full rounded-[12px] border border-line-normal bg-background-elevated px-8 py-10 text-left shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+          <p className="text-body1-medium text-gray-normal mb-2">
             아직 풀어본 문제가 없어요.
           </p>
-          <p className="text-body2-regular text-gray-600">
+          <p className="text-body2-regular text-gray-alternative">
             문제를 풀고 다시 복습할 문제를 모아볼 수 있어요.
           </p>
         </div>
@@ -397,7 +397,7 @@ const QuizListPage = () => {
                 <button
                   type="button"
                   aria-label={`${group.group} 더보기`}
-                  className="absolute right-[16px] top-[16px] flex h-6 w-6 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/30 max-lg:right-[26px] max-lg:top-[20px]"
+                  className="absolute right-[16px] top-[16px] flex h-6 w-6 items-center justify-center rounded-full text-gray-assistive hover:bg-fill-alternative focus:outline-none focus:ring-2 focus:ring-primary-normal/30 max-lg:right-[26px] max-lg:top-[20px]"
                   onClick={(event) => {
                     event.preventDefault()
                     event.stopPropagation()
@@ -418,10 +418,10 @@ const QuizListPage = () => {
                     className="absolute right-0 top-10 z-30"
                     onClick={(event) => event.stopPropagation()}
                   >
-                    <div className="w-[170px] rounded-[10px] border border-[#dedede] bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+                    <div className="w-[170px] rounded-[10px] border border-line-normal bg-background-elevated p-2 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
                       <button
                         type="button"
-                        className="w-full rounded-[6px] px-3 py-2 text-left text-body3-medium text-gray-900 hover:bg-gray-50"
+                        className="w-full rounded-[6px] px-3 py-2 text-left text-body3-medium text-gray-normal hover:bg-background-alternative"
                         onClick={(event) => {
                           event.preventDefault()
                           handleOpenEditModal(group)
@@ -439,14 +439,14 @@ const QuizListPage = () => {
                       name="icn_note"
                       className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]"
                     />
-                    <span className="text-[20px] font-medium text-gray-900 truncate max-w-[200px] max-md:text-[18px]">
+                    <span className="text-[20px] font-medium text-gray-normal truncate max-w-[200px] max-md:text-[18px]">
                       {group.group}
                     </span>
                   </div>
 
                   <div className="w-full flex justify-end mr-[-44px] max-lg:mr-0">
-                    <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-[#f6fbf4] px-3">
-                      <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary">
+                    <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-primary-subtle px-3">
+                      <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary-normal">
                         문제 {quizCount}개
                       </span>
                     </div>
@@ -474,13 +474,13 @@ const QuizListPage = () => {
                   name="calendar"
                   className="w-[28px] h-[28px] max-md:w-[24px] max-md:h-[24px]"
                 />
-                <span className="text-[20px] font-medium text-gray-900 max-md:text-[18px]">
+                <span className="text-[20px] font-medium text-gray-normal max-md:text-[18px]">
                   {group.group}
                 </span>
               </div>
               <div className="w-full flex justify-end mr-[-48px] max-lg:mr-0">
-                <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-[#f6fbf4] px-3">
-                  <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary">
+                <div className="inline-flex h-[36px] min-w-[105px] items-center justify-center rounded-[6px] bg-primary-subtle px-3">
+                  <span className="inline-flex min-w-[81px] h-[20px] items-center justify-center text-tint-regular text-primary-normal">
                     문제 {group.quizHistoryDetailList.length}개
                   </span>
                 </div>
@@ -499,7 +499,7 @@ const QuizListPage = () => {
 
   // 회원인 경우
   return (
-    <div className="flex-1 bg-bg-home flex flex-col">
+    <div className="flex-1 bg-background-alternative flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
@@ -507,9 +507,9 @@ const QuizListPage = () => {
         <div className="w-full max-w-[904px] xl:max-w-[976px]">
           <div className="flex flex-col gap-6 mb-12">
             <div className="flex items-center justify-center gap-3 text-center">
-              <h1 className="text-header1-bold text-gray-900">
-                <span className="text-primary">복습</span>하고 싶은 문제 다
-                모아봤어요
+              <h1 className="text-header1-bold text-gray-normal">
+                <span className="text-primary-normal">복습</span>하고 싶은 문제
+                다 모아봤어요
               </h1>
               <Icon name="book" size={40} />
             </div>
@@ -520,7 +520,7 @@ const QuizListPage = () => {
               <button
                 type="button"
                 onClick={handleDropdownToggle}
-                className="flex w-full items-center justify-between rounded-[6px] border border-[#dedede] bg-white py-3 px-4 text-left text-body2-regular text-gray-900 hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="flex w-full items-center justify-between rounded-[6px] border border-line-normal bg-background-elevated py-3 px-4 text-left text-body2-regular text-gray-normal hover:border-primary-normal focus:border-primary-normal focus:outline-none focus:ring-2 focus:ring-primary-normal/20"
                 aria-haspopup="listbox"
                 aria-expanded={isDropdownOpen}
               >
@@ -530,7 +530,7 @@ const QuizListPage = () => {
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  className={`text-gray-600 transition-transform ${
+                  className={`text-gray-alternative transition-transform ${
                     isDropdownOpen ? 'rotate-180' : ''
                   }`}
                 >
@@ -545,7 +545,7 @@ const QuizListPage = () => {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute right-0 top-[calc(100%+8px)] z-20 w-full rounded-[10px] border border-[#dedede] bg-white shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+                <div className="absolute right-0 top-[calc(100%+8px)] z-20 w-full rounded-[10px] border border-line-normal bg-background-elevated shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
                   {GROUP_TYPE_OPTIONS.map((option) => (
                     <button
                       key={option.value}
@@ -553,8 +553,8 @@ const QuizListPage = () => {
                       onClick={() => handleGroupTypeChange(option.value)}
                       className={`w-full px-4 py-3 text-left text-body3-medium transition-colors ${
                         option.value === groupType
-                          ? 'text-primary'
-                          : 'text-gray-900 hover:bg-gray-50'
+                          ? 'text-primary-normal'
+                          : 'text-gray-normal hover:bg-background-alternative'
                       }`}
                     >
                       {option.label}
@@ -576,12 +576,12 @@ const QuizListPage = () => {
       <main className="hidden max-md:flex flex-1 flex-col pt-[20px] pb-[120px] px-5">
         <div className="flex flex-col items-center gap-0 mb-[12px]">
           <div className="flex items-center gap-2">
-            <h1 className="text-header3-bold text-gray-900">
-              <span className="text-primary">복습</span>하고 싶은 문제
+            <h1 className="text-header3-bold text-gray-normal">
+              <span className="text-primary-normal">복습</span>하고 싶은 문제
             </h1>
             <Icon name="book" size={28} />
           </div>
-          <h1 className="text-header3-bold text-gray-900">다 모아봤어요</h1>
+          <h1 className="text-header3-bold text-gray-normal">다 모아봤어요</h1>
         </div>
 
         <div className="flex justify-end mb-[20px]">
@@ -589,7 +589,7 @@ const QuizListPage = () => {
             <button
               type="button"
               onClick={handleDropdownToggle}
-              className="flex w-full items-center justify-between rounded-[6px] border border-[#dedede] bg-white py-3 px-4 text-left text-body3-medium text-gray-900 hover:border-primary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="flex w-full items-center justify-between rounded-[6px] border border-line-normal bg-background-elevated py-3 px-4 text-left text-body3-medium text-gray-normal hover:border-primary-normal focus:border-primary-normal focus:outline-none focus:ring-2 focus:ring-primary-normal/20"
               aria-haspopup="listbox"
               aria-expanded={isDropdownOpen}
             >
@@ -599,7 +599,7 @@ const QuizListPage = () => {
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                className={`text-gray-600 transition-transform ${
+                className={`text-gray-alternative transition-transform ${
                   isDropdownOpen ? 'rotate-180' : ''
                 }`}
               >
@@ -614,7 +614,7 @@ const QuizListPage = () => {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 top-[calc(100%+8px)] z-20 w-full rounded-[10px] border border-[#dedede] bg-white shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+              <div className="absolute right-0 top-[calc(100%+8px)] z-20 w-full rounded-[10px] border border-line-normal bg-background-elevated shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
                 {GROUP_TYPE_OPTIONS.map((option) => (
                   <button
                     key={option.value}
@@ -622,8 +622,8 @@ const QuizListPage = () => {
                     onClick={() => handleGroupTypeChange(option.value)}
                     className={`w-full px-4 py-3 text-left text-body3-medium transition-colors ${
                       option.value === groupType
-                        ? 'text-primary'
-                        : 'text-gray-900 hover:bg-gray-50'
+                        ? 'text-primary-normal'
+                        : 'text-gray-normal hover:bg-background-alternative'
                     }`}
                   >
                     {option.label}
@@ -647,17 +647,17 @@ const QuizListPage = () => {
       >
         <div className="w-full">
           <div className="flex flex-col gap-6 max-md:gap-[24px]">
-            <h2 className="text-center text-header3-bold text-gray-900 max-md:text-[20px]">
+            <h2 className="text-center text-header3-bold text-gray-normal max-md:text-[20px]">
               주제 수정하기
             </h2>
 
             <div className="flex flex-col gap-3">
               <div className="mx-auto w-[350px] max-md:w-full">
                 <div className="flex flex-col items-start w-full">
-                  <label className="text-[16px] font-medium text-[#777] mb-2 max-md:text-[14px]">
+                  <label className="text-[16px] font-medium text-gray-alternative mb-2 max-md:text-[14px]">
                     새로운 주제
                   </label>
-                  <div className="w-full border-b border-[#dedede] py-[12px]">
+                  <div className="w-full border-b border-line-normal py-[12px]">
                     <input
                       type="text"
                       value={topicInput}
@@ -665,7 +665,7 @@ const QuizListPage = () => {
                       placeholder={
                         targetGroup?.group ?? '새로운 주제를 입력하세요'
                       }
-                      className="w-full text-[16px] text-gray-900 placeholder:text-[#9e9e9e] outline-none bg-transparent"
+                      className="w-full text-[16px] text-gray-normal placeholder:text-gray-assistive outline-none bg-transparent"
                     />
                   </div>
                 </div>
@@ -673,7 +673,9 @@ const QuizListPage = () => {
               {formMessage && (
                 <p
                   className={`text-body3-medium text-center ${
-                    formMessage.type === 'error' ? 'text-error' : 'text-primary'
+                    formMessage.type === 'error'
+                      ? 'text-status-negative-normal'
+                      : 'text-primary-normal'
                   }`}
                 >
                   {formMessage.text}
@@ -685,7 +687,7 @@ const QuizListPage = () => {
               <button
                 type="button"
                 onClick={handleCloseEditModal}
-                className="h-[46px] w-[120px] rounded-[6px] border border-[#dedede] bg-[#efefef] text-body3-regular text-gray-900 hover:bg-gray-200 disabled:opacity-60 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
+                className="h-[46px] w-[120px] rounded-[6px] border border-line-normal bg-fill-alternative text-body3-regular text-gray-normal hover:bg-fill-alternative disabled:opacity-60 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
                 disabled={isSubmitting}
               >
                 취소
@@ -694,7 +696,7 @@ const QuizListPage = () => {
                 type="button"
                 onClick={handleTopicSubmit}
                 disabled={isSubmitDisabled}
-                className="h-[46px] w-[120px] rounded-[6px] bg-primary text-body3-regular text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
+                className="h-[46px] w-[120px] rounded-[6px] bg-primary-normal text-body3-regular text-static-white transition-colors hover:bg-primary-normal/90 disabled:cursor-not-allowed disabled:opacity-50 max-md:h-[40px] max-md:w-[96px] max-md:rounded-[4px] max-md:text-[14px]"
               >
                 {isSubmitting ? '수정 중...' : '수정하기'}
               </button>

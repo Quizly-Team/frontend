@@ -24,16 +24,16 @@ const FaqCategorySection = ({
 }: FaqCategorySectionProps) => {
   const label = FAQ_CATEGORIES[category] ?? description
   return (
-    <section className="w-full bg-white border border-[#dedede] rounded-[16px] p-[30px] flex flex-col gap-[30px] max-md:p-[20px]">
+    <section className="w-full bg-background-elevated border border-line-normal rounded-[16px] p-[30px] flex flex-col gap-[30px] max-md:p-[20px]">
       <div className="flex items-center gap-[12px] max-md:gap-[8px]">
-        <div className="size-10 max-md:size-8 rounded-[6px] bg-[#f6fbf4] flex items-center justify-center shrink-0">
+        <div className="size-10 max-md:size-8 rounded-[6px] bg-primary-subtle flex items-center justify-center shrink-0">
           <Icon
             name={CATEGORY_ICON[category] ?? FALLBACK_ICON}
             size={24}
             className="max-md:size-5"
           />
         </div>
-        <h2 className="text-header3-bold text-gray-900 max-md:text-body1-medium">
+        <h2 className="text-header3-bold text-gray-normal max-md:text-body1-medium">
           {label}
         </h2>
       </div>

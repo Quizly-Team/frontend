@@ -223,16 +223,16 @@ const MockExamPage = () => {
 
   if (!state || mockExamList.length === 0) {
     return (
-      <div className="flex-1 bg-white">
+      <div className="flex-1 bg-background-elevated">
         <Header />
         <div className="flex items-center justify-center h-[calc(100vh-90px)] max-lg:h-[calc(100vh-72px)] max-md:h-[calc(100vh-46px)]">
           <div className="text-center">
-            <p className="text-xl max-lg:text-2xl max-md:text-lg text-gray-900 mb-4">
+            <p className="text-xl max-lg:text-2xl max-md:text-lg text-gray-normal mb-4">
               생성된 모의고사가 없습니다.
             </p>
             <button
               onClick={() => navigate('/')}
-              className="h-11 max-lg:h-12 max-md:h-10 px-6 rounded bg-primary text-white text-base max-lg:text-lg max-md:text-base font-medium hover:bg-primary-dark"
+              className="h-11 max-lg:h-12 max-md:h-10 px-6 rounded bg-primary-normal text-static-white text-base max-lg:text-lg max-md:text-base font-medium hover:bg-primary-strong"
             >
               홈으로 돌아가기
             </button>
@@ -243,27 +243,27 @@ const MockExamPage = () => {
   }
 
   return (
-    <div className="flex-1 bg-bg-home max-md:pb-20">
+    <div className="flex-1 bg-background-alternative max-md:pb-20">
       <Header />
 
       {/* 모바일 안내 문구 - 상단 */}
       <div className="hidden max-md:block pt-4 pb-3 px-5">
-        <div className="bg-bg-home flex items-center gap-2 text-gray-600 text-sm font-normal">
+        <div className="bg-background-alternative flex items-center gap-2 text-gray-alternative text-sm font-normal">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle
               cx="8"
               cy="8"
               r="7.5"
-              stroke="#777777"
               strokeWidth="1"
               fill="none"
+              className="stroke-gray-alternative"
             />
             <text
               x="8"
               y="11.5"
               fontSize="12"
               fontWeight="bold"
-              fill="#777777"
+              className="fill-gray-alternative"
               textAnchor="middle"
             >
               i
@@ -284,7 +284,7 @@ const MockExamPage = () => {
         >
           <button
             onClick={() => handleExportPDF('question')}
-            className="px-3 py-3 rounded-md border border-[#dedede] bg-white text-[#222222] text-sm font-normal hover:border-gray-400 flex items-center gap-1"
+            className="px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal text-sm font-normal hover:border-gray-disable flex items-center gap-1"
           >
             <img
               src="/icon/icn_book.svg"
@@ -296,7 +296,7 @@ const MockExamPage = () => {
           </button>
           <button
             onClick={() => handleExportPDF('answer')}
-            className="px-3 py-3 rounded-md border border-[#dedede] bg-white text-[#222222] text-sm font-normal hover:border-gray-400 flex items-center gap-1"
+            className="px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal text-sm font-normal hover:border-gray-disable flex items-center gap-1"
           >
             <img
               src="/icon/icn_memo.svg"
@@ -333,7 +333,7 @@ const MockExamPage = () => {
             {/* 웹 크기 고정 (904px) */}
             <div
               ref={innerContentRef}
-              className="w-[904px] bg-white border border-[#dedede] rounded-2xl shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] overflow-hidden"
+              className="w-[904px] bg-background-elevated border border-line-normal rounded-2xl shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] overflow-hidden"
             >
               {/* 문제 섹션 */}
               <div ref={questionRef} data-pdf-target="question">
@@ -349,7 +349,7 @@ const MockExamPage = () => {
                 {/* 헤더와 문제 사이 구분선 및 세로 구분선 컨테이너 */}
                 <div className="relative">
                   {/* 가로 구분선 */}
-                  <div className="h-[2px] bg-[#222222] mx-[40px]" />
+                  <div className="h-[2px] bg-gray-normal mx-[40px]" />
 
                   {/* 문제 목록 영역 */}
                   <div className="relative flex">
@@ -380,7 +380,7 @@ const MockExamPage = () => {
                     </div>
 
                     {/* 세로 구분선 - 가로 구분선과 같은 위치에서 시작 */}
-                    <div className="absolute left-1/2 top-0 w-px bg-[#222222] -translate-x-1/2 bottom-0" />
+                    <div className="absolute left-1/2 top-0 w-px bg-gray-normal -translate-x-1/2 bottom-0" />
 
                     {/* 오른쪽 열 */}
                     <div className="w-1/2 pl-3 pr-[40px] pb-10">
@@ -405,7 +405,7 @@ const MockExamPage = () => {
               <div
                 ref={answerRef}
                 data-pdf-target="answer"
-                className="border-t-4 border-gray-300"
+                className="border-t-4 border-line-normal"
               >
                 {/* 헤더 이미지 */}
                 <div className="relative w-full pt-[60px] px-[40px] text-center pb-5">
@@ -419,7 +419,7 @@ const MockExamPage = () => {
                 {/* 헤더와 해설 사이 구분선 및 세로 구분선 컨테이너 */}
                 <div className="relative">
                   {/* 가로 구분선 */}
-                  <div className="h-[2px] bg-[#222222] mx-[40px]" />
+                  <div className="h-[2px] bg-gray-normal mx-[40px]" />
 
                   {/* 해설 목록 - 2열 레이아웃 */}
                   <div className="relative flex">
@@ -438,7 +438,7 @@ const MockExamPage = () => {
                     </div>
 
                     {/* 세로 구분선 - 가로 구분선과 같은 위치에서 시작 */}
-                    <div className="absolute left-1/2 top-0 w-px bg-[#222222] -translate-x-1/2 bottom-0" />
+                    <div className="absolute left-1/2 top-0 w-px bg-gray-normal -translate-x-1/2 bottom-0" />
 
                     {/* 오른쪽 열 */}
                     <div className="w-1/2 pl-3 pr-[40px] pb-10">
@@ -464,11 +464,11 @@ const MockExamPage = () => {
       </div>
 
       {/* 모바일 하단 고정 버튼 */}
-      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white border-t border-[#dedede] z-50">
+      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated border-t border-line-normal z-50">
         <div className="flex gap-3 px-5 py-3">
           <button
             onClick={() => handleExportPDF('question')}
-            className="flex-1 h-[52px] rounded-lg border border-[#dedede] bg-white text-[#222222] text-base font-medium hover:border-gray-400 flex items-center justify-center gap-2"
+            className="flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal text-base font-medium hover:border-gray-disable flex items-center justify-center gap-2"
           >
             <img
               src="/icon/icn_book.svg"
@@ -480,7 +480,7 @@ const MockExamPage = () => {
           </button>
           <button
             onClick={() => handleExportPDF('answer')}
-            className="flex-1 h-[52px] rounded-lg border border-[#dedede] bg-white text-[#222222] text-base font-medium hover:border-gray-400 flex items-center justify-center gap-2"
+            className="flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal text-base font-medium hover:border-gray-disable flex items-center justify-center gap-2"
           >
             <img
               src="/icon/icn_memo.svg"

@@ -48,11 +48,11 @@ const QuizCreateModal = ({
             <button
               onClick={handleMultipleChoice}
               disabled={!isLoggedIn}
-              className="bg-white rounded-[24px] w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative flex-shrink-0"
+              className="bg-background-elevated rounded-[24px] w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-background-alternative transition-colors disabled:cursor-not-allowed relative flex-shrink-0"
             >
               {/* 비회원 비활성화 오버레이 */}
               {!isLoggedIn && (
-                <div className="absolute inset-0 bg-black/30 rounded-[24px] z-10" />
+                <div className="absolute inset-0 bg-static-black/30 rounded-[24px] z-10" />
               )}
 
               {/* 아이콘 */}
@@ -62,10 +62,10 @@ const QuizCreateModal = ({
 
               {/* 텍스트 */}
               <div className="flex flex-col items-center gap-1">
-                <h3 className="text-header3-bold text-gray-900">
+                <h3 className="text-header3-bold text-gray-normal">
                   객관식 문제 만들기
                 </h3>
-                <p className="text-body3-regular text-gray-600 text-center whitespace-pre-wrap">
+                <p className="text-body3-regular text-gray-alternative text-center whitespace-pre-wrap">
                   {'사지선다형의 객관식 문제를\n만들어 드립니다.'}
                 </p>
               </div>
@@ -83,7 +83,7 @@ const QuizCreateModal = ({
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-white rounded-[24px] w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-gray-50 transition-colors flex-shrink-0"
+            className="bg-background-elevated rounded-[24px] w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-background-alternative transition-colors flex-shrink-0"
           >
             {/* 아이콘 */}
             <div className="flex gap-2">
@@ -93,10 +93,10 @@ const QuizCreateModal = ({
 
             {/* 텍스트 */}
             <div className="flex flex-col items-center gap-1">
-              <h3 className="text-header3-bold text-gray-900">
+              <h3 className="text-header3-bold text-gray-normal">
                 OX 문제 만들기
               </h3>
-              <p className="text-body3-regular text-gray-600 text-center whitespace-pre-wrap">
+              <p className="text-body3-regular text-gray-alternative text-center whitespace-pre-wrap">
                 {'간단한 OX 형식의 문제를\n만들어 드립니다.'}
               </p>
             </div>
@@ -109,11 +109,11 @@ const QuizCreateModal = ({
           <button
             onClick={handleMultipleChoice}
             disabled={!isLoggedIn}
-            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-gray-50 transition-colors disabled:cursor-not-allowed relative"
+            className="bg-background-elevated rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-background-alternative transition-colors disabled:cursor-not-allowed relative"
           >
             {/* 비회원 비활성화 오버레이 */}
             {!isLoggedIn && (
-              <div className="absolute inset-0 bg-black/30 rounded-[24px] z-10" />
+              <div className="absolute inset-0 bg-static-black/30 rounded-[24px] z-10" />
             )}
 
             {/* 아이콘 */}
@@ -122,7 +122,7 @@ const QuizCreateModal = ({
             </div>
 
             {/* 텍스트 */}
-            <h3 className="text-[20px] font-bold leading-[28px] text-gray-900">
+            <h3 className="text-[20px] font-bold leading-[28px] text-gray-normal">
               객관식 문제
             </h3>
           </button>
@@ -130,7 +130,7 @@ const QuizCreateModal = ({
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-white rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-gray-50 transition-colors"
+            className="bg-background-elevated rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-background-alternative transition-colors"
           >
             {/* 아이콘 */}
             <div className="flex gap-2 items-center justify-center flex-1">
@@ -139,7 +139,7 @@ const QuizCreateModal = ({
             </div>
 
             {/* 텍스트 */}
-            <h3 className="text-[20px] font-bold leading-[28px] text-gray-900">
+            <h3 className="text-[20px] font-bold leading-[28px] text-gray-normal">
               OX 문제
             </h3>
           </button>

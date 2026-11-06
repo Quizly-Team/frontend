@@ -74,10 +74,10 @@ const QuizGenerationLoadingPage = ({
       <div className="flex flex-col items-center gap-12 w-full max-w-[1024px] max-lg:max-w-full max-md:max-w-[335px] px-6 max-lg:px-15 max-md:px-l">
         {/* 제목 및 설명 */}
         <div className="flex flex-col items-center gap-3">
-          <h2 className="text-header2-bold text-gray-900 whitespace-nowrap">
+          <h2 className="text-header2-bold text-gray-normal whitespace-nowrap">
             AI가 문제를 만드는 중이에요...
           </h2>
-          <div className="text-body3-regular text-gray-600 text-center leading-[1.4] whitespace-pre-wrap">
+          <div className="text-body3-regular text-gray-alternative text-center leading-[1.4] whitespace-pre-wrap">
             잠시만 기다려주세요!{'\n'}이 작업은 최대 2분까지 소요될 수 있어요.
           </div>
         </div>

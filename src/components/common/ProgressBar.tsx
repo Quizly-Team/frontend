@@ -31,11 +31,11 @@ const ProgressBar = ({
   return (
     <div className={`relative ${className}`}>
       {/* Background */}
-      <div className="w-full h-4 bg-gray-200 rounded-[16px]" />
+      <div className="w-full h-4 bg-fill-alternative rounded-[16px]" />
 
       {/* Progress */}
       <div
-        className="absolute top-0 left-0 h-4 bg-primary rounded-[16px] transition-all duration-300"
+        className="absolute top-0 left-0 h-4 bg-primary-normal rounded-[16px] transition-all duration-300"
         style={{ width: progressWidth }}
       />
 
@@ -55,7 +55,7 @@ const ProgressBar = ({
 
       {/* Percentage Text */}
       <div
-        className={`absolute top-[24px] text-primary whitespace-nowrap transition-all duration-300 ${
+        className={`absolute top-[24px] text-primary-normal whitespace-nowrap transition-all duration-300 ${
           percentage === 100 ? '' : percentage === 0 ? '' : '-translate-x-1/2'
         }`}
         style={{

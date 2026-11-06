@@ -57,8 +57,8 @@ export default function TodaySummary({ data, dailyData }: Props) {
   }, [])
 
   return (
-    <div className="bg-[#30a10e] rounded-[16px] px-[30px] pt-[30px] pb-[60px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:px-[20px] max-md:pt-[20px] max-md:pb-[20px] max-md:flex max-md:flex-col">
-      <h3 className="text-[20px] max-md:text-[20px] font-medium text-white mb-[50px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
+    <div className="bg-primary-normal rounded-[16px] px-[30px] pt-[30px] pb-[60px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:px-[20px] max-md:pt-[20px] max-md:pb-[20px] max-md:flex max-md:flex-col">
+      <h3 className="text-[20px] max-md:text-[20px] font-medium text-static-white mb-[50px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
         <span className="max-md:hidden">오늘의 학습 요약</span>
         <span className="hidden max-md:inline">
           {currentMonth} 학습 문제 기록
@@ -72,8 +72,8 @@ export default function TodaySummary({ data, dailyData }: Props) {
             <Icon name="dashboard_book" size={24} />
           </div>
           <div>
-            <p className="text-[14px] text-white mb-[0px]">풀이 문제</p>
-            <p className="text-[24px] font-bold text-white">
+            <p className="text-[14px] text-static-white mb-[0px]">풀이 문제</p>
+            <p className="text-[24px] font-bold text-static-white">
               {data.solvedCount}
             </p>
           </div>
@@ -85,8 +85,10 @@ export default function TodaySummary({ data, dailyData }: Props) {
             <Icon name="dashboard_chart" size={24} />
           </div>
           <div>
-            <p className="text-[14px] text-white mb-[0px]">정답률</p>
-            <p className="text-[24px] font-bold text-white">{accuracyRate}%</p>
+            <p className="text-[14px] text-static-white mb-[0px]">정답률</p>
+            <p className="text-[24px] font-bold text-static-white">
+              {accuracyRate}%
+            </p>
           </div>
         </div>
 
@@ -96,8 +98,8 @@ export default function TodaySummary({ data, dailyData }: Props) {
             <Icon name="dashboard_fire_white" size={24} />
           </div>
           <div>
-            <p className="text-[14px] text-white mb-[0px]">연속 학습</p>
-            <p className="text-[24px] font-bold text-white">
+            <p className="text-[14px] text-static-white mb-[0px]">연속 학습</p>
+            <p className="text-[24px] font-bold text-static-white">
               {longestStreak}일
             </p>
           </div>

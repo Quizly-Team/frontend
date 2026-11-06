@@ -109,12 +109,12 @@ const AuthCallback = () => {
   // 온보딩 완료 시에만 로딩 화면 표시
   if (showLoading === true) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-bg-home">
+      <div className="min-h-screen flex items-center justify-center bg-background-alternative">
         <div className="text-center">
-          <h2 className="text-header3-bold text-gray-900 mb-4">
+          <h2 className="text-header3-bold text-gray-normal mb-4">
             로그인 처리 중...
           </h2>
-          <p className="text-body3-regular text-gray-600">
+          <p className="text-body3-regular text-gray-alternative">
             잠시만 기다려주세요.
           </p>
         </div>

@@ -320,7 +320,7 @@ const HomePage = () => {
   }
 
   return (
-    <div className="flex-1 bg-bg-home flex flex-col">
+    <div className="flex-1 bg-background-alternative flex flex-col">
       {/* Header */}
       <Header
         logoUrl="/logo.svg"
@@ -355,7 +355,7 @@ const HomePage = () => {
                 className="w-[72px] h-[72px] animate-[bounce_2s_ease-in-out_0.6s_infinite]"
               />
             </div>
-            <div className="w-[300px] h-[10px] bg-gray-400 rounded-full blur-sm opacity-50 mt-2 z-0"></div>
+            <div className="w-[300px] h-[10px] bg-gray-disable rounded-full blur-sm opacity-50 mt-2 z-0"></div>
           </div>
 
           {/* Title - 무한 슬라이드 애니메이션 */}
@@ -371,14 +371,14 @@ const HomePage = () => {
               {[...heroTexts, heroTexts[0]].map((text, index) => (
                 <h1
                   key={index}
-                  className="text-header1-bold text-gray-900 text-center h-[84px] flex items-center justify-center whitespace-pre-wrap"
+                  className="text-header1-bold text-gray-normal text-center h-[84px] flex items-center justify-center whitespace-pre-wrap"
                   style={{ lineHeight: '1.4' }}
                 >
                   {text.split(/(\([^)]+\))/).map((part, partIndex) => {
                     if (!part) return null
                     if (part.match(/^\([^)]+\)$/)) {
                       return (
-                        <span key={partIndex} className="text-primary">
+                        <span key={partIndex} className="text-primary-normal">
                           {part.slice(1, -1)}
                         </span>
                       )
@@ -393,16 +393,20 @@ const HomePage = () => {
           {/* Search Bar - Web/Tablet */}
           <div className="w-full mb-8">
             <div
-              className="bg-white border border-gray-300 rounded-[100px] px-8 py-l shadow-sm"
+              className="bg-background-elevated border border-line-normal rounded-[100px] px-8 py-l shadow-sm"
               onKeyDown={handleKeyDown}
               tabIndex={0}
             >
               <div className="flex items-center gap-3">
-                <Icon name="search" size={32} className="text-gray-600" />
+                <Icon
+                  name="search"
+                  size={32}
+                  className="text-gray-alternative"
+                />
 
                 {file ? (
                   <div className="flex items-center gap-1 flex-1">
-                    <span className="text-body2-regular text-gray-600">
+                    <span className="text-body2-regular text-gray-alternative">
                       {file.name}
                     </span>
                     <button
@@ -410,7 +414,11 @@ const HomePage = () => {
                       className="flex items-center justify-center shrink-0"
                       aria-label="파일 삭제"
                     >
-                      <Icon name="delete" size={32} className="text-gray-600" />
+                      <Icon
+                        name="delete"
+                        size={32}
+                        className="text-gray-alternative"
+                      />
                     </button>
                   </div>
                 ) : (
@@ -420,7 +428,7 @@ const HomePage = () => {
                     onChange={(e) => setSearchText(e.target.value)}
                     placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
                     rows={1}
-                    className="flex-1 text-body2-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent resize-none overflow-hidden"
+                    className="flex-1 text-body2-regular text-gray-normal placeholder:text-gray-alternative outline-none bg-transparent resize-none overflow-hidden"
                   />
                 )}
 
@@ -445,7 +453,11 @@ const HomePage = () => {
                         className="hidden"
                         accept=".jpg,.jpeg,.png,.pdf"
                       />
-                      <Icon name="upload" size={32} className="text-gray-600" />
+                      <Icon
+                        name="upload"
+                        size={32}
+                        className="text-gray-alternative"
+                      />
                     </label>
                     {showPdfTooltip && (
                       <Tooltip>
@@ -463,20 +475,20 @@ const HomePage = () => {
           <div className="flex gap-4">
             <a
               href="/my-quizzes"
-              className="bg-white px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
+              className="bg-background-elevated px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
             >
               <Icon name="book" size={28} />
-              <span className="text-body1-medium text-gray-900">
+              <span className="text-body1-medium text-gray-normal">
                 문제 모아보기
               </span>
             </a>
 
             <a
               href="/wrong-quizzes"
-              className="bg-white px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
+              className="bg-background-elevated px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
             >
               <Icon name="write" size={28} />
-              <span className="text-body1-medium text-gray-900">
+              <span className="text-body1-medium text-gray-normal">
                 틀린문제 풀어보기
               </span>
             </a>
@@ -510,7 +522,7 @@ const HomePage = () => {
               className="w-[60px] h-[60px] animate-[bounce_2s_ease-in-out_0.6s_infinite]"
             />
           </div>
-          <div className="absolute top-[50px] w-[280px] h-[10px] bg-gray-400 rounded-full blur-sm opacity-75 z-0"></div>
+          <div className="absolute top-[50px] w-[280px] h-[10px] bg-gray-disable rounded-full blur-sm opacity-75 z-0"></div>
         </div>
 
         {/* Title - Mobile - 무한 슬라이드 애니메이션 */}
@@ -526,7 +538,7 @@ const HomePage = () => {
             {[...heroTextsMobile, heroTextsMobile[0]].map((text, index) => (
               <h1
                 key={index}
-                className="text-header3-bold text-gray-900 text-center h-[96px] px-4"
+                className="text-header3-bold text-gray-normal text-center h-[96px] px-4"
                 style={{
                   lineHeight: '1.4',
                   display: 'flex',
@@ -540,7 +552,7 @@ const HomePage = () => {
                       if (!part) return null
                       if (part.match(/^\([^)]+\)$/)) {
                         return (
-                          <span key={partIndex} className="text-primary">
+                          <span key={partIndex} className="text-primary-normal">
                             {part.slice(1, -1)}
                           </span>
                         )
@@ -558,20 +570,20 @@ const HomePage = () => {
         <div className="flex gap-3">
           <a
             href="/my-quizzes"
-            className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
+            className="bg-background-elevated px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
           >
             <Icon name="book" size={24} />
-            <span className="text-tint-regular text-gray-900">
+            <span className="text-tint-regular text-gray-normal">
               문제 모아보기
             </span>
           </a>
 
           <a
             href="/wrong-quizzes"
-            className="bg-white px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
+            className="bg-background-elevated px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
           >
             <Icon name="write" size={24} />
-            <span className="text-tint-regular text-gray-900">
+            <span className="text-tint-regular text-gray-normal">
               틀린문제 풀어보기
             </span>
           </a>
@@ -580,14 +592,14 @@ const HomePage = () => {
 
       {/* Fixed Bottom Input - Mobile Only */}
       <div
-        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-[30]"
+        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-[30]"
         onKeyDown={handleKeyDown}
         tabIndex={0}
       >
         <div className="pt-6 px-5 pb-6 flex flex-col">
           {file ? (
             <div className="flex items-start gap-1 min-h-[67.2px]">
-              <span className="text-body3-regular text-gray-600">
+              <span className="text-body3-regular text-gray-alternative">
                 {file.name}
               </span>
               <button
@@ -595,7 +607,11 @@ const HomePage = () => {
                 className="flex items-center justify-center shrink-0 -mt-[1px]"
                 aria-label="파일 삭제"
               >
-                <Icon name="delete" size={20} className="text-gray-600" />
+                <Icon
+                  name="delete"
+                  size={20}
+                  className="text-gray-alternative"
+                />
               </button>
             </div>
           ) : (
@@ -605,7 +621,7 @@ const HomePage = () => {
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="정리한 내용을 입력하거나 파일을 업로드 해주세요."
               rows={3}
-              className="w-full text-body3-regular text-gray-900 placeholder:text-gray-600 outline-none bg-transparent resize-none overflow-y-hidden min-h-[67.2px]"
+              className="w-full text-body3-regular text-gray-normal placeholder:text-gray-alternative outline-none bg-transparent resize-none overflow-y-hidden min-h-[67.2px]"
             />
           )}
 
@@ -634,7 +650,11 @@ const HomePage = () => {
                   className="hidden"
                   accept=".jpg,.jpeg,.png,.pdf"
                 />
-                <Icon name="upload" size={24} className="text-gray-600" />
+                <Icon
+                  name="upload"
+                  size={24}
+                  className="text-gray-alternative"
+                />
               </label>
             )}
           </div>

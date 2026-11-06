@@ -251,7 +251,7 @@ const QuizSolvePage = ({
   }
 
   return (
-    <div className="flex-1 bg-bg-home flex flex-col">
+    <div className="flex-1 bg-background-alternative flex flex-col">
       {/* Header - Web/Tablet Only */}
       <div className="max-md:hidden" onClickCapture={handleHeaderClick}>
         <Header logoUrl="/logo.svg" />
@@ -262,11 +262,12 @@ const QuizSolvePage = ({
         <div className="w-full max-w-[1024px] max-lg:max-w-[904px]">
           {/* Title */}
           <div className="flex items-center gap-3 mb-[38px]">
-            <h1 className="text-header1-bold text-gray-900 text-center">
-              지금부터 본격 <span className="text-primary">문제 타임!</span>{' '}
-              집중해서 풀어봐요
+            <h1 className="text-header1-bold text-gray-normal text-center">
+              지금부터 본격{' '}
+              <span className="text-primary-normal">문제 타임!</span> 집중해서
+              풀어봐요
             </h1>
-            <Icon name="write" size={40} className="text-gray-900" />
+            <Icon name="write" size={40} className="text-gray-normal" />
           </div>
 
           {/* Progress Bar */}
@@ -280,28 +281,32 @@ const QuizSolvePage = ({
 
           {/* Quiz Container */}
           <div
-            className={`bg-white border rounded-[16px] p-10 mb-[30px] ${
+            className={`bg-background-elevated border rounded-[16px] p-10 mb-[30px] ${
               showResult
                 ? isCorrect
-                  ? 'border-info'
-                  : 'border-error'
-                : 'border-gray-300'
+                  ? 'border-status-informative-normal'
+                  : 'border-status-negative-normal'
+                : 'border-line-normal'
             }`}
           >
             {/* Question */}
             <div className="flex items-start justify-between gap-4 mb-8">
               <h2
                 className={`text-body1-medium ${
-                  showResult ? (isCorrect ? 'text-info' : 'text-error') : ''
+                  showResult
+                    ? isCorrect
+                      ? 'text-status-informative-normal'
+                      : 'text-status-negative-normal'
+                    : ''
                 }`}
               >
                 <span
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-info'
-                        : 'text-error'
-                      : 'text-primary'
+                        ? 'text-status-informative-normal'
+                        : 'text-status-negative-normal'
+                      : 'text-primary-normal'
                   }
                 >
                   Q{questionNumber}.{' '}
@@ -310,15 +315,15 @@ const QuizSolvePage = ({
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-info'
-                        : 'text-error'
-                      : 'text-gray-900'
+                        ? 'text-status-informative-normal'
+                        : 'text-status-negative-normal'
+                      : 'text-gray-normal'
                   }
                 >
                   {currentQuiz.text}
                 </span>
               </h2>
-              {/* <span className="text-sm text-gray-500 font-medium whitespace-nowrap">
+              {/* <span className="text-sm text-gray-assistive font-medium whitespace-nowrap">
                 풀이 {formattedElapsedSeconds}초
               </span> */}
             </div>
@@ -336,12 +341,12 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'O'
                             ? normalizeAnswer(currentQuiz.answer) === 'O'
-                              ? 'bg-white border-info'
-                              : 'bg-white border-error'
-                            : 'bg-white border-gray-300'
+                              ? 'bg-background-elevated border-status-informative-normal'
+                              : 'bg-background-elevated border-status-negative-normal'
+                            : 'bg-background-elevated border-line-normal'
                           : selectedAnswer === 'O'
-                            ? 'bg-primary/10 border-primary'
-                            : 'border-gray-300'
+                            ? 'bg-primary-normal/10 border-primary-normal'
+                            : 'border-line-normal'
                       }
                     `}
                   >
@@ -364,12 +369,12 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'X'
                             ? normalizeAnswer(currentQuiz.answer) === 'X'
-                              ? 'bg-white border-info'
-                              : 'bg-white border-error'
-                            : 'bg-white border-gray-300'
+                              ? 'bg-background-elevated border-status-informative-normal'
+                              : 'bg-background-elevated border-status-negative-normal'
+                            : 'bg-background-elevated border-line-normal'
                           : selectedAnswer === 'X'
-                            ? 'bg-primary/10 border-primary'
-                            : 'border-gray-300'
+                            ? 'bg-primary-normal/10 border-primary-normal'
+                            : 'border-line-normal'
                       }
                     `}
                   >
@@ -401,12 +406,12 @@ const QuizSolvePage = ({
                           showResult
                             ? isSelected
                               ? isCorrectAnswer
-                                ? 'bg-white border-info'
-                                : 'bg-white border-error'
-                              : 'bg-white border-gray-300'
+                                ? 'bg-background-elevated border-status-informative-normal'
+                                : 'bg-background-elevated border-status-negative-normal'
+                              : 'bg-background-elevated border-line-normal'
                             : isSelected
-                              ? 'bg-primary/10 border-primary'
-                              : 'bg-white border-gray-300'
+                              ? 'bg-primary-normal/10 border-primary-normal'
+                              : 'bg-background-elevated border-line-normal'
                         }
                       `}
                     >
@@ -423,7 +428,7 @@ const QuizSolvePage = ({
                         size={24}
                         className="flex-shrink-0"
                       />
-                      <span className="text-body3-regular text-gray-900 flex-1 min-w-0 break-words">
+                      <span className="text-body3-regular text-gray-normal flex-1 min-w-0 break-words">
                         {option}
                       </span>
                     </button>
@@ -439,11 +444,11 @@ const QuizSolvePage = ({
               onClick={handleNextQuestion}
               disabled={!showResult}
               className={`
-                px-4 py-3 rounded-[6px] text-body3-regular text-white transition-colors
+                px-4 py-3 rounded-[6px] text-body3-regular text-static-white transition-colors
                 ${
                   showResult
-                    ? 'bg-primary hover:bg-primary/90'
-                    : 'bg-gray-400 cursor-not-allowed'
+                    ? 'bg-primary-normal hover:bg-primary-normal/90'
+                    : 'bg-gray-disable cursor-not-allowed'
                 }
               `}
             >
@@ -453,11 +458,13 @@ const QuizSolvePage = ({
 
           {/* 해설 영역 - 웹/태블릿 */}
           {showResult && (
-            <div className="bg-white border border-gray-300 rounded-[16px] p-10 mt-8">
-              <h3 className="text-body1-medium text-primary mb-6">해설 요약</h3>
-              <div className="text-body2-medium text-gray-900">
+            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-10 mt-8">
+              <h3 className="text-body1-medium text-primary-normal mb-6">
+                해설 요약
+              </h3>
+              <div className="text-body2-medium text-gray-normal">
                 <p className="mb-0">{currentQuiz.explanation}</p>
-                <p className="text-gray-600 mt-2">
+                <p className="text-gray-alternative mt-2">
                   정답 :{' '}
                   {currentQuiz.type === 'TRUE_FALSE'
                     ? currentQuiz.answer === 'TRUE'
@@ -487,28 +494,32 @@ const QuizSolvePage = ({
 
           {/* Quiz Container */}
           <div
-            className={`bg-white border rounded-[16px] p-l mb-6 ${
+            className={`bg-background-elevated border rounded-[16px] p-l mb-6 ${
               showResult
                 ? isCorrect
-                  ? 'border-info'
-                  : 'border-error'
-                : 'border-gray-300'
+                  ? 'border-status-informative-normal'
+                  : 'border-status-negative-normal'
+                : 'border-line-normal'
             }`}
           >
             {/* Question */}
             <div className="flex items-start justify-between gap-3 mb-l">
               <h2
                 className={`text-body3-medium ${
-                  showResult ? (isCorrect ? 'text-info' : 'text-error') : ''
+                  showResult
+                    ? isCorrect
+                      ? 'text-status-informative-normal'
+                      : 'text-status-negative-normal'
+                    : ''
                 }`}
               >
                 <span
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-info'
-                        : 'text-error'
-                      : 'text-primary'
+                        ? 'text-status-informative-normal'
+                        : 'text-status-negative-normal'
+                      : 'text-primary-normal'
                   }
                 >
                   Q{questionNumber}.{' '}
@@ -517,15 +528,15 @@ const QuizSolvePage = ({
                   className={
                     showResult
                       ? isCorrect
-                        ? 'text-info'
-                        : 'text-error'
-                      : 'text-gray-900'
+                        ? 'text-status-informative-normal'
+                        : 'text-status-negative-normal'
+                      : 'text-gray-normal'
                   }
                 >
                   {currentQuiz.text}
                 </span>
               </h2>
-              {/* <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
+              {/* <span className="text-xs text-gray-assistive font-medium whitespace-nowrap">
                 풀이 {formattedElapsedSeconds}초
               </span> */}
             </div>
@@ -543,12 +554,12 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'O'
                             ? normalizeAnswer(currentQuiz.answer) === 'O'
-                              ? 'bg-white border-info'
-                              : 'bg-white border-error'
-                            : 'bg-white border-gray-300'
+                              ? 'bg-background-elevated border-status-informative-normal'
+                              : 'bg-background-elevated border-status-negative-normal'
+                            : 'bg-background-elevated border-line-normal'
                           : selectedAnswer === 'O'
-                            ? 'bg-primary/10 border-primary'
-                            : 'bg-white hover:bg-gray-50 border-gray-300'
+                            ? 'bg-primary-normal/10 border-primary-normal'
+                            : 'bg-background-elevated hover:bg-background-alternative border-line-normal'
                       }
                     `}
                   >
@@ -571,12 +582,12 @@ const QuizSolvePage = ({
                         showResult
                           ? selectedAnswer === 'X'
                             ? normalizeAnswer(currentQuiz.answer) === 'X'
-                              ? 'bg-white border-info'
-                              : 'bg-white border-error'
-                            : 'bg-white border-gray-300'
+                              ? 'bg-background-elevated border-status-informative-normal'
+                              : 'bg-background-elevated border-status-negative-normal'
+                            : 'bg-background-elevated border-line-normal'
                           : selectedAnswer === 'X'
-                            ? 'bg-primary/10 border-primary'
-                            : 'bg-white hover:bg-gray-50 border-gray-300'
+                            ? 'bg-primary-normal/10 border-primary-normal'
+                            : 'bg-background-elevated hover:bg-background-alternative border-line-normal'
                       }
                     `}
                   >
@@ -608,12 +619,12 @@ const QuizSolvePage = ({
                           showResult
                             ? isSelected
                               ? isCorrectAnswer
-                                ? 'bg-white border-info'
-                                : 'bg-white border-error'
-                              : 'bg-white border-gray-300'
+                                ? 'bg-background-elevated border-status-informative-normal'
+                                : 'bg-background-elevated border-status-negative-normal'
+                              : 'bg-background-elevated border-line-normal'
                             : isSelected
-                              ? 'bg-primary/10 border-primary'
-                              : 'bg-white hover:bg-gray-50 border-gray-300'
+                              ? 'bg-primary-normal/10 border-primary-normal'
+                              : 'bg-background-elevated hover:bg-background-alternative border-line-normal'
                         }
                       `}
                     >
@@ -630,7 +641,7 @@ const QuizSolvePage = ({
                         size={16}
                         className="flex-shrink-0"
                       />
-                      <span className="text-tint-regular text-gray-900 flex-1 min-w-0 break-words">
+                      <span className="text-tint-regular text-gray-normal flex-1 min-w-0 break-words">
                         {option}
                       </span>
                     </button>
@@ -642,11 +653,13 @@ const QuizSolvePage = ({
 
           {/* 해설 영역 - 모바일 */}
           {showResult && (
-            <div className="bg-white border border-gray-300 rounded-[16px] p-l">
-              <h3 className="text-body3-medium text-primary mb-l">해설 요약</h3>
-              <div className="text-body3-medium text-gray-900">
+            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-l">
+              <h3 className="text-body3-medium text-primary-normal mb-l">
+                해설 요약
+              </h3>
+              <div className="text-body3-medium text-gray-normal">
                 <p className="mb-0">{currentQuiz.explanation}</p>
-                <p className="text-gray-600 mt-2">
+                <p className="text-gray-alternative mt-2">
                   정답 :{' '}
                   {currentQuiz.type === 'TRUE_FALSE'
                     ? currentQuiz.answer === 'TRUE'
@@ -663,11 +676,11 @@ const QuizSolvePage = ({
       </main>
 
       {/* Fixed Bottom Buttons - Mobile Only */}
-      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-white pt-4 pb-10 px-l z-50">
+      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated pt-4 pb-10 px-l z-50">
         <div className="flex gap-3">
           <button
             onClick={handleMobileExitClick}
-            className="bg-white border border-gray-300 px-l py-[14px] rounded-[6px] text-body2-regular text-gray-600 whitespace-nowrap"
+            className="bg-background-elevated border border-line-normal px-l py-[14px] rounded-[6px] text-body2-regular text-gray-alternative whitespace-nowrap"
           >
             나가기
           </button>
@@ -675,11 +688,11 @@ const QuizSolvePage = ({
             onClick={handleNextQuestion}
             disabled={!showResult}
             className={`
-              flex-1 px-l py-[14px] rounded-[6px] text-body2-regular text-white transition-colors
+              flex-1 px-l py-[14px] rounded-[6px] text-body2-regular text-static-white transition-colors
               ${
                 showResult
-                  ? 'bg-primary hover:bg-primary/90'
-                  : 'bg-gray-400 cursor-not-allowed'
+                  ? 'bg-primary-normal hover:bg-primary-normal/90'
+                  : 'bg-gray-disable cursor-not-allowed'
               }
             `}
           >
