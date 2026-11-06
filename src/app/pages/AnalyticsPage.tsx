@@ -7,7 +7,7 @@ import {
   logout,
   type ReadUserInfoResponse,
 } from '@/api/account'
-import { Header, Footer, Button, MyPageTabs } from '@/components'
+import { Header, Button, MyPageTabs } from '@/components'
 import CumulativeSummary from '@/components/dashboard/cumulative-summary'
 import HourlyChart from '@/components/dashboard/hourly-chart'
 import LearningStats from '@/components/dashboard/learning-stats'

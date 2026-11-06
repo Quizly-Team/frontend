@@ -133,7 +133,13 @@ out.push('')
 // --- 타이포 ---
 // 합성 토큰(fontSize + lineHeight + letterSpacing + fontWeight)이라
 // Style Dictionary 의 font shorthand 변환을 타면 속성이 깎인다. 직접 푼다.
-const WEIGHT = { Bold: 700, SemiBold: 600, Medium: 500, Regular: 400, Light: 300 }
+const WEIGHT = {
+  Bold: 700,
+  SemiBold: 600,
+  Medium: 500,
+  Regular: 400,
+  Light: 300,
+}
 
 const lightTree = JSON.parse(
   fs.readFileSync(path.join(TMP, 'light.json'), 'utf8'),
@@ -145,13 +151,17 @@ const deref = (v, depth = 0) => {
   if (!m || depth > 6) return v
   const node = m[1]
     .split('.')
-    .reduce((n, k) => (n && typeof n === 'object' ? n[k] : undefined), lightTree)
+    .reduce(
+      (n, k) => (n && typeof n === 'object' ? n[k] : undefined),
+      lightTree,
+    )
   return node === undefined ? v : deref(node.$value ?? node, depth + 1)
 }
 
 const typo = []
 for (const [sizeKey, weights] of Object.entries(lightTree)) {
-  if (!/^text-/.test(sizeKey) || !weights || typeof weights !== 'object') continue
+  if (!/^text-/.test(sizeKey) || !weights || typeof weights !== 'object')
+    continue
   for (const [weightKey, node] of Object.entries(weights)) {
     if (node?.$type !== 'typography') continue
     const v = node.$value
@@ -200,10 +210,14 @@ if (offGrid.length) {
 
 out.push('@theme {')
 out.push(`  /* 스페이싱 디자인 스케일(${spacing.join(', ')})이 */`)
-out.push(`  /* Tailwind 의 ${BASE}px 스텝과 일치해서 기준값만 내려받는다. p-5 = 20px. */`)
+out.push(
+  `  /* Tailwind 의 ${BASE}px 스텝과 일치해서 기준값만 내려받는다. p-5 = 20px. */`,
+)
 out.push(`  --spacing: ${BASE}px;`)
 out.push('')
-out.push('  /* Tailwind 기본 radius 는 같은 이름에 다른 값을 쓴다(md=6px vs 12px). */')
+out.push(
+  '  /* Tailwind 기본 radius 는 같은 이름에 다른 값을 쓴다(md=6px vs 12px). */',
+)
 out.push('  /* 이름이 겹친 채로 두면 기존 클래스가 조용히 두 배가 된다. */')
 out.push('  --radius-*: initial;')
 for (const [k, v] of radius) out.push(`  --radius-${k}: ${v}px;`)
