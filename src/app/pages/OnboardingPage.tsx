@@ -135,9 +135,9 @@ const OnboardingPage = () => {
       <Header logoUrl="/logo.svg" />
 
       <main className="flex-1 flex justify-center px-6 overflow-y-auto max-md:overflow-hidden max-md:relative">
-        <div className="flex flex-col items-center max-md:pt-[20px] md:pt-[60px] max-md:pb-[106px] max-md:h-full w-full max-w-[700px] md:pb-8">
+        <div className="flex flex-col items-center max-md:pt-5 md:pt-15 max-md:pb-27 max-md:h-full w-full max-w-[700px] md:pb-8">
           {/* Progress Indicator */}
-          <div className="flex items-center justify-center mb-[47px] max-md:mb-[20px] max-md:shrink-0">
+          <div className="flex items-center justify-center mb-12 max-md:mb-5 max-md:shrink-0">
             {/* Step 1 */}
             <div
               className="flex flex-col items-center gap-4 max-md:gap-2"
@@ -216,12 +216,12 @@ const OnboardingPage = () => {
 
           {/* Content Box */}
           <div
-            className={`bg-background-elevated rounded-[24px] border border-line-normal w-full max-w-[700px] max-md:max-w-[335px] max-md:w-[335px] max-md:mx-auto relative flex flex-col items-center max-md:shrink-0 ${step === 1 ? 'max-md:h-[364px]' : 'max-md:h-[492px]'}`}
+            className={`bg-background-elevated rounded-xl border border-line-normal w-full max-w-[700px] max-md:max-w-[335px] max-md:w-[335px] max-md:mx-auto relative flex flex-col items-center max-md:shrink-0 ${step === 1 ? 'max-md:h-[364px]' : 'max-md:h-[492px]'}`}
           >
             {/* Step 1: User Type Selection */}
             {step === 1 && (
               <>
-                <div className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px] px-4">
+                <div className="flex items-center justify-center w-full max-md:mt-8 md:mt-15 px-4">
                   <h1
                     className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center max-md:whitespace-nowrap"
                     style={{ lineHeight: '28px' }}
@@ -230,7 +230,7 @@ const OnboardingPage = () => {
                   </h1>
                 </div>
                 <p
-                  className="text-1rg-regular text-gray-alternative text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
+                  className="text-1rg-regular text-gray-alternative text-center max-md:mt-1 md:mt-2 max-md:mb-8 md:mb-10"
                   style={{ lineHeight: '22.4px' }}
                 >
                   어떤 분이 이용하시나요?
@@ -241,7 +241,7 @@ const OnboardingPage = () => {
                     <button
                       key={type.id}
                       onClick={() => handleUserTypeSelect(type.id)}
-                      className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-[16px] border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[284px] md:h-[148px] ${
+                      className={`flex flex-col items-center justify-center gap-4 max-md:gap-2 rounded-lg border transition-colors max-md:w-[132px] max-md:h-[104px] md:w-[284px] md:h-[148px] ${
                         selectedUserType === type.id
                           ? 'bg-background-elevated border-primary-normal'
                           : 'bg-background-elevated border-line-normal hover:border-primary-normal/50'
@@ -263,11 +263,11 @@ const OnboardingPage = () => {
                   ))}
                 </div>
 
-                <div className="w-full max-w-[580px] flex justify-end mt-5 mb-[60px] max-md:hidden">
+                <div className="w-full max-w-[580px] flex justify-end mt-5 mb-15 max-md:hidden">
                   <button
                     onClick={handleNext}
                     disabled={isStep1NextDisabled}
-                    className={`text-1rg-regular px-4 py-3 rounded-[6px] text-static-white transition-colors ${
+                    className={`text-1rg-regular px-4 py-3 rounded-sm text-static-white transition-colors ${
                       isStep1NextDisabled
                         ? 'bg-gray-disable cursor-not-allowed'
                         : 'bg-primary-normal hover:bg-primary-strong'
@@ -282,7 +282,7 @@ const OnboardingPage = () => {
             {/* Step 2: Learning Goals Selection */}
             {step === 2 && (
               <>
-                <div className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px]">
+                <div className="flex items-center justify-center w-full max-md:mt-8 md:mt-15">
                   <h1
                     className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center max-md:px-4"
                     style={{ lineHeight: '28px' }}
@@ -291,7 +291,7 @@ const OnboardingPage = () => {
                   </h1>
                 </div>
                 <p
-                  className="text-1rg-regular text-gray-alternative text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
+                  className="text-1rg-regular text-gray-alternative text-center max-md:mt-1 md:mt-2 max-md:mb-8 md:mb-10"
                   style={{ lineHeight: '22.4px' }}
                 >
                   중복 선택이 가능합니다.
@@ -304,7 +304,7 @@ const OnboardingPage = () => {
                       <button
                         key={goal.id}
                         onClick={() => handleGoalToggle(goal.id)}
-                        className={`flex items-center gap-3 p-3 rounded-[12px] border text-left transition-colors w-full max-md:h-[52px] md:h-[56px] ${
+                        className={`flex items-center gap-3 p-3 rounded-md border text-left transition-colors w-full max-md:h-[52px] md:h-[56px] ${
                           isSelected
                             ? 'bg-background-alternative border-primary-normal'
                             : 'bg-background-alternative border-line-normal hover:border-primary-normal/50'
@@ -325,18 +325,18 @@ const OnboardingPage = () => {
                   })}
                 </div>
 
-                <div className="w-full max-w-[580px] flex justify-end mt-5 mb-[60px] max-md:hidden">
+                <div className="w-full max-w-[580px] flex justify-end mt-5 mb-15 max-md:hidden">
                   <div className="flex gap-3">
                     <button
                       onClick={handlePrev}
-                      className="text-1rg-regular px-4 py-3 rounded-[6px] bg-background-elevated border border-line-normal text-gray-alternative hover:bg-background-alternative transition-colors"
+                      className="text-1rg-regular px-4 py-3 rounded-sm bg-background-elevated border border-line-normal text-gray-alternative hover:bg-background-alternative transition-colors"
                     >
                       이전 질문
                     </button>
                     <button
                       onClick={handleComplete}
                       disabled={isStep2NextDisabled}
-                      className={`text-1rg-regular px-4 py-3 rounded-[6px] text-static-white transition-colors ${
+                      className={`text-1rg-regular px-4 py-3 rounded-sm text-static-white transition-colors ${
                         isStep2NextDisabled
                           ? 'bg-gray-disable cursor-not-allowed'
                           : 'bg-primary-normal hover:bg-primary-strong'
@@ -373,7 +373,7 @@ const OnboardingPage = () => {
                 <button
                   onClick={handleNext}
                   disabled={isStep1NextDisabled}
-                  className={`text-1md-regular w-full h-[49px] rounded-[6px] text-static-white transition-colors ${
+                  className={`text-1md-regular w-full h-[49px] rounded-sm text-static-white transition-colors ${
                     isStep1NextDisabled
                       ? 'bg-gray-disable cursor-not-allowed'
                       : 'bg-primary-normal hover:bg-primary-strong'
@@ -408,14 +408,14 @@ const OnboardingPage = () => {
                 <div className="flex gap-3 w-full">
                   <button
                     onClick={handlePrev}
-                    className="text-1md-regular flex-1 h-[49px] rounded-[6px] bg-background-elevated border border-line-normal text-gray-alternative hover:bg-background-alternative transition-colors"
+                    className="text-1md-regular flex-1 h-[49px] rounded-sm bg-background-elevated border border-line-normal text-gray-alternative hover:bg-background-alternative transition-colors"
                   >
                     이전 질문
                   </button>
                   <button
                     onClick={handleComplete}
                     disabled={isStep2NextDisabled}
-                    className={`text-1md-regular flex-1 h-[49px] rounded-[6px] text-static-white transition-colors ${
+                    className={`text-1md-regular flex-1 h-[49px] rounded-sm text-static-white transition-colors ${
                       isStep2NextDisabled
                         ? 'bg-gray-disable cursor-not-allowed'
                         : 'bg-primary-normal hover:bg-primary-strong'

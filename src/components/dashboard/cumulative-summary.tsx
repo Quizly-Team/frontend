@@ -18,19 +18,19 @@ export default function CumulativeSummary({ data }: Props) {
   }, [])
 
   return (
-    <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:flex max-md:flex-col">
-      <h3 className="text-2md-medium max-md:text-2md-medium text-gray-normal mb-[44px] max-md:mb-[30px] max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
+    <div className="bg-background-elevated border border-line-normal rounded-lg p-8 max-md:p-5 w-full max-w-[976px] max-lg:max-w-[904px] max-md:w-[250px] max-md:h-[298px] max-md:flex max-md:flex-col">
+      <h3 className="text-2md-medium max-md:text-2md-medium text-gray-normal mb-11 max-md:mb-8 max-md:flex-shrink-0 max-md:w-[157px] max-md:h-[28px]">
         {currentMonth} 누적 학습 통계
       </h3>
 
-      <div className="flex items-center justify-center gap-[180px] max-lg:gap-[100px] max-md:flex-col max-md:gap-[16px] mb-[48px] max-md:mb-0 max-md:flex-1 max-md:justify-center max-md:items-start">
+      <div className="flex items-center justify-center gap-45 max-lg:gap-25 max-md:flex-col max-md:gap-4 mb-12 max-md:mb-0 max-md:flex-1 max-md:justify-center max-md:items-start">
         {/* 풀이 개수 */}
-        <div className="flex items-center gap-[16px] max-md:h-[52px]">
-          <div className="w-[54px] h-[54px] bg-status-informative-subtle rounded-[12px] flex items-center justify-center max-md:w-[54px] max-md:h-[54px]">
+        <div className="flex items-center gap-4 max-md:h-[52px]">
+          <div className="w-[54px] h-[54px] bg-status-informative-subtle rounded-md flex items-center justify-center max-md:w-[54px] max-md:h-[54px]">
             <Icon name="dashboard_check" size={24} />
           </div>
           <div className="w-[62px]">
-            <p className="text-2sm-regular text-gray-alternative mb-[0px]">
+            <p className="text-2sm-regular text-gray-alternative mb-0">
               풀이 개수
             </p>
             <p className="text-2lg-bold text-gray-normal">
@@ -40,12 +40,12 @@ export default function CumulativeSummary({ data }: Props) {
         </div>
 
         {/* 전체 정답률 */}
-        <div className="flex items-center gap-[16px] max-md:h-[52px]">
-          <div className="w-[54px] h-[54px] bg-primary-subtle rounded-[12px] flex items-center justify-center flex-shrink-0 max-md:w-[54px] max-md:h-[54px]">
+        <div className="flex items-center gap-4 max-md:h-[52px]">
+          <div className="w-[54px] h-[54px] bg-primary-subtle rounded-md flex items-center justify-center flex-shrink-0 max-md:w-[54px] max-md:h-[54px]">
             <Icon name="dashboard_up" size={24} />
           </div>
           <div>
-            <p className="text-2sm-regular text-gray-alternative mb-[0px] whitespace-nowrap">
+            <p className="text-2sm-regular text-gray-alternative mb-0 whitespace-nowrap">
               전체 정답률
             </p>
             <p className="text-2lg-bold text-gray-normal">{accuracyRate}%</p>
@@ -53,12 +53,12 @@ export default function CumulativeSummary({ data }: Props) {
         </div>
 
         {/* 오답 개수 */}
-        <div className="flex items-center gap-[16px] max-md:h-[52px]">
-          <div className="w-[54px] h-[54px] bg-status-negative-subtle rounded-[12px] flex items-center justify-center max-md:w-[54px] max-md:h-[54px]">
+        <div className="flex items-center gap-4 max-md:h-[52px]">
+          <div className="w-[54px] h-[54px] bg-status-negative-subtle rounded-md flex items-center justify-center max-md:w-[54px] max-md:h-[54px]">
             <Icon name="dashboard_delete" size={24} />
           </div>
           <div className="w-[62px]">
-            <p className="text-2sm-regular text-gray-alternative mb-[0px]">
+            <p className="text-2sm-regular text-gray-alternative mb-0">
               오답 개수
             </p>
             <p className="text-2lg-bold text-gray-normal">
@@ -68,8 +68,8 @@ export default function CumulativeSummary({ data }: Props) {
         </div>
       </div>
 
-      <div className="border-t border-line-normal pt-[20px] -mx-[30px] px-[30px] max-md:hidden">
-        <div className="flex items-center justify-center gap-[6px]">
+      <div className="border-t border-line-normal pt-5 -mx-8 px-8 max-md:hidden">
+        <div className="flex items-center justify-center gap-2">
           <Icon name="dashboard_i" size={20} />
           <p className="text-1rg-regular text-gray-alternative">
             다시 푼 문제는 통계에 들어가지 않습니다

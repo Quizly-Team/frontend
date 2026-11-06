@@ -179,6 +179,37 @@ for (const t of typo) {
 out.push('}')
 out.push('')
 
+// --- 스페이싱 / 라운딩 ---
+const scalar = (set) =>
+  Object.values(raw[set] ?? {}).flatMap((group) =>
+    Object.entries(group).map(([k, v]) => [k, v.$value]),
+  )
+
+const spacing = scalar('[DS] Spacing/Value').map(([, v]) => Number(v))
+const radius = scalar('[DS] Radius/Value')
+
+// 디자인 스케일이 Tailwind 의 4px 스텝 위에 그대로 올라가는지 확인한다.
+// 올라가지 않으면 p-5 같은 숫자 클래스가 디자인 값과 어긋나므로 빌드를 세운다.
+const BASE = 4
+const offGrid = spacing.filter((v) => ((v / BASE) * 2) % 1 !== 0)
+if (offGrid.length) {
+  throw new Error(
+    `스페이싱 토큰이 ${BASE}px 스텝(0.5 단위)에 맞지 않습니다: ${offGrid.join(', ')}`,
+  )
+}
+
+out.push('@theme {')
+out.push(`  /* 스페이싱 디자인 스케일(${spacing.join(', ')})이 */`)
+out.push(`  /* Tailwind 의 ${BASE}px 스텝과 일치해서 기준값만 내려받는다. p-5 = 20px. */`)
+out.push(`  --spacing: ${BASE}px;`)
+out.push('')
+out.push('  /* Tailwind 기본 radius 는 같은 이름에 다른 값을 쓴다(md=6px vs 12px). */')
+out.push('  /* 이름이 겹친 채로 두면 기존 클래스가 조용히 두 배가 된다. */')
+out.push('  --radius-*: initial;')
+for (const [k, v] of radius) out.push(`  --radius-${k}: ${v}px;`)
+out.push('}')
+out.push('')
+
 fs.mkdirSync(path.dirname(OUT), { recursive: true })
 fs.writeFileSync(OUT, out.join('\n'))
 fs.rmSync(TMP, { recursive: true, force: true })

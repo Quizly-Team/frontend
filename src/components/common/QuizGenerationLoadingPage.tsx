@@ -71,7 +71,7 @@ const QuizGenerationLoadingPage = ({
 
   return (
     <div className="fixed inset-0 backdrop-blur-[9px] bg-[rgba(248,249,250,0.8)] flex items-center justify-center z-[9999]">
-      <div className="flex flex-col items-center gap-12 w-full max-w-[1024px] max-lg:max-w-full max-md:max-w-[335px] px-6 max-lg:px-15 max-md:px-l">
+      <div className="flex flex-col items-center gap-12 w-full max-w-[1024px] max-lg:max-w-full max-md:max-w-[335px] px-6 max-lg:px-15 max-md:px-4">
         {/* 제목 및 설명 */}
         <div className="flex flex-col items-center gap-3">
           <h2 className="text-3lg-bold text-gray-normal whitespace-nowrap">
@@ -83,7 +83,7 @@ const QuizGenerationLoadingPage = ({
         </div>
 
         {/* 로딩 스테이지 카드들 - Web/Tablet */}
-        <div className="flex gap-l max-md:hidden justify-center w-full">
+        <div className="flex gap-4 max-md:hidden justify-center w-full">
           <LoadingStageCard
             label="입력 텍스트 분석..."
             isCompleted={completedStages.has('analyzing')}

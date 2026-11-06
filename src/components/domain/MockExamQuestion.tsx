@@ -51,9 +51,9 @@ const MockExamQuestion = ({
         {!showAnswer && question.options.length > 0 && (
           <div className="space-y-2">
             {question.options.map((option, index) => (
-              <div key={index} className="flex items-start gap-[6px]">
+              <div key={index} className="flex items-start gap-2">
                 <div
-                  className="relative flex-shrink-0 w-[18px] h-[18px] mt-[2px]"
+                  className="relative flex-shrink-0 w-[18px] h-[18px] mt-0.5"
                   data-option-number
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -95,7 +95,7 @@ const MockExamQuestion = ({
         {!showAnswer && (
           <>
             {/* 보기 박스 */}
-            <div className="mb-3 p-4 border border-gray-normal rounded-md bg-background-elevated relative">
+            <div className="mb-3 p-4 border border-gray-normal rounded-sm bg-background-elevated relative">
               <p className="text-1rg-regular text-gray-normal mb-3 text-center">
                 {'< 보기 >'}
               </p>
@@ -111,9 +111,9 @@ const MockExamQuestion = ({
             {/* 선택지 */}
             <div className="space-y-2">
               {question.options.map((option, index) => (
-                <div key={index} className="flex items-start gap-[6px]">
+                <div key={index} className="flex items-start gap-2">
                   <div
-                    className="relative flex-shrink-0 w-[18px] h-[18px] mt-[2px]"
+                    className="relative flex-shrink-0 w-[18px] h-[18px] mt-0.5"
                     data-option-number
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -154,7 +154,7 @@ const MockExamQuestion = ({
         {questionNumber}. {question.text}
       </p>
       {!showAnswer && (
-        <div className="bg-background-elevated border-0 rounded-md p-3 h-[140px]">
+        <div className="bg-background-elevated border-0 rounded-sm p-3 h-[140px]">
           {/* 빈 답안 작성 영역 */}
         </div>
       )}
@@ -167,7 +167,7 @@ const MockExamQuestion = ({
         {questionNumber}. {question.text}
       </p>
       {!showAnswer && (
-        <div className="bg-background-elevated border-0 rounded-md p-3 h-[140px]">
+        <div className="bg-background-elevated border-0 rounded-sm p-3 h-[140px]">
           {/* 빈 답안 작성 영역 */}
         </div>
       )}

@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, children, className = '' }: ModalProps) => {
       className="flex items-center justify-center"
     >
       <div
-        className={`bg-background-elevated rounded-[24px] pt-[60px] px-8 pb-8 w-[430px] min-h-[324px] mx-m outline-none ${className}`}
+        className={`bg-background-elevated rounded-xl pt-15 px-8 pb-8 w-[430px] min-h-[324px] mx-3 outline-none ${className}`}
       >
         {children}
       </div>
@@ -51,7 +51,7 @@ export const QuizResultModal = ({
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-background-elevated rounded-[24px] p-8 max-w-[450px] w-full mx-m outline-none relative max-lg:max-w-[440px] max-lg:pt-10 max-lg:pb-10 max-md:max-w-[300px] max-md:h-[270px] max-md:pt-[30px] max-md:px-[38px] max-md:pb-[30px]">
+      <div className="bg-background-elevated rounded-xl p-8 max-w-[450px] w-full mx-3 outline-none relative max-lg:max-w-[440px] max-lg:pt-10 max-lg:pb-10 max-md:max-w-[300px] max-md:h-[270px] max-md:pt-8 max-md:px-10 max-md:pb-8">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -105,13 +105,13 @@ export const QuizResultModal = ({
           <div className="flex gap-4 mt-6 max-md:gap-3 max-md:!mt-4">
             <button
               onClick={onViewAll}
-              className="max-md:!text-2sm-regular text-1rg-regular bg-primary-subtle text-primary-normal px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-subtle/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-[10px]"
+              className="max-md:!text-2sm-regular text-1rg-regular bg-primary-subtle text-primary-normal px-4 py-3 rounded-sm min-w-[128px] hover:bg-primary-subtle/80 transition-colors max-md:min-w-[93px] max-md:!px-2 max-md:!py-3"
             >
               문제 모아보기
             </button>
             <button
               onClick={onCreateMore}
-              className="max-md:!text-2sm-regular text-1rg-regular bg-primary-normal text-static-white px-4 py-3 rounded-[6px] min-w-[128px] hover:bg-primary-normal/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-[10px]"
+              className="max-md:!text-2sm-regular text-1rg-regular bg-primary-normal text-static-white px-4 py-3 rounded-sm min-w-[128px] hover:bg-primary-normal/90 transition-colors max-md:min-w-[96px] max-md:!px-2 max-md:!py-3"
             >
               문제 더 만들기
             </button>
@@ -141,7 +141,7 @@ export const QuizExitConfirmModal = ({
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="bg-background-elevated rounded-[24px] px-6 py-[30px] w-[380px] mx-m outline-none max-md:w-[300px]">
+      <div className="bg-background-elevated rounded-xl px-6 py-8 w-[380px] mx-3 outline-none max-md:w-[300px]">
         {/* Content */}
         <div className="flex flex-col items-center gap-6">
           {/* Text Content */}
@@ -165,13 +165,13 @@ export const QuizExitConfirmModal = ({
           <div className="flex gap-3 justify-center">
             <button
               onClick={onClose}
-              className="text-2sm-regular bg-fill-alternative text-gray-normal px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-interaction-neutral-pressed transition-colors"
+              className="text-2sm-regular bg-fill-alternative text-gray-normal px-2 py-3 rounded-xs w-[96px] hover:bg-interaction-neutral-pressed transition-colors"
             >
               취소
             </button>
             <button
               onClick={onConfirmExit}
-              className="text-2sm-regular bg-primary-normal text-static-white px-2 py-[10px] rounded-[4px] w-[96px] hover:bg-primary-normal/90 transition-colors"
+              className="text-2sm-regular bg-primary-normal text-static-white px-2 py-3 rounded-xs w-[96px] hover:bg-primary-normal/90 transition-colors"
             >
               나가기
             </button>

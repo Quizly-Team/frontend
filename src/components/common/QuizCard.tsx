@@ -10,7 +10,7 @@ const QuizCard = ({ quiz, questionNumber }: QuizCardProps) => {
 
   return (
     <div
-      className={`bg-background-elevated border border-solid box-border flex flex-col gap-5 p-8 rounded-[12px] max-md:gap-3 max-md:p-l ${
+      className={`bg-background-elevated border border-solid box-border flex flex-col gap-5 p-8 rounded-md max-md:gap-3 max-md:p-4 ${
         isWrong ? 'border-status-negative-normal' : 'border-line-normal'
       }`}
     >

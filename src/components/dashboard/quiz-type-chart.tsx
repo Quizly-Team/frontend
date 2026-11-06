@@ -107,10 +107,10 @@ export default function QuizTypeChart({ data }: Props) {
   }, [data, hasData])
 
   return (
-    <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] w-full max-md:min-h-[306px] max-md:flex max-md:flex-col max-md:relative">
+    <div className="bg-background-elevated border border-line-normal rounded-lg p-8 max-md:p-5 w-full max-md:min-h-[306px] max-md:flex max-md:flex-col max-md:relative">
       {/* PC: 일반 표시 */}
       <div className="max-md:hidden">
-        <h3 className="text-2md-medium text-gray-normal mb-[35px]">
+        <h3 className="text-2md-medium text-gray-normal mb-9">
           {currentMonth} 유형별 정답률 비교
         </h3>
 
@@ -184,7 +184,7 @@ export default function QuizTypeChart({ data }: Props) {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-primary-subtle rounded-[4px] px-[12px] py-[10px] mt-[16px]">
+        <div className="bg-primary-subtle rounded-xs px-3 py-3 mt-4">
           <p className="text-2sm-regular text-primary-normal">
             {summaryMessage}
           </p>
@@ -193,11 +193,11 @@ export default function QuizTypeChart({ data }: Props) {
 
       {/* 모바일: 블러 처리된 전체 카드 (제목 포함) */}
       <div className="hidden max-md:block absolute inset-0 opacity-80 blur-md pointer-events-none">
-        <h3 className="text-2md-medium text-gray-normal mb-[20px] px-[20px] pt-[20px]">
+        <h3 className="text-2md-medium text-gray-normal mb-5 px-5 pt-5">
           {currentMonth} 유형별 정답률 비교
         </h3>
 
-        <div className="h-[215px] w-full flex justify-center px-[20px]">
+        <div className="h-[215px] w-full flex justify-center px-5">
           <div className="w-full max-w-[295px] h-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -274,8 +274,8 @@ export default function QuizTypeChart({ data }: Props) {
       </div>
 
       {/* 모바일: 오버레이 안내 카드 */}
-      <div className="hidden max-md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background-elevated border border-primary-normal rounded-[12px] w-[calc(100%-48px)] max-w-[240px] min-w-[200px] h-[90px] z-10 p-[20px] flex items-center justify-center">
-        <div className="w-full flex items-center gap-[6px]">
+      <div className="hidden max-md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background-elevated border border-primary-normal rounded-md w-[calc(100%-48px)] max-w-[240px] min-w-[200px] h-[90px] z-10 p-5 flex items-center justify-center">
+        <div className="w-full flex items-center gap-2">
           <div className="w-[35px] h-[32px] flex-shrink-0">
             <img
               src="/characters/character2.png"

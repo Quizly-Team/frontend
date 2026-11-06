@@ -31,11 +31,11 @@ const ProgressBar = ({
   return (
     <div className={`relative ${className}`}>
       {/* Background */}
-      <div className="w-full h-4 bg-fill-alternative rounded-[16px]" />
+      <div className="w-full h-4 bg-fill-alternative rounded-lg" />
 
       {/* Progress */}
       <div
-        className="absolute top-0 left-0 h-4 bg-primary-normal rounded-[16px] transition-all duration-300"
+        className="absolute top-0 left-0 h-4 bg-primary-normal rounded-lg transition-all duration-300"
         style={{ width: progressWidth }}
       />
 

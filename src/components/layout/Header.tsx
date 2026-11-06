@@ -100,7 +100,7 @@ const Header = ({
     <header className="w-full bg-background-alternative">
       {/* Desktop/Tablet Header */}
       <div className="h-[90px] max-lg:h-[72px] max-md:hidden">
-        <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-xl max-lg:px-10">
+        <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-5 max-lg:px-10">
           <a href="/" className="flex items-center shrink-0">
             <img
               src={logoUrl}
@@ -231,9 +231,9 @@ const Header = ({
             className="relative w-[26px] h-[26px] z-[30]"
             aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
           >
-            <span className="absolute top-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-[100px]" />
-            <span className="absolute top-[46.88%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-[100px]" />
-            <span className="absolute bottom-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-[100px]" />
+            <span className="absolute top-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-full" />
+            <span className="absolute top-[46.88%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-full" />
+            <span className="absolute bottom-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-full" />
           </button>
         </div>
 
@@ -319,7 +319,7 @@ const Header = ({
                           </div>
 
                           {/* 배너 - 로그아웃 버튼 아래 */}
-                          <div className="bg-primary-subtle rounded-[4px] px-3 py-2.5 mb-3">
+                          <div className="bg-primary-subtle rounded-xs px-3 py-3 mb-3">
                             <p className="text-2sm-regular text-primary-normal whitespace-nowrap">
                               오늘{' '}
                               {todaySummaryData?.todaySummary.solvedCount ?? 0}
@@ -377,7 +377,7 @@ const Header = ({
                         </div>
 
                         {/* 배너 - 로그인 버튼 아래, 구분선 위 */}
-                        <div className="bg-primary-subtle rounded-[4px] px-3 py-2.5 mb-3">
+                        <div className="bg-primary-subtle rounded-xs px-3 py-3 mb-3">
                           <p className="text-2sm-regular text-primary-normal whitespace-nowrap">
                             회원가입하면 다양한 문제 제작이 가능해요!
                           </p>

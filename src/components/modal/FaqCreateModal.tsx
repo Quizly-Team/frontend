@@ -73,18 +73,18 @@ const FaqCreateModal = ({
         className="absolute inset-0 bg-static-black/40"
         onClick={handleClose}
       />
-      <div className="relative bg-background-elevated rounded-2xl w-full max-w-[520px] mx-4 p-6 md:p-8">
+      <div className="relative bg-background-elevated rounded-lg w-full max-w-[520px] mx-4 p-6 md:p-8">
         <h2 className="text-2md-semibold text-gray-normal mb-6">FAQ 등록</h2>
 
         <div className="flex flex-col gap-4">
           <div>
-            <label className="text-2sm-medium block text-gray-neutral mb-1.5">
+            <label className="text-2sm-medium block text-gray-neutral mb-2">
               카테고리
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value as FaqCategory)}
-              className="text-2sm-regular w-full h-[42px] rounded-lg border border-line-normal px-3 text-gray-normal outline-none focus:border-primary-normal"
+              className="text-2sm-regular w-full h-[42px] rounded-sm border border-line-normal px-3 text-gray-normal outline-none focus:border-primary-normal"
             >
               <option value="">카테고리를 선택하세요</option>
               {CATEGORY_OPTIONS.map(([key, label]) => (
@@ -96,7 +96,7 @@ const FaqCreateModal = ({
           </div>
 
           <div>
-            <label className="text-2sm-medium block text-gray-neutral mb-1.5">
+            <label className="text-2sm-medium block text-gray-neutral mb-2">
               질문
             </label>
             <input
@@ -104,19 +104,19 @@ const FaqCreateModal = ({
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               placeholder="질문을 입력하세요"
-              className="text-2sm-regular w-full h-[42px] rounded-lg border border-line-normal px-3 text-gray-normal outline-none focus:border-primary-normal"
+              className="text-2sm-regular w-full h-[42px] rounded-sm border border-line-normal px-3 text-gray-normal outline-none focus:border-primary-normal"
             />
           </div>
 
           <div>
-            <label className="text-2sm-medium block text-gray-neutral mb-1.5">
+            <label className="text-2sm-medium block text-gray-neutral mb-2">
               답변
             </label>
             <textarea
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="답변을 입력하세요"
-              className="text-2sm-regular w-full min-h-[120px] rounded-lg border border-line-normal px-3 py-2 text-gray-normal outline-none focus:border-primary-normal resize-y"
+              className="text-2sm-regular w-full min-h-[120px] rounded-sm border border-line-normal px-3 py-2 text-gray-normal outline-none focus:border-primary-normal resize-y"
             />
           </div>
         </div>
@@ -126,7 +126,7 @@ const FaqCreateModal = ({
             type="button"
             onClick={handleClose}
             disabled={isSubmitting}
-            className="text-2sm-regular px-5 py-2.5 rounded-lg border border-line-normal text-gray-neutral hover:bg-background-alternative transition-colors"
+            className="text-2sm-regular px-5 py-3 rounded-sm border border-line-normal text-gray-neutral hover:bg-background-alternative transition-colors"
           >
             취소
           </button>
@@ -134,7 +134,7 @@ const FaqCreateModal = ({
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="text-2sm-medium px-5 py-2.5 rounded-lg bg-primary-normal text-static-white hover:bg-primary-normal/90 transition-colors disabled:opacity-50"
+            className="text-2sm-medium px-5 py-3 rounded-sm bg-primary-normal text-static-white hover:bg-primary-normal/90 transition-colors disabled:opacity-50"
           >
             {isSubmitting ? '등록 중...' : '등록하기'}
           </button>

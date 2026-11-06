@@ -79,10 +79,10 @@ const QuizDetailPage = () => {
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
-      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-md:hidden">
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-15 max-md:hidden">
         <div className="w-full max-w-[1024px]">
           {/* Title */}
-          <h1 className="text-1xl-bold text-gray-normal text-center mb-[60px]">
+          <h1 className="text-1xl-bold text-gray-normal text-center mb-15">
             {date}
           </h1>
 
@@ -101,7 +101,7 @@ const QuizDetailPage = () => {
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="text-1rg-regular bg-primary-normal text-static-white px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+                className="text-1rg-regular bg-primary-normal text-static-white px-4 py-3 rounded-sm hover:bg-primary-normal/90 transition-colors"
               >
                 다시 시도
               </button>
@@ -144,7 +144,7 @@ const QuizDetailPage = () => {
       </main>
 
       {/* Main Content - Mobile */}
-      <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[100px] px-5">
+      <main className="hidden max-md:flex flex-1 flex-col pt-19 pb-25 px-5">
         {/* Title */}
         <h1 className="text-2lg-bold text-gray-normal text-center mb-12">
           {date}
@@ -163,7 +163,7 @@ const QuizDetailPage = () => {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="text-2sm-regular bg-primary-normal text-static-white px-l py-3 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+              className="text-2sm-regular bg-primary-normal text-static-white px-4 py-3 rounded-sm hover:bg-primary-normal/90 transition-colors"
             >
               다시 시도
             </button>
@@ -188,7 +188,7 @@ const QuizDetailPage = () => {
       </main>
 
       {/* Home Indicator - Mobile Only */}
-      <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-static-black rounded-[100px]" />
+      <div className="hidden max-md:block fixed bottom-2 left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-static-black rounded-full" />
     </div>
   )
 }

@@ -261,7 +261,7 @@ const QuizSolvePage = ({
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-6 max-md:hidden">
         <div className="w-full max-w-[1024px] max-lg:max-w-[904px]">
           {/* Title */}
-          <div className="flex items-center gap-3 mb-[38px]">
+          <div className="flex items-center gap-3 mb-10">
             <h1 className="text-1xl-bold text-gray-normal text-center">
               지금부터 본격{' '}
               <span className="text-primary-normal">문제 타임!</span> 집중해서
@@ -271,7 +271,7 @@ const QuizSolvePage = ({
           </div>
 
           {/* Progress Bar */}
-          <div className="mb-[55px] max-lg:mb-[55px]">
+          <div className="mb-14 max-lg:mb-14">
             <ProgressBar
               current={showResult ? questionNumber : questionNumber - 1}
               total={quizDetailList.length}
@@ -281,7 +281,7 @@ const QuizSolvePage = ({
 
           {/* Quiz Container */}
           <div
-            className={`bg-background-elevated border rounded-[16px] p-10 mb-[30px] ${
+            className={`bg-background-elevated border rounded-lg p-10 mb-8 ${
               showResult
                 ? isCorrect
                   ? 'border-status-informative-normal'
@@ -336,7 +336,7 @@ const QuizSolvePage = ({
                   <button
                     onClick={() => handleSelectAnswer('O')}
                     className={`
-                      h-[120px] max-lg:h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
+                      h-[120px] max-lg:h-[120px] rounded-md border flex items-center justify-center transition-colors
                       ${
                         showResult
                           ? selectedAnswer === 'O'
@@ -364,7 +364,7 @@ const QuizSolvePage = ({
                   <button
                     onClick={() => handleSelectAnswer('X')}
                     className={`
-                      h-[120px] max-lg:h-[120px] rounded-[12px] border flex items-center justify-center transition-colors
+                      h-[120px] max-lg:h-[120px] rounded-md border flex items-center justify-center transition-colors
                       ${
                         showResult
                           ? selectedAnswer === 'X'
@@ -401,7 +401,7 @@ const QuizSolvePage = ({
                       key={`${currentQuiz.quizId}-option-${index}`}
                       onClick={() => handleSelectAnswer(option)}
                       className={`
-                        w-full flex items-center gap-3 px-3 py-4 rounded-[12px] border text-left transition-colors
+                        w-full flex items-center gap-3 px-3 py-4 rounded-md border text-left transition-colors
                         ${
                           showResult
                             ? isSelected
@@ -444,7 +444,7 @@ const QuizSolvePage = ({
               onClick={handleNextQuestion}
               disabled={!showResult}
               className={`
-                text-1rg-regular px-4 py-3 rounded-[6px] text-static-white transition-colors
+                text-1rg-regular px-4 py-3 rounded-sm text-static-white transition-colors
                 ${
                   showResult
                     ? 'bg-primary-normal hover:bg-primary-normal/90'
@@ -458,7 +458,7 @@ const QuizSolvePage = ({
 
           {/* 해설 영역 - 웹/태블릿 */}
           {showResult && (
-            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-10 mt-8">
+            <div className="bg-background-elevated border border-line-normal rounded-lg p-10 mt-8">
               <h3 className="text-2md-medium text-primary-normal mb-6">
                 해설 요약
               </h3>
@@ -481,10 +481,10 @@ const QuizSolvePage = ({
       </main>
 
       {/* Main Content - Mobile */}
-      <main className="hidden max-md:flex flex-1 flex-col pt-[74px] pb-[140px] px-l">
+      <main className="hidden max-md:flex flex-1 flex-col pt-19 pb-35 px-4">
         <div className="w-full">
           {/* Progress Bar */}
-          <div className="mb-[47px]">
+          <div className="mb-12">
             <ProgressBar
               current={showResult ? questionNumber : questionNumber - 1}
               total={quizDetailList.length}
@@ -494,7 +494,7 @@ const QuizSolvePage = ({
 
           {/* Quiz Container */}
           <div
-            className={`bg-background-elevated border rounded-[16px] p-l mb-6 ${
+            className={`bg-background-elevated border rounded-lg p-4 mb-6 ${
               showResult
                 ? isCorrect
                   ? 'border-status-informative-normal'
@@ -503,7 +503,7 @@ const QuizSolvePage = ({
             }`}
           >
             {/* Question */}
-            <div className="flex items-start justify-between gap-3 mb-l">
+            <div className="flex items-start justify-between gap-3 mb-4">
               <h2
                 className={`text-1rg-medium ${
                   showResult
@@ -549,7 +549,7 @@ const QuizSolvePage = ({
                   <button
                     onClick={() => handleSelectAnswer('O')}
                     className={`
-                      h-[60px] rounded-[8px] border flex items-center justify-center transition-colors
+                      h-[60px] rounded-sm border flex items-center justify-center transition-colors
                       ${
                         showResult
                           ? selectedAnswer === 'O'
@@ -577,7 +577,7 @@ const QuizSolvePage = ({
                   <button
                     onClick={() => handleSelectAnswer('X')}
                     className={`
-                      h-[60px] rounded-[8px] border flex items-center justify-center transition-colors
+                      h-[60px] rounded-sm border flex items-center justify-center transition-colors
                       ${
                         showResult
                           ? selectedAnswer === 'X'
@@ -614,7 +614,7 @@ const QuizSolvePage = ({
                       key={`${currentQuiz.quizId}-option-${index}`}
                       onClick={() => handleSelectAnswer(option)}
                       className={`
-                        w-full flex items-center gap-2 px-3 py-3 rounded-[8px] border text-left transition-colors
+                        w-full flex items-center gap-2 px-3 py-3 rounded-sm border text-left transition-colors
                         ${
                           showResult
                             ? isSelected
@@ -653,8 +653,8 @@ const QuizSolvePage = ({
 
           {/* 해설 영역 - 모바일 */}
           {showResult && (
-            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-l">
-              <h3 className="text-1rg-medium text-primary-normal mb-l">
+            <div className="bg-background-elevated border border-line-normal rounded-lg p-4">
+              <h3 className="text-1rg-medium text-primary-normal mb-4">
                 해설 요약
               </h3>
               <div className="text-1rg-medium text-gray-normal">
@@ -676,11 +676,11 @@ const QuizSolvePage = ({
       </main>
 
       {/* Fixed Bottom Buttons - Mobile Only */}
-      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated pt-4 pb-10 px-l z-50">
+      <div className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated pt-4 pb-10 px-4 z-50">
         <div className="flex gap-3">
           <button
             onClick={handleMobileExitClick}
-            className="text-1md-regular bg-background-elevated border border-line-normal px-l py-[14px] rounded-[6px] text-gray-alternative whitespace-nowrap"
+            className="text-1md-regular bg-background-elevated border border-line-normal px-4 py-4 rounded-sm text-gray-alternative whitespace-nowrap"
           >
             나가기
           </button>
@@ -688,7 +688,7 @@ const QuizSolvePage = ({
             onClick={handleNextQuestion}
             disabled={!showResult}
             className={`
-              text-1md-regular flex-1 px-l py-[14px] rounded-[6px] text-static-white transition-colors
+              text-1md-regular flex-1 px-4 py-4 rounded-sm text-static-white transition-colors
               ${
                 showResult
                   ? 'bg-primary-normal hover:bg-primary-normal/90'

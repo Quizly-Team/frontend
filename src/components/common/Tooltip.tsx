@@ -13,8 +13,8 @@ const Tooltip = ({
 }: TooltipProps) => {
   const containerStyles =
     position === 'top'
-      ? 'absolute bottom-full left-1/2 -translate-x-1/2 mb-[9px] z-20'
-      : 'absolute top-full left-1/2 -translate-x-1/2 mt-[9px] z-20'
+      ? 'absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-20'
+      : 'absolute top-full left-1/2 -translate-x-1/2 mt-2 z-20'
 
   const arrowStyles =
     position === 'top'

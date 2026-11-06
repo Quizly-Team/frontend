@@ -11,7 +11,7 @@ const FaqPage = () => {
     <div className="flex-1 w-full bg-background-alternative flex flex-col">
       <Header />
 
-      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-15 max-lg:px-10 max-md:px-5 max-md:pt-5">
         <div className="w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
           {/* 상단 탭 */}
           <MyPageTabs
@@ -21,21 +21,21 @@ const FaqPage = () => {
 
           {/* 본문: 로딩 / 에러 / 빈 / 데이터주도 렌더 */}
           {isLoading ? (
-            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
+            <div className="bg-background-elevated border border-line-normal rounded-lg p-8 max-md:p-5 flex justify-center py-20">
               <p className="text-gray-alternative">로딩 중...</p>
             </div>
           ) : isError ? (
-            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
+            <div className="bg-background-elevated border border-line-normal rounded-lg p-8 max-md:p-5 flex justify-center py-20">
               <p className="text-status-negative-normal">
                 데이터를 불러오는데 실패했습니다.
               </p>
             </div>
           ) : groups.length === 0 ? (
-            <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] flex justify-center py-20">
+            <div className="bg-background-elevated border border-line-normal rounded-lg p-8 max-md:p-5 flex justify-center py-20">
               <p className="text-gray-alternative">등록된 FAQ가 없습니다.</p>
             </div>
           ) : (
-            <div className="flex flex-col gap-5 max-md:gap-[20px]">
+            <div className="flex flex-col gap-5 max-md:gap-5">
               {groups.map((group) => (
                 <FaqCategorySection
                   key={group.category}
@@ -46,7 +46,7 @@ const FaqPage = () => {
               ))}
 
               {/* 하단 CTA */}
-              <div className="bg-primary-normal rounded-[16px] flex flex-col items-center py-[40px] gap-[24px] max-md:py-[32px] max-md:gap-[16px]">
+              <div className="bg-primary-normal rounded-lg flex flex-col items-center py-10 gap-6 max-md:py-8 max-md:gap-4">
                 <div className="flex flex-col items-center gap-2 text-center">
                   <p className="text-2lg-bold max-md:text-2md-medium text-static-white">
                     원하는 답변을 찾지 못하셨나요?
@@ -57,7 +57,7 @@ const FaqPage = () => {
                 </div>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="text-1rg-medium bg-background-elevated rounded-[6px] px-[16px] py-[12px] text-primary-normal"
+                  className="text-1rg-medium bg-background-elevated rounded-sm px-4 py-3 text-primary-normal"
                 >
                   이메일로 문의하기
                 </a>

@@ -16,8 +16,8 @@ const LoadingStageCard = ({
   responsive = false,
 }: LoadingStageCardProps) => {
   const cardClasses = responsive
-    ? 'bg-background-elevated rounded-[12px] px-[26px] py-6 w-[250px] max-lg:w-[220px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)] shrink-0'
-    : 'bg-background-elevated rounded-[12px] px-[26px] py-6 w-[250px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]'
+    ? 'bg-background-elevated rounded-md px-7 py-6 w-[250px] max-lg:w-[220px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)] shrink-0'
+    : 'bg-background-elevated rounded-md px-7 py-6 w-[250px] flex flex-col items-center shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]'
 
   const textClasses = responsive
     ? 'text-1md-medium max-lg:text-1rg-medium text-gray-normal'

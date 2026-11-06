@@ -8,18 +8,6 @@
   --font-sans: 'Pretendard', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Spacing */
-  --spacing-0: 0px;
-  --spacing-xxs: 2px;
-  --spacing-xs: 4px;
-  --spacing-s: 8px;
-  --spacing-m: 12px;
-  --spacing-l: 16px;
-  --spacing-xl: 20px;
-  --spacing-xxl: 24px;
-  --spacing-3xl: 32px;
-  --spacing-4xl: 40px;
-
   /* Breakpoints */
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;

@@ -44,12 +44,12 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center px-6 max-lg:items-start max-lg:pt-[80px]">
+      <main className="flex-1 flex items-center justify-center px-6 max-lg:items-start max-lg:pt-20">
         <div className="flex flex-col items-center">
           {/* Login Box */}
-          <div className="relative bg-background-elevated rounded-[24px] border border-line-normal w-[500px] max-md:w-full max-md:mx-4 px-[60px] max-md:px-[20px] py-[72px] max-md:py-[40px] flex flex-col items-center">
+          <div className="relative bg-background-elevated rounded-xl border border-line-normal w-[500px] max-md:w-full max-md:mx-4 px-15 max-md:px-5 py-18 max-md:py-10 flex flex-col items-center">
             {/* Logo */}
-            <div className="w-[170px] max-md:w-[110px] h-[60px] max-md:h-[44px] mb-[20px] flex items-center justify-center">
+            <div className="w-[170px] max-md:w-[110px] h-[60px] max-md:h-[44px] mb-5 flex items-center justify-center">
               <img
                 src="/logo.svg"
                 alt="Quizly Logo"
@@ -58,22 +58,22 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
             </div>
 
             {/* Title */}
-            <h1 className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center mb-[16px]">
+            <h1 className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center mb-4">
               학습을 더 쉽고 재미있게
             </h1>
 
             {/* Description */}
-            <p className="text-1rg-regular text-gray-alternative text-center mb-[56px] max-md:mb-[32px]">
+            <p className="text-1rg-regular text-gray-alternative text-center mb-14 max-md:mb-8">
               로그인하고 문제를 더 많이 만들어보세요!
             </p>
 
             {/* SignIn Buttons */}
-            <div className="w-full flex flex-col items-center gap-4 mb-[48px] max-md:mb-[24px]">
+            <div className="w-full flex flex-col items-center gap-4 mb-12 max-md:mb-6">
               {/* Naver Button */}
               <div className="relative w-full flex justify-center">
                 <button
                   onClick={handleNaverLogin}
-                  className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#03A94D] hover:bg-[#029440] transition-colors rounded-[6px] flex items-center justify-center gap-2"
+                  className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#03A94D] hover:bg-[#029440] transition-colors rounded-sm flex items-center justify-center gap-2"
                 >
                   <img
                     src="/icon/naver.svg"
@@ -86,7 +86,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
                 </button>
                 {/* Recent Login Badge for Naver */}
                 {lastLoginProvider === 'naver' && (
-                  <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-gray-neutral rounded-[4px] flex items-center justify-center z-10">
+                  <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-gray-neutral rounded-xs flex items-center justify-center z-10">
                     <p className="text-2sm-regular text-static-white text-center">
                       최근 로그인
                     </p>
@@ -100,7 +100,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
               <div className="relative w-full flex justify-center">
                 <button
                   onClick={handleKakaoLogin}
-                  className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-[6px] flex items-center justify-center gap-2"
+                  className="w-[380px] max-md:w-[274px] h-[48px] max-md:h-[44px] bg-[#fddc3f] hover:bg-[#fcd52a] transition-colors rounded-sm flex items-center justify-center gap-2"
                 >
                   <img src="/icon/kakao.svg" alt="Kakao" className="w-6 h-6" />
                   <span className="text-1rg-regular text-gray-normal">
@@ -109,7 +109,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
                 </button>
                 {/* Recent Login Badge for Kakao */}
                 {lastLoginProvider === 'kakao' && (
-                  <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-gray-neutral rounded-[4px] flex items-center justify-center z-10">
+                  <div className="absolute top-1/2 -translate-y-1/2 max-md:right-[calc(-20px+4px)] md:left-[calc(100%+8px)] w-[98px] max-md:w-[81px] h-[36px] max-md:h-[32px] bg-gray-neutral rounded-xs flex items-center justify-center z-10">
                     <p className="text-2sm-regular text-static-white text-center">
                       최근 로그인
                     </p>
@@ -144,7 +144,7 @@ const LoginPage = ({ termsUrl, privacyUrl }: LoginPageProps = {}) => {
             </p>
 
             {/* Recent Login Badge (Optional - can be shown conditionally) */}
-            {/* <div className="mt-4 bg-gray-neutral rounded-[4px] px-3 py-2">
+            {/* <div className="mt-4 bg-gray-neutral rounded-xs px-3 py-2">
             <p className="text-2sm-regular text-static-white text-center">
               최근에 로그인한 수단입니다.
             </p>

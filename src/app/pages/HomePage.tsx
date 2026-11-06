@@ -330,10 +330,10 @@ const HomePage = () => {
 
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex justify-center py-8 max-md:hidden">
-        <div className="max-w-[1024px] w-full px-xl max-lg:px-15 flex flex-col items-center justify-center">
+        <div className="max-w-[1024px] w-full px-5 max-lg:px-15 flex flex-col items-center justify-center">
           {/* Character Images */}
           <div className="flex flex-col items-center mb-2 relative">
-            <div className="flex gap-[15px] relative z-10">
+            <div className="flex gap-4 relative z-10">
               <img
                 src="/characters/character1.png"
                 alt="캐릭터 1"
@@ -393,7 +393,7 @@ const HomePage = () => {
           {/* Search Bar - Web/Tablet */}
           <div className="w-full mb-8">
             <div
-              className="bg-background-elevated border border-line-normal rounded-[100px] px-8 py-l shadow-sm"
+              className="bg-background-elevated border border-line-normal rounded-full px-8 py-4 shadow-sm"
               onKeyDown={handleKeyDown}
               tabIndex={0}
             >
@@ -475,7 +475,7 @@ const HomePage = () => {
           <div className="flex gap-4">
             <a
               href="/my-quizzes"
-              className="bg-background-elevated px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
+              className="bg-background-elevated px-4 py-4 rounded-md shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
             >
               <Icon name="book" size={28} />
               <span className="text-2md-medium text-gray-normal">
@@ -485,7 +485,7 @@ const HomePage = () => {
 
             <a
               href="/wrong-quizzes"
-              className="bg-background-elevated px-l py-4 rounded-[12px] shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
+              className="bg-background-elevated px-4 py-4 rounded-md shadow-sm hover:shadow-md transition-shadow flex items-center gap-1"
             >
               <Icon name="write" size={28} />
               <span className="text-2md-medium text-gray-normal">
@@ -497,10 +497,10 @@ const HomePage = () => {
       </main>
 
       {/* Main Content - Mobile */}
-      <main className="hidden max-md:flex flex-1 flex-col items-center pt-41 pb-[180px] px-margin-mobile">
+      <main className="hidden max-md:flex flex-1 flex-col items-center pt-41 pb-45 px-margin-mobile">
         {/* Character Images - Mobile */}
         <div className="flex flex-col items-center mb-8 relative">
-          <div className="flex gap-[7px] relative z-10">
+          <div className="flex gap-2 relative z-10">
             <img
               src="/characters/character1.png"
               alt="캐릭터 1"
@@ -570,7 +570,7 @@ const HomePage = () => {
         <div className="flex gap-3">
           <a
             href="/my-quizzes"
-            className="bg-background-elevated px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
+            className="bg-background-elevated px-3 py-3 rounded-sm shadow-sm flex items-center gap-1"
           >
             <Icon name="book" size={24} />
             <span className="text-2sm-regular text-gray-normal">
@@ -580,7 +580,7 @@ const HomePage = () => {
 
           <a
             href="/wrong-quizzes"
-            className="bg-background-elevated px-3 py-[10px] rounded-[8px] shadow-sm flex items-center gap-1"
+            className="bg-background-elevated px-3 py-3 rounded-sm shadow-sm flex items-center gap-1"
           >
             <Icon name="write" size={24} />
             <span className="text-2sm-regular text-gray-normal">
@@ -592,7 +592,7 @@ const HomePage = () => {
 
       {/* Fixed Bottom Input - Mobile Only */}
       <div
-        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated rounded-t-[30px] shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-[30]"
+        className="hidden max-md:block fixed bottom-0 left-0 right-0 bg-background-elevated rounded-t-2xl shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.06)] z-[30]"
         onKeyDown={handleKeyDown}
         tabIndex={0}
       >
@@ -604,7 +604,7 @@ const HomePage = () => {
               </span>
               <button
                 onClick={handleClearSearch}
-                className="flex items-center justify-center shrink-0 -mt-[1px]"
+                className="flex items-center justify-center shrink-0 -mt-0"
                 aria-label="파일 삭제"
               >
                 <Icon
