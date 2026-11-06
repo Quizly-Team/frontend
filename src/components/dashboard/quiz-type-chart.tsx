@@ -110,7 +110,7 @@ export default function QuizTypeChart({ data }: Props) {
     <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] max-md:p-[20px] w-full max-md:min-h-[306px] max-md:flex max-md:flex-col max-md:relative">
       {/* PC: 일반 표시 */}
       <div className="max-md:hidden">
-        <h3 className="text-[20px] font-medium text-gray-normal mb-[35px]">
+        <h3 className="text-2md-medium text-gray-normal mb-[35px]">
           {currentMonth} 유형별 정답률 비교
         </h3>
 
@@ -185,13 +185,15 @@ export default function QuizTypeChart({ data }: Props) {
         </div>
 
         <div className="bg-primary-subtle rounded-[4px] px-[12px] py-[10px] mt-[16px]">
-          <p className="text-[14px] text-primary-normal">{summaryMessage}</p>
+          <p className="text-2sm-regular text-primary-normal">
+            {summaryMessage}
+          </p>
         </div>
       </div>
 
       {/* 모바일: 블러 처리된 전체 카드 (제목 포함) */}
       <div className="hidden max-md:block absolute inset-0 opacity-80 blur-md pointer-events-none">
-        <h3 className="text-[20px] font-medium text-gray-normal mb-[20px] px-[20px] pt-[20px]">
+        <h3 className="text-2md-medium text-gray-normal mb-[20px] px-[20px] pt-[20px]">
           {currentMonth} 유형별 정답률 비교
         </h3>
 
@@ -285,7 +287,7 @@ export default function QuizTypeChart({ data }: Props) {
               }}
             />
           </div>
-          <p className="text-[18px] font-medium text-gray-normal leading-[25.2px] text-center flex-1">
+          <p className="text-1md-medium text-gray-normal text-center flex-1">
             더 많은 <span className="text-primary-normal">학습 분석</span>은
             <br />
             PC로 확인 해주세요!

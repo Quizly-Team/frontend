@@ -33,7 +33,7 @@ const FaqCategorySection = ({
             className="max-md:size-5"
           />
         </div>
-        <h2 className="text-header3-bold text-gray-normal max-md:text-body1-medium">
+        <h2 className="text-2lg-bold max-md:text-2md-medium text-gray-normal">
           {label}
         </h2>
       </div>

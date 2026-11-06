@@ -130,10 +130,59 @@ for (const t of semantic)
 out.push('}')
 out.push('')
 
+// --- 타이포 ---
+// 합성 토큰(fontSize + lineHeight + letterSpacing + fontWeight)이라
+// Style Dictionary 의 font shorthand 변환을 타면 속성이 깎인다. 직접 푼다.
+const WEIGHT = { Bold: 700, SemiBold: 600, Medium: 500, Regular: 400, Light: 300 }
+
+const lightTree = JSON.parse(
+  fs.readFileSync(path.join(TMP, 'light.json'), 'utf8'),
+)
+
+/** {line-height.3xl} 같은 참조를 병합 트리에서 실제 값으로 푼다. */
+const deref = (v, depth = 0) => {
+  const m = /^\{([^}]+)\}$/.exec(String(v).trim())
+  if (!m || depth > 6) return v
+  const node = m[1]
+    .split('.')
+    .reduce((n, k) => (n && typeof n === 'object' ? n[k] : undefined), lightTree)
+  return node === undefined ? v : deref(node.$value ?? node, depth + 1)
+}
+
+const typo = []
+for (const [sizeKey, weights] of Object.entries(lightTree)) {
+  if (!/^text-/.test(sizeKey) || !weights || typeof weights !== 'object') continue
+  for (const [weightKey, node] of Object.entries(weights)) {
+    if (node?.$type !== 'typography') continue
+    const v = node.$value
+    typo.push({
+      name: `${sizeKey.replace(/^text-/, '')}-${weightKey}`,
+      fontSize: deref(v.fontSize),
+      lineHeight: deref(v.lineHeight),
+      letterSpacing: deref(v.letterSpacing),
+      fontWeight: WEIGHT[deref(v.fontWeight)] ?? 400,
+    })
+  }
+}
+
+out.push('@theme {')
+out.push('  /* Tailwind 기본 text-* 스케일을 지운다. */')
+out.push('  /* 디자인 시스템에 없는 글자 크기는 클래스가 생성되지 않는다. */')
+out.push('  --text-*: initial;')
+out.push('')
+for (const t of typo) {
+  out.push(`  --text-${t.name}: ${t.fontSize}px;`)
+  out.push(`  --text-${t.name}--line-height: ${t.lineHeight}px;`)
+  out.push(`  --text-${t.name}--letter-spacing: ${t.letterSpacing}px;`)
+  out.push(`  --text-${t.name}--font-weight: ${t.fontWeight};`)
+}
+out.push('}')
+out.push('')
+
 fs.mkdirSync(path.dirname(OUT), { recursive: true })
 fs.writeFileSync(OUT, out.join('\n'))
 fs.rmSync(TMP, { recursive: true, force: true })
 
 console.log(
-  `${OUT} 생성: palette ${palette.length}, semantic ${semantic.length}, dark ${darkByName.size}`,
+  `${OUT} 생성: palette ${palette.length}, semantic ${semantic.length}, dark ${darkByName.size}, typo ${typo.length}`,
 )

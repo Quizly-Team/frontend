@@ -119,10 +119,10 @@ const OnboardingPage = () => {
     return (
       <div className="flex-1 flex items-center justify-center bg-background-alternative">
         <div className="text-center">
-          <h2 className="text-header3-bold text-gray-normal mb-4">
+          <h2 className="text-2lg-bold text-gray-normal mb-4">
             로그인 처리 중...
           </h2>
-          <p className="text-body3-regular text-gray-alternative">
+          <p className="text-1rg-regular text-gray-alternative">
             잠시만 기다려주세요.
           </p>
         </div>
@@ -152,20 +152,20 @@ const OnboardingPage = () => {
                   />
                 ) : step === 1 ? (
                   <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-primary-normal flex items-center justify-center">
-                    <span className="text-[20px] max-md:text-[16px] font-medium text-static-white">
+                    <span className="text-2md-medium max-md:text-1rg-medium text-static-white">
                       1
                     </span>
                   </div>
                 ) : (
                   <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-background-elevated border border-line-normal flex items-center justify-center">
-                    <span className="text-[20px] max-md:text-[16px] font-medium text-gray-disable">
+                    <span className="text-2md-medium max-md:text-1rg-medium text-gray-disable">
                       1
                     </span>
                   </div>
                 )}
               </div>
               <span
-                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal whitespace-nowrap ${
+                className={`text-1rg-medium max-md:text-2sm-regular whitespace-nowrap ${
                   step >= 1 ? 'text-primary-normal' : 'text-gray-disable'
                 }`}
               >
@@ -190,20 +190,20 @@ const OnboardingPage = () => {
                   />
                 ) : step === 2 ? (
                   <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-primary-normal flex items-center justify-center">
-                    <span className="text-[20px] max-md:text-[16px] font-medium text-static-white">
+                    <span className="text-2md-medium max-md:text-1rg-medium text-static-white">
                       2
                     </span>
                   </div>
                 ) : (
                   <div className="w-[46px] h-[46px] max-md:w-[32px] max-md:h-[32px] rounded-full bg-background-elevated border border-line-normal flex items-center justify-center">
-                    <span className="text-[20px] max-md:text-[16px] font-medium text-gray-disable">
+                    <span className="text-2md-medium max-md:text-1rg-medium text-gray-disable">
                       2
                     </span>
                   </div>
                 )}
               </div>
               <span
-                className={`text-[16px] max-md:text-[14px] font-medium max-md:font-normal whitespace-nowrap ${
+                className={`text-1rg-medium max-md:text-2sm-regular whitespace-nowrap ${
                   step === 2 || selectedGoals.length > 0 || selectedUserType
                     ? 'text-primary-normal'
                     : 'text-gray-disable'
@@ -223,14 +223,14 @@ const OnboardingPage = () => {
               <>
                 <div className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px] px-4">
                   <h1
-                    className="onboarding-title max-md:font-semibold text-gray-normal text-center max-md:whitespace-nowrap"
+                    className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center max-md:whitespace-nowrap"
                     style={{ lineHeight: '28px' }}
                   >
                     퀴즐리에 오신 것을 환영합니다!👋🏻
                   </h1>
                 </div>
                 <p
-                  className="text-body3-regular text-gray-alternative text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
+                  className="text-1rg-regular text-gray-alternative text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
                   style={{ lineHeight: '22.4px' }}
                 >
                   어떤 분이 이용하시나요?
@@ -256,7 +256,7 @@ const OnboardingPage = () => {
                             : 'w-[52px] h-[52px] max-md:w-[36px] max-md:h-[36px]'
                         }
                       />
-                      <span className="text-body2-medium max-md:text-[16px] text-gray-normal">
+                      <span className="text-1md-medium max-md:text-1rg-medium text-gray-normal">
                         {type.label}
                       </span>
                     </button>
@@ -267,7 +267,7 @@ const OnboardingPage = () => {
                   <button
                     onClick={handleNext}
                     disabled={isStep1NextDisabled}
-                    className={`px-4 py-3 rounded-[6px] text-body3-regular text-static-white transition-colors ${
+                    className={`text-1rg-regular px-4 py-3 rounded-[6px] text-static-white transition-colors ${
                       isStep1NextDisabled
                         ? 'bg-gray-disable cursor-not-allowed'
                         : 'bg-primary-normal hover:bg-primary-strong'
@@ -284,14 +284,14 @@ const OnboardingPage = () => {
               <>
                 <div className="flex items-center justify-center w-full max-md:mt-[30px] md:mt-[60px]">
                   <h1
-                    className="onboarding-title max-md:font-semibold text-gray-normal text-center max-md:px-4"
+                    className="text-2lg-bold max-md:text-2md-semibold text-gray-normal text-center max-md:px-4"
                     style={{ lineHeight: '28px' }}
                   >
                     학습 목표를 선택해주세요
                   </h1>
                 </div>
                 <p
-                  className="text-body3-regular text-gray-alternative text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
+                  className="text-1rg-regular text-gray-alternative text-center max-md:mt-[4px] md:mt-[6px] max-md:mb-[30px] md:mb-[40px]"
                   style={{ lineHeight: '22.4px' }}
                 >
                   중복 선택이 가능합니다.
@@ -317,7 +317,7 @@ const OnboardingPage = () => {
                           size={28}
                           className="shrink-0"
                         />
-                        <span className="text-body3-regular text-gray-normal">
+                        <span className="text-1rg-regular text-gray-normal">
                           {goal.label}
                         </span>
                       </button>
@@ -329,14 +329,14 @@ const OnboardingPage = () => {
                   <div className="flex gap-3">
                     <button
                       onClick={handlePrev}
-                      className="px-4 py-3 rounded-[6px] bg-background-elevated border border-line-normal text-body3-regular text-gray-alternative hover:bg-background-alternative transition-colors"
+                      className="text-1rg-regular px-4 py-3 rounded-[6px] bg-background-elevated border border-line-normal text-gray-alternative hover:bg-background-alternative transition-colors"
                     >
                       이전 질문
                     </button>
                     <button
                       onClick={handleComplete}
                       disabled={isStep2NextDisabled}
-                      className={`px-4 py-3 rounded-[6px] text-body3-regular text-static-white transition-colors ${
+                      className={`text-1rg-regular px-4 py-3 rounded-[6px] text-static-white transition-colors ${
                         isStep2NextDisabled
                           ? 'bg-gray-disable cursor-not-allowed'
                           : 'bg-primary-normal hover:bg-primary-strong'
@@ -373,7 +373,7 @@ const OnboardingPage = () => {
                 <button
                   onClick={handleNext}
                   disabled={isStep1NextDisabled}
-                  className={`w-full h-[49px] rounded-[6px] text-[18px] text-static-white transition-colors ${
+                  className={`text-1md-regular w-full h-[49px] rounded-[6px] text-static-white transition-colors ${
                     isStep1NextDisabled
                       ? 'bg-gray-disable cursor-not-allowed'
                       : 'bg-primary-normal hover:bg-primary-strong'
@@ -408,14 +408,14 @@ const OnboardingPage = () => {
                 <div className="flex gap-3 w-full">
                   <button
                     onClick={handlePrev}
-                    className="flex-1 h-[49px] rounded-[6px] bg-background-elevated border border-line-normal text-[18px] text-gray-alternative hover:bg-background-alternative transition-colors"
+                    className="text-1md-regular flex-1 h-[49px] rounded-[6px] bg-background-elevated border border-line-normal text-gray-alternative hover:bg-background-alternative transition-colors"
                   >
                     이전 질문
                   </button>
                   <button
                     onClick={handleComplete}
                     disabled={isStep2NextDisabled}
-                    className={`flex-1 h-[49px] rounded-[6px] text-[18px] text-static-white transition-colors ${
+                    className={`text-1md-regular flex-1 h-[49px] rounded-[6px] text-static-white transition-colors ${
                       isStep2NextDisabled
                         ? 'bg-gray-disable cursor-not-allowed'
                         : 'bg-primary-normal hover:bg-primary-strong'

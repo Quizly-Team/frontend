@@ -19,21 +19,17 @@ const QuizCard = ({
     >
       {/* Question Section */}
       <div className="flex flex-col gap-xs">
-        <p className="text-body2-medium leading-[1.4]">
+        <p className="text-1md-medium">
           <span className="text-primary-normal">Q{questionNumber}. </span>
           <span className="text-gray-normal">{question}</span>
         </p>
-        <p className="text-body2-medium text-gray-alternative leading-[1.4]">
-          정답 : {answer}
-        </p>
+        <p className="text-1md-medium text-gray-alternative">정답 : {answer}</p>
       </div>
 
       {/* Explanation Section */}
       <div className="flex flex-col gap-xs">
-        <p className="text-body3-medium text-primary-normal leading-[1.4]">
-          해설 요약
-        </p>
-        <p className="text-body3-regular text-gray-normal leading-[1.4] whitespace-pre-wrap">
+        <p className="text-1rg-medium text-primary-normal">해설 요약</p>
+        <p className="text-1rg-regular text-gray-normal whitespace-pre-wrap">
           {explanation}
         </p>
       </div>

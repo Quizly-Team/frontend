@@ -253,7 +253,7 @@ const MockExamSettingModal = ({
 
         {/* Mobile header */}
         <div className="hidden max-md:flex items-center justify-center h-16 border-b border-line-normal">
-          <h2 className="text-lg font-semibold text-gray-normal">
+          <h2 className="text-1md-semibold text-gray-normal">
             실전 모의고사 맞춤 설정
           </h2>
         </div>
@@ -262,22 +262,22 @@ const MockExamSettingModal = ({
         <div className="p-10 max-md:p-5 pb-3 overflow-y-auto flex-1">
           {/* Title - Desktop/Tablet only */}
           <div className="mb-6 max-lg:mb-6 max-md:hidden">
-            <h2 className="text-lg max-lg:text-xl font-medium text-gray-normal mb-1 leading-[1.4]">
+            <h2 className="text-1md-medium max-lg:text-2md-medium text-gray-normal mb-1">
               실전 모의고사 맞춤 설정
             </h2>
-            <p className="text-sm max-lg:text-base text-gray-alternative leading-[1.4]">
+            <p className="text-2sm-regular max-lg:text-1rg-regular text-gray-alternative">
               필요한 유형에 맞춰 모의고사 문제를 받으세요
             </p>
           </div>
 
           {/* Mobile subtitle */}
-          <p className="hidden max-md:block text-base text-gray-alternative mb-6">
+          <p className="text-1rg-regular hidden max-md:block text-gray-alternative mb-6">
             필요한 유형에 맞춰 모의고사 문제를 받으세요
           </p>
 
           {/* Question 1: 문제 유형 선택 */}
           <div className="mb-6 max-lg:mb-6 max-md:mb-[30px]">
-            <h3 className="text-base max-lg:text-lg max-md:text-base font-medium text-gray-normal mb-3 max-lg:mb-3 max-md:mb-3 leading-[1.4]">
+            <h3 className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium text-gray-normal mb-3 max-lg:mb-3 max-md:mb-3">
               어떤 유형의 문제를 만드시겠어요?(복수 선택 가능)
             </h3>
             <div className="flex flex-wrap gap-[5px] max-md:gap-1">
@@ -301,8 +301,8 @@ const MockExamSettingModal = ({
                     onClick={() => handleTypeToggle(type.id)}
                     className={
                       isActive
-                        ? 'px-3 py-2 rounded-full border border-primary-normal bg-primary-normal text-static-white text-sm max-lg:text-sm max-md:text-sm font-normal leading-[1.4]'
-                        : 'px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-alternative text-sm max-lg:text-sm max-md:text-sm font-normal hover:border-gray-disable leading-[1.4]'
+                        ? 'text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular px-3 py-2 rounded-full border border-primary-normal bg-primary-normal text-static-white'
+                        : 'text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-alternative hover:border-gray-disable'
                     }
                   >
                     {type.label}
@@ -318,7 +318,7 @@ const MockExamSettingModal = ({
               ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c),
             )) && (
             <div className="mb-6 max-lg:mb-6 max-md:mb-[30px]">
-              <h3 className="text-base max-lg:text-lg max-md:text-base font-medium text-gray-normal mb-3 max-lg:mb-3 max-md:mb-3 leading-[1.4]">
+              <h3 className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium text-gray-normal mb-3 max-lg:mb-3 max-md:mb-3">
                 문항을 어떤 특성으로 출제할까요?(복수 선택 가능)
               </h3>
               <div className="flex flex-wrap gap-1 max-md:gap-1">
@@ -328,8 +328,8 @@ const MockExamSettingModal = ({
                     onClick={() => handleCharacteristicToggle(char.id)}
                     className={
                       selectedCharacteristics.includes(char.id)
-                        ? 'px-3 py-2 rounded-full border border-primary-normal bg-primary-normal text-static-white text-sm max-lg:text-sm max-md:text-sm font-normal leading-[1.4]'
-                        : 'px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-alternative text-sm max-lg:text-sm max-md:text-sm font-normal hover:border-gray-disable leading-[1.4]'
+                        ? 'text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular px-3 py-2 rounded-full border border-primary-normal bg-primary-normal text-static-white'
+                        : 'text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-alternative hover:border-gray-disable'
                     }
                   >
                     {char.label}
@@ -342,7 +342,7 @@ const MockExamSettingModal = ({
           {/* Textarea */}
           <div className="mb-3 max-lg:mb-3 max-md:mb-[30px]">
             <div className="relative mb-3 max-lg:mb-3 max-md:mb-3">
-              <h3 className="text-base max-lg:text-lg max-md:text-base font-medium text-gray-normal inline leading-[1.4]">
+              <h3 className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium text-gray-normal inline">
                 정리한 필기 내용을 기재해주세요
               </h3>
               <div
@@ -387,7 +387,7 @@ const MockExamSettingModal = ({
               onChange={handleTextChange}
               placeholder="필기 내용을 자유롭게 기재해주세요"
               disabled={!!file}
-              className="w-full h-[140px] max-lg:h-[140px] max-md:h-[140px] px-3 py-3 border border-line-normal rounded-md text-sm max-lg:text-sm max-md:text-sm text-gray-normal placeholder:text-gray-assistive resize-none focus:outline-none focus:border-primary-normal leading-[1.4] disabled:bg-background-alternative disabled:cursor-not-allowed"
+              className="text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular w-full h-[140px] max-lg:h-[140px] max-md:h-[140px] px-3 py-3 border border-line-normal rounded-md text-gray-normal placeholder:text-gray-assistive resize-none focus:outline-none focus:border-primary-normal disabled:bg-background-alternative disabled:cursor-not-allowed"
             />
           </div>
         </div>
@@ -404,7 +404,7 @@ const MockExamSettingModal = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handleFileButtonClick}
-              className="px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-normal text-sm max-lg:text-sm font-normal hover:border-gray-disable flex items-center gap-1 leading-[1.4]"
+              className="text-2sm-regular max-lg:text-2sm-regular px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
             >
               <Icon name="upload" size={20} className="text-gray-alternative" />
               파일 업로드
@@ -432,7 +432,7 @@ const MockExamSettingModal = ({
               file &&
               !imagePreviewUrl && (
                 <div className="flex items-center gap-1">
-                  <span className="text-sm text-gray-alternative underline leading-[1.4]">
+                  <span className="text-2sm-regular text-gray-alternative underline">
                     {file.name}
                   </span>
                   <button
@@ -457,7 +457,7 @@ const MockExamSettingModal = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handleFileButtonClick}
-              className="px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-normal text-sm font-normal hover:border-gray-disable flex items-center gap-1 leading-[1.4]"
+              className="text-2sm-regular px-3 py-2 rounded-full border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
             >
               <Icon name="upload" size={20} className="text-gray-alternative" />
               파일 업로드
@@ -485,7 +485,7 @@ const MockExamSettingModal = ({
               file &&
               !imagePreviewUrl && (
                 <div className="flex items-center gap-1 flex-1">
-                  <span className="text-sm text-gray-alternative underline leading-[1.4] truncate">
+                  <span className="text-2sm-regular text-gray-alternative underline truncate">
                     {file.name}
                   </span>
                   <button
@@ -510,7 +510,7 @@ const MockExamSettingModal = ({
           <div className="flex justify-end">
             <button
               onClick={handleSubmit}
-              className="w-[84px] h-[36px] max-lg:w-[96px] max-lg:h-[44px] rounded-md bg-primary-normal text-static-white text-sm max-lg:text-sm font-normal hover:bg-primary-strong leading-[1.4] flex items-center justify-center"
+              className="text-2sm-regular max-lg:text-2sm-regular w-[84px] h-[36px] max-lg:w-[96px] max-lg:h-[44px] rounded-md bg-primary-normal text-static-white hover:bg-primary-strong flex items-center justify-center"
             >
               저장하기
             </button>
@@ -521,7 +521,7 @@ const MockExamSettingModal = ({
         <div className="hidden max-md:block px-5 py-4 border-t border-line-normal">
           <button
             onClick={handleSubmit}
-            className="w-full h-[52px] rounded-lg bg-primary-normal text-static-white text-base font-medium hover:bg-primary-strong"
+            className="text-1rg-medium w-full h-[52px] rounded-lg bg-primary-normal text-static-white hover:bg-primary-strong"
           >
             저장하기
           </button>

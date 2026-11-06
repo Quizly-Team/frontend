@@ -473,10 +473,10 @@ const AdminPage = () => {
               <section className="bg-background-elevated rounded-2xl border border-line-normal p-6 md:p-8">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                   <div>
-                    <h1 className="text-[28px] md:text-[32px] font-bold text-gray-normal">
+                    <h1 className="text-3lg-bold md:text-1xl-bold text-gray-normal">
                       관리자 운영센터
                     </h1>
-                    <p className="text-[15px] md:text-[16px] text-gray-alternative mt-2">
+                    <p className="text-3sm-regular md:text-1rg-regular text-gray-alternative mt-2">
                       사용자 문의 답변, FAQ 등록/수정 등 운영 업무를 처리하는
                       공간입니다.
                     </p>
@@ -494,7 +494,7 @@ const AdminPage = () => {
 
               <section className="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-5">
                 <aside className="bg-background-elevated rounded-2xl border border-line-normal p-4">
-                  <h2 className="text-[18px] font-semibold text-gray-normal mb-3">
+                  <h2 className="text-1md-semibold text-gray-normal mb-3">
                     관리 메뉴
                   </h2>
                   <div className="flex flex-col gap-2">
@@ -512,15 +512,15 @@ const AdminPage = () => {
                         <div className="flex items-center justify-between">
                           <span>{section.title}</span>
                           {section.key === 'qna' ? (
-                            <span className="text-[12px] text-gray-assistive">
+                            <span className="text-2xs-regular text-gray-assistive">
                               {unansweredCount} 미답변
                             </span>
                           ) : section.key === 'faq' ? (
-                            <span className="text-[12px] text-gray-assistive">
+                            <span className="text-2xs-regular text-gray-assistive">
                               {faqList.length}개 등록
                             </span>
                           ) : (
-                            <span className="text-[12px] text-gray-assistive">
+                            <span className="text-2xs-regular text-gray-assistive">
                               배치 실행
                             </span>
                           )}
@@ -533,10 +533,10 @@ const AdminPage = () => {
                 <div className="bg-background-elevated rounded-2xl border border-line-normal p-6 md:p-7">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <div>
-                      <h3 className="text-[24px] font-bold text-gray-normal">
+                      <h3 className="text-2lg-bold text-gray-normal">
                         {currentSection.title}
                       </h3>
-                      <p className="text-[15px] text-gray-alternative mt-2">
+                      <p className="text-3sm-regular text-gray-alternative mt-2">
                         {currentSection.description}
                       </p>
                     </div>
@@ -579,26 +579,26 @@ const AdminPage = () => {
                       {activeSection === 'qna' ? (
                         <>
                           <div className="rounded-xl border border-line-normal p-4">
-                            <p className="text-[13px] text-gray-assistive">
+                            <p className="text-1sm-regular text-gray-assistive">
                               전체 문의
                             </p>
-                            <p className="text-[24px] font-bold text-gray-normal mt-1">
+                            <p className="text-2lg-bold text-gray-normal mt-1">
                               {totalElements}건
                             </p>
                           </div>
                           <div className="rounded-xl border border-line-normal p-4">
-                            <p className="text-[13px] text-gray-assistive">
+                            <p className="text-1sm-regular text-gray-assistive">
                               미답변
                             </p>
-                            <p className="text-[24px] font-bold text-status-negative-normal mt-1">
+                            <p className="text-2lg-bold text-status-negative-normal mt-1">
                               {unansweredCount}건
                             </p>
                           </div>
                           <div className="rounded-xl border border-line-normal p-4">
-                            <p className="text-[13px] text-gray-assistive">
+                            <p className="text-1sm-regular text-gray-assistive">
                               답변완료
                             </p>
-                            <p className="text-[24px] font-bold text-primary-normal mt-1">
+                            <p className="text-2lg-bold text-primary-normal mt-1">
                               {answeredCount}건
                             </p>
                           </div>
@@ -606,10 +606,10 @@ const AdminPage = () => {
                       ) : (
                         <>
                           <div className="rounded-xl border border-line-normal p-4">
-                            <p className="text-[13px] text-gray-assistive">
+                            <p className="text-1sm-regular text-gray-assistive">
                               전체 FAQ
                             </p>
-                            <p className="text-[24px] font-bold text-gray-normal mt-1">
+                            <p className="text-2lg-bold text-gray-normal mt-1">
                               {faqList.length}개
                             </p>
                           </div>
@@ -623,10 +623,10 @@ const AdminPage = () => {
                               key={key}
                               className="rounded-xl border border-line-normal p-4"
                             >
-                              <p className="text-[13px] text-gray-assistive">
+                              <p className="text-1sm-regular text-gray-assistive">
                                 {label}
                               </p>
-                              <p className="text-[24px] font-bold text-primary-normal mt-1">
+                              <p className="text-2lg-bold text-primary-normal mt-1">
                                 {faqCategoryCounts[key]}개
                               </p>
                             </div>
@@ -639,17 +639,17 @@ const AdminPage = () => {
                   {activeSection === 'batch' ? (
                     <>
                       <div className="mt-6 rounded-xl border border-line-normal p-4">
-                        <p className="text-[15px] text-gray-neutral">
+                        <p className="text-3sm-regular text-gray-neutral">
                           전날 유저 통계를 집계하는 배치가 실패한 경우, 특정
                           날짜를 지정하여 수동으로 배치를 실행할 수 있습니다.
                         </p>
-                        <p className="text-[13px] text-gray-assistive mt-2">
+                        <p className="text-1sm-regular text-gray-assistive mt-2">
                           당일 포함 미래 날짜는 선택할 수 없습니다.
                         </p>
                       </div>
 
                       <div className="mt-4 rounded-xl border border-line-normal p-4">
-                        <p className="text-[16px] font-semibold text-gray-normal mb-3">
+                        <p className="text-1rg-semibold text-gray-normal mb-3">
                           집계 대상 날짜 선택
                         </p>
                         <input
@@ -657,7 +657,7 @@ const AdminPage = () => {
                           value={batchTargetDate}
                           max={maxDate}
                           onChange={(e) => setBatchTargetDate(e.target.value)}
-                          className="w-full max-w-[240px] rounded-lg border border-line-normal px-3 py-2 text-[14px] text-gray-normal outline-none focus:border-primary-normal"
+                          className="text-2sm-regular w-full max-w-[240px] rounded-lg border border-line-normal px-3 py-2 text-gray-normal outline-none focus:border-primary-normal"
                         />
                       </div>
 
@@ -669,12 +669,12 @@ const AdminPage = () => {
                               : 'border-status-negative-subtle bg-status-negative-subtle text-status-negative-heavy'
                           }`}
                         >
-                          <p className="text-[14px] font-medium">
+                          <p className="text-2sm-medium">
                             {batchResult.type === 'success'
                               ? '실행 성공'
                               : '실행 실패'}
                           </p>
-                          <p className="text-[13px] mt-1">
+                          <p className="text-1sm-regular mt-1">
                             {batchResult.message}
                           </p>
                         </div>
@@ -690,7 +690,7 @@ const AdminPage = () => {
                             setCurrentPage(1)
                             fetchInquiries(1, 'all')
                           }}
-                          className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                          className={`text-1sm-regular px-3 py-1.5 rounded-full border transition-colors ${
                             qnaStatusFilter === 'all'
                               ? 'bg-primary-subtle border-primary-normal text-primary-normal'
                               : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
@@ -705,7 +705,7 @@ const AdminPage = () => {
                             setCurrentPage(1)
                             fetchInquiries(1, 'WAITING')
                           }}
-                          className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                          className={`text-1sm-regular px-3 py-1.5 rounded-full border transition-colors ${
                             qnaStatusFilter === 'WAITING'
                               ? 'bg-status-negative-subtle border-status-negative-subtle text-status-negative-normal'
                               : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
@@ -720,7 +720,7 @@ const AdminPage = () => {
                             setCurrentPage(1)
                             fetchInquiries(1, 'COMPLETED')
                           }}
-                          className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                          className={`text-1sm-regular px-3 py-1.5 rounded-full border transition-colors ${
                             qnaStatusFilter === 'COMPLETED'
                               ? 'bg-primary-subtle border-primary-normal text-primary-normal'
                               : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
@@ -731,7 +731,7 @@ const AdminPage = () => {
                       </div>
 
                       <div className="mt-6 rounded-xl border border-line-normal overflow-hidden">
-                        <div className="grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] bg-background-alternative px-4 py-3 text-[13px] font-medium text-gray-alternative">
+                        <div className="text-1sm-medium grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] bg-background-alternative px-4 py-3 text-gray-alternative">
                           <span>문의번호</span>
                           <span>문의 제목</span>
                           <span>작성자</span>
@@ -739,15 +739,15 @@ const AdminPage = () => {
                           <span>상태</span>
                         </div>
                         {isQnaLoading ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
+                          <div className="text-2sm-regular px-4 py-8 text-gray-assistive text-center">
                             문의 목록을 불러오는 중입니다...
                           </div>
                         ) : qnaError ? (
-                          <div className="px-4 py-8 text-[14px] text-status-negative-normal text-center">
+                          <div className="text-2sm-regular px-4 py-8 text-status-negative-normal text-center">
                             {qnaError}
                           </div>
                         ) : qnaList.length === 0 ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
+                          <div className="text-2sm-regular px-4 py-8 text-gray-assistive text-center">
                             {qnaStatusFilter === 'WAITING'
                               ? '미답변 문의가 없습니다.'
                               : qnaStatusFilter === 'COMPLETED'
@@ -760,7 +760,7 @@ const AdminPage = () => {
                               key={item.id}
                               type="button"
                               onClick={() => handleSelectInquiry(item)}
-                              className={`w-full grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] px-4 py-3 text-[14px] text-gray-neutral border-t border-line-normal text-left ${
+                              className={`text-2sm-regular w-full grid grid-cols-[80px_minmax(0,1fr)_160px_120px_120px] px-4 py-3 text-gray-neutral border-t border-line-normal text-left ${
                                 selectedInquiryId === item.id
                                   ? 'bg-primary-subtle'
                                   : 'bg-background-elevated hover:bg-background-alternative'
@@ -821,7 +821,7 @@ const AdminPage = () => {
                             page === '...' ? (
                               <span
                                 key={`ellipsis-${idx}`}
-                                className="flex h-9 w-9 items-center justify-center text-[14px] text-gray-disable"
+                                className="text-2sm-regular flex h-9 w-9 items-center justify-center text-gray-disable"
                               >
                                 ···
                               </span>
@@ -833,7 +833,7 @@ const AdminPage = () => {
                                   setCurrentPage(page)
                                   fetchInquiries(page)
                                 }}
-                                className={`flex h-9 w-9 items-center justify-center rounded-[6px] text-[14px] transition-colors ${
+                                className={`text-2sm-regular flex h-9 w-9 items-center justify-center rounded-[6px] transition-colors ${
                                   page === currentPage
                                     ? 'bg-primary-normal text-static-white'
                                     : 'text-gray-neutral hover:text-primary-normal'
@@ -877,19 +877,19 @@ const AdminPage = () => {
                       )}
 
                       <div className="mt-4 rounded-xl border border-line-normal p-4">
-                        <p className="text-[16px] font-semibold text-gray-normal mb-3">
+                        <p className="text-1rg-semibold text-gray-normal mb-3">
                           답변 작성
                         </p>
                         {selectedInquiry ? (
                           <>
-                            <p className="text-[14px] text-gray-neutral mb-2">
+                            <p className="text-2sm-regular text-gray-neutral mb-2">
                               선택 문의:{' '}
                               <span className="font-medium">
                                 {selectedInquiry.title}
                               </span>
                             </p>
                             {selectedInquiry.content ? (
-                              <p className="text-[13px] text-gray-assistive mb-3">
+                              <p className="text-1sm-regular text-gray-assistive mb-3">
                                 문의 내용: {selectedInquiry.content}
                               </p>
                             ) : null}
@@ -897,11 +897,11 @@ const AdminPage = () => {
                               value={answerDraft}
                               onChange={(e) => setAnswerDraft(e.target.value)}
                               placeholder="문의에 대한 답변을 입력하세요."
-                              className="w-full min-h-[120px] rounded-lg border border-line-normal px-3 py-2 text-[14px] text-gray-normal outline-none focus:border-primary-normal"
+                              className="text-2sm-regular w-full min-h-[120px] rounded-lg border border-line-normal px-3 py-2 text-gray-normal outline-none focus:border-primary-normal"
                             />
                           </>
                         ) : (
-                          <p className="text-[14px] text-gray-assistive">
+                          <p className="text-2sm-regular text-gray-assistive">
                             답변할 문의를 먼저 선택해주세요.
                           </p>
                         )}
@@ -913,7 +913,7 @@ const AdminPage = () => {
                         <button
                           type="button"
                           onClick={() => setFaqCategoryFilter('all')}
-                          className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                          className={`text-1sm-regular px-3 py-1.5 rounded-full border transition-colors ${
                             faqCategoryFilter === 'all'
                               ? 'bg-primary-subtle border-primary-normal text-primary-normal'
                               : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
@@ -931,7 +931,7 @@ const AdminPage = () => {
                             key={key}
                             type="button"
                             onClick={() => setFaqCategoryFilter(key)}
-                            className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+                            className={`text-1sm-regular px-3 py-1.5 rounded-full border transition-colors ${
                               faqCategoryFilter === key
                                 ? 'bg-primary-subtle border-primary-normal text-primary-normal'
                                 : 'bg-background-elevated border-line-normal text-gray-alternative hover:bg-background-alternative'
@@ -943,22 +943,22 @@ const AdminPage = () => {
                       </div>
 
                       <div className="mt-6 rounded-xl border border-line-normal overflow-hidden">
-                        <div className="grid grid-cols-[60px_120px_minmax(0,1fr)_80px] bg-background-alternative px-4 py-3 text-[13px] font-medium text-gray-alternative">
+                        <div className="text-1sm-medium grid grid-cols-[60px_120px_minmax(0,1fr)_80px] bg-background-alternative px-4 py-3 text-gray-alternative">
                           <span>No</span>
                           <span>카테고리</span>
                           <span>질문</span>
                           <span>삭제</span>
                         </div>
                         {isFaqLoading ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
+                          <div className="text-2sm-regular px-4 py-8 text-gray-assistive text-center">
                             FAQ 목록을 불러오는 중입니다...
                           </div>
                         ) : faqError ? (
-                          <div className="px-4 py-8 text-[14px] text-status-negative-normal text-center">
+                          <div className="text-2sm-regular px-4 py-8 text-status-negative-normal text-center">
                             {faqError}
                           </div>
                         ) : displayedFaqList.length === 0 ? (
-                          <div className="px-4 py-8 text-[14px] text-gray-assistive text-center">
+                          <div className="text-2sm-regular px-4 py-8 text-gray-assistive text-center">
                             {faqCategoryFilter === 'all'
                               ? '등록된 FAQ가 없습니다.'
                               : `${FAQ_CATEGORIES[faqCategoryFilter]} 카테고리에 등록된 FAQ가 없습니다.`}
@@ -976,7 +976,7 @@ const AdminPage = () => {
                                     expandedFaqId === item.id ? null : item.id,
                                   )
                                 }
-                                className="w-full grid grid-cols-[60px_120px_minmax(0,1fr)_80px] px-4 py-3 text-[14px] text-gray-neutral text-left hover:bg-background-alternative"
+                                className="text-2sm-regular w-full grid grid-cols-[60px_120px_minmax(0,1fr)_80px] px-4 py-3 text-gray-neutral text-left hover:bg-background-alternative"
                               >
                                 <span>{index + 1}</span>
                                 <span>{item.categoryDescription}</span>
@@ -984,7 +984,7 @@ const AdminPage = () => {
                                   {item.question}
                                 </span>
                                 <span
-                                  className="text-[13px] text-status-negative-normal hover:text-status-negative-strong font-medium disabled:opacity-50"
+                                  className="text-1sm-medium text-status-negative-normal hover:text-status-negative-strong disabled:opacity-50"
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     handleDeleteFaq(item.id)
@@ -997,7 +997,7 @@ const AdminPage = () => {
                               </button>
                               {expandedFaqId === item.id && (
                                 <div className="px-4 pb-4 pt-1">
-                                  <div className="rounded-lg bg-background-alternative p-4 text-[14px] text-gray-neutral whitespace-pre-wrap">
+                                  <div className="text-2sm-regular rounded-lg bg-background-alternative p-4 text-gray-neutral whitespace-pre-wrap">
                                     {item.answer}
                                   </div>
                                 </div>

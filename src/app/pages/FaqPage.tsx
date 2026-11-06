@@ -48,16 +48,16 @@ const FaqPage = () => {
               {/* 하단 CTA */}
               <div className="bg-primary-normal rounded-[16px] flex flex-col items-center py-[40px] gap-[24px] max-md:py-[32px] max-md:gap-[16px]">
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <p className="text-header3-bold text-static-white max-md:text-body1-medium">
+                  <p className="text-2lg-bold max-md:text-2md-medium text-static-white">
                     원하는 답변을 찾지 못하셨나요?
                   </p>
-                  <p className="text-body2-regular text-static-white max-md:text-body3-regular">
+                  <p className="text-1md-regular max-md:text-1rg-regular text-static-white">
                     이메일로 문의해 주시면 빠르게 답변드리겠습니다
                   </p>
                 </div>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="bg-background-elevated rounded-[6px] px-[16px] py-[12px] text-primary-normal text-body3-medium"
+                  className="text-1rg-medium bg-background-elevated rounded-[6px] px-[16px] py-[12px] text-primary-normal"
                 >
                   이메일로 문의하기
                 </a>

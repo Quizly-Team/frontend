@@ -11,17 +11,17 @@ const MemberOnlyPage = ({ variant = 'full' }: MemberOnlyPageProps) => {
         <Header logoUrl="/logo.svg" />
 
         <main className="flex-1 flex flex-col items-center justify-center px-6">
-          <h1 className="text-header1-bold text-gray-normal text-center mb-4 max-md:text-header3-bold">
+          <h1 className="text-1xl-bold max-md:text-2lg-bold text-gray-normal text-center mb-4">
             이 페이지는 비회원 전용입니다
           </h1>
-          <p className="text-body1-regular text-gray-alternative text-center mb-10 max-md:text-body3-regular">
+          <p className="text-2md-regular max-md:text-1rg-regular text-gray-alternative text-center mb-10">
             회원은 이 페이지에 접근할 수 없습니다.
             <br />
             로그아웃 후 이용해주세요.
           </p>
           <button
             onClick={() => (window.location.href = '/')}
-            className="bg-primary-normal text-static-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+            className="text-1rg-regular bg-primary-normal text-static-white px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
           >
             홈으로 돌아가기
           </button>
@@ -62,12 +62,12 @@ const MemberOnlyPage = ({ variant = 'full' }: MemberOnlyPageProps) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-header1-bold text-gray-normal text-center mb-4">
+        <h1 className="text-1xl-bold text-gray-normal text-center mb-4">
           이 페이지는 비회원 전용입니다
         </h1>
 
         {/* Description */}
-        <p className="text-body1-regular text-gray-alternative text-center mb-10">
+        <p className="text-2md-regular text-gray-alternative text-center mb-10">
           회원은 이 페이지에 접근할 수 없습니다.
           <br />
           로그아웃 후 이용해주세요.
@@ -76,7 +76,7 @@ const MemberOnlyPage = ({ variant = 'full' }: MemberOnlyPageProps) => {
         {/* Home Button */}
         <button
           onClick={() => (window.location.href = '/')}
-          className="bg-primary-normal text-static-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+          className="text-1rg-regular bg-primary-normal text-static-white px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
         >
           홈으로 돌아가기
         </button>
@@ -109,12 +109,12 @@ const MemberOnlyPage = ({ variant = 'full' }: MemberOnlyPageProps) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-header3-bold text-gray-normal text-center mb-3">
+        <h1 className="text-2lg-bold text-gray-normal text-center mb-3">
           이 페이지는 비회원 전용입니다
         </h1>
 
         {/* Description */}
-        <p className="text-body3-regular text-gray-alternative text-center mb-8">
+        <p className="text-1rg-regular text-gray-alternative text-center mb-8">
           회원은 이 페이지에 접근할 수 없습니다.
           <br />
           로그아웃 후 이용해주세요.
@@ -123,7 +123,7 @@ const MemberOnlyPage = ({ variant = 'full' }: MemberOnlyPageProps) => {
         {/* Home Button */}
         <button
           onClick={() => (window.location.href = '/')}
-          className="bg-primary-normal text-static-white text-body3-regular px-l py-[14px] rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+          className="text-1rg-regular bg-primary-normal text-static-white px-l py-[14px] rounded-[6px] hover:bg-primary-normal/90 transition-colors"
         >
           홈으로 돌아가기
         </button>

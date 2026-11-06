@@ -227,12 +227,12 @@ const MockExamPage = () => {
         <Header />
         <div className="flex items-center justify-center h-[calc(100vh-90px)] max-lg:h-[calc(100vh-72px)] max-md:h-[calc(100vh-46px)]">
           <div className="text-center">
-            <p className="text-xl max-lg:text-2xl max-md:text-lg text-gray-normal mb-4">
+            <p className="text-2md-regular max-lg:text-2lg-regular max-md:text-1md-regular text-gray-normal mb-4">
               생성된 모의고사가 없습니다.
             </p>
             <button
               onClick={() => navigate('/')}
-              className="h-11 max-lg:h-12 max-md:h-10 px-6 rounded bg-primary-normal text-static-white text-base max-lg:text-lg max-md:text-base font-medium hover:bg-primary-strong"
+              className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium h-11 max-lg:h-12 max-md:h-10 px-6 rounded bg-primary-normal text-static-white hover:bg-primary-strong"
             >
               홈으로 돌아가기
             </button>
@@ -248,7 +248,7 @@ const MockExamPage = () => {
 
       {/* 모바일 안내 문구 - 상단 */}
       <div className="hidden max-md:block pt-4 pb-3 px-5">
-        <div className="bg-background-alternative flex items-center gap-2 text-gray-alternative text-sm font-normal">
+        <div className="text-2sm-regular bg-background-alternative flex items-center gap-2 text-gray-alternative">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle
               cx="8"
@@ -284,7 +284,7 @@ const MockExamPage = () => {
         >
           <button
             onClick={() => handleExportPDF('question')}
-            className="px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal text-sm font-normal hover:border-gray-disable flex items-center gap-1"
+            className="text-2sm-regular px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
           >
             <img
               src="/icon/icn_book.svg"
@@ -296,7 +296,7 @@ const MockExamPage = () => {
           </button>
           <button
             onClick={() => handleExportPDF('answer')}
-            className="px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal text-sm font-normal hover:border-gray-disable flex items-center gap-1"
+            className="text-2sm-regular px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
           >
             <img
               src="/icon/icn_memo.svg"
@@ -468,7 +468,7 @@ const MockExamPage = () => {
         <div className="flex gap-3 px-5 py-3">
           <button
             onClick={() => handleExportPDF('question')}
-            className="flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal text-base font-medium hover:border-gray-disable flex items-center justify-center gap-2"
+            className="text-1rg-medium flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center justify-center gap-2"
           >
             <img
               src="/icon/icn_book.svg"
@@ -480,7 +480,7 @@ const MockExamPage = () => {
           </button>
           <button
             onClick={() => handleExportPDF('answer')}
-            className="flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal text-base font-medium hover:border-gray-disable flex items-center justify-center gap-2"
+            className="text-1rg-medium flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center justify-center gap-2"
           >
             <img
               src="/icon/icn_memo.svg"
