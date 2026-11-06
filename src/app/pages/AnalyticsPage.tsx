@@ -213,7 +213,7 @@ const AnalyticsPage = () => {
     <div className="flex-1 w-full bg-background-alternative flex flex-col">
       <Header />
 
-      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
+      <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-15 max-lg:px-10 max-md:px-5 max-md:pt-5">
         <div className="w-full max-w-[1024px] max-lg:max-w-full max-md:max-w-full">
           {/* 탭 헤더 */}
           <MyPageTabs
@@ -222,15 +222,15 @@ const AnalyticsPage = () => {
           />
 
           {activeTab === 'analytics' && (
-            <div className="flex flex-col gap-5 max-md:gap-[20px]">
+            <div className="flex flex-col gap-5 max-md:gap-5">
               {isDashboardLoading ? (
-                <div className="bg-background-elevated rounded-2xl p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
+                <div className="bg-background-elevated rounded-lg p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
                   <div className="flex justify-center items-center py-20">
                     <p className="text-gray-alternative">로딩 중...</p>
                   </div>
                 </div>
               ) : dashboardError ? (
-                <div className="bg-background-elevated rounded-2xl p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
+                <div className="bg-background-elevated rounded-lg p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
                   <div className="flex justify-center items-center py-20">
                     <p className="text-status-negative-normal">
                       데이터를 불러오는데 실패했습니다.
@@ -242,7 +242,7 @@ const AnalyticsPage = () => {
                   {/* 모바일: 가로 스크롤 가능한 카드 컨테이너 */}
                   <div className="hidden max-md:block">
                     <div className="overflow-x-auto -mx-5 px-5">
-                      <div className="flex gap-[20px] min-w-max pb-2">
+                      <div className="flex gap-5 min-w-max pb-2">
                         <div className="flex-shrink-0 w-[250px]">
                           <TodaySummary
                             data={dashboardData.todaySummary}
@@ -267,8 +267,8 @@ const AnalyticsPage = () => {
                   </div>
 
                   {/* AI 학습 분석 */}
-                  <div className="bg-status-informative-subtle border border-status-informative-normal rounded-[16px] px-[45px] py-[35px] max-md:px-[20px] max-md:py-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
-                    <div className="flex items-center gap-[6px] mb-[22px] max-md:mb-[15px]">
+                  <div className="bg-status-informative-subtle border border-status-informative-normal rounded-lg px-11 py-9 max-md:px-5 max-md:py-5 w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
+                    <div className="flex items-center gap-2 mb-6 max-md:mb-4">
                       <div className="w-[24px] h-[24px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center">
                         <svg
                           width="24"
@@ -340,7 +340,7 @@ const AnalyticsPage = () => {
                   />
 
                   {/* 유형별/시간대별 차트 */}
-                  <div className="flex gap-5 max-md:flex-col max-md:gap-[20px]">
+                  <div className="flex gap-5 max-md:flex-col max-md:gap-5">
                     <div className="min-w-0 flex-1 max-w-[478px] max-lg:max-w-[442px] max-md:max-w-full">
                       <QuizTypeChart data={dashboardData.quizTypeSummaryList} />
                     </div>
@@ -363,8 +363,8 @@ const AnalyticsPage = () => {
           )}
 
           {activeTab === 'account' && (
-            <div className="relative bg-background-elevated rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
-              <h2 className="text-2md-medium mb-[30px] max-md:mb-[20px] text-gray-normal">
+            <div className="relative bg-background-elevated rounded-lg max-md:rounded-lg p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
+              <h2 className="text-2md-medium mb-8 max-md:mb-5 text-gray-normal">
                 프로필 정보
               </h2>
 
@@ -379,7 +379,7 @@ const AnalyticsPage = () => {
               ) : (
                 <>
                   {/* 프로필 이미지 */}
-                  <div className="flex items-center justify-center gap-6 mb-[30px] max-md:mb-[20px]">
+                  <div className="flex items-center justify-center gap-6 mb-8 max-md:mb-5">
                     <div className="relative">
                       <div className="w-[110px] h-[110px] max-md:w-[80px] max-md:h-[80px] rounded-full border-2 border-primary-normal overflow-hidden">
                         {previewImageUrl ? (
@@ -429,7 +429,7 @@ const AnalyticsPage = () => {
                   </div>
 
                   {/* 닉네임 입력 */}
-                  <div className="mb-[20px] max-md:mb-[20px] flex flex-col items-center">
+                  <div className="mb-5 max-md:mb-5 flex flex-col items-center">
                     <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
                       <label className="text-1rg-medium text-gray-alternative mb-1">
                         닉네임
@@ -460,7 +460,7 @@ const AnalyticsPage = () => {
                   </div>
 
                   {/* 이메일 입력 (비활성화) */}
-                  <div className="mb-[30px] max-md:mb-[20px] flex flex-col items-center">
+                  <div className="mb-8 max-md:mb-5 flex flex-col items-center">
                     <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
                       <label className="text-1rg-medium text-gray-alternative mb-1">
                         이메일
@@ -485,7 +485,7 @@ const AnalyticsPage = () => {
                       variant="secondary"
                       size="medium"
                       onClick={handleLogout}
-                      className="w-[120px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
+                      className="w-[120px] h-[46px] rounded-sm bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
                     >
                       로그아웃
                     </Button>
@@ -494,7 +494,7 @@ const AnalyticsPage = () => {
                       size="medium"
                       onClick={handleSaveProfile}
                       disabled={isSaving}
-                      className="w-[120px] h-[46px] rounded-md"
+                      className="w-[120px] h-[46px] rounded-sm"
                     >
                       {isSaving ? '저장 중...' : '변경사항 저장'}
                     </Button>

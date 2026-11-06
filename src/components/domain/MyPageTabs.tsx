@@ -17,8 +17,8 @@ const MyPageTabs = ({ active, description }: MyPageTabsProps) => {
   const navigate = useNavigate()
 
   return (
-    <div className="mb-[30px]">
-      <div className="flex items-center gap-6 max-md:gap-4 mb-[6px] max-md:mb-2">
+    <div className="mb-8">
+      <div className="flex items-center gap-6 max-md:gap-4 mb-2 max-md:mb-2">
         {TABS.map((tab) =>
           tab.id === active ? (
             <span

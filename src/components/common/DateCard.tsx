@@ -9,7 +9,7 @@ const DateCard = ({ date, onClick }: DateCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="bg-background-elevated border border-line-normal hover:border-primary-normal px-[26px] py-10 rounded-[12px] w-full transition-colors shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] max-md:px-4 max-md:py-8"
+      className="bg-background-elevated border border-line-normal hover:border-primary-normal px-7 py-10 rounded-md w-full transition-colors shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] max-md:px-4 max-md:py-8"
     >
       <div className="flex gap-1 items-center justify-center">
         <Icon

@@ -104,14 +104,14 @@ export default function DailyHeatmap({ data }: Props) {
   }
 
   return (
-    <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[20px] max-md:p-[20px] w-full max-md:h-[335px] max-md:flex max-md:flex-col aspect-square max-md:aspect-auto">
-      <h3 className="text-1rg-medium max-md:text-2md-medium text-gray-normal mb-[20px] max-md:mb-[20px] max-md:flex-shrink-0">
+    <div className="bg-background-elevated border border-line-normal rounded-lg p-5 max-md:p-5 w-full max-md:h-[335px] max-md:flex max-md:flex-col aspect-square max-md:aspect-auto">
+      <h3 className="text-1rg-medium max-md:text-2md-medium text-gray-normal mb-5 max-md:mb-5 max-md:flex-shrink-0">
         {currentMonth} 학습 문제 기록
       </h3>
 
       <div className="flex flex-col items-center max-md:flex-1 max-md:justify-center w-full">
         {/* 요일 헤더 */}
-        <div className="grid grid-cols-7 gap-[6px] max-md:gap-[6px] mb-[6px] w-full max-w-[396px] max-lg:max-w-[362px] max-md:max-w-[271px]">
+        <div className="grid grid-cols-7 gap-2 max-md:gap-2 mb-2 w-full max-w-[396px] max-lg:max-w-[362px] max-md:max-w-[271px]">
           {WEEKDAYS.map((day) => (
             <div key={day} className="flex items-center justify-center">
               <p className="text-2xs-regular max-md:text-1rg-regular text-gray-alternative">
@@ -122,16 +122,16 @@ export default function DailyHeatmap({ data }: Props) {
         </div>
 
         {/* 날짜 칸 */}
-        <div className="flex flex-col gap-[6px] max-md:gap-[6px] mb-[12px] max-md:mb-0 w-full max-w-[396px] max-lg:max-w-[362px] max-md:max-w-[271px]">
+        <div className="flex flex-col gap-2 max-md:gap-2 mb-3 max-md:mb-0 w-full max-w-[396px] max-lg:max-w-[362px] max-md:max-w-[271px]">
           {calendarData.map((week, weekIndex) => (
             <div
               key={weekIndex}
-              className="grid grid-cols-7 gap-[6px] max-md:gap-[6px]"
+              className="grid grid-cols-7 gap-2 max-md:gap-2"
             >
               {week.map((cell, dayIndex) => (
                 <div
                   key={`${weekIndex}-${dayIndex}`}
-                  className={`aspect-square rounded-[4px] flex items-center justify-center ${
+                  className={`aspect-square rounded-xs flex items-center justify-center ${
                     cell ? getCellColor(cell.count) : 'bg-background-elevated'
                   }`}
                 >
@@ -149,9 +149,9 @@ export default function DailyHeatmap({ data }: Props) {
         </div>
       </div>
 
-      <div className="flex items-center gap-[6px] justify-end max-md:hidden">
-        <div className="w-[16px] h-[16px] bg-fill-alternative rounded-[2px]" />
-        <div className="w-[16px] h-[16px] bg-status-negative-subtle rounded-[2px]" />
+      <div className="flex items-center gap-2 justify-end max-md:hidden">
+        <div className="w-[16px] h-[16px] bg-fill-alternative rounded-xs" />
+        <div className="w-[16px] h-[16px] bg-status-negative-subtle rounded-xs" />
       </div>
     </div>
   )

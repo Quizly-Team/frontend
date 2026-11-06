@@ -229,7 +229,7 @@ const MockExamSettingModal = ({
 
       {/* Modal - 모바일에서는 하단에서 올라오는 Bottom Sheet */}
       <div
-        className={`relative bg-background-elevated border border-line-normal rounded-[24px] max-md:rounded-t-[24px] max-md:rounded-b-none shadow-lg w-[520px] max-lg:w-[520px] max-md:w-full max-lg:mx-4 max-md:mx-0 max-h-[90vh] overflow-hidden flex flex-col ${
+        className={`relative bg-background-elevated border border-line-normal rounded-xl max-md:rounded-t-xl max-md:rounded-b-none shadow-lg w-[520px] max-lg:w-[520px] max-md:w-full max-lg:mx-4 max-md:mx-0 max-h-[90vh] overflow-hidden flex flex-col ${
           selectedTypes.includes('FIND_CORRECT')
             ? 'max-md:h-[758px]'
             : 'max-md:h-[670px]'
@@ -276,11 +276,11 @@ const MockExamSettingModal = ({
           </p>
 
           {/* Question 1: 문제 유형 선택 */}
-          <div className="mb-6 max-lg:mb-6 max-md:mb-[30px]">
+          <div className="mb-6 max-lg:mb-6 max-md:mb-8">
             <h3 className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium text-gray-normal mb-3 max-lg:mb-3 max-md:mb-3">
               어떤 유형의 문제를 만드시겠어요?(복수 선택 가능)
             </h3>
-            <div className="flex flex-wrap gap-[5px] max-md:gap-1">
+            <div className="flex flex-wrap gap-1 max-md:gap-1">
               {EXAM_TYPES.map((type) => {
                 // FIND_CORRECT의 경우 selectedTypes에 있거나 selectedCharacteristics에 객관식 관련 특성이 있으면 활성화
                 const isActive =
@@ -317,7 +317,7 @@ const MockExamSettingModal = ({
             selectedCharacteristics.some((c) =>
               ['FIND_CORRECT', 'FIND_INCORRECT', 'FIND_MATCH'].includes(c),
             )) && (
-            <div className="mb-6 max-lg:mb-6 max-md:mb-[30px]">
+            <div className="mb-6 max-lg:mb-6 max-md:mb-8">
               <h3 className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium text-gray-normal mb-3 max-lg:mb-3 max-md:mb-3">
                 문항을 어떤 특성으로 출제할까요?(복수 선택 가능)
               </h3>
@@ -340,7 +340,7 @@ const MockExamSettingModal = ({
           )}
 
           {/* Textarea */}
-          <div className="mb-3 max-lg:mb-3 max-md:mb-[30px]">
+          <div className="mb-3 max-lg:mb-3 max-md:mb-8">
             <div className="relative mb-3 max-lg:mb-3 max-md:mb-3">
               <h3 className="text-1rg-medium max-lg:text-1md-medium max-md:text-1rg-medium text-gray-normal inline">
                 정리한 필기 내용을 기재해주세요
@@ -387,7 +387,7 @@ const MockExamSettingModal = ({
               onChange={handleTextChange}
               placeholder="필기 내용을 자유롭게 기재해주세요"
               disabled={!!file}
-              className="text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular w-full h-[140px] max-lg:h-[140px] max-md:h-[140px] px-3 py-3 border border-line-normal rounded-md text-gray-normal placeholder:text-gray-assistive resize-none focus:outline-none focus:border-primary-normal disabled:bg-background-alternative disabled:cursor-not-allowed"
+              className="text-2sm-regular max-lg:text-2sm-regular max-md:text-2sm-regular w-full h-[140px] max-lg:h-[140px] max-md:h-[140px] px-3 py-3 border border-line-normal rounded-sm text-gray-normal placeholder:text-gray-assistive resize-none focus:outline-none focus:border-primary-normal disabled:bg-background-alternative disabled:cursor-not-allowed"
             />
           </div>
         </div>
@@ -510,7 +510,7 @@ const MockExamSettingModal = ({
           <div className="flex justify-end">
             <button
               onClick={handleSubmit}
-              className="text-2sm-regular max-lg:text-2sm-regular w-[84px] h-[36px] max-lg:w-[96px] max-lg:h-[44px] rounded-md bg-primary-normal text-static-white hover:bg-primary-strong flex items-center justify-center"
+              className="text-2sm-regular max-lg:text-2sm-regular w-[84px] h-[36px] max-lg:w-[96px] max-lg:h-[44px] rounded-sm bg-primary-normal text-static-white hover:bg-primary-strong flex items-center justify-center"
             >
               저장하기
             </button>
@@ -521,7 +521,7 @@ const MockExamSettingModal = ({
         <div className="hidden max-md:block px-5 py-4 border-t border-line-normal">
           <button
             onClick={handleSubmit}
-            className="text-1rg-medium w-full h-[52px] rounded-lg bg-primary-normal text-static-white hover:bg-primary-strong"
+            className="text-1rg-medium w-full h-[52px] rounded-sm bg-primary-normal text-static-white hover:bg-primary-strong"
           >
             저장하기
           </button>

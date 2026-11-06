@@ -36,7 +36,7 @@ const QuizCreateModal = ({
       onClose={onClose}
       className="flex items-center justify-center"
     >
-      <div className="outline-none w-full max-w-[1024px] max-lg:max-w-[904px] max-md:max-w-[335px] px-6 max-lg:px-15 max-md:px-l">
+      <div className="outline-none w-full max-w-[1024px] max-lg:max-w-[904px] max-md:max-w-[335px] px-6 max-lg:px-15 max-md:px-4">
         {/* Web/Tablet 레이아웃 */}
         <div className="max-md:hidden flex gap-3 justify-center">
           {/* 객관식 문제 카드 */}
@@ -48,11 +48,11 @@ const QuizCreateModal = ({
             <button
               onClick={handleMultipleChoice}
               disabled={!isLoggedIn}
-              className="bg-background-elevated rounded-[24px] w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-background-alternative transition-colors disabled:cursor-not-allowed relative flex-shrink-0"
+              className="bg-background-elevated rounded-xl w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-background-alternative transition-colors disabled:cursor-not-allowed relative flex-shrink-0"
             >
               {/* 비회원 비활성화 오버레이 */}
               {!isLoggedIn && (
-                <div className="absolute inset-0 bg-static-black/30 rounded-[24px] z-10" />
+                <div className="absolute inset-0 bg-static-black/30 rounded-xl z-10" />
               )}
 
               {/* 아이콘 */}
@@ -83,7 +83,7 @@ const QuizCreateModal = ({
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-background-elevated rounded-[24px] w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-background-alternative transition-colors flex-shrink-0"
+            className="bg-background-elevated rounded-xl w-[420px] max-lg:w-[392px] h-[306px] max-lg:h-[286px] flex flex-col items-center justify-center gap-6 hover:bg-background-alternative transition-colors flex-shrink-0"
           >
             {/* 아이콘 */}
             <div className="flex gap-2">
@@ -107,11 +107,11 @@ const QuizCreateModal = ({
           <button
             onClick={handleMultipleChoice}
             disabled={!isLoggedIn}
-            className="bg-background-elevated rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-background-alternative transition-colors disabled:cursor-not-allowed relative"
+            className="bg-background-elevated rounded-xl w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-background-alternative transition-colors disabled:cursor-not-allowed relative"
           >
             {/* 비회원 비활성화 오버레이 */}
             {!isLoggedIn && (
-              <div className="absolute inset-0 bg-static-black/30 rounded-[24px] z-10" />
+              <div className="absolute inset-0 bg-static-black/30 rounded-xl z-10" />
             )}
 
             {/* 아이콘 */}
@@ -126,7 +126,7 @@ const QuizCreateModal = ({
           {/* OX 문제 카드 */}
           <button
             onClick={handleOXQuiz}
-            className="bg-background-elevated rounded-[24px] w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-background-alternative transition-colors"
+            className="bg-background-elevated rounded-xl w-[152px] h-[146px] flex flex-col items-center justify-between py-6 hover:bg-background-alternative transition-colors"
           >
             {/* 아이콘 */}
             <div className="flex gap-2 items-center justify-center flex-1">

@@ -24,17 +24,17 @@ const Button = ({
 
   const variantStyles = {
     primary:
-      'bg-primary-normal text-static-white hover:bg-primary-normal/90 disabled:bg-gray-assistive rounded-[200px]',
+      'bg-primary-normal text-static-white hover:bg-primary-normal/90 disabled:bg-gray-assistive rounded-full',
     secondary:
-      'bg-primary-subtle text-primary-normal hover:bg-primary-subtle/80 disabled:bg-fill-alternative rounded-[200px]',
+      'bg-primary-subtle text-primary-normal hover:bg-primary-subtle/80 disabled:bg-fill-alternative rounded-full',
     outline:
-      'bg-background-elevated border border-line-normal text-gray-normal hover:border-gray-disable disabled:border-line-normal disabled:text-gray-disable rounded-[12px]',
+      'bg-background-elevated border border-line-normal text-gray-normal hover:border-gray-disable disabled:border-line-normal disabled:text-gray-disable rounded-md',
   }
 
   const sizeStyles = {
-    small: 'text-2sm-regular px-xs py-[10px]',
-    medium: 'text-1rg-regular px-l py-s',
-    large: 'text-1rg-regular px-xxl py-m',
+    small: 'text-2sm-regular px-1 py-3',
+    medium: 'text-1rg-regular px-4 py-2',
+    large: 'text-1rg-regular px-6 py-3',
   }
 
   const cursorStyles = disabled ? 'cursor-not-allowed' : 'cursor-pointer'

@@ -6,7 +6,7 @@ type FaqAccordionItemProps = { question: string; answer: string }
 const FaqAccordionItem = ({ question, answer }: FaqAccordionItemProps) => {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-line-normal pb-[20px] max-md:pb-[16px]">
+    <div className="border-b border-line-normal pb-5 max-md:pb-4">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -23,7 +23,7 @@ const FaqAccordionItem = ({ question, answer }: FaqAccordionItemProps) => {
         />
       </button>
       {open && (
-        <p className="text-1rg-regular max-md:text-2sm-regular mt-[20px] w-full text-gray-alternative max-md:mt-[16px] whitespace-pre-line">
+        <p className="text-1rg-regular max-md:text-2sm-regular mt-5 w-full text-gray-alternative max-md:mt-4 whitespace-pre-line">
           {answer}
         </p>
       )}

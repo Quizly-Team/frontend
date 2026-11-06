@@ -25,7 +25,7 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
           </p>
           <button
             onClick={handleLoginClick}
-            className="text-1rg-regular bg-primary-normal text-static-white px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+            className="text-1rg-regular bg-primary-normal text-static-white px-4 py-4 rounded-sm hover:bg-primary-normal/90 transition-colors"
           >
             로그인하기
           </button>
@@ -42,7 +42,7 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
       {/* Main Content - Web/Tablet */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 max-md:hidden">
         {/* Character Images */}
-        <div className="flex gap-[15px] mb-10">
+        <div className="flex gap-4 mb-10">
           <img
             src="/characters/character1.png"
             alt="캐릭터 1"
@@ -78,7 +78,7 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
         {/* Sign Up Button */}
         <button
           onClick={handleLoginClick}
-          className="text-1rg-regular bg-primary-normal text-static-white px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+          className="text-1rg-regular bg-primary-normal text-static-white px-4 py-4 rounded-sm hover:bg-primary-normal/90 transition-colors"
         >
           지금 가입하기
         </button>
@@ -87,7 +87,7 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
       {/* Main Content - Mobile */}
       <main className="hidden max-md:flex flex-1 flex-col items-center justify-center px-5">
         {/* Character Images */}
-        <div className="flex gap-[7px] mb-6">
+        <div className="flex gap-2 mb-6">
           <img
             src="/characters/character1.png"
             alt="캐릭터 1"
@@ -125,7 +125,7 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
         {/* Sign Up Button */}
         <button
           onClick={handleLoginClick}
-          className="text-1rg-regular bg-primary-normal text-static-white px-l py-[14px] rounded-[6px] hover:bg-primary-normal/90 transition-colors"
+          className="text-1rg-regular bg-primary-normal text-static-white px-4 py-4 rounded-sm hover:bg-primary-normal/90 transition-colors"
         >
           지금 가입하기
         </button>

@@ -14,8 +14,8 @@ export default function TopicChart({ data }: Props) {
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
-        <h3 className="text-2md-medium text-gray-normal mb-[30px]">
+      <div className="bg-background-elevated border border-line-normal rounded-lg p-8 w-full max-w-[976px] max-lg:max-w-[904px]">
+        <h3 className="text-2md-medium text-gray-normal mb-8">
           {currentMonth} 주제별 정답률 비교
         </h3>
         <div className="h-[240px] flex items-center justify-center">
@@ -38,8 +38,8 @@ export default function TopicChart({ data }: Props) {
   const yAxisTicks = [0, 25, 50, 75, 100]
 
   return (
-    <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[30px] w-full max-w-[976px] max-lg:max-w-[904px]">
-      <h3 className="text-2md-medium text-gray-normal mb-[35px]">
+    <div className="bg-background-elevated border border-line-normal rounded-lg p-8 w-full max-w-[976px] max-lg:max-w-[904px]">
+      <h3 className="text-2md-medium text-gray-normal mb-9">
         {currentMonth} 주제별 정답률 비교
       </h3>
 
@@ -113,7 +113,7 @@ export default function TopicChart({ data }: Props) {
         </BarChart>
       </div>
 
-      <div className="bg-status-negative-subtle rounded-[4px] px-[12px] py-[10px] mt-[16px]">
+      <div className="bg-status-negative-subtle rounded-xs px-3 py-3 mt-4">
         <p className="text-2sm-regular text-status-negative-normal">
           최근에 생성한 주제 6개만 노출됩니다.
         </p>

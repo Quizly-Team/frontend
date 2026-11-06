@@ -15,10 +15,10 @@ const QuizCard = ({
 }: QuizCardProps) => {
   return (
     <div
-      className={`bg-background-elevated border border-line-normal rounded-[12px] p-8 flex flex-col gap-l ${className}`}
+      className={`bg-background-elevated border border-line-normal rounded-md p-8 flex flex-col gap-4 ${className}`}
     >
       {/* Question Section */}
-      <div className="flex flex-col gap-xs">
+      <div className="flex flex-col gap-1">
         <p className="text-1md-medium">
           <span className="text-primary-normal">Q{questionNumber}. </span>
           <span className="text-gray-normal">{question}</span>
@@ -27,7 +27,7 @@ const QuizCard = ({
       </div>
 
       {/* Explanation Section */}
-      <div className="flex flex-col gap-xs">
+      <div className="flex flex-col gap-1">
         <p className="text-1rg-medium text-primary-normal">해설 요약</p>
         <p className="text-1rg-regular text-gray-normal whitespace-pre-wrap">
           {explanation}

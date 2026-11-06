@@ -275,7 +275,7 @@ const MockExamPage = () => {
 
       {/* 상단 버튼 영역 - 웹/태블릿만 */}
       <div
-        className="flex justify-center pt-[60px] max-lg:pt-[50px] max-md:hidden pb-6"
+        className="flex justify-center pt-15 max-lg:pt-13 max-md:hidden pb-6"
         style={{ padding: `60px ${currentMargin}px 24px` }}
       >
         <div
@@ -284,7 +284,7 @@ const MockExamPage = () => {
         >
           <button
             onClick={() => handleExportPDF('question')}
-            className="text-2sm-regular px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
+            className="text-2sm-regular px-3 py-3 rounded-sm border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
           >
             <img
               src="/icon/icn_book.svg"
@@ -296,7 +296,7 @@ const MockExamPage = () => {
           </button>
           <button
             onClick={() => handleExportPDF('answer')}
-            className="text-2sm-regular px-3 py-3 rounded-md border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
+            className="text-2sm-regular px-3 py-3 rounded-sm border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center gap-1"
           >
             <img
               src="/icon/icn_memo.svg"
@@ -333,12 +333,12 @@ const MockExamPage = () => {
             {/* 웹 크기 고정 (904px) */}
             <div
               ref={innerContentRef}
-              className="w-[904px] bg-background-elevated border border-line-normal rounded-2xl shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] overflow-hidden"
+              className="w-[904px] bg-background-elevated border border-line-normal rounded-lg shadow-[4px_4px_12px_0px_rgba(0,0,0,0.04)] overflow-hidden"
             >
               {/* 문제 섹션 */}
               <div ref={questionRef} data-pdf-target="question">
                 {/* 헤더 이미지 - 상단 */}
-                <div className="relative w-full pt-[60px] px-[40px] text-center pb-5">
+                <div className="relative w-full pt-15 px-10 text-center pb-5">
                   <img
                     src="/icon/mock_exam_header.svg"
                     alt="실전 모의고사 영역"
@@ -349,14 +349,14 @@ const MockExamPage = () => {
                 {/* 헤더와 문제 사이 구분선 및 세로 구분선 컨테이너 */}
                 <div className="relative">
                   {/* 가로 구분선 */}
-                  <div className="h-[2px] bg-gray-normal mx-[40px]" />
+                  <div className="h-[2px] bg-gray-normal mx-10" />
 
                   {/* 문제 목록 영역 */}
                   <div className="relative flex">
                     {/* 왼쪽 열 */}
                     <div className="w-1/2">
                       {/* 왼쪽 설명 이미지 */}
-                      <div className="relative pl-[40px] pr-0">
+                      <div className="relative pl-10 pr-0">
                         <img
                           src="/icon/mock_exam_ description.svg"
                           alt="수험생 정보 및 유의사항"
@@ -365,7 +365,7 @@ const MockExamPage = () => {
                       </div>
 
                       {/* 왼쪽 문제들 */}
-                      <div className="pl-[52px] pr-[40px] pb-10">
+                      <div className="pl-13 pr-10 pb-10">
                         {mockExamList
                           .slice(0, Math.ceil(mockExamList.length / 2))
                           .map((question, index) => (
@@ -383,7 +383,7 @@ const MockExamPage = () => {
                     <div className="absolute left-1/2 top-0 w-px bg-gray-normal -translate-x-1/2 bottom-0" />
 
                     {/* 오른쪽 열 */}
-                    <div className="w-1/2 pl-3 pr-[40px] pb-10">
+                    <div className="w-1/2 pl-3 pr-10 pb-10">
                       {mockExamList
                         .slice(Math.ceil(mockExamList.length / 2))
                         .map((question, index) => (
@@ -408,7 +408,7 @@ const MockExamPage = () => {
                 className="border-t-4 border-line-normal"
               >
                 {/* 헤더 이미지 */}
-                <div className="relative w-full pt-[60px] px-[40px] text-center pb-5">
+                <div className="relative w-full pt-15 px-10 text-center pb-5">
                   <img
                     src="/icon/mock_ commentary_header.svg"
                     alt="실전 모의고사 해설 및 답안"
@@ -419,12 +419,12 @@ const MockExamPage = () => {
                 {/* 헤더와 해설 사이 구분선 및 세로 구분선 컨테이너 */}
                 <div className="relative">
                   {/* 가로 구분선 */}
-                  <div className="h-[2px] bg-gray-normal mx-[40px]" />
+                  <div className="h-[2px] bg-gray-normal mx-10" />
 
                   {/* 해설 목록 - 2열 레이아웃 */}
                   <div className="relative flex">
                     {/* 왼쪽 열 */}
-                    <div className="w-1/2 pl-[52px] pr-[40px] pb-10">
+                    <div className="w-1/2 pl-13 pr-10 pb-10">
                       {mockExamList
                         .slice(0, Math.ceil(mockExamList.length / 2))
                         .map((question, index) => (
@@ -441,7 +441,7 @@ const MockExamPage = () => {
                     <div className="absolute left-1/2 top-0 w-px bg-gray-normal -translate-x-1/2 bottom-0" />
 
                     {/* 오른쪽 열 */}
-                    <div className="w-1/2 pl-3 pr-[40px] pb-10">
+                    <div className="w-1/2 pl-3 pr-10 pb-10">
                       {mockExamList
                         .slice(Math.ceil(mockExamList.length / 2))
                         .map((question, index) => (
@@ -468,7 +468,7 @@ const MockExamPage = () => {
         <div className="flex gap-3 px-5 py-3">
           <button
             onClick={() => handleExportPDF('question')}
-            className="text-1rg-medium flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center justify-center gap-2"
+            className="text-1rg-medium flex-1 h-[52px] rounded-sm border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center justify-center gap-2"
           >
             <img
               src="/icon/icn_book.svg"
@@ -480,7 +480,7 @@ const MockExamPage = () => {
           </button>
           <button
             onClick={() => handleExportPDF('answer')}
-            className="text-1rg-medium flex-1 h-[52px] rounded-lg border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center justify-center gap-2"
+            className="text-1rg-medium flex-1 h-[52px] rounded-sm border border-line-normal bg-background-elevated text-gray-normal hover:border-gray-disable flex items-center justify-center gap-2"
           >
             <img
               src="/icon/icn_memo.svg"
