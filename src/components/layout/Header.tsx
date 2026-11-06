@@ -97,7 +97,7 @@ const Header = ({
   )
 
   return (
-    <header className="w-full bg-bg-home">
+    <header className="w-full bg-background-alternative">
       {/* Desktop/Tablet Header */}
       <div className="h-[90px] max-lg:h-[72px] max-md:hidden">
         <div className="max-w-[1200px] mx-auto h-full flex items-center justify-between px-xl max-lg:px-10">
@@ -112,40 +112,40 @@ const Header = ({
           <nav className="flex items-center whitespace-nowrap">
             <a
               href="/"
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 hover:text-primary-normal transition-colors ${
                 location.pathname === '/' && !isMockExamModalOpen
-                  ? 'text-primary'
-                  : 'text-gray-900'
+                  ? 'text-primary-normal'
+                  : 'text-gray-normal'
               }`}
             >
               문제 만들기
             </a>
             <button
               onClick={handleMockExamClick}
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
                 location.pathname === '/mock-exam' || isMockExamModalOpen
-                  ? 'text-primary'
-                  : 'text-gray-900'
+                  ? 'text-primary-normal'
+                  : 'text-gray-normal'
               }`}
             >
               실전 모의고사
             </button>
             <a
               href="/my-quizzes"
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
                 location.pathname === '/my-quizzes'
-                  ? 'text-primary'
-                  : 'text-gray-900'
+                  ? 'text-primary-normal'
+                  : 'text-gray-normal'
               }`}
             >
               문제 모아보기
             </a>
             <a
               href="/wrong-quizzes"
-              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary transition-colors ${
+              className={`px-3 py-2 text-base max-lg:text-[15px] leading-[1.4] font-medium shrink-0 ml-10 max-lg:ml-6 hover:text-primary-normal transition-colors ${
                 location.pathname === '/wrong-quizzes'
-                  ? 'text-primary'
-                  : 'text-gray-900'
+                  ? 'text-primary-normal'
+                  : 'text-gray-normal'
               }`}
             >
               틀린문제 풀어보기
@@ -161,9 +161,9 @@ const Header = ({
                   {/* 프로필 이미지 - Figma 디자인에 맞춰 녹색 테두리 추가 */}
                   <div className="relative w-[38px] h-[38px] max-lg:w-[32px] max-lg:h-[32px] flex items-center justify-center">
                     {/* 외곽 원: 38x38, stroke #30a10e */}
-                    <div className="absolute inset-0 rounded-full border-2 max-lg:border-[1.5px] border-primary"></div>
+                    <div className="absolute inset-0 rounded-full border-2 max-lg:border-[1.5px] border-primary-normal"></div>
                     {/* 내부 원: 34.5x34.5, fill #efefef */}
-                    <div className="w-[34.5px] h-[34.5px] max-lg:w-[29px] max-lg:h-[29px] rounded-full bg-[#efefef] overflow-hidden flex items-center justify-center">
+                    <div className="w-[34.5px] h-[34.5px] max-lg:w-[29px] max-lg:h-[29px] rounded-full bg-fill-alternative overflow-hidden flex items-center justify-center">
                       <img
                         src={userInfo.profileImageUrl || '/icon/default.svg'}
                         alt="프로필"
@@ -186,12 +186,12 @@ const Header = ({
                   </div>
                   {/* 닉네임 텍스트 - 프로필 이미지가 없어도 닉네임은 항상 표시 */}
                   {userInfo.nickName ? (
-                    <span className="text-[14px] max-lg:text-[13px] text-primary font-normal leading-[1.4]">
+                    <span className="text-[14px] max-lg:text-[13px] text-primary-normal font-normal leading-[1.4]">
                       {userInfo.nickName}
                     </span>
                   ) : (
                     // 닉네임이 없을 경우 기본값 표시 (필요시)
-                    <span className="text-[14px] max-lg:text-[13px] text-primary font-normal leading-[1.4]">
+                    <span className="text-[14px] max-lg:text-[13px] text-primary-normal font-normal leading-[1.4]">
                       사용자
                     </span>
                   )}
@@ -231,9 +231,9 @@ const Header = ({
             className="relative w-[26px] h-[26px] z-[30]"
             aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
           >
-            <span className="absolute top-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-black rounded-[100px]" />
-            <span className="absolute top-[46.88%] left-[9.38%] right-[9.38%] h-[6.25%] bg-black rounded-[100px]" />
-            <span className="absolute bottom-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-black rounded-[100px]" />
+            <span className="absolute top-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-[100px]" />
+            <span className="absolute top-[46.88%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-[100px]" />
+            <span className="absolute bottom-[15.63%] left-[9.38%] right-[9.38%] h-[6.25%] bg-static-black rounded-[100px]" />
           </button>
         </div>
 
@@ -242,11 +242,11 @@ const Header = ({
           <>
             {/* 전체 화면 오버레이 */}
             <div
-              className="fixed inset-0 bg-black/50 z-[40]"
+              className="fixed inset-0 bg-static-black/50 z-[40]"
               onClick={handleMobileMenuClose}
             />
             {/* 사이드 메뉴 - 헤더 위에 표시 */}
-            <div className="fixed top-0 right-0 bottom-0 w-[calc(100vw-35px)] max-w-[300px] bg-white z-[60] shadow-lg overflow-y-auto">
+            <div className="fixed top-0 right-0 bottom-0 w-[calc(100vw-35px)] max-w-[300px] bg-background-elevated z-[60] shadow-lg overflow-y-auto">
               <div className="flex flex-col h-full">
                 {/* Menu Content */}
                 <div className="flex-1 flex flex-col">
@@ -259,14 +259,14 @@ const Header = ({
                           {/* 닉네임과 프로필 */}
                           <div className="flex items-center justify-between mb-3">
                             <div>
-                              <h3 className="text-[20px] font-medium text-gray-900 leading-[28px] mb-2">
+                              <h3 className="text-[20px] font-medium text-gray-normal leading-[28px] mb-2">
                                 {userInfo.nickName || '사용자'}
                               </h3>
                               <button
                                 onClick={handleLogout}
                                 className="flex items-center gap-1"
                               >
-                                <span className="text-[14px] text-[#777777] leading-[19.6px]">
+                                <span className="text-[14px] text-gray-alternative leading-[19.6px]">
                                   로그아웃
                                 </span>
                                 <svg
@@ -275,7 +275,7 @@ const Header = ({
                                   viewBox="0 0 28 28"
                                   fill="none"
                                   xmlns="http://www.w3.org/2000/svg"
-                                  className="text-[#777777]"
+                                  className="text-gray-alternative"
                                 >
                                   <path
                                     d="M18 8L22 14L18 20"
@@ -294,9 +294,9 @@ const Header = ({
                               aria-label="대시보드로 이동"
                             >
                               {/* 외곽 원: 60x60, stroke primary (1.5px) */}
-                              <div className="absolute inset-0 rounded-full border-[1.5px] border-primary"></div>
+                              <div className="absolute inset-0 rounded-full border-[1.5px] border-primary-normal"></div>
                               {/* 내부 원: 57x57 (60 - 3px border), fill #efefef */}
-                              <div className="w-[57px] h-[57px] rounded-full bg-[#efefef] overflow-hidden">
+                              <div className="w-[57px] h-[57px] rounded-full bg-fill-alternative overflow-hidden">
                                 <img
                                   src={
                                     userInfo.profileImageUrl ||
@@ -319,8 +319,8 @@ const Header = ({
                           </div>
 
                           {/* 배너 - 로그아웃 버튼 아래 */}
-                          <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
-                            <p className="text-[14px] text-primary leading-[1.4] whitespace-nowrap">
+                          <div className="bg-primary-subtle rounded-[4px] px-3 py-2.5 mb-3">
+                            <p className="text-[14px] text-primary-normal leading-[1.4] whitespace-nowrap">
                               오늘{' '}
                               {todaySummaryData?.todaySummary.solvedCount ?? 0}
                               개의 문제 풀이를 진행했어요!
@@ -329,7 +329,7 @@ const Header = ({
                         </>
                       ) : (
                         <div className="px-5 py-3">
-                          <div className="w-[60px] h-[60px] rounded-full bg-gray-200 animate-pulse" />
+                          <div className="w-[60px] h-[60px] rounded-full bg-fill-alternative animate-pulse" />
                         </div>
                       )
                     ) : (
@@ -338,14 +338,14 @@ const Header = ({
                         {/* 로그인 해주세요와 로그인 버튼 */}
                         <div className="flex items-center justify-between mb-3">
                           <div>
-                            <h3 className="text-[20px] font-medium text-gray-900 leading-[28px] mb-2">
+                            <h3 className="text-[20px] font-medium text-gray-normal leading-[28px] mb-2">
                               로그인 해주세요
                             </h3>
                             <button
                               onClick={() => handleMobileNavClick('/login')}
                               className="flex items-center gap-1"
                             >
-                              <span className="text-[14px] text-[#777777] leading-[19.6px]">
+                              <span className="text-[14px] text-gray-alternative leading-[19.6px]">
                                 로그인
                               </span>
                               <svg
@@ -354,7 +354,7 @@ const Header = ({
                                 viewBox="0 0 28 28"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="text-[#777777]"
+                                className="text-gray-alternative"
                               >
                                 <path
                                   d="M18 8L22 14L18 20"
@@ -367,7 +367,7 @@ const Header = ({
                             </button>
                           </div>
                           {/* 녹색 원 - quizly.svg 적용 */}
-                          <div className="w-[60px] h-[60px] rounded-full bg-primary shrink-0 flex items-center justify-center overflow-hidden">
+                          <div className="w-[60px] h-[60px] rounded-full bg-primary-normal shrink-0 flex items-center justify-center overflow-hidden">
                             <img
                               src="/icon/quizly.svg"
                               alt="Quizly"
@@ -377,8 +377,8 @@ const Header = ({
                         </div>
 
                         {/* 배너 - 로그인 버튼 아래, 구분선 위 */}
-                        <div className="bg-[#f6fbf4] rounded-[4px] px-3 py-2.5 mb-3">
-                          <p className="text-[14px] text-primary leading-[1.4] whitespace-nowrap">
+                        <div className="bg-primary-subtle rounded-[4px] px-3 py-2.5 mb-3">
+                          <p className="text-[14px] text-primary-normal leading-[1.4] whitespace-nowrap">
                             회원가입하면 다양한 문제 제작이 가능해요!
                           </p>
                         </div>
@@ -386,14 +386,14 @@ const Header = ({
                     )}
 
                     {/* 구분선 */}
-                    <div className="h-[1px] bg-[#ededed] -mx-5" />
+                    <div className="h-[1px] bg-line-normal -mx-5" />
                   </div>
 
                   {/* Navigation Links */}
                   <nav className="flex flex-col px-5 pt-4">
                     <button
                       onClick={() => handleMobileNavClick('/')}
-                      className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
+                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
                     >
                       문제 만들기
                     </button>
@@ -402,19 +402,19 @@ const Header = ({
                         handleMobileMenuClose()
                         handleMockExamClick()
                       }}
-                      className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
+                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
                     >
                       실전 모의고사
                     </button>
                     <button
                       onClick={() => handleMobileNavClick('/my-quizzes')}
-                      className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
+                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
                     >
                       문제 모아보기
                     </button>
                     <button
                       onClick={() => handleMobileNavClick('/wrong-quizzes')}
-                      className="text-left py-3 text-[18px] font-medium text-gray-900 leading-[25.2px] hover:bg-gray-50"
+                      className="text-left py-3 text-[18px] font-medium text-gray-normal leading-[25.2px] hover:bg-background-alternative"
                     >
                       틀린문제 풀어보기
                     </button>

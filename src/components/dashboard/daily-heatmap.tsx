@@ -98,14 +98,14 @@ export default function DailyHeatmap({ data }: Props) {
   }, [data])
 
   const getCellColor = (count: number) => {
-    if (count === 0) return 'bg-[#efefef]'
-    if (count > 0) return 'bg-[#fef3f2]'
-    return 'bg-white'
+    if (count === 0) return 'bg-fill-alternative'
+    if (count > 0) return 'bg-status-negative-subtle'
+    return 'bg-background-elevated'
   }
 
   return (
-    <div className="bg-white border border-[#dedede] rounded-[16px] p-[20px] max-md:p-[20px] w-full max-md:h-[335px] max-md:flex max-md:flex-col aspect-square max-md:aspect-auto">
-      <h3 className="text-[16px] max-md:text-[20px] font-medium text-[#222] mb-[20px] max-md:mb-[20px] max-md:flex-shrink-0">
+    <div className="bg-background-elevated border border-line-normal rounded-[16px] p-[20px] max-md:p-[20px] w-full max-md:h-[335px] max-md:flex max-md:flex-col aspect-square max-md:aspect-auto">
+      <h3 className="text-[16px] max-md:text-[20px] font-medium text-gray-normal mb-[20px] max-md:mb-[20px] max-md:flex-shrink-0">
         {currentMonth} 학습 문제 기록
       </h3>
 
@@ -114,7 +114,7 @@ export default function DailyHeatmap({ data }: Props) {
         <div className="grid grid-cols-7 gap-[6px] max-md:gap-[6px] mb-[6px] w-full max-w-[396px] max-lg:max-w-[362px] max-md:max-w-[271px]">
           {WEEKDAYS.map((day) => (
             <div key={day} className="flex items-center justify-center">
-              <p className="text-[12px] max-md:text-[16px] text-[#777]">
+              <p className="text-[12px] max-md:text-[16px] text-gray-alternative">
                 {day}
               </p>
             </div>
@@ -132,7 +132,7 @@ export default function DailyHeatmap({ data }: Props) {
                 <div
                   key={`${weekIndex}-${dayIndex}`}
                   className={`aspect-square rounded-[4px] flex items-center justify-center ${
-                    cell ? getCellColor(cell.count) : 'bg-white'
+                    cell ? getCellColor(cell.count) : 'bg-background-elevated'
                   }`}
                 >
                   {cell && fireStreaks.has(cell.date) && (
@@ -150,8 +150,8 @@ export default function DailyHeatmap({ data }: Props) {
       </div>
 
       <div className="flex items-center gap-[6px] justify-end max-md:hidden">
-        <div className="w-[16px] h-[16px] bg-[#efefef] rounded-[2px]" />
-        <div className="w-[16px] h-[16px] bg-[#fef3f2] rounded-[2px]" />
+        <div className="w-[16px] h-[16px] bg-fill-alternative rounded-[2px]" />
+        <div className="w-[16px] h-[16px] bg-status-negative-subtle rounded-[2px]" />
       </div>
     </div>
   )

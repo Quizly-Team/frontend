@@ -24,7 +24,7 @@ const MyPageTabs = ({ active, description }: MyPageTabsProps) => {
             <span
               key={tab.id}
               aria-current="page"
-              className="text-header1-bold max-md:text-header3-bold text-gray-900"
+              className="text-header1-bold max-md:text-header3-bold text-gray-normal"
             >
               {tab.label}
             </span>
@@ -33,14 +33,14 @@ const MyPageTabs = ({ active, description }: MyPageTabsProps) => {
               key={tab.id}
               type="button"
               onClick={() => navigate(tab.to)}
-              className="text-header1-bold max-md:text-header3-bold text-gray-300"
+              className="text-header1-bold max-md:text-header3-bold text-gray-disable"
             >
               {tab.label}
             </button>
           ),
         )}
       </div>
-      <p className="text-[20px] max-md:text-[16px] leading-[1.4] text-gray-600">
+      <p className="text-[20px] max-md:text-[16px] leading-[1.4] text-gray-alternative">
         {description}
       </p>
     </div>

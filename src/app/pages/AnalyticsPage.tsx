@@ -210,7 +210,7 @@ const AnalyticsPage = () => {
   }
 
   return (
-    <div className="flex-1 w-full bg-bg-home flex flex-col">
+    <div className="flex-1 w-full bg-background-alternative flex flex-col">
       <Header />
 
       <main className="flex-1 flex flex-col items-center pt-20 pb-24 px-[60px] max-lg:px-10 max-md:px-5 max-md:pt-5">
@@ -224,15 +224,15 @@ const AnalyticsPage = () => {
           {activeTab === 'analytics' && (
             <div className="flex flex-col gap-5 max-md:gap-[20px]">
               {isDashboardLoading ? (
-                <div className="bg-white rounded-2xl p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
+                <div className="bg-background-elevated rounded-2xl p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
                   <div className="flex justify-center items-center py-20">
-                    <p className="text-gray-600">로딩 중...</p>
+                    <p className="text-gray-alternative">로딩 중...</p>
                   </div>
                 </div>
               ) : dashboardError ? (
-                <div className="bg-white rounded-2xl p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
+                <div className="bg-background-elevated rounded-2xl p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
                   <div className="flex justify-center items-center py-20">
-                    <p className="text-red-500">
+                    <p className="text-status-negative-normal">
                       데이터를 불러오는데 실패했습니다.
                     </p>
                   </div>
@@ -267,7 +267,7 @@ const AnalyticsPage = () => {
                   </div>
 
                   {/* AI 학습 분석 */}
-                  <div className="bg-[#eff6ff] border border-[#4f8fff] rounded-[16px] px-[45px] py-[35px] max-md:px-[20px] max-md:py-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
+                  <div className="bg-status-informative-subtle border border-status-informative-normal rounded-[16px] px-[45px] py-[35px] max-md:px-[20px] max-md:py-[20px] w-full max-w-[976px] max-lg:max-w-[904px] max-md:max-w-full">
                     <div className="flex items-center gap-[6px] mb-[22px] max-md:mb-[15px]">
                       <div className="w-[24px] h-[24px] max-md:w-[20px] max-md:h-[20px] flex items-center justify-center">
                         <svg
@@ -282,21 +282,26 @@ const AnalyticsPage = () => {
                             cx="12"
                             cy="12"
                             r="10.5"
-                            stroke="#0053e2"
                             strokeWidth="1.5"
+                            className="stroke-status-informative-strong"
                           />
-                          <circle cx="12" cy="9" r="1.5" fill="#0053e2" />
+                          <circle
+                            cx="12"
+                            cy="9"
+                            r="1.5"
+                            className="fill-status-informative-strong"
+                          />
                           <rect
                             x="11"
                             y="13"
                             width="2"
                             height="4"
                             rx="1"
-                            fill="#0053e2"
+                            className="fill-status-informative-strong"
                           />
                         </svg>
                       </div>
-                      <h3 className="text-[20px] max-md:text-[18px] font-medium text-[#0053e2]">
+                      <h3 className="text-[20px] max-md:text-[18px] font-medium text-status-informative-strong">
                         <span className="max-md:hidden">
                           체험판 AI 학습 분석
                         </span>
@@ -305,7 +310,7 @@ const AnalyticsPage = () => {
                         </span>
                       </h3>
                     </div>
-                    <p className="text-[16px] max-md:text-[14px] leading-[22.4px] max-md:leading-[19.6px] text-[#0053e2]">
+                    <p className="text-[16px] max-md:text-[14px] leading-[22.4px] max-md:leading-[19.6px] text-status-informative-strong">
                       {(() => {
                         const aiResult = dashboardData.aiAnalysisResult
                         if (aiResult === undefined || aiResult === null) {
@@ -358,25 +363,25 @@ const AnalyticsPage = () => {
           )}
 
           {activeTab === 'account' && (
-            <div className="relative bg-white rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-gray-300 max-md:border-[#dedede]">
-              <h2 className="text-[20px] font-medium leading-[28px] mb-[30px] max-md:mb-[20px] text-gray-900">
+            <div className="relative bg-background-elevated rounded-2xl max-md:rounded-[16px] p-8 max-md:p-5 border border-line-normal max-md:border-line-normal">
+              <h2 className="text-[20px] font-medium leading-[28px] mb-[30px] max-md:mb-[20px] text-gray-normal">
                 프로필 정보
               </h2>
 
               {isLoading ? (
                 <div className="flex justify-center items-center py-20">
-                  <p className="text-gray-600">로딩 중...</p>
+                  <p className="text-gray-alternative">로딩 중...</p>
                 </div>
               ) : error ? (
                 <div className="flex justify-center items-center py-20">
-                  <p className="text-red-500">{error}</p>
+                  <p className="text-status-negative-normal">{error}</p>
                 </div>
               ) : (
                 <>
                   {/* 프로필 이미지 */}
                   <div className="flex items-center justify-center gap-6 mb-[30px] max-md:mb-[20px]">
                     <div className="relative">
-                      <div className="w-[110px] h-[110px] max-md:w-[80px] max-md:h-[80px] rounded-full border-2 border-primary overflow-hidden">
+                      <div className="w-[110px] h-[110px] max-md:w-[80px] max-md:h-[80px] rounded-full border-2 border-primary-normal overflow-hidden">
                         {previewImageUrl ? (
                           // 미리보기 이미지 표시
                           <img
@@ -404,7 +409,7 @@ const AnalyticsPage = () => {
                       <button
                         onClick={handleProfileImageClick}
                         disabled={isSaving}
-                        className="absolute bottom-0 right-0 w-[26px] h-[26px] max-md:w-[22px] max-md:h-[22px] rounded-full bg-primary flex items-center justify-center hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="absolute bottom-0 right-0 w-[26px] h-[26px] max-md:w-[22px] max-md:h-[22px] rounded-full bg-primary-normal flex items-center justify-center hover:bg-primary-strong transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         aria-label="프로필 이미지 변경"
                       >
                         <img
@@ -426,10 +431,10 @@ const AnalyticsPage = () => {
                   {/* 닉네임 입력 */}
                   <div className="mb-[20px] max-md:mb-[20px] flex flex-col items-center">
                     <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
-                      <label className="text-[16px] font-medium text-gray-600 mb-1">
+                      <label className="text-[16px] font-medium text-gray-alternative mb-1">
                         닉네임
                       </label>
-                      <div className="border-b border-[#dedede] flex items-center w-full py-2">
+                      <div className="border-b border-line-normal flex items-center w-full py-2">
                         <input
                           type="text"
                           value={nickname}
@@ -443,11 +448,11 @@ const AnalyticsPage = () => {
                           }}
                           maxLength={6}
                           disabled={isSaving}
-                          className="flex-1 text-[16px] text-gray-900 outline-none bg-transparent disabled:text-gray-500"
+                          className="flex-1 text-[16px] text-gray-normal outline-none bg-transparent disabled:text-gray-assistive"
                         />
                       </div>
                       {saveError && (
-                        <p className="mt-1 text-[14px] text-red-500">
+                        <p className="mt-1 text-[14px] text-status-negative-normal">
                           {saveError}
                         </p>
                       )}
@@ -457,18 +462,18 @@ const AnalyticsPage = () => {
                   {/* 이메일 입력 (비활성화) */}
                   <div className="mb-[30px] max-md:mb-[20px] flex flex-col items-center">
                     <div className="flex flex-col items-start w-[350px] max-md:w-[295px]">
-                      <label className="text-[16px] font-medium text-gray-600 mb-1">
+                      <label className="text-[16px] font-medium text-gray-alternative mb-1">
                         이메일
                       </label>
-                      <div className="border-b border-[#dedede] flex items-center w-full py-2">
+                      <div className="border-b border-line-normal flex items-center w-full py-2">
                         <input
                           type="text"
                           value={email}
                           disabled
-                          className="flex-1 text-[16px] text-gray-900 outline-none bg-transparent disabled:text-gray-500"
+                          className="flex-1 text-[16px] text-gray-normal outline-none bg-transparent disabled:text-gray-assistive"
                         />
                       </div>
-                      <p className="mt-1 text-[14px] text-red-500">
+                      <p className="mt-1 text-[14px] text-status-negative-normal">
                         이메일은 변경할 수 없습니다.
                       </p>
                     </div>
@@ -480,7 +485,7 @@ const AnalyticsPage = () => {
                       variant="secondary"
                       size="medium"
                       onClick={handleLogout}
-                      className="w-[120px] h-[46px] rounded-md bg-[#f6fbf4] text-primary hover:bg-[#e8f5e0]"
+                      className="w-[120px] h-[46px] rounded-md bg-primary-subtle text-primary-normal hover:bg-interaction-primary-pressed"
                     >
                       로그아웃
                     </Button>
@@ -497,7 +502,7 @@ const AnalyticsPage = () => {
                       <button
                         type="button"
                         onClick={() => navigate('/admin')}
-                        className="absolute right-6 md:right-8 text-[13px] text-gray-400 hover:text-gray-600 transition-colors"
+                        className="absolute right-6 md:right-8 text-[13px] text-gray-disable hover:text-gray-alternative transition-colors"
                       >
                         관리자 대시보드
                       </button>

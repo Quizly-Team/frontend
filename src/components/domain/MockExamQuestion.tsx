@@ -31,11 +31,11 @@ const MockExamQuestion = ({
 
   const renderTrueFalse = () => (
     <div className="pt-5">
-      <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-2">
+      <p className="text-lg font-medium text-gray-normal leading-[1.4] mb-2">
         {questionNumber}. {question.text}
       </p>
       {!showAnswer && (
-        <p className="text-base font-normal text-[#555555] leading-[1.4]">
+        <p className="text-base font-normal text-gray-neutral leading-[1.4]">
           (O / X)
         </p>
       )}
@@ -47,7 +47,7 @@ const MockExamQuestion = ({
 
     return (
       <div className="pt-5">
-        <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3">
+        <p className="text-lg font-medium text-gray-normal leading-[1.4] mb-3">
           {questionNumber}. {displayText}
         </p>
         {!showAnswer && question.options.length > 0 && (
@@ -64,16 +64,16 @@ const MockExamQuestion = ({
                         cx="9"
                         cy="9"
                         r="8.5"
-                        stroke="#555555"
                         strokeWidth="1"
+                        className="stroke-gray-neutral"
                       />
                     </svg>
                   </div>
-                  <span className="absolute inset-0 flex items-center justify-center text-[13px] font-medium text-[#555555] leading-none">
+                  <span className="absolute inset-0 flex items-center justify-center text-[13px] font-medium text-gray-neutral leading-none">
                     {index + 1}
                   </span>
                 </div>
-                <p className="text-base font-normal text-[#555555] leading-[1.4] flex-1">
+                <p className="text-base font-normal text-gray-neutral leading-[1.4] flex-1">
                   {option}
                 </p>
               </div>
@@ -91,21 +91,21 @@ const MockExamQuestion = ({
 
     return (
       <div className="pt-5">
-        <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3">
+        <p className="text-lg font-medium text-gray-normal leading-[1.4] mb-3">
           {questionNumber}. {questionText}
         </p>
         {!showAnswer && (
           <>
             {/* 보기 박스 */}
-            <div className="mb-3 p-4 border border-[#222222] rounded-md bg-white relative">
-              <p className="text-base font-normal text-[#222222] leading-[1.4] mb-3 text-center">
+            <div className="mb-3 p-4 border border-gray-normal rounded-md bg-background-elevated relative">
+              <p className="text-base font-normal text-gray-normal leading-[1.4] mb-3 text-center">
                 {'< 보기 >'}
               </p>
               <div className="space-y-3">
                 {viewOptions.map((option, index) => (
                   <p
                     key={index}
-                    className="text-base font-normal text-[#222222] leading-[1.4]"
+                    className="text-base font-normal text-gray-normal leading-[1.4]"
                   >
                     {option}
                   </p>
@@ -132,16 +132,16 @@ const MockExamQuestion = ({
                           cx="9"
                           cy="9"
                           r="8.5"
-                          stroke="#555555"
                           strokeWidth="1"
+                          className="stroke-gray-neutral"
                         />
                       </svg>
                     </div>
-                    <span className="absolute inset-0 flex items-center justify-center text-[13px] font-medium text-[#555555] leading-none">
+                    <span className="absolute inset-0 flex items-center justify-center text-[13px] font-medium text-gray-neutral leading-none">
                       {index + 1}
                     </span>
                   </div>
-                  <p className="text-base font-normal text-[#555555] leading-[1.4] flex-1">
+                  <p className="text-base font-normal text-gray-neutral leading-[1.4] flex-1">
                     {option}
                   </p>
                 </div>
@@ -155,11 +155,11 @@ const MockExamQuestion = ({
 
   const renderShortAnswer = () => (
     <div className="pt-5">
-      <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3">
+      <p className="text-lg font-medium text-gray-normal leading-[1.4] mb-3">
         {questionNumber}. {question.text}
       </p>
       {!showAnswer && (
-        <div className="bg-white border-0 rounded-md p-3 h-[140px]">
+        <div className="bg-background-elevated border-0 rounded-md p-3 h-[140px]">
           {/* 빈 답안 작성 영역 */}
         </div>
       )}
@@ -168,11 +168,11 @@ const MockExamQuestion = ({
 
   const renderEssay = () => (
     <div className="pt-5">
-      <p className="text-lg font-medium text-[#222222] leading-[1.4] mb-3 whitespace-pre-line">
+      <p className="text-lg font-medium text-gray-normal leading-[1.4] mb-3 whitespace-pre-line">
         {questionNumber}. {question.text}
       </p>
       {!showAnswer && (
-        <div className="bg-white border-0 rounded-md p-3 h-[140px]">
+        <div className="bg-background-elevated border-0 rounded-md p-3 h-[140px]">
           {/* 빈 답안 작성 영역 */}
         </div>
       )}
@@ -184,8 +184,8 @@ const MockExamQuestion = ({
 
     return (
       <div className="space-y-2">
-        <p className="text-base font-medium text-primary">해설 요약</p>
-        <p className="text-base text-[#555555] leading-[1.4] whitespace-pre-line">
+        <p className="text-base font-medium text-primary-normal">해설 요약</p>
+        <p className="text-base text-gray-neutral leading-[1.4] whitespace-pre-line">
           {question.explanation}
         </p>
       </div>
@@ -207,9 +207,15 @@ const MockExamQuestion = ({
             fill="none"
             className="absolute"
           >
-            <circle cx="9" cy="9" r="8.5" stroke="#222222" strokeWidth="1" />
+            <circle
+              cx="9"
+              cy="9"
+              r="8.5"
+              strokeWidth="1"
+              className="stroke-gray-normal"
+            />
           </svg>
-          <span className="relative text-[13px] font-medium text-[#222222] leading-none">
+          <span className="relative text-[13px] font-medium text-gray-normal leading-none">
             {num}
           </span>
         </div>
@@ -301,7 +307,7 @@ const MockExamQuestion = ({
     // 해설 모드: 간단하게 문제번호 + 답 + 해설만 표시
     return (
       <div className="pt-5 mb-5">
-        <p className="text-lg font-medium text-[#222222] mb-2">
+        <p className="text-lg font-medium text-gray-normal mb-2">
           {questionNumber}. {getAnswerWithNumber()}
         </p>
         {renderAnswer()}

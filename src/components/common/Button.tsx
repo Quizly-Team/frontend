@@ -24,11 +24,11 @@ const Button = ({
 
   const variantStyles = {
     primary:
-      'bg-primary text-white hover:bg-primary/90 disabled:bg-gray-500 rounded-[200px]',
+      'bg-primary-normal text-static-white hover:bg-primary-normal/90 disabled:bg-gray-assistive rounded-[200px]',
     secondary:
-      'bg-secondary text-primary hover:bg-secondary/80 disabled:bg-gray-200 rounded-[200px]',
+      'bg-primary-subtle text-primary-normal hover:bg-primary-subtle/80 disabled:bg-fill-alternative rounded-[200px]',
     outline:
-      'bg-white border border-gray-300 text-gray-900 hover:border-gray-400 disabled:border-gray-200 disabled:text-gray-400 rounded-[12px]',
+      'bg-background-elevated border border-line-normal text-gray-normal hover:border-gray-disable disabled:border-line-normal disabled:text-gray-disable rounded-[12px]',
   }
 
   const sizeStyles = {

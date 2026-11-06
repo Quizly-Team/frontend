@@ -13,19 +13,19 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
   }
   if (variant === 'simple') {
     return (
-      <div className="min-h-screen bg-bg-home flex flex-col">
+      <div className="min-h-screen bg-background-alternative flex flex-col">
         <Header logoUrl="/logo.svg" />
 
         <main className="flex-1 flex flex-col items-center justify-center px-6">
-          <h1 className="text-header1-bold text-gray-900 text-center mb-4 max-md:text-header3-bold">
+          <h1 className="text-header1-bold text-gray-normal text-center mb-4 max-md:text-header3-bold">
             로그인이 필요합니다
           </h1>
-          <p className="text-body1-regular text-gray-600 text-center mb-10 max-md:text-body3-regular">
+          <p className="text-body1-regular text-gray-alternative text-center mb-10 max-md:text-body3-regular">
             문제를 확인하려면 로그인해주세요.
           </p>
           <button
             onClick={handleLoginClick}
-            className="bg-primary text-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary/90 transition-colors"
+            className="bg-primary-normal text-static-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
           >
             로그인하기
           </button>
@@ -36,7 +36,7 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
 
   // Full variant with characters
   return (
-    <div className="min-h-screen bg-bg-home flex flex-col">
+    <div className="min-h-screen bg-background-alternative flex flex-col">
       <Header logoUrl="/logo.svg" />
 
       {/* Main Content - Web/Tablet */}
@@ -66,19 +66,19 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-header1-bold text-gray-900 text-center mb-4">
+        <h1 className="text-header1-bold text-gray-normal text-center mb-4">
           문제를 확인하려면 회원가입 또는 로그인이 필요해요
         </h1>
 
         {/* Description */}
-        <p className="text-body1-regular text-gray-600 text-center mb-10">
+        <p className="text-body1-regular text-gray-alternative text-center mb-10">
           퀴즐리 계정이 없다면 지금 바로 회원가입을 해보세요.
         </p>
 
         {/* Sign Up Button */}
         <button
           onClick={handleLoginClick}
-          className="bg-primary text-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary/90 transition-colors"
+          className="bg-primary-normal text-static-white text-body3-regular px-l py-4 rounded-[6px] hover:bg-primary-normal/90 transition-colors"
         >
           지금 가입하기
         </button>
@@ -111,21 +111,21 @@ const UnauthorizedPage = ({ variant = 'full' }: UnauthorizedPageProps) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-header3-bold text-gray-900 text-center mb-3">
+        <h1 className="text-header3-bold text-gray-normal text-center mb-3">
           문제를 확인하려면 회원가입
           <br />
           또는 로그인이 필요해요
         </h1>
 
         {/* Description */}
-        <p className="text-body3-regular text-gray-600 text-center mb-8">
+        <p className="text-body3-regular text-gray-alternative text-center mb-8">
           퀴즐리 계정이 없다면 지금 바로 회원가입을 해보세요.
         </p>
 
         {/* Sign Up Button */}
         <button
           onClick={handleLoginClick}
-          className="bg-primary text-white text-body3-regular px-l py-[14px] rounded-[6px] hover:bg-primary/90 transition-colors"
+          className="bg-primary-normal text-static-white text-body3-regular px-l py-[14px] rounded-[6px] hover:bg-primary-normal/90 transition-colors"
         >
           지금 가입하기
         </button>

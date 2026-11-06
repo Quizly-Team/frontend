@@ -129,7 +129,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="14" cy="14" r="13" className="fill-primary" />
+        <circle cx="14" cy="14" r="13" className="fill-primary-normal" />
         <path
           d="M8 14L12 18L20 10"
           stroke="white"
@@ -232,7 +232,7 @@ const Icon = ({ name, size = 28, className = '', onClick }: IconProps) => {
           rx="2"
           className="fill-[#ffe9bd] stroke-[#ffe9bd]"
         />
-        <circle cx="10" cy="12" r="2" className="fill-error" />
+        <circle cx="10" cy="12" r="2" className="fill-status-negative-normal" />
       </svg>
     ),
     menu: (
