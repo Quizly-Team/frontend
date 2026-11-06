@@ -120,7 +120,7 @@
   --sem-highlight-yellow: rgba(252, 224, 35, 0.3);
   --sem-highlight-green: rgba(157, 236, 141, 0.3);
   --sem-highlight-blue: rgba(155, 193, 255, 0.3);
-  --sem-highlight-pink: rgba(253, 165, 213, 0.3);
+  --sem-highlight-pink: rgba(253, 165, 213, 0.306);
   --sem-shadow-ambient: rgba(26, 26, 26, 0.06);
   --sem-shadow-key: rgba(26, 26, 26, 0.1);
   --sem-shadow-key-strong: rgba(26, 26, 26, 0.14);
