@@ -9,3 +9,5 @@ package-lock.json
 .env.test.local
 .env.production.local
 public/pdf.worker.min.mjs
+# Tokens Studio 가 쓰는 파일. prettier 가 다시 쓰면 디자이너의 다음 Push 마다 충돌한다.
+tokens/
