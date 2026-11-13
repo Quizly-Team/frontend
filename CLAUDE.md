@@ -57,15 +57,25 @@ There is **no unit-test runner** configured. Verification = `npm run build` (typ
 
 Conventional commits referencing the issue, Korean description: `<type>(#NNN): <설명>` (e.g. `feat(#105): 구글 애드센스 header 적용`). Types: `feat`, `fix`, `refactor`, `chore`, `style`, `docs`. Do not commit/push automatically — that is the human's job.
 
-## 하네스: Quizly 개발 워크플로우
+## 제품 범위
 
-**목표:** 한 개발 작업을 도메인분석 → 리서치 → 계획 → (승인) → 구현 → 검증(diff 리뷰 + 통합 QA) 파이프라인으로 분리하고, 구현(builder)과 검증(reviewer·integration-qa)을 컨텍스트 격리 상태로 독립 운영한다. 기능 개발·통합 정합성 QA·버그 수정/리팩토링·디자인 구현(Figma→코드) 네 작업 유형을 모두 처리한다.
+이 저장소의 1차 범위는 **서비스 소개와 문의**다. 제품 기능(문제 생성, 풀이, 오답, 모의고사, 대시보드)은 모바일 앱 `Quizly-Team/app` 으로 간다. 기존 기능은 그대로 동작하지만 새 기능을 여기에 더하지 않는다.
 
-**트리거:** 코드 변경 또는 통합 검증을 동반하는 개발 작업(이슈 `#NNN` 구현/수정/리뷰/QA 등) 요청 시 `quizly-dev-workflow` 스킬을 사용하라. 단순 질문은 직접 응답 가능.
+## 하네스: 두지 않는다
 
-**역할(하이브리드):** 계획=`domain-analyst` → `researcher` → `planner`(순차 서브에이전트) →〔사람 승인〕→ 구현=**에이전트 팀** `data-engineer`·`page-integrator`·`ui-engineer`(TeamCreate, 레이어별 실시간 협업) ⇄ 검증=`reviewer` + `integration-qa`(독립 서브에이전트). 사소한 단일 레이어 변경은 `builder` 솔로 폴백. 산출물은 `docs/ai/{domain,research,plan,review,qa}/#NNN.md`. 세션 로깅은 `.claude/hooks/log-session.sh` → `logs/ai/*.jsonl`.
+⚠️ **아래 "변경 이력" 에 적힌 `quizly-dev-workflow` 9에이전트 파이프라인은 실물이 없다.** `.claude/` 가 `7502eb7` 에서 `.gitignore:106` 으로 들어가 레포에 올라간 적이 없고, 작업 머신에도 남아 있지 않다. 문서만 남은 상태였다.
 
-**스킬 인지:** 파이프라인은 best-practice 스킬을 능동 참조한다 — researcher가 적용 스킬 열거(§9) → planner가 파일별 명시(§3) → builder가 구현 전 정독 → reviewer가 준수 검증. 기본 참조 스킬은 `quizly-frontend-conventions`(프로젝트 컨벤션), UI는 `frontend-design`. 새 best-practice 스킬은 researcher 열거 목록에 추가하면 파이프라인 전체에 전파된다.
+1차 범위가 랜딩과 문의 두 페이지라 그 파이프라인을 복원하지 않는다. 대신 외부 스킬을 쓴다.
+
+| 스킬              | 언제                                      |
+| ----------------- | ----------------------------------------- |
+| `ponytail`        | 코드를 쓰거나 고치거나 리뷰하는 모든 작업 |
+| `frontend-design` | 신규 화면을 설계할 때                     |
+| `/code-review`    | PR 올리기 전                              |
+
+검증 게이트는 `npm run build` 와 `npm run lint` 다.
+
+파이프라인 하네스가 필요하면 앱 레포(`Quizly-Team/app`)의 `.claude/` 를 참고한다. 그쪽은 커밋돼 있다.
 
 **변경 이력:**
 
@@ -75,3 +85,4 @@ Conventional commits referencing the issue, Korean description: `<type>(#NNN): <
 | 2026-06-30 | skill-aware 배선 + `quizly-frontend-conventions` 스킬 신규                                                                                                                         | researcher·planner·builder·reviewer·orchestrator·skills/quizly-frontend-conventions | 워크플로우가 구현 시 best-practice 스킬을 참조하지 않던 문제 해결 (skill-creator 방법론으로 제작)                                       |
 | 2026-06-30 | 구현 단계를 에이전트 팀으로 전환 (하이브리드) — 레이어 전문가 3인 신규                                                                                                             | agents/{data-engineer,page-integrator,ui-engineer}·orchestrator                     | 도메인 분석 결과 quizly의 지배적 버그가 레이어 경계면 불일치 → 실시간 SendMessage 협업으로 발생 지점 차단. builder는 솔로 폴백으로 잔존 |
 | 2026-07-02 | 도메인 재검증 후 문서·설정 현행화 (drift 7건 수정: Zustand 미사용·Tailwind 우세·recharts 단독·apiClient 중복 현실·QuizSolve 고아·죽은 deps·도메인 맵 추가) + 하네스 설정 버그 수정 | CLAUDE.md·skills/quizly-frontend-conventions·settings.local.json                    | 문서-코드 불일치로 하네스 에이전트가 틀린 전제로 판단하는 문제. zustand 제거 결정(필요 시 재도입). 소스 코드 무변경                     |
+| 2026-11-13 | 하네스 섹션을 실물에 맞게 축소. 제품 범위 섹션 추가                                                                                                                                | CLAUDE.md                                                                           | `.claude/` 가 `7502eb7` 에서 gitignore 로 들어가 위 파이프라인의 실물이 사라졌다. 1차 웹 범위도 서비스 소개와 문의로 줄었다             |
